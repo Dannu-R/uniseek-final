@@ -1,0 +1,104 @@
+/* ================================================================
+   Footer — a solid black block, deliberately distinct from the
+   deep blue/purple page background above it
+   ================================================================ */
+
+.footer {
+  background: #000; /* completely black — does not blend with the page */
+  color: rgba(255, 255, 255, 0.7);
+  padding: clamp(52px, 8vh, 96px) clamp(20px, 5vw, 44px) clamp(28px, 4vh, 44px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer__inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(40px, 6vw, 100px);
+  flex-wrap: wrap;
+}
+
+.footer__brand {
+  max-width: 280px;
+}
+
+.footer__logo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__logo {
+  display: block;
+  height: 30px;
+  width: auto;
+  color: var(--color-white);
+}
+
+.footer__title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  color: var(--color-white);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.footer__tagline {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.footer__cols {
+  display: flex;
+  gap: clamp(32px, 5vw, 80px);
+  flex-wrap: wrap;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer__col-title {
+  margin: 0 0 4px;
+  color: var(--color-white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer__link {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.92rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer__link:hover {
+  color: var(--color-white);
+}
+
+.footer__bottom {
+  max-width: 1140px;
+  margin: clamp(40px, 6vh, 72px) auto 0;
+  padding-top: clamp(20px, 3vh, 32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer__copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .footer__inner {
+    flex-direction: column;
+    gap: 36px;
+  }
+}

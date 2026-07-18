@@ -1,0 +1,318 @@
+/* ================================================================
+   Why Uniseek — one card at a time, chosen from a bottom-right word
+   selector. Solid dark-grey section; big white slightly-metallic
+   card with a faint grid. Title flies up on each pick.
+   ================================================================ */
+
+/* shared divider (also used by the How-it-works section) */
+.divider {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  margin-bottom: clamp(56px, 8vh, 110px);
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+}
+
+.divider::after {
+  content: "";
+  position: absolute;
+  inset: -2px 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 100%
+  );
+  filter: blur(4px);
+}
+
+/* solid dark-grey section, edge to edge */
+.why {
+  position: relative;
+  overflow: hidden; /* clips the bottom half of the brandmark */
+  background: #1c1c22;
+}
+
+/* big faded logo + name at the bottom — only the top half is visible */
+.why__brandmark {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 32%);
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 3.4vw, 72px);
+  /* logo color (currentColor) — pink; the name uses a gradient below */
+  color: #f472b6;
+  opacity: 0.22;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.why__brandmark-logo {
+  height: clamp(160px, 24vw, 380px);
+  width: auto;
+}
+
+.why__brandmark-name {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(9.5rem, 25vw, 27rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  /* pink-forward gradient for a more prominent pink watermark */
+  background: linear-gradient(
+    115deg,
+    #ec4899 0%,
+    #f472b6 35%,
+    #f0abfc 55%,
+    #c084fc 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* waving ribbons behind the card (reuses the hero ribbon SVG) */
+.ribbons--why {
+  z-index: 0;
+  opacity: 0.5;
+  filter: blur(16px) saturate(1.25);
+}
+
+.ribbons--why .ribbon {
+  opacity: 0.85;
+}
+
+/* override the hero's drift with a rolling wave motion, offset per band */
+.ribbons--why .ribbon--1 {
+  animation: why-wave-1 15s ease-in-out infinite;
+}
+.ribbons--why .ribbon--2 {
+  animation: why-wave-2 19s ease-in-out infinite;
+}
+/* hide the bottom band — it sat on top of the logo watermark */
+.ribbons--why .ribbon--3 {
+  display: none;
+}
+
+@keyframes why-wave-1 {
+  0%,
+  100% {
+    transform: translate(-6%, 4%) skewX(0deg) scaleY(1);
+  }
+  50% {
+    transform: translate(6%, -4%) skewX(-5deg) scaleY(1.18);
+  }
+}
+
+@keyframes why-wave-2 {
+  0%,
+  100% {
+    transform: translate(5%, -3%) skewX(4deg) scaleY(1.1);
+  }
+  50% {
+    transform: translate(-5%, 4%) skewX(-3deg) scaleY(1);
+  }
+}
+
+@keyframes why-wave-3 {
+  0%,
+  100% {
+    transform: translate(-4%, -2%) skewX(-3deg) scaleY(1.05);
+  }
+  50% {
+    transform: translate(6%, 3%) skewX(5deg) scaleY(1.2);
+  }
+}
+
+/* centered heading */
+.why .section__eyebrow {
+  margin-left: auto;
+  margin-right: auto;
+}
+.why .section__title {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 24ch;
+  text-align: center;
+}
+
+/* wrapper that tilts with the mouse (3D via inline perspective transform) */
+.why__card-tilt {
+  max-width: 980px;
+  margin: clamp(32px, 5vh, 60px) auto 0;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+/* the single card — big, bounded, white metallic fill + faint grid */
+.why__card {
+  --why-grid: 46px;
+  position: relative;
+  width: 100%;
+  min-height: clamp(440px, 56vh, 620px);
+  padding: clamp(32px, 5vw, 66px);
+  border-radius: 28px;
+  overflow: hidden;
+  color: #180f30;
+  border: 1px solid rgba(24, 15, 48, 0.08);
+  /* heavier drop shadow */
+  box-shadow: 0 50px 100px -32px rgba(0, 0, 0, 0.78),
+    0 20px 46px -20px rgba(0, 0, 0, 0.5);
+  background-image: linear-gradient(
+      rgba(24, 15, 48, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(24, 15, 48, 0.06) 1px, transparent 1px),
+    linear-gradient(
+      125deg,
+      #ffffff,
+      #f7e6f3 20%,
+      #ffffff 40%,
+      #eee3ff 60%,
+      #ffffff 78%,
+      #e2ecff 100%
+    );
+  background-size: var(--why-grid) var(--why-grid),
+    var(--why-grid) var(--why-grid), cover;
+}
+
+.why__content {
+  width: 100%;
+}
+
+/* 3D objects (coin / glasses / book / puzzle) — centered, decorative only */
+.why__coin,
+.why__glasses,
+.why__book,
+.why__fit {
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  transform: translate(-50%, -50%);
+  width: clamp(210px, 32%, 340px);
+  height: clamp(250px, 64%, 400px);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* glasses are wide + short — give them a wider frame so nothing clips */
+.why__glasses {
+  width: clamp(320px, 50%, 500px);
+  height: clamp(240px, 56%, 380px);
+}
+
+@media (max-width: 600px) {
+  .why__coin,
+  .why__glasses,
+  .why__book,
+  .why__fit {
+    width: 66%;
+    height: 56%;
+  }
+}
+
+.why__title {
+  /* hug the word and sit in the top-left corner — the picked word
+     travels up to here from the bottom-right selector (JS FLIP) */
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 16px;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #180f30;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.why__text {
+  max-width: 60ch;
+  margin: 0;
+  color: rgba(24, 15, 48, 0.7);
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  line-height: 1.6;
+  animation: why-fade 0.55s ease 0.08s both;
+}
+
+@keyframes why-fade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* bottom-right word selector — plain words separated by " / " */
+.why__nav {
+  position: absolute;
+  right: clamp(20px, 3vw, 44px);
+  bottom: clamp(20px, 3vw, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-inter), sans-serif;
+}
+
+.why__nav-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.why__nav-word {
+  border: 0;
+  background: none;
+  padding: 4px 2px;
+  color: rgba(24, 15, 48, 0.5);
+  font-family: inherit;
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.why__nav-word:hover {
+  color: #180f30;
+  transform: translateY(-2px);
+}
+
+.why__nav-sep {
+  margin: 0 10px;
+  color: rgba(24, 15, 48, 0.28);
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .why__content {
+    padding-bottom: 96px; /* keep clear of the wrapping nav */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why__title,
+  .why__text {
+    animation: none;
+  }
+  .why__card-tilt,
+  .why__nav-word {
+    transition: none;
+  }
+}

@@ -1,0 +1,93 @@
+/* ================================================================
+   Problem section — two columns (copy + magnifying glass) and CTA row
+   ================================================================ */
+
+.section__problem {
+  padding-top: clamp(72px, 11vh, 150px);
+  margin-bottom: 10rem;
+}
+
+.problem__inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+}
+
+.problem__text {
+  flex: 1 1 420px;
+}
+
+.problem .section__title {
+  margin-bottom: clamp(20px, 3vh, 30px);
+  max-width: 16ch;
+}
+
+.problem__body {
+  margin: 0 0 18px;
+  max-width: 54ch;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  line-height: 1.65;
+}
+
+.problem__body:last-child {
+  margin-bottom: 0;
+}
+
+/* centered CTA row below the two columns */
+.problem__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(24px, 4vh, 52px);
+}
+
+/* ---- Visual (magnifying glass in a frosted panel) ---- */
+.problem__visual {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+/* colored glow behind the panel so the frosted glass catches Uniseek's hues */
+.problem__visual::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 58% at 50% 45%,
+    rgba(139, 92, 246, 0.42),
+    rgba(236, 72, 153, 0.24) 45%,
+    rgba(59, 130, 246, 0.14) 70%,
+    transparent 80%
+  );
+  filter: blur(42px);
+}
+
+.glass-panel {
+  position: relative;
+  z-index: 1;
+  border-radius: 30px;
+  padding: clamp(14px, 1.8vw, 28px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
+}
+
+/* the WebGL canvas holding the 3D magnifying glass */
+.magnifier {
+  width: clamp(260px, 30vw, 400px);
+  height: clamp(260px, 30vw, 400px);
+}
+
+@media (max-width: 900px) {
+  .problem__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .problem__visual {
+    align-self: center;
+  }
+}

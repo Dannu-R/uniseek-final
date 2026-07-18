@@ -1,10 +1,19 @@
 import Navbar from "./components/Navbar";
 import LogoBanner from "./components/LogoBanner";
+import WhatIsUniseek from "./components/WhatIsUniseek";
+import Stats from "./components/Stats";
 import Problem from "./components/Problem";
 import CoreValues from "./components/CoreValues";
+import HowItWorks from "./components/HowItWorks";
+import Pricing from "./components/Pricing";
+import Reviews from "./components/Reviews";
+import Footer from "./components/Footer";
+import Ribbons from "./components/Ribbons";
+import HeroDuo from "./components/HeroDuo";
 
 export default function Home() {
   return (
+    <>
     <main>
       <Navbar />
 
@@ -15,6 +24,8 @@ export default function Home() {
             <div className="aurora-layer aurora-layer--2" />
             <div className="aurora-layer aurora-layer--3" />
           </div>
+
+          <Ribbons />
 
           <svg className="hero__metal" aria-hidden="true" preserveAspectRatio="none">
             <filter id="metal-noise">
@@ -30,6 +41,10 @@ export default function Home() {
           </svg>
 
           <div className="hero__accents" aria-hidden="true" />
+
+          <div className="hero-photo" aria-hidden="true">
+            <img className="hero-photo__img" src="/campus.jpg" alt="" />
+          </div>
 
           <div className="hero__fade-top" aria-hidden="true" />
           <div className="hero__fade" aria-hidden="true" />
@@ -71,12 +86,7 @@ export default function Home() {
           </div>
           </div>
 
-          <div className="nav-grid" aria-hidden="true">
-            <span className="nav-grid__cell" />
-            <span className="nav-grid__cell" />
-            <span className="nav-grid__cell" />
-            <span className="nav-grid__cell" />
-          </div>
+          <HeroDuo />
         </div>
 
           <LogoBanner />
@@ -85,7 +95,22 @@ export default function Home() {
 
       <Problem />
 
+      <div className="section-break" aria-hidden="true" />
+
+      <WhatIsUniseek />
+
+      <Stats />
+
       <CoreValues />
+
+      <HowItWorks />
+
+      <Reviews />
+
+      <Pricing />
     </main>
+
+    <Footer />
+    </>
   );
 }

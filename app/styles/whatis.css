@@ -1,0 +1,114 @@
+/* ================================================================
+   What is Uniseek — short plain-language intro: quiz + AI → your fit
+   ================================================================ */
+
+/* centered logo above the heading */
+.whatis__logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(18px, 3vh, 30px);
+}
+.whatis__logo svg {
+  height: clamp(44px, 5vw, 68px);
+  width: auto;
+  color: #ffffff;
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.28));
+}
+
+/* clip the ribbons to the section */
+.whatis {
+  overflow: hidden;
+}
+
+/* ribbons tilted the OTHER way (vs. pricing's +60°) — a gentle drift */
+.ribbons--whatis {
+  z-index: 0;
+  opacity: 0.32;
+  filter: blur(24px) saturate(1.2);
+  transform-origin: center;
+  transform: rotate(-30deg) scale(2.2);
+}
+.ribbons--whatis .ribbon {
+  opacity: 0.85;
+}
+
+.whatis .section__eyebrow,
+.whatis .section__title {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.whatis__title {
+  max-width: 22ch;
+}
+
+.whatis__accent {
+  background: var(--gradient-fit);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.whatis__lead {
+  max-width: 60ch;
+  margin: clamp(20px, 3vh, 32px) auto 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  line-height: 1.6;
+}
+.whatis__lead strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.whatis__steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 28px);
+  margin-top: clamp(40px, 6vh, 72px);
+}
+
+.whatis-step {
+  text-align: left;
+  padding: clamp(20px, 2.2vw, 30px);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.whatis-step__num {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: var(--gradient-fit);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.whatis-step__title {
+  margin: 0 0 8px;
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.whatis-step__body {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: clamp(0.9rem, 1.05vw, 1rem);
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .whatis__steps {
+    grid-template-columns: 1fr;
+  }
+}

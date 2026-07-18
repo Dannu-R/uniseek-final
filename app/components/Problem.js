@@ -3,7 +3,7 @@ import MagnifyingGlass from "./MagnifyingGlass";
 
 export default function Problem() {
   return (
-    <section className="section problem">
+    <section className="section__problem">
       <div className="section__inner">
         <div className="problem__inner">
           <div className="problem__text">

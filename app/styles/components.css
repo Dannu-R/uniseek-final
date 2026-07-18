@@ -1,0 +1,67 @@
+/* ================================================================
+   Reusable components — buttons
+   ================================================================ */
+
+/* ---- Primary CTA button (with logo) ---- */
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px 16px 25px;
+  border-radius: 999px;
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* pink → purple gradient fill that fades in on hover */
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, #ec4899, #7c3aed);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.btn-primary > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 18px 46px -12px rgba(236, 72, 153, 0.65),
+    0 0 48px rgba(139, 92, 246, 0.55);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary__logo {
+  display: block;
+  height: 24px;
+  width: auto;
+  color: var(--color-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-primary::before {
+    transition: none;
+  }
+  .btn-primary:hover {
+    transform: none;
+  }
+}

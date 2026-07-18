@@ -1,0 +1,40 @@
+/* ================================================================
+   Design tokens — colors, gradients, glows
+   ================================================================ */
+:root {
+  /* Base / space */
+  --color-black: #05040a;        /* near-black with a purple undertone */
+  --color-void: #0b0918;         /* slightly lifted panel background */
+  --color-white: #ffffff;        /* pure white — for glows & highlights */
+
+  /* Core accents */
+  --color-purple: #6d28d9;       /* deep purple */
+  --color-pink: #ec4899;         /* vivid pink */
+  --color-blue: #3b82f6;         /* electric blue */
+
+  /* Lighter variants — for hovers, tints, soft glows */
+  --color-purple-light: #a78bfa;
+  --color-pink-light: #f9a8d4;
+  --color-blue-light: #93c5fd;
+
+  /* Metallic gradient — alternating light/dark bands read as sheen.
+     Purple/pink weighted, blue as a cool minor accent. */
+  --gradient-metallic: linear-gradient(
+    120deg,
+    #2a1259 0%,
+    #6d28d9 14%,
+    #a78bfa 24%,
+    #ec4899 40%,
+    #7c2d5f 50%,
+    #f9a8d4 66%,
+    #6d28d9 80%,
+    #3b82f6 100%
+  );
+
+  /* Soft glows for shadows/halos */
+  --glow-purple: 0 0 60px rgba(109, 40, 217, 0.55);
+  --glow-pink: 0 0 60px rgba(236, 72, 153, 0.5);
+
+  /* Pink → purple — a simple, gradual two-color blend */
+  --gradient-fit: linear-gradient(115deg, #ec4899 0%, #8b5cf6 100%);
+}

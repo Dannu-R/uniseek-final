@@ -1,0 +1,131 @@
+/* ================================================================
+   Base — reset, document, page background, scroll reveal,
+   and the shared section shell (.section / eyebrow / title)
+   ================================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: var(--color-black);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* scroll target offset so the fixed navbar doesn't overlap it */
+#features,
+#pricing {
+  scroll-margin-top: clamp(80px, 12vh, 120px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+}
+
+/* page background eases from black (hero) into deep blue/purple lower down */
+body {
+  background: linear-gradient(
+    180deg,
+    var(--color-black) 0%,
+    var(--color-black) 55%,
+    #0a0a24 82%,
+    #16123f 100%
+  );
+}
+
+/* ---- Scroll reveal ----
+   Hidden until scrolled into view, then fades/slides up. */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- Sections (shared shell) ---- */
+.section {
+  position: relative;
+  padding-block: clamp(80px, 13vh, 168px);
+  padding-inline: clamp(20px, 5vw, 44px);
+}
+
+/* white glowing divider between sections */
+.section-break {
+  position: relative;
+  height: 1px;
+  width: min(1100px, 88%);
+  /* no bottom margin → flush with the top of the next section */
+  margin: clamp(16px, 3vh, 44px) auto 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+}
+
+.section-break::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  filter: blur(8px);
+}
+
+.section__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.section__eyebrow {
+  margin: 0 0 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* pink→purple gradient text */
+  background: var(--gradient-fit);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  width: max-content;
+}
+
+.section__title {
+  margin: 0 0 clamp(40px, 6vh, 76px);
+  max-width: 20ch;
+  color: var(--color-white);
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}

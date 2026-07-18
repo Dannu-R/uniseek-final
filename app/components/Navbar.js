@@ -1,7 +1,7 @@
 export default function Navbar() {
   return (
-    <div className="topbar">
-      <nav className="navbar" aria-label="Main">
+    <nav className="navbar" aria-label="Main">
+      <div className="navbar__inner">
         <div className="navbar__links">
           <button type="button" className="navbar__link">
             Discover
@@ -25,7 +25,7 @@ export default function Navbar() {
             Sign up
           </button>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }

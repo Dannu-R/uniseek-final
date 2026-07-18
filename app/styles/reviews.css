@@ -1,0 +1,147 @@
+/* ================================================================
+   Reviews — two scrolling banners of white review cards
+   (top row scrolls left, bottom row scrolls right)
+   ================================================================ */
+
+.reviews {
+  padding-block: clamp(48px, 8vh, 100px);
+  overflow: hidden;
+}
+
+/* bounded, centered container so the banners never touch the screen edges */
+.reviews__inner {
+  max-width: min(1540px, 94%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 28px);
+}
+
+/* section heading above the scrolling banners */
+.reviews__head {
+  text-align: center;
+  margin-bottom: clamp(4px, 1.5vh, 16px);
+}
+.reviews__head .section__eyebrow,
+.reviews__head .section__title {
+  margin-left: auto;
+  margin-right: auto;
+}
+.reviews__head .section__title {
+  max-width: 22ch;
+  text-align: center;
+}
+
+/* glowing dividers framing the banners */
+.reviews__glow {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+}
+
+.reviews__glow::after {
+  content: "";
+  position: absolute;
+  inset: -7px 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(167, 139, 250, 0.55) 45%,
+    rgba(236, 72, 153, 0.45) 55%,
+    transparent 100%
+  );
+  filter: blur(9px);
+}
+
+.reviews__row {
+  overflow: hidden;
+  /* fade the ends so cards slide in/out softly */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.reviews__track {
+  display: flex;
+  gap: clamp(16px, 1.6vw, 24px);
+  width: max-content;
+}
+
+.reviews__track--left {
+  animation: reviews-left 90s linear infinite;
+}
+
+.reviews__track--right {
+  animation: reviews-right 90s linear infinite;
+}
+
+@keyframes reviews-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes reviews-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ---- card ---- */
+.review-card {
+  flex: 0 0 auto;
+  width: clamp(260px, 24vw, 340px);
+  padding: 20px 22px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.55);
+  color: #1c1c22;
+}
+
+.review-card__stars {
+  color: #f59e0b;
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.review-card__text {
+  margin: 12px 0 14px;
+  color: #333844;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.review-card__name {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews__track {
+    animation: none;
+  }
+}

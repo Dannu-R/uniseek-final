@@ -1,129 +1,208 @@
+"use client";
+
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Reveal from "./Reveal";
+import Ribbons from "./Ribbons";
+import Coin from "./Coin";
+import Glasses from "./Glasses";
+import Book from "./Book";
+import PuzzlePiece from "./PuzzlePiece";
+
+// useLayoutEffect on the client, useEffect on the server (avoids SSR warning)
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const VALUES = [
   {
     key: "fit",
     title: "Fit",
     body: "We find the colleges that genuinely match you — your academics, preferences, location, budget, and what matters most.",
-    icon: (
-      <svg
-        className="value-card__icon"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z"
-        />
-      </svg>
-    ),
   },
   {
     key: "transparency",
     title: "Transparency",
     body: "Every recommendation is backed by credited, verifiable sources. No black boxes — you can always see why.",
-    icon: (
-      <svg
-        className="value-card__icon"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-        />
-      </svg>
-    ),
   },
   {
     key: "insights",
     title: "Insights",
     body: "Go further with compare, search, and an AI guidance chat that answers questions about your matches.",
-    icon: (
-      <svg
-        className="value-card__icon"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-        />
-      </svg>
-    ),
   },
   {
     key: "lowcost",
     title: "Low cost",
     body: "Free to start for first-time users, with subscriptions as low as $5 a month.",
-    icon: (
-      <svg
-        className="value-card__icon"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-    ),
   },
 ];
 
 export default function CoreValues() {
-  return (
-    <section className="section values" id="features">
-      <div className="divider" aria-hidden="true" />
+  const [active, setActive] = useState(0);
+  const value = VALUES[active];
 
-      <div className="values__head">
+  const titleRef = useRef(null);
+  const originRef = useRef(null); // rect of the word that was clicked
+  const tiltRef = useRef(null); // wrapper we rotate with the mouse
+  const cardRef = useRef(null); // visual card we "punch"
+  const rafRef = useRef(0);
+  const tilt = useRef({ rx: 0, ry: 0 });
+  const reduceRef = useRef(false);
+
+  useEffect(() => {
+    reduceRef.current =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  // FLIP: fly the new title from the clicked word (bottom-right) up to
+  // where the title rests (top-left corner).
+  useIsoLayoutEffect(() => {
+    const title = titleRef.current;
+    const origin = originRef.current;
+    originRef.current = null;
+    if (!title || !origin || reduceRef.current) return;
+
+    const dest = title.getBoundingClientRect();
+    const dx = origin.left - dest.left;
+    const dy = origin.top - dest.top;
+    const scale = Math.max(0.1, origin.height / dest.height);
+
+    title.style.transition = "none";
+    title.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+    title.style.opacity = "0.55";
+
+    void title.offsetWidth; // commit the start frame
+    title.style.transition =
+      "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease";
+    title.style.transform = "translate(0, 0) scale(1)";
+    title.style.opacity = "1";
+  }, [active]);
+
+  const applyTilt = () => {
+    const el = tiltRef.current;
+    if (!el) return;
+    const { rx, ry } = tilt.current;
+    el.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  };
+
+  const handleMove = (e) => {
+    if (reduceRef.current) return;
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 .. 0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    tilt.current.rx = -py * 5;
+    tilt.current.ry = px * 5;
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      applyTilt();
+    });
+  };
+
+  const handleLeave = () => {
+    tilt.current.rx = 0;
+    tilt.current.ry = 0;
+    applyTilt();
+  };
+
+  const punch = () => {
+    const card = cardRef.current;
+    if (!card || reduceRef.current || typeof card.animate !== "function") return;
+    card.animate(
+      [
+        { transform: "scale(1)" },
+        { transform: "scale(0.955)", offset: 0.3 },
+        { transform: "scale(1)" },
+      ],
+      { duration: 440, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" }
+    );
+  };
+
+  const pick = (i, e) => {
+    originRef.current = e.currentTarget.getBoundingClientRect();
+    punch();
+    setActive(i);
+  };
+
+  const others = VALUES.map((v, i) => ({ v, i })).filter(
+    ({ i }) => i !== active
+  );
+
+  return (
+    <section className="section why" id="features">
+      {/* waving ribbons in the background */}
+      <Ribbons className="ribbons--why" />
+
+      {/* big faded logo + name watermark; only its top half shows */}
+      <div className="why__brandmark" aria-hidden="true">
+        <svg
+          className="why__brandmark-logo"
+          viewBox="0 0 53.54897 63.90451"
+          role="img"
+          aria-label="Uniseek logo"
+        >
+          <g transform="translate(-206.93265,-157.98483)" fill="currentColor">
+            <path d="M220.40922,221.88934l-13.47657,-37.2094l27.26349,-9.87434l13.47657,37.2094z" />
+            <path d="M247.36661,212.12256l-4.22689,-11.67064l13.11501,-4.75002l4.22689,11.67064z" />
+            <path d="M238.2259,186.65474l-4.25975,-11.76135l13.11501,-4.75002l4.25975,11.76135z" />
+            <path d="M217.29163,177.1945l-4.91598,-13.57324l15.56242,-5.63643l4.91598,13.57324z" />
+          </g>
+        </svg>
+        <span className="why__brandmark-name">Uniseek</span>
+      </div>
+
+      <div className="section__inner">
         <Reveal as="p" className="section__eyebrow">
           Why Uniseek
         </Reveal>
         <Reveal as="h2" className="section__title" delay={80}>
-          Four things we get right
+          Our Foundations
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div
+            className="why__card-tilt"
+            ref={tiltRef}
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+          >
+            <div className="why__card" ref={cardRef}>
+              <div className="why__content" key={value.key}>
+                <h3 className="why__title" ref={titleRef}>
+                  {value.title}
+                </h3>
+                <p className="why__text">{value.body}</p>
+              </div>
+
+              {/* 3D objects that pop up on specific cards */}
+              {value.key === "fit" && <PuzzlePiece />}
+              {value.key === "lowcost" && <Coin />}
+              {value.key === "insights" && <Glasses />}
+              {value.key === "transparency" && <Book />}
+
+              <div className="why__nav" aria-label="Choose a value">
+                {others.map(({ v, i }, idx) => (
+                  <span className="why__nav-item" key={v.key}>
+                    <button
+                      type="button"
+                      className="why__nav-word"
+                      onClick={(e) => pick(i, e)}
+                    >
+                      {v.title}
+                    </button>
+                    {idx < others.length - 1 && (
+                      <span className="why__nav-sep" aria-hidden="true">
+                        /
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </Reveal>
       </div>
-
-      <Reveal delay={120}>
-        <div className="values__list">
-          {VALUES.map((value) => (
-            <article className="value-card" key={value.key}>
-              <div className="value-card__main">
-                <h3 className="value-card__title">{value.title}</h3>
-                <div className="value-card__reveal">
-                  <p className="value-card__body">{value.body}</p>
-                </div>
-              </div>
-
-              <div className="value-card__media" aria-hidden="true">
-                {value.icon}
-              </div>
-            </article>
-          ))}
-        </div>
-      </Reveal>
     </section>
   );
 }

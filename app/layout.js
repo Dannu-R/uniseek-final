@@ -1,5 +1,19 @@
-import "./globals.css";
+// Styles — order matters: tokens & base first, then features
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/hero.css";
+import "./styles/navbar.css";
+import "./styles/whatis.css";
+import "./styles/stats.css";
+import "./styles/problem.css";
+import "./styles/values.css";
+import "./styles/product.css";
+import "./styles/pricing.css";
+import "./styles/reviews.css";
+import "./styles/footer.css";
+import "./styles/components.css";
 import { Inter, Stack_Sans_Notch } from "next/font/google";
+import ScrollManager from "./components/ScrollManager";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +37,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${stackSans.variable}`}>
-      <body>{children}</body>
+      {/* browser extensions (e.g. Grammarly) inject attributes on <body>
+          before React hydrates; ignore those attribute-only mismatches */}
+      <body suppressHydrationWarning>
+        {/* start at the top on reload instead of restoring scroll position */}
+        <ScrollManager />
+        {children}
+      </body>
     </html>
   );
 }

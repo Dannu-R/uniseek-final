@@ -1,0 +1,102 @@
+/* ================================================================
+   Top bar & navigation
+   ================================================================ */
+
+/* ---- Nav bar ----
+   Full-width solid bar flush to the top, not rounded. */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 64px;
+  /* solid very dark grey */
+  background: #1a1a1e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 20px -14px rgba(0, 0, 0, 0.8);
+}
+
+/* content stays centered — elements sit toward the middle */
+.navbar__inner {
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-inline: clamp(20px, 4vw, 48px);
+}
+
+/* filler nav links */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 28px);
+}
+
+.navbar__link {
+  padding: 8px 6px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.72);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--color-white);
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* log in — ghost button */
+.navbar__login {
+  padding: 9px 16px;
+  background: none;
+  border: none;
+  border-radius: 999px;
+  color: var(--color-white);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar__login:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* sign up — solid pill */
+.navbar__signup {
+  padding: 9px 20px;
+  background: var(--color-white);
+  border: none;
+  border-radius: 999px;
+  color: #180f30;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar__signup:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -6px rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 720px) {
+  .navbar__links {
+    display: none;
+  }
+}

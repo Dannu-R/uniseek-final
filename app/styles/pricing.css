@@ -1,0 +1,241 @@
+/* ================================================================
+   Pricing — fixed-size 2×2 grid on the left, deep-detail paragraph
+   on the right. Hover expands a plan slightly; clicking selects it,
+   fully expanding it (grid redistributes) and turning it white.
+   ================================================================ */
+
+/* clip the ribbons to the section */
+.pricing {
+  overflow: hidden;
+}
+
+/* diagonal, more-vertical waving ribbons anchored to the top-right,
+   reusing the hero ribbon SVG + the Why Uniseek wave keyframes */
+.ribbons--pricing {
+  z-index: 0;
+  opacity: 0.4;
+  /* big + heavily blurred so it fills the whole section (down to the very
+     bottom) with no hard band edges; the default gentle drift avoids the
+     jumpy look the wave keyframes gave here */
+  filter: blur(26px) saturate(1.2);
+  transform-origin: 58% 42%;
+  transform: rotate(60deg) scale(2.5);
+}
+.ribbons--pricing .ribbon {
+  opacity: 0.85;
+}
+
+/* centered heading */
+.pricing .section__eyebrow {
+  margin-left: auto;
+  margin-right: auto;
+}
+.pricing .section__title {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 24ch;
+  text-align: center;
+}
+
+.pricing__body {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+}
+
+/* fixed-size grid — only the internal tracks change, never the box */
+.pricing-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(10px, 1.2vw, 18px);
+  width: clamp(320px, 44vw, 540px);
+  height: clamp(360px, 52vh, 500px);
+  transition: grid-template-columns 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.plan {
+  position: relative;
+  z-index: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 1.8vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* hover — expand very slightly */
+.plan:hover {
+  z-index: 2;
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* clicked / selected — fully expanded (via grid) and white */
+.plan.is-selected {
+  z-index: 1;
+  background: #ffffff;
+  color: #180f30;
+  border-color: transparent;
+  box-shadow: 0 24px 56px -26px rgba(0, 0, 0, 0.6),
+    0 0 44px rgba(139, 92, 246, 0.28);
+}
+
+.plan__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.plan__name {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  font-weight: 600;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.plan__price {
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.4vw, 1.45rem);
+  background: var(--gradient-fit);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.plan__period {
+  font-size: 0.68em;
+  font-weight: 600;
+}
+
+/* features reveal only when selected */
+.plan__reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s ease, opacity 0.45s ease;
+}
+
+.plan.is-selected .plan__reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 16px;
+}
+
+.plan__reveal > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.plan__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan__features li {
+  position: relative;
+  padding-left: 20px;
+  color: rgba(24, 15, 48, 0.72);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.plan__features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gradient-fit);
+}
+
+.plan__cta {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #ec4899, #7c3aed);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* right-side deep description */
+.pricing__detail {
+  position: relative;
+  flex: 1 1 auto;
+  max-width: 420px;
+  padding-left: clamp(16px, 2vw, 28px);
+}
+
+.pricing__detail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ec4899, #8b5cf6);
+}
+
+.pricing__detail-name {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.pricing__detail-text {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .pricing__body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pricing-grid {
+    width: 100%;
+    height: clamp(420px, 70vh, 560px);
+  }
+  .pricing__detail {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-grid,
+  .plan,
+  .plan__reveal {
+    transition: none;
+  }
+  .plan:hover {
+    transform: none;
+  }
+}
