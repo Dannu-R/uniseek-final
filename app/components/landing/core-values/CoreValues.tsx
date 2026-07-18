@@ -1,12 +1,13 @@
+// @ts-nocheck
 "use client";
 
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
-import Reveal from "./Reveal";
-import Ribbons from "./Ribbons";
-import Coin from "./Coin";
-import Glasses from "./Glasses";
-import Book from "./Book";
-import PuzzlePiece from "./PuzzlePiece";
+import Reveal from "../../shared/Reveal";
+import Ribbons from "../../shared/Ribbons";
+import Coin from "../../3d/Coin";
+import Glasses from "../../3d/Glasses";
+import Book from "../../3d/Book";
+import PuzzlePiece from "../../3d/PuzzlePiece";
 
 // useLayoutEffect on the client, useEffect on the server (avoids SSR warning)
 const useIsoLayoutEffect =

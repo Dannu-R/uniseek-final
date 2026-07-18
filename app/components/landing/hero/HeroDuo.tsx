@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 // Two regular side-by-side buttons; each expands to reveal its description

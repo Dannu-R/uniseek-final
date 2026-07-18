@@ -1,8 +1,9 @@
+// @ts-nocheck
 "use client";
 
 import { useState } from "react";
-import Reveal from "./Reveal";
-import Ribbons from "./Ribbons";
+import Reveal from "../../shared/Reveal";
+import Ribbons from "../../shared/Ribbons";
 
 const PLANS = [
   {

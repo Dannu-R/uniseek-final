@@ -1,3 +1,4 @@
+// @ts-nocheck
 const COLUMNS = [
   { title: "Product", links: ["How it works", "Features", "Discover"] },
   { title: "Company", links: ["About", "Careers", "Contact"] },

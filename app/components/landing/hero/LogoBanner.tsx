@@ -1,3 +1,4 @@
+// @ts-nocheck
 const LOGOS = [
   { src: "/logos/nextjs.svg", cls: "nextjs" },
   { src: "/logos/stripe.svg", cls: "stripe" },

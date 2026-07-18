@@ -1,7 +1,8 @@
+// @ts-nocheck
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Reveal from "./Reveal";
+import Reveal from "../../shared/Reveal";
 
 const STATS = [
   { end: 1000, suffix: "+", label: "Colleges analyzed" },

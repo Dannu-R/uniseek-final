@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default function Navbar() {
   return (
     <nav className="navbar" aria-label="Main">

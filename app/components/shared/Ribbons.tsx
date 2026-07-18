@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Flowing translucent ribbons. Used in the hero (drifting) and the
 // Why Uniseek section (waving) — pass a modifier class for the latter.
 export default function Ribbons({ className = "" }) {

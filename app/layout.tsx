@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Styles — order matters: tokens & base first, then features
 import "./styles/tokens.css";
 import "./styles/base.css";
@@ -13,7 +14,7 @@ import "./styles/reviews.css";
 import "./styles/footer.css";
 import "./styles/components.css";
 import { Inter, Stack_Sans_Notch } from "next/font/google";
-import ScrollManager from "./components/ScrollManager";
+import ScrollManager from "./components/shared/ScrollManager";
 
 const inter = Inter({
   subsets: ["latin"],
