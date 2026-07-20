@@ -1,13 +1,12 @@
-// @ts-nocheck
 "use client";
 
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
-import Reveal from "../../shared/Reveal";
-import Ribbons from "../../shared/Ribbons";
-import Coin from "../../3d/Coin";
-import Glasses from "../../3d/Glasses";
-import Book from "../../3d/Book";
-import PuzzlePiece from "../../3d/PuzzlePiece";
+import { useState, useRef, useEffect, useLayoutEffect, type MouseEvent as ReactMouseEvent } from "react";
+import Reveal from "../shared/Reveal";
+import Ribbons from "../shared/Ribbons";
+import Coin from "../3d/Coin";
+import Glasses from "../3d/Glasses";
+import Book from "../3d/Book";
+import PuzzlePiece from "../3d/PuzzlePiece";
 
 // useLayoutEffect on the client, useEffect on the server (avoids SSR warning)
 const useIsoLayoutEffect =
@@ -40,11 +39,11 @@ export default function CoreValues() {
   const [active, setActive] = useState(0);
   const value = VALUES[active];
 
-  const titleRef = useRef(null);
-  const originRef = useRef(null); // rect of the word that was clicked
-  const tiltRef = useRef(null); // wrapper we rotate with the mouse
-  const cardRef = useRef(null); // visual card we "punch"
-  const rafRef = useRef(0);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const originRef = useRef<DOMRect | null>(null);
+  const tiltRef = useRef<HTMLDivElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(0);
   const tilt = useRef({ rx: 0, ry: 0 });
   const reduceRef = useRef(false);
 
@@ -85,17 +84,17 @@ export default function CoreValues() {
     el.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`;
   };
 
-  const handleMove = (e) => {
+  const handleMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (reduceRef.current) return;
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 .. 0.5
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
     tilt.current.rx = -py * 5;
     tilt.current.ry = px * 5;
     if (rafRef.current) return;
-    rafRef.current = requestAnimationFrame(() => {
+    rafRef.current = window.requestAnimationFrame(() => {
       rafRef.current = 0;
       applyTilt();
     });
@@ -120,7 +119,7 @@ export default function CoreValues() {
     );
   };
 
-  const pick = (i, e) => {
+  const pick = (i: number, e: ReactMouseEvent<HTMLButtonElement>) => {
     originRef.current = e.currentTarget.getBoundingClientRect();
     punch();
     setActive(i);

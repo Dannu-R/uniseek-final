@@ -1,8 +1,7 @@
-// @ts-nocheck
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Reveal from "../../shared/Reveal";
+import { Suspense, useEffect, useRef, useState } from "react";
+import Reveal from "../shared/Reveal";
 
 const STATS = [
   { end: 1000, suffix: "+", label: "Colleges analyzed" },
@@ -27,9 +26,50 @@ const COLLEGES = [
   { name: "UCLA", src: "/colleges/ucla.jpg" },
 ];
 
+function StatCardsSkeleton() {
+  return (
+    <div className="stats__grid" aria-busy="true" aria-label="Loading stats">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div className="stat stat--skeleton" key={index}>
+          <span className="stat__value stat__value--skeleton" />
+          <span className="stat__label stat__label--skeleton" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CollegeShowcaseSkeleton() {
+  return (
+    <div className="colleges colleges--skeleton" aria-busy="true" aria-label="Loading colleges">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div className="college-slide college-slide--skeleton" key={index}>
+          <div className="college-slide__img college-slide__img--skeleton" />
+          <span className="college-slide__name college-slide__name--skeleton" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StatCards() {
+  return (
+    <div className="stats__grid">
+      {STATS.map((s) => (
+        <div className="stat" key={s.label}>
+          <span className="stat__value">
+            <CountUp end={s.end} suffix={s.suffix} />
+          </span>
+          <span className="stat__label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // Counts up from 0 → end the first time it scrolls into view.
-function CountUp({ end, suffix = "", duration = 1700 }) {
-  const ref = useRef(null);
+function CountUp({ end, suffix = "", duration = 1700 }: { end: number; suffix?: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement | null>(null);
   const started = useRef(false);
   const [val, setVal] = useState(0);
 
@@ -52,7 +92,7 @@ function CountUp({ end, suffix = "", duration = 1700 }) {
         io.disconnect();
 
         const start = performance.now();
-        const tick = (now) => {
+        const tick = (now: number) => {
           const p = Math.min(1, (now - start) / duration);
           const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
           setVal(Math.round(end * eased));
@@ -76,10 +116,10 @@ function CountUp({ end, suffix = "", duration = 1700 }) {
 }
 
 // One image at a time, crossfading to the next every few seconds.
-function CollegeShowcase({ colleges }) {
+function CollegeShowcase({ colleges }: { colleges: Array<{ name: string; src: string }> }) {
   const [active, setActive] = useState(0);
-  const [failed, setFailed] = useState({});
-  const imgRefs = useRef([]);
+  const [failed, setFailed] = useState<Record<number, boolean>>({});
+  const imgRefs = useRef<Array<HTMLImageElement | null>>([]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -95,7 +135,7 @@ function CollegeShowcase({ colleges }) {
     const img = imgRefs.current[active];
     if (!img) return;
     img.style.animation = "none";
-    void img.offsetWidth; // reflow so the animation restarts from the top
+    void img.offsetWidth;
     img.style.animation = "";
   }, [active]);
 
@@ -109,7 +149,9 @@ function CollegeShowcase({ colleges }) {
         >
           {!failed[i] && (
             <img
-              ref={(el) => (imgRefs.current[i] = el)}
+              ref={(el) => {
+                imgRefs.current[i] = el;
+              }}
               className="college-slide__img"
               src={c.src}
               alt={c.name}
@@ -135,22 +177,17 @@ export default function Stats() {
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="stats__grid">
-            {STATS.map((s) => (
-              <div className="stat" key={s.label}>
-                <span className="stat__value">
-                  <CountUp end={s.end} suffix={s.suffix} />
-                </span>
-                <span className="stat__label">{s.label}</span>
-              </div>
-            ))}
-          </div>
+          <Suspense fallback={<StatCardsSkeleton />}>
+            <StatCards />
+          </Suspense>
         </Reveal>
 
         <Reveal delay={180}>
           <div className="colleges-wrap">
             <p className="colleges__caption">Colleges in our database</p>
-            <CollegeShowcase colleges={COLLEGES} />
+            <Suspense fallback={<CollegeShowcaseSkeleton />}>
+              <CollegeShowcase colleges={COLLEGES} />
+            </Suspense>
           </div>
         </Reveal>
 

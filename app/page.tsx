@@ -1,16 +1,16 @@
 // @ts-nocheck
-import Navbar from "./components/landing/hero/Navbar";
-import LogoBanner from "./components/landing/hero/LogoBanner";
-import WhatIsUniseek from "./components/landing/what-is/WhatIsUniseek";
-import Stats from "./components/landing/stats/Stats";
-import Problem from "./components/landing/problem/Problem";
-import CoreValues from "./components/landing/core-values/CoreValues";
-import HowItWorks from "./components/landing/how-it-works/HowItWorks";
-import Pricing from "./components/landing/pricing/Pricing";
-import Reviews from "./components/landing/reviews/Reviews";
-import Footer from "./components/landing/footer/Footer";
+import Navbar from "./components/landing/Navbar";
+import LogoBanner from "./components/landing/LogoBanner";
+import WhatIsUniseek from "./components/landing/WhatIsUniseek";
+import Stats from "./components/landing/Stats";
+import Problem from "./components/landing/Problem";
+import CoreValues from "./components/landing/CoreValues";
+import HowItWorks from "./components/landing/HowItWorks";
+import Pricing from "./components/landing/Pricing";
+import Reviews from "./components/landing/Reviews";
+import Footer from "./components/landing/Footer";
 import Ribbons from "./components/shared/Ribbons";
-import HeroDuo from "./components/landing/hero/HeroDuo";
+import HeroDuo from "./components/landing/HeroDuo";
 
 export default function Home() {
   return (

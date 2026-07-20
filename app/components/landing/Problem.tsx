@@ -1,6 +1,6 @@
 // @ts-nocheck
-import Reveal from "../../shared/Reveal";
-import MagnifyingGlass from "../../3d/MagnifyingGlass";
+import Reveal from "../shared/Reveal";
+import MagnifyingGlass from "../3d/MagnifyingGlass";
 
 export default function Problem() {
   return (

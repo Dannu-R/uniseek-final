@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import Reveal from "../../shared/Reveal";
+import Reveal from "../shared/Reveal";
 
 const STEPS = [
   {

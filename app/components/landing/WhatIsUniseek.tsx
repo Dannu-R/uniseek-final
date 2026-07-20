@@ -1,6 +1,6 @@
 // @ts-nocheck
-import Reveal from "../../shared/Reveal";
-import Ribbons from "../../shared/Ribbons";
+import Reveal from "../shared/Reveal";
+import Ribbons from "../shared/Ribbons";
 
 const STEPS = [
   {

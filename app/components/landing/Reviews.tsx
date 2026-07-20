@@ -1,5 +1,5 @@
 // @ts-nocheck
-import Reveal from "../../shared/Reveal";
+import Reveal from "../shared/Reveal";
 
 const ROW_A = [
   { name: "Maya R.", text: "Uniseek surfaced schools I'd never have considered — and was honest about my odds." },

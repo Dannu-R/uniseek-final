@@ -1,15 +1,22 @@
-// @ts-nocheck
 "use client";
+
+import { useRouter } from "next/navigation";
 
 // Two regular side-by-side buttons; each expands to reveal its description
 // on hover/focus (handled purely in CSS).
 export default function HeroDuo() {
+  const router = useRouter();
+
+  const handleStartClick = () => {
+    router.push("/#pricing");
+  };
+
   return (
     <div className="duo">
       <button
         type="button"
         className="duo-btn duo-btn--start"
-        onClick={() => document.getElementById("pricing")?.scrollIntoView()}
+        onClick={handleStartClick}
       >
         <span className="duo-btn__title">Get started</span>
         <span className="duo-btn__desc">
