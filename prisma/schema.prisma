@@ -1,0 +1,24 @@
+// Prisma schema — placeholder.
+//
+// The datasource + generator below are wired up and ready; there are no models
+// yet. Add models here as the app grows, then create a migration with:
+//   npx prisma migrate dev --name <change>
+// In production, `prisma migrate deploy` applies committed migrations at startup
+// (see Dockerfile CMD). DATABASE_URL is provided by the deploy environment.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Example model to copy from when you're ready (kept commented out for now):
+//
+// model User {
+//   id        String   @id @default(cuid())
+//   email     String   @unique
+//   createdAt DateTime @default(now())
+// }
