@@ -1,14 +1,18 @@
 // Activity tier classification (server-only). The procedures doc (§8) defines EC
 // tiers by RARITY — tier 4 = rarest/most elite, tier 1 = most common — and says
 // assigning the tier from free text is "the model's job" (§6a philosophy). This
-// calls Claude to do exactly that, and also flags major-relevance for field prep
-// (§6c, the other open item). Falls back to a neutral tier when no API key is
-// configured or the call fails, so scoring always works.
+// asks an LLM to do exactly that, and also flags major-relevance for field prep
+// (§6c). Falls back to a neutral tier when nothing is configured or the call fails.
+//
+// Provider precedence: HF_API_KEY → Hugging Face; else Anthropic (ANTHROPIC_API_KEY
+// / auth profile); else the neutral fallback. HF is intended for cheap local testing.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { FALLBACK_EC_TIER, type EcTier } from "./ec";
 
-const MODEL = process.env.UNISEEK_CLASSIFIER_MODEL ?? "claude-opus-5";
+const ANTHROPIC_MODEL = process.env.UNISEEK_CLASSIFIER_MODEL ?? "claude-opus-5";
+const HF_MODEL = process.env.UNISEEK_HF_MODEL ?? "meta-llama/Llama-3.1-8B-Instruct";
+const HF_ENDPOINT = "https://router.huggingface.co/v1/chat/completions";
 
 export interface ActivityClassification {
   tier: EcTier;
@@ -30,6 +34,11 @@ how RARE and distinguished it is (rarity is what the tiers measure):
 
 When unsure between two tiers, choose the lower one. Judge only from the text given.`;
 
+const JSON_INSTRUCTION = `Respond with ONLY a JSON object of the form
+{"activities":[{"tier":<1-4>,"majorRelevant":<true|false>}, ...]}
+with one entry per activity, in the same order. No prose, no code fences.`;
+
+// JSON schema for the Anthropic structured-output path.
 const OUTPUT_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -50,6 +59,8 @@ const OUTPUT_SCHEMA = {
   },
 } as const;
 
+type RawResult = { tier: number; majorRelevant: boolean };
+
 const clampTier = (n: unknown): EcTier => {
   const t = Math.round(Number(n));
   return (t >= 1 && t <= 4 ? t : FALLBACK_EC_TIER) as EcTier;
@@ -57,6 +68,62 @@ const clampTier = (n: unknown): EcTier => {
 
 function fallback(count: number): ActivityClassification[] {
   return Array.from({ length: count }, () => ({ tier: FALLBACK_EC_TIER, majorRelevant: false }));
+}
+
+function buildUserMessage(activities: { description: string }[], majorName?: string | null): string {
+  const list = activities.map((a, i) => `${i + 1}. ${a.description}`).join("\n");
+  const majorClause = majorName
+    ? `The student intends to major in ${majorName}. Set majorRelevant to true for an activity only if it is clearly related to that field.`
+    : `No major is specified. Set majorRelevant to false for every activity.`;
+  return `Classify these ${activities.length} activities.\n\n${list}\n\n${majorClause}`;
+}
+
+// Tolerant JSON extraction — strips code fences and grabs the outermost object.
+function extractResults(text: string): RawResult[] {
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const body = fenced ? fenced[1] : text;
+  const start = body.indexOf("{");
+  const end = body.lastIndexOf("}");
+  if (start < 0 || end < 0) throw new Error("no JSON object in response");
+  const parsed = JSON.parse(body.slice(start, end + 1)) as { activities?: RawResult[] };
+  return parsed.activities ?? [];
+}
+
+async function viaAnthropic(activities: { description: string }[], majorName?: string | null): Promise<RawResult[]> {
+  const client = new Anthropic(); // resolves ANTHROPIC_API_KEY / auth profile
+  const response = await client.messages.create({
+    model: ANTHROPIC_MODEL,
+    max_tokens: 4000,
+    output_config: { format: { type: "json_schema", schema: OUTPUT_SCHEMA }, effort: "low" },
+    system: RUBRIC,
+    messages: [{ role: "user", content: buildUserMessage(activities, majorName) }],
+  });
+  if (response.stop_reason === "refusal") throw new Error("classifier refused");
+  const text = response.content.find((b) => b.type === "text");
+  if (!text || text.type !== "text") throw new Error("no text block in response");
+  return extractResults(text.text);
+}
+
+async function viaHuggingFace(activities: { description: string }[], majorName?: string | null): Promise<RawResult[]> {
+  const res = await fetch(HF_ENDPOINT, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.HF_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: HF_MODEL,
+      temperature: 0,
+      max_tokens: 1000,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: `${RUBRIC}\n\n${JSON_INSTRUCTION}` },
+        { role: "user", content: buildUserMessage(activities, majorName) },
+      ],
+    }),
+  });
+  if (!res.ok) throw new Error(`HF ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+  const content = data.choices?.[0]?.message?.content;
+  if (!content) throw new Error("no content in HF response");
+  return extractResults(content);
 }
 
 // Classify every activity in one call. Returns one result per input activity, in
@@ -67,33 +134,10 @@ export async function classifyActivityTiers(
 ): Promise<ActivityClassification[]> {
   if (activities.length === 0) return [];
 
-  const list = activities.map((a, i) => `${i + 1}. ${a.description}`).join("\n");
-  const majorClause = majorName
-    ? `The student intends to major in ${majorName}. For each activity, also set majorRelevant to true if it is clearly related to that field, else false.`
-    : `No major is specified. Set majorRelevant to false for every activity.`;
-
   try {
-    const client = new Anthropic(); // resolves ANTHROPIC_API_KEY / auth profile
-    const response = await client.messages.create({
-      model: MODEL,
-      max_tokens: 4000,
-      output_config: { format: { type: "json_schema", schema: OUTPUT_SCHEMA }, effort: "low" },
-      system: RUBRIC,
-      messages: [
-        {
-          role: "user",
-          content: `Classify these ${activities.length} activities. Return results in the same order.\n\n${list}\n\n${majorClause}`,
-        },
-      ],
-    });
-
-    if (response.stop_reason === "refusal") return fallback(activities.length);
-
-    const text = response.content.find((b) => b.type === "text");
-    if (!text || text.type !== "text") return fallback(activities.length);
-
-    const parsed = JSON.parse(text.text) as { activities?: { tier: number; majorRelevant: boolean }[] };
-    const results = parsed.activities ?? [];
+    const results = process.env.HF_API_KEY
+      ? await viaHuggingFace(activities, majorName)
+      : await viaAnthropic(activities, majorName);
 
     // Align to input length; fill any gaps with the fallback.
     return activities.map((_, i) => {
