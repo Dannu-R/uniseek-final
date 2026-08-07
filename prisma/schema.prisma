@@ -1,10 +1,16 @@
-// Prisma schema — placeholder.
+// Uniseek data model.
 //
-// The datasource + generator below are wired up and ready; there are no models
-// yet. Add models here as the app grows, then create a migration with:
+// Two halves that meet at `match_score`:
+//   - Catalog (College, CollegeProgram, Major) — reference data. Built to scale
+//     to hundreds of scraped colleges; seeded small for now. Admissions fields are
+//     scarce/hand-curated (nullable + provenance); preference/filter fields are
+//     bulk from Scorecard/IPEDS/CDS.
+//   - Student (User, Profile, Activity, SavedRun) — anonymous-first. A Profile
+//     row exists ONLY for signed-in users; anonymous profiles live in the browser
+//     and are adopted into a User on first OAuth sign-in.
+//
+// After editing, create a migration with:
 //   npx prisma migrate dev --name <change>
-// In production, `prisma migrate deploy` applies committed migrations at startup
-// (see Dockerfile CMD). DATABASE_URL is provided by the deploy environment.
 
 generator client {
   provider = "prisma-client-js"
@@ -15,10 +21,308 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Example model to copy from when you're ready (kept commented out for now):
-//
-// model User {
-//   id        String   @id @default(cuid())
-//   email     String   @unique
-//   createdAt DateTime @default(now())
-// }
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+// §16 provenance for admit rate / rank: V / M / A.
+enum AdmitDataProvenance {
+  VERIFIED // V — verified this session from a primary/reputable source
+  CARRIED // M — carried from an earlier pass, not re-verified
+  APPROX // A — approximate
+}
+
+// §6a per-major admit-rate source class: U / D / P / C / E / F.
+enum MajorRateSourceClass {
+  UNIVERSITY // U — admits to the university/broad college; offset is genuinely 0
+  DERIVED // D — arithmetic from the school's own published counts
+  PUBLISHED // P — published per-major admit rate
+  CONSENSUS // C — consensus across >=3 secondary sources
+  ESTIMATE // E — estimate from peers / a stated structural argument
+  FITTED // F — fitted from a family rule; last resort, list is provisional
+}
+
+// §18b program-rank source class: V / O / E.
+enum ProgramRankSourceClass {
+  VERIFIED // V — verified from the school's own release
+  LIST_ORDER // O — read off the published list order
+  ESTIMATE // E — estimate with a stated basis
+}
+
+// §9 weight profiles. Stopgap until real per-college C7 vectors exist (open #9).
+enum Archetype {
+  HOLISTIC
+  RIGOR_HEAVY
+  GPA_HEAVY
+  RANK_STATE
+  BALANCED
+}
+
+// §4.3 athletics tier (derived from NCAA division + conference).
+enum AthleticsTier {
+  D1_FBS_POWER // 1.00
+  D1_FBS_OTHER // 0.83
+  D1_FCS // 0.67
+  D1_NO_FOOTBALL // 0.50
+  D2 // 0.33
+  D3 // 0.17
+  NAIA_OR_NONE // 0.00
+}
+
+// §4.6 IPEDS locale collapsed to three categories.
+enum Setting {
+  URBAN
+  SUBURBAN
+  RURAL
+}
+
+// §2.2 Scorecard income brackets (selects which net-price column to read).
+enum IncomeBand {
+  LT_30K // 0–30,000
+  B30_48K // 30,001–48,000
+  B48_75K // 48,001–75,000
+  B75_110K // 75,001–110,000
+  GT_110K // 110,000+
+}
+
+// §2.1 religious_affiliation filter.
+enum ReligiousPreference {
+  REQUIRE
+  EXCLUDE
+  NO_PREFERENCE
+}
+
+// ---------------------------------------------------------------------------
+// Catalog (reference data)
+// ---------------------------------------------------------------------------
+
+model College {
+  id   String @id @default(cuid())
+  name String
+
+  // Stable external ids for scraper dedup / joins.
+  ipedsUnitId Int?    @unique
+  scorecardId String? @unique
+
+  // Geography (IPEDS) — universal, drives `distance` + `in_state`.
+  city      String?
+  state     String? // 2-letter; also the residency key (§15)
+  latitude  Float?
+  longitude Float?
+
+  // --- Admissions data (scarce, hand-curated; nullable + provenance) ---------
+  admitRate            Float? // overall, §16
+  admitRateProvenance  AdmitDataProvenance?
+  usNewsRank           Int?
+  usNewsRankProvenance AdmitDataProvenance?
+
+  // Residency splits (§15) — present only where the college publishes them.
+  inStateAdmitRate    Float?
+  outOfStateAdmitRate Float?
+
+  // Test bands (CDS C9). P50 is interpolated at scoring time, not stored (§5).
+  satP25      Int?
+  satP75      Int?
+  actP25      Int?
+  actP75      Int?
+  testBlind   Boolean? // CDS C8A
+  superscores Boolean? // superscore policy — not published in CDS (§ college inputs)
+
+  // Weights. Prefer real C7 ratings (0–3, §9) when known; fall back to archetype.
+  c7Rigor   Int?
+  c7Gpa     Int?
+  c7Test    Int?
+  c7Rank    Int?
+  c7Ec      Int?
+  c7Service Int?
+  archetype Archetype?
+
+  // --- Preference / filter data (bulk from Scorecard/IPEDS/CDS) --------------
+  // Net price (§2.2): college-wide average + by income band.
+  netPriceAvg      Int?
+  netPriceLt30k    Int?
+  netPrice30to48k  Int?
+  netPrice48to75k  Int?
+  netPrice75to110k Int?
+  netPriceGt110k   Int?
+
+  religiousAffiliation String? // denomination; null = secular/none (§2.1, §4)
+
+  enrollmentUndergrad Int? // drives school_size, interpolated within band (§4.2)
+  setting             Setting? // §4.6
+  athleticsTier       AthleticsTier? // derived value (§4.3)
+  ncaaDivision        String? // kept for provenance; do not hardcode conference (§4.3)
+  conference          String?
+
+  greekLife Boolean? // §4.4
+  coOp      Boolean? // §4.4
+
+  classSizeUnder20Pct    Float? // CDS I-3 (class_size)
+  housingOnCampusPct     Float? // CDS F1  (housing)
+  meritAidPct            Float? // CDS H2A (merit_aid)
+  studyAbroadRate        Float? // CDS; binary fallback handled in scoring (§4.5)
+  firstYearRetentionRate Float? // IPEDS   (academic_support)
+  // party_scene is CONSTRUCTED from greek/housing/athletics (§4.7) — never stored.
+
+  programs  CollegeProgram[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([state])
+  @@index([admitRate])
+}
+
+// A CIP program at a college. Existence of a row = the college confers that CIP,
+// which powers the `major_offered` filter. The admissions fields are filled only
+// for researched majors (e.g. CS, §18) and are nullable everywhere else.
+model CollegeProgram {
+  id        String  @id @default(cuid())
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  cipCode  String // joins to Major.cipCode
+  cipTitle String?
+
+  // Major layer (§6a / §18) — scarce, nullable, provenance-tagged.
+  admitRate              Float?
+  admitRateSourceClass   MajorRateSourceClass?
+  programRank            Int?
+  programRankSourceClass ProgramRankSourceClass?
+  directAdmit            Boolean? // §6a class U: admits to the major directly?
+
+  @@unique([collegeId, cipCode])
+  @@index([cipCode])
+}
+
+// Controlled major list (the student picks from this; maps 1:1 to a CIP code).
+model Major {
+  id       String    @id @default(cuid())
+  cipCode  String    @unique
+  name     String
+  profiles Profile[]
+}
+
+// ---------------------------------------------------------------------------
+// Student (account + profile). Minimal PII by design — users skew under 18 and
+// we hold academic records, so store the least identity info that works.
+// ---------------------------------------------------------------------------
+
+model User {
+  id        String     @id @default(cuid())
+  email     String?    @unique // optional; OAuth works without it
+  createdAt DateTime   @default(now())
+  accounts  Account[]
+  profile   Profile? // one profile per user (MVP)
+  runs      SavedRun[]
+}
+
+// OAuth identity link. No passwords are ever stored — the provider authenticates.
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String // e.g. "google"
+  providerAccountId String // the provider's stable subject id (`sub`)
+  createdAt         DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+}
+
+model Profile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- Academics ------------------------------------------------------------
+  gpaUnweighted Float
+  gpaGrade10    Float? // optional; blank → grade-trend penalty never fires (§4)
+  gpaGrade11    Float?
+  gpaGrade12    Float?
+
+  apCoursesTaken   Int
+  apCoursesOffered Int? // null = "not sure" (low-confidence); 0 = ABSENT (drop rigor); N = offered
+
+  satSuperscore       Int?
+  actSuperscore       Int?
+  notSubmittingScores Boolean @default(false)
+
+  classRank         Int?
+  classSize         Int?
+  schoolDoesNotRank Boolean @default(false)
+
+  volunteerHoursPerYear Int @default(0)
+
+  activities Activity[] // <= 10
+
+  // --- Goals ----------------------------------------------------------------
+  majorId   String?
+  major     Major?  @relation(fields: [majorId], references: [id])
+  homeZip   String
+  homeState String? // derived from ZIP at save (residency §15 + in_state)
+
+  // --- Hard filters (§2) ----------------------------------------------------
+  budgetMaxNetPrice   Int // required
+  incomeBand          IncomeBand?
+  maxDistanceMiles    Int?
+  inStateOnly         Boolean             @default(false)
+  religiousPreference ReligiousPreference @default(NO_PREFERENCE)
+
+  // --- Soft preferences (§3): weight 0–4; direction is the 5-point choice 0–4
+  //     (0 = strongly low end … 4 = strongly high end), mapped to a target in scoring.
+  //     Weight 0 removes the factor.
+  schoolSizeWeight    Int  @default(0)
+  schoolSizeDirection Int? // large ↔ small
+  classSizeWeight     Int  @default(0)
+  classSizeDirection  Int? // small ↔ large
+  greekLifeWeight     Int  @default(0)
+  greekLifeDirection  Int? // want ↔ avoid
+  housingWeight       Int  @default(0)
+  housingDirection    Int? // residential ↔ commuter
+  athleticsWeight     Int  @default(0)
+  athleticsDirection  Int? // big-time ↔ not
+  partySceneWeight    Int  @default(0)
+  partySceneDirection Int? // want ↔ avoid
+
+  settingWeight     Int       @default(0)
+  settingSelections Setting[] // multi-select (§3.3)
+
+  academicSupportWeight Int @default(0) // magnitude-only
+  meritAidWeight        Int @default(0)
+  studyAbroadWeight     Int @default(0)
+  coOpWeight            Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id        String  @id @default(cuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  position     Int // 1–10, display order
+  description  String // <= 130 words (enforced in app)
+  hoursPerWeek Float?
+  years        Float?
+  tier         Int? // 1–4, DERIVED at scoring time (text→tier is unresolved); null until set
+
+  @@unique([profileId, position])
+}
+
+// A generated list. The run IS the save: we keep the latest and replace it on each
+// "Find colleges" press (history is a later, additive feature). Inputs + result are
+// snapshotted so a saved list survives later profile/catalog edits.
+model SavedRun {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  catalogVersion  String? // pin for reproducibility
+  modelVersion    String?
+  profileSnapshot Json // profile inputs at run time
+  result          Json // ranked reach/target/safety list
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
