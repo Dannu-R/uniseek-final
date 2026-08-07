@@ -7,6 +7,10 @@ import { clip, interpolate } from "./piecewise";
 
 export type EcTier = 1 | 2 | 3 | 4;
 export const TIER_VALUES: Record<EcTier, number> = { 1: 1, 2: 4, 3: 16, 4: 48 };
+
+// Used when the AI tier classifier is unavailable (no API key) or errors — a neutral
+// middle tier so ECs still contribute rather than being dropped.
+export const FALLBACK_EC_TIER: EcTier = 2;
 export const EC_CAP = 48;
 export const EC_BASE_FLOOR = 0.15;
 export const EC_BASE_EXPONENT = 0.4; // front-loads: one elite activity saturates

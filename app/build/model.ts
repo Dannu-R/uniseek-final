@@ -7,13 +7,11 @@ export type FactorKey =
 
 export type SettingValue = "URBAN" | "SUBURBAN" | "RURAL";
 
-// Text-only for now. Each activity is scored at a neutral default EC tier until a
-// text→tier method is chosen (see lib/scoring/OPEN_ITEMS.md #3).
+// Text-only. The EC tier is inferred from the description by the AI classifier at
+// scoring time (lib/scoring/classifyActivities.ts), per the §8 rarity rubric.
 export interface ActivityEntry {
   description: string;
 }
-
-export const DEFAULT_EC_TIER = 2;
 
 export interface WizardData {
   // Academics

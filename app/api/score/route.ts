@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { rankColleges } from "@/lib/scoring/score";
 import { mapCollege, scorableCollege } from "@/lib/scoring/mapCollege";
 import { StudentInputSchema } from "@/lib/scoring/validation";
+import { classifyActivityTiers } from "@/lib/scoring/classifyActivities";
 import type { StudentInput } from "@/lib/scoring/types";
 
 export async function POST(req: Request) {
@@ -21,7 +22,15 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid profile", issues: parsed.error.issues }, { status: 400 });
   }
-  const student = parsed.data as StudentInput;
+  const input = parsed.data;
+
+  // Infer each activity's EC tier (and major-relevance) from its text via the AI
+  // classifier, then hand the scoring engine the assigned tiers.
+  const majorName = input.majorCip
+    ? (await prisma.major.findUnique({ where: { cipCode: input.majorCip } }))?.name ?? null
+    : null;
+  const activities = await classifyActivityTiers(input.activities, majorName);
+  const student = { ...input, activities } as StudentInput;
 
   const colleges = await prisma.college.findMany({ include: { programs: true } });
   const scorable = colleges.filter(scorableCollege);

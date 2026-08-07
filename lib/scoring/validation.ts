@@ -24,9 +24,9 @@ const Preferences = z
   })
   .default({});
 
+// The request carries activity TEXT; the server infers tier + major-relevance.
 const Activity = z.object({
-  tier: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-  majorRelevant: z.boolean().optional(),
+  description: z.string().max(1000),
 });
 
 export const StudentInputSchema = z.object({
