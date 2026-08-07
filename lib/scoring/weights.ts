@@ -21,7 +21,7 @@ export const ARCHETYPE_WEIGHTS: Record<Archetype, WeightVector> = {
 
 // Prefer real per-factor C7 ratings when the college has them; else the archetype.
 export function weightVector(
-  c7: Partial<WeightVector> | null | undefined,
+  c7: Partial<Record<Factor, number | null>> | null | undefined,
   archetype: Archetype | null | undefined,
 ): WeightVector {
   const hasC7 = c7 && (["rigor", "gpa", "test", "rank", "ec", "service"] as Factor[]).every((f) => c7[f] != null);

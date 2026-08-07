@@ -11,10 +11,15 @@ export const SMALL_CATALOG = 6; // below this many offered, rigor is low-confide
 export const SCHEDULE_CEILING = 14; // above this, the catalog stops mattering
 export const CURVE_EXPONENT = 0.6; // front-loads early courses
 
-// §2a. Returns null when `offered === 0` — that is ABSENT (drop the factor and
-// renormalise, §9), NOT a perfect ratio.
-export function rigorVolume(taken: number, offered: number): number | null {
+// §2a. `offered` has three states (matching the intake): 0 = ABSENT (drop the
+// factor and renormalise, §9); null = "not sure" (lean on the absolute count only,
+// low-confidence); N > 0 = the school-relative ratio applies normally.
+export function rigorVolume(taken: number, offered: number | null): number | null {
   if (offered === 0) return null;
+  if (offered === null) {
+    // Unknown catalog size — cannot form the ratio, so use the absolute component alone.
+    return clip(taken / ABS_RIGOR_REF, 0, 1) ** CURVE_EXPONENT;
+  }
   const effCeiling = Math.min(offered, SCHEDULE_CEILING);
   const ratio = clip(taken / effCeiling, 0, 1) ** CURVE_EXPONENT;
   const absComp = clip(taken / ABS_RIGOR_REF, 0, 1) ** CURVE_EXPONENT;
@@ -46,7 +51,7 @@ export interface RigorResult {
 // Full rigor sub-score: volume × GPA multiplier, then the tier piecewise.
 export function rigorScore(
   taken: number,
-  offered: number,
+  offered: number | null,
   adjustedGpa: number,
   floors: number[],
 ): RigorResult {
@@ -55,10 +60,7 @@ export function rigorScore(
     return { score: null, effectiveVolume: null, absent: true, lowConfidence: true };
   }
   const effectiveVolume = vol * rigorGpaMultiplier(adjustedGpa);
-  return {
-    score: piecewise(effectiveVolume, floors),
-    effectiveVolume,
-    absent: false,
-    lowConfidence: offered < SMALL_CATALOG,
-  };
+  // null offered ("not sure") is low-confidence; guard the null before the < compare.
+  const lowConfidence = offered === null || offered < SMALL_CATALOG;
+  return { score: piecewise(effectiveVolume, floors), effectiveVolume, absent: false, lowConfidence };
 }

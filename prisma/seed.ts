@@ -14,7 +14,7 @@
 //
 // Idempotent: re-running upserts by ipedsUnitId / cipCode. Safe on every deploy.
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -337,10 +337,12 @@ async function main() {
   for (const c of COLLEGES) {
     const { cs, ...college } = c;
 
+    // Enum-valued fields are string literals in the data above; cast to the Prisma
+    // input types at the boundary (values verified against §16/§18).
     const row = await prisma.college.upsert({
       where: { ipedsUnitId: college.ipedsUnitId },
-      update: college,
-      create: college,
+      update: college as Prisma.CollegeUncheckedUpdateInput,
+      create: college as Prisma.CollegeUncheckedCreateInput,
     });
 
     // Which CIPs this college confers (existence powers major_offered).
@@ -362,8 +364,8 @@ async function main() {
     // CS program, with the researched §18 admissions data.
     await prisma.collegeProgram.upsert({
       where: { collegeId_cipCode: { collegeId: row.id, cipCode: CS } },
-      update: cs,
-      create: { collegeId: row.id, cipCode: CS, ...cs },
+      update: cs as Prisma.CollegeProgramUncheckedUpdateInput,
+      create: { collegeId: row.id, cipCode: CS, ...cs } as Prisma.CollegeProgramUncheckedCreateInput,
     });
   }
 
