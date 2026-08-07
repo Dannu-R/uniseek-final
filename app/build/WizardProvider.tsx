@@ -1,0 +1,67 @@
+"use client";
+
+// Wizard state — held in the browser (anonymous-first) and persisted to
+// localStorage so a refresh doesn't lose the profile. On sign-in (later) this state
+// is adopted into the account.
+
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { DEFAULT_DATA, STEPS, type WizardData } from "./model";
+
+const STORAGE_KEY = "uniseek.profile.v1";
+const STEP_KEY = "uniseek.step.v1";
+
+interface WizardContextValue {
+  data: WizardData;
+  update: (patch: Partial<WizardData>) => void;
+  step: number;
+  setStep: (n: number) => void;
+  next: () => void;
+  back: () => void;
+  hydrated: boolean;
+}
+
+const WizardContext = createContext<WizardContextValue | null>(null);
+
+export function WizardProvider({ children }: { children: ReactNode }) {
+  const [data, setData] = useState<WizardData>(DEFAULT_DATA);
+  const [step, setStepState] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Hydrate from localStorage once, after mount (avoids SSR mismatch).
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) setData({ ...DEFAULT_DATA, ...JSON.parse(raw) });
+      const s = localStorage.getItem(STEP_KEY);
+      if (s) setStepState(Math.min(Math.max(0, Number(s)), STEPS.length - 1));
+    } catch {
+      /* corrupt storage — start fresh */
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist after hydration.
+  useEffect(() => {
+    if (hydrated) localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }, [data, hydrated]);
+  useEffect(() => {
+    if (hydrated) localStorage.setItem(STEP_KEY, String(step));
+  }, [step, hydrated]);
+
+  const update = (patch: Partial<WizardData>) => setData((d) => ({ ...d, ...patch }));
+  const setStep = (n: number) => setStepState(Math.min(Math.max(0, n), STEPS.length - 1));
+  const next = () => setStep(step + 1);
+  const back = () => setStep(step - 1);
+
+  return (
+    <WizardContext.Provider value={{ data, update, step, setStep, next, back, hydrated }}>
+      {children}
+    </WizardContext.Provider>
+  );
+}
+
+export function useWizard() {
+  const ctx = useContext(WizardContext);
+  if (!ctx) throw new Error("useWizard must be used within WizardProvider");
+  return ctx;
+}
