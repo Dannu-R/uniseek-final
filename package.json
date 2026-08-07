@@ -10,7 +10,9 @@
     "db:down": "docker compose down",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -34,6 +36,7 @@
     "playwright": "^1.61.1",
     "prisma": "^6.19.3",
     "tsx": "^4.23.8",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "^4.1.10"
   }
 }
