@@ -44,20 +44,17 @@ function Shell() {
           <StepComponent />
         </main>
 
-        <footer className="wizard__nav">
-          <button type="button" className="btn btn--ghost" onClick={back} disabled={step === 0}>
-            Back
-          </button>
-          {isLast ? (
-            <button type="button" className="btn btn--primary" disabled title="Coming in the next build">
-              Find colleges
+        {/* The Preferences step (card deck) renders its own Back / Find colleges nav. */}
+        {!isLast && (
+          <footer className="wizard__nav">
+            <button type="button" className="btn btn--ghost" onClick={back} disabled={step === 0}>
+              Back
             </button>
-          ) : (
             <button type="button" className="btn btn--primary" onClick={next}>
               Next
             </button>
-          )}
-        </footer>
+          </footer>
+        )}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import "./styles/reviews.css";
 import "./styles/footer.css";
 import "./styles/components.css";
 import "./styles/wizard.css";
+import "./styles/results.css";
 import { Inter, Stack_Sans_Notch } from "next/font/google";
 import ScrollManager from "./components/shared/ScrollManager";
 

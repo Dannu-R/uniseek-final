@@ -1,0 +1,145 @@
+/* ================================================================
+   Results (/results)
+   ================================================================ */
+
+.results {
+  min-height: 100vh;
+  padding: clamp(20px, 5vh, 56px) clamp(16px, 4vw, 32px) 80px;
+  display: flex;
+  justify-content: center;
+  color: #f4f2ff;
+}
+.results__inner {
+  width: 100%;
+  max-width: 760px;
+}
+
+.results__head {
+  margin-bottom: 32px;
+}
+.results__title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 18px 0 6px;
+}
+.results__sub {
+  color: #a79fc9;
+  font-size: 0.95rem;
+  margin: 0 0 18px;
+}
+.results__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.results__empty,
+.results__blocked {
+  text-align: center;
+  background: linear-gradient(180deg, rgba(23, 18, 48, 0.9), rgba(11, 9, 24, 0.9));
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  border-radius: 20px;
+  padding: clamp(28px, 6vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.results__empty .btn,
+.results__blocked .btn {
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+/* ---- Bands ---- */
+.rs-band {
+  margin-bottom: 34px;
+}
+.rs-band__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.rs-band__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+.rs-band__title--reach {
+  color: var(--color-pink-light);
+}
+.rs-band__title--target {
+  color: var(--color-purple-light);
+}
+.rs-band__title--safety {
+  color: #7ee0c0;
+}
+.rs-band__blurb {
+  font-size: 0.85rem;
+  color: #8f86b6;
+}
+.rs-band__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- College card ---- */
+.rs-card {
+  background: linear-gradient(180deg, rgba(23, 18, 48, 0.7), rgba(11, 9, 24, 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.rs-card--reach {
+  border-left-color: var(--color-pink);
+}
+.rs-card--target {
+  border-left-color: var(--color-purple-light);
+}
+.rs-card--safety {
+  border-left-color: #34d399;
+}
+.rs-card__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.rs-card__name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}
+.rs-card__odds {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.rs-card__odds em {
+  font-size: 0.72rem;
+  font-weight: 500;
+  font-style: normal;
+  color: #9c93c4;
+  margin-left: 3px;
+}
+.rs-card__meta {
+  display: flex;
+  gap: 18px;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: #a79fc9;
+}
+.rs-card__notes {
+  margin: 12px 0 0;
+  padding-left: 16px;
+  font-size: 0.8rem;
+  color: #c9a9dd;
+}
+.rs-card__notes li {
+  margin-top: 3px;
+}
