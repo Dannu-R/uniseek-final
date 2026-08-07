@@ -1,6 +1,6 @@
 // Map the wizard's UI state onto the /api/score request body (StudentInput shape).
 
-import { FACTORS, type WizardData } from "./model";
+import { DEFAULT_EC_TIER, FACTORS, type WizardData } from "./model";
 
 function num(s: string): number | null {
   const t = s.trim();
@@ -50,7 +50,7 @@ export function toPayload(d: WizardData) {
     schoolDoesNotRank: d.schoolDoesNotRank,
     activities: d.activities
       .filter((a) => a.description.trim() !== "")
-      .map((a) => ({ tier: a.level, majorRelevant: false })),
+      .map(() => ({ tier: DEFAULT_EC_TIER, majorRelevant: false })),
     volunteerHoursPerYear: num(d.volunteerHoursPerYear) ?? 0,
     majorCip: d.majorCip || null,
     homeState: d.homeState || null,

@@ -7,13 +7,13 @@ export type FactorKey =
 
 export type SettingValue = "URBAN" | "SUBURBAN" | "RURAL";
 
-// Self-reported significance → EC tier 1–4 (interim; text→tier is an open item).
+// Text-only for now. Each activity is scored at a neutral default EC tier until a
+// text→tier method is chosen (see lib/scoring/OPEN_ITEMS.md #3).
 export interface ActivityEntry {
   description: string;
-  hoursPerWeek: string;
-  years: string;
-  level: 1 | 2 | 3 | 4;
 }
+
+export const DEFAULT_EC_TIER = 2;
 
 export interface WizardData {
   // Academics
@@ -49,13 +49,6 @@ export interface WizardData {
   prefs: Record<FactorKey, { weight: number; direction: number }>;
   setting: { weight: number; selections: SettingValue[] };
 }
-
-export const ACTIVITY_LEVELS: { value: 1 | 2 | 3 | 4; label: string }[] = [
-  { value: 1, label: "Participant / member" },
-  { value: 2, label: "Active — some leadership" },
-  { value: 3, label: "Significant leadership or achievement" },
-  { value: 4, label: "Exceptional / national-level" },
-];
 
 // Direction poles are oriented to the college-value scale: the HIGH end (4) always
 // means a high college_value, so target = direction/4 works directly (§3.2).

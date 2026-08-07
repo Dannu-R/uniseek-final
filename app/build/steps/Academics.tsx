@@ -1,8 +1,8 @@
 "use client";
 
 import { useWizard } from "../WizardProvider";
-import { Field, TextInput, Toggle, Select } from "../fields";
-import { ACTIVITY_LEVELS, type ActivityEntry } from "../model";
+import { Field, TextInput, Toggle } from "../fields";
+import type { ActivityEntry } from "../model";
 
 export default function Academics() {
   const { data, update } = useWizard();
@@ -13,7 +13,7 @@ export default function Academics() {
   };
   const addActivity = () => {
     if (data.activities.length >= 10) return;
-    update({ activities: [...data.activities, { description: "", hoursPerWeek: "", years: "", level: 1 }] });
+    update({ activities: [...data.activities, { description: "" }] });
   };
   const removeActivity = (i: number) =>
     update({ activities: data.activities.filter((_, idx) => idx !== i) });
@@ -90,28 +90,14 @@ export default function Academics() {
 
       <section className="wz-group">
         <h3 className="wz-group__title">Activities</h3>
-        <p className="wz-group__note">Up to 10. Include how significant each one was.</p>
+        <p className="wz-group__note">
+          Clubs, sports, a job, volunteering, research, the arts, leadership roles —
+          anything you spent real time on outside of class. One per line, up to 10.
+        </p>
         {data.activities.map((a, i) => (
-          <div key={i} className="wz-activity">
-            <div className="wz-activity__row">
-              <TextInput value={a.description} onChange={(v) => setActivity(i, { description: v })} placeholder="e.g. Varsity debate captain" />
-              <button type="button" className="wz-icon-btn" aria-label="Remove activity" onClick={() => removeActivity(i)}>×</button>
-            </div>
-            <div className="wz-grid wz-grid--3">
-              <Field label="Hrs/week">
-                <TextInput value={a.hoursPerWeek} onChange={(v) => setActivity(i, { hoursPerWeek: v })} inputMode="numeric" placeholder="6" />
-              </Field>
-              <Field label="Years">
-                <TextInput value={a.years} onChange={(v) => setActivity(i, { years: v })} inputMode="numeric" placeholder="3" />
-              </Field>
-              <Field label="Significance">
-                <Select value={String(a.level)} onChange={(v) => setActivity(i, { level: Number(v) as ActivityEntry["level"] })}>
-                  {ACTIVITY_LEVELS.map((l) => (
-                    <option key={l.value} value={l.value}>{l.label}</option>
-                  ))}
-                </Select>
-              </Field>
-            </div>
+          <div key={i} className="wz-activity__row">
+            <TextInput value={a.description} onChange={(v) => setActivity(i, { description: v })} placeholder="e.g. Varsity debate captain" />
+            <button type="button" className="wz-icon-btn" aria-label="Remove activity" onClick={() => removeActivity(i)}>×</button>
           </div>
         ))}
         {data.activities.length < 10 && (
