@@ -87,6 +87,8 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 

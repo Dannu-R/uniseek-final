@@ -8,7 +8,7 @@ export default function HeroDuo() {
   const router = useRouter();
 
   const handleStartClick = () => {
-    router.push("/#pricing");
+    router.push("/build");
   };
 
   return (
