@@ -22,9 +22,9 @@ export default function Navbar() {
           <button type="button" className="navbar__login">
             Log in
           </button>
-          <button type="button" className="navbar__signup">
+          <a className="navbar__signup" href="/build">
             Sign up
-          </button>
+          </a>
         </div>
       </div>
     </nav>

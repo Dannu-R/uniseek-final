@@ -1,0 +1,33 @@
+# Local development Postgres for Uniseek.
+#
+# Self-contained dev database — NOT the deployed one (that's an Azure secret
+# injected into the Container App). Kept on host port 5434 to avoid colliding
+# with a system Postgres on 5432.
+#
+#   docker compose up -d      # start
+#   docker compose down       # stop (keeps data)
+#   docker compose down -v    # stop and wipe the volume
+#
+# DATABASE_URL for this service lives in .env (see .env.example).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: uniseek-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: uniseek
+      POSTGRES_PASSWORD: uniseek
+      POSTGRES_DB: uniseek
+    ports:
+      - "5434:5432"
+    volumes:
+      - uniseek_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uniseek -d uniseek"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  uniseek_pgdata:

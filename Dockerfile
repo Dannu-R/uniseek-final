@@ -13,6 +13,10 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npx prisma generate && npm run build
+# Bundle the TS seed into a self-contained CJS file so the runtime image can run it
+# with plain `node` (no tsx). @prisma/client stays external — it's shipped separately.
+RUN npx esbuild prisma/seed.ts --bundle --platform=node --target=node22 \
+      --format=cjs --external:@prisma/client --outfile=prisma/seed.cjs
 
 # ---- prisma stage: isolated CLI closure for migrate-on-start ----
 # Installed on its own (fresh package.json, no app deps) so the runtime image
@@ -43,7 +47,12 @@ COPY --from=build /src/public ./public
 COPY --from=build /src/prisma ./prisma
 COPY --from=prismacli /pcli/node_modules ./prisma-cli/node_modules
 
+# Ship the generated Prisma client + query engine so the app AND the seed can run
+# against the DB (the standalone trace doesn't reliably include the native engine).
+COPY --from=build /src/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build /src/node_modules/@prisma/client ./node_modules/@prisma/client
+
 EXPOSE 3000
-# To enable seeding later, add a db seed call before the server starts:
-#   ... migrate deploy ... && node prisma-cli/node_modules/prisma/build/index.js db seed && node server.js
-CMD ["sh", "-c", "node prisma-cli/node_modules/prisma/build/index.js migrate deploy --schema=prisma/schema.prisma && node server.js"]
+# On start: apply migrations, seed the catalog (idempotent upserts; fail-soft so a
+# seed hiccup doesn't take down the server), then serve.
+CMD ["sh", "-c", "node prisma-cli/node_modules/prisma/build/index.js migrate deploy --schema=prisma/schema.prisma && (node prisma/seed.cjs || echo 'uniseek: seed failed, continuing') && node server.js"]

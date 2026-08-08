@@ -11,6 +11,7 @@ desktop.ini
 # Environment / secrets
 .env
 .env.*
+!.env.example
 *.local
 
 # Logs
@@ -24,11 +25,12 @@ venv/
 __pycache__/
 *.pyc
 
-# Build output
-dist/
-build/
-out/
+# Build output (anchored to repo root so app/build/ — the intake wizard — isn't ignored)
+/dist/
+/build/
+/out/
 .next/
+tsconfig.tsbuildinfo
 
 # Misc
 *.tmp
