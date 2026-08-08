@@ -9,6 +9,12 @@ export default function Filters() {
 
   return (
     <div className="wz-step">
+      <div className="wz-callout">
+        <strong>These are hard filters.</strong> Any college that doesn't meet them is
+        removed from your list entirely — so only set what's truly a deal-breaker. (Your
+        preferences, on the next step, just fine-tune the order; they never remove a college.)
+      </div>
+
       <section className="wz-group">
         <h3 className="wz-group__title">Cost</h3>
         <p className="wz-group__note">We compare against each college's net price, not sticker price.</p>

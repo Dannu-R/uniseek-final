@@ -121,4 +121,4 @@ export const DEFAULT_DATA: WizardData = {
   setting: { weight: 0, selections: [] },
 };
 
-export const STEPS = ["Academics", "Goals", "Filters", "Preferences"] as const;
+export const STEPS = ["Academics", "Goals", "Hard filters", "Preferences"] as const;
