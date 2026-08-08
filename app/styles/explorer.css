@@ -81,6 +81,13 @@
   color: #c9bdf0;
   margin-bottom: 24px;
 }
+.explorer__note.is-loading {
+  animation: ex-pulse 1.4s ease-in-out infinite;
+}
+@keyframes ex-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
 
 .explorer__sections {
   display: flex;

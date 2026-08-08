@@ -116,8 +116,11 @@ export default function ResultsPage() {
       {selected && (
         <div className="rs-modal" role="dialog" aria-modal="true" onClick={() => setSelected(null)}>
           <div className="rs-modal__card" onClick={(e) => e.stopPropagation()}>
-            <h3 className="rs-modal__title">Open {selected.name}?</h3>
-            <p className="rs-modal__body">Take a closer look at this college in the College Explorer.</p>
+            <h3 className="rs-modal__title">See personalized insights for {selected.name}?</h3>
+            <p className="rs-modal__body">
+              We'll analyze this college against your profile and write up how you fit — it takes a
+              moment. We only do this for colleges you choose to explore.
+            </p>
             <div className="rs-modal__actions">
               <button type="button" className="btn btn--ghost" onClick={() => setSelected(null)}>
                 Cancel
@@ -127,7 +130,7 @@ export default function ResultsPage() {
                 className="btn btn--primary"
                 onClick={() => router.push(`/explorer/${selected.collegeId}`)}
               >
-                Open Explorer
+                Show me
               </button>
             </div>
           </div>
