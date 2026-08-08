@@ -183,7 +183,7 @@ export default function ExplorerPage() {
         <div className="explorer__inner explorer__missing">
           <h1>College not found</h1>
           <p>We couldn't find that college in your list.</p>
-          <a className="btn btn--primary" href="/results">Back to your list</a>
+          <a className="btn btn--primary" href="/dashboard">Back to your list</a>
         </div>
       </div>
     );
@@ -214,7 +214,7 @@ export default function ExplorerPage() {
     <div className="explorer">
       <div className="explorer__inner">
         <div className="explorer__bar">
-          <button type="button" className="btn btn--ghost" onClick={() => router.push("/results")}>
+          <button type="button" className="btn btn--ghost" onClick={() => router.push("/dashboard")}>
             ← Back to list
           </button>
         </div>

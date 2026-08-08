@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 function safeCallback(raw: string | string[] | undefined): string {
   const value = Array.isArray(raw) ? raw[0] : raw;
   if (value && value.startsWith("/") && !value.startsWith("//")) return value;
-  return "/build";
+  return "/dashboard";
 }
 
 export default async function LoginPage({

@@ -18,11 +18,20 @@ interface WizardContextValue {
   next: () => void;
   back: () => void;
   hydrated: boolean;
+  // Called when "Find colleges" produces a result. When the wizard is embedded in the
+  // dashboard, this hands the result back so it can render in place (no navigation).
+  onComplete?: (result: unknown) => void;
 }
 
 const WizardContext = createContext<WizardContextValue | null>(null);
 
-export function WizardProvider({ children }: { children: ReactNode }) {
+export function WizardProvider({
+  children,
+  onComplete,
+}: {
+  children: ReactNode;
+  onComplete?: (result: unknown) => void;
+}) {
   const [data, setData] = useState<WizardData>(DEFAULT_DATA);
   const [step, setStepState] = useState(0);
   const [hydrated, setHydrated] = useState(false);
@@ -54,7 +63,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   const back = () => setStep(step - 1);
 
   return (
-    <WizardContext.Provider value={{ data, update, step, setStep, next, back, hydrated }}>
+    <WizardContext.Provider value={{ data, update, step, setStep, next, back, hydrated, onComplete }}>
       {children}
     </WizardContext.Provider>
   );

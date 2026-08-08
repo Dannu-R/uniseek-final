@@ -8,7 +8,8 @@ export default function HeroDuo() {
   const router = useRouter();
 
   const handleStartClick = () => {
-    router.push("/build");
+    // Gated: unauthenticated visitors get bounced to /login, then land on the dashboard.
+    router.push("/dashboard");
   };
 
   return (

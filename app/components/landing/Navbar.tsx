@@ -25,8 +25,8 @@ export default async function Navbar() {
         <div className="navbar__actions">
           {user ? (
             <>
-              <a className="navbar__login" href="/build">
-                Build my list
+              <a className="navbar__login" href="/dashboard">
+                Dashboard
               </a>
               <span className="navbar__user" title={user.email ?? undefined}>
                 {user.name ?? user.email ?? "Signed in"}
@@ -47,7 +47,7 @@ export default async function Navbar() {
               <a className="navbar__login" href="/login">
                 Log in
               </a>
-              <a className="navbar__signup" href="/login?callbackUrl=/build">
+              <a className="navbar__signup" href="/login?callbackUrl=/dashboard">
                 Sign up
               </a>
             </>

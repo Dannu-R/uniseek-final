@@ -25,7 +25,7 @@ if (providerStatus.github) providers.push(GitHub);
 // Routes that require a signed-in user. The wizard (/build) is the entry point of the
 // college search — gating it here is what makes "you can't even start unless you log in"
 // true at the routing layer, not just the UI.
-const PROTECTED_PREFIXES = ["/build", "/results", "/explorer"];
+const PROTECTED_PREFIXES = ["/dashboard", "/build", "/results", "/explorer"];
 
 function isProtected(pathname: string): boolean {
   return PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));

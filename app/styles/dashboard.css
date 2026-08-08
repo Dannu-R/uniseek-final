@@ -1,0 +1,322 @@
+/* ================================================================
+   Dashboard — flat, geometric, restrained (one accent, no metallic
+   gradients). Fixed left rail of views + account; content area on the right.
+   ================================================================ */
+
+.dash {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+  background: var(--color-black);
+  color: #e9e6f4;
+}
+
+/* ---- Left rail ---------------------------------------------------------- */
+.dash__rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-void);
+  border-right: 1px solid rgba(167, 139, 250, 0.14);
+  padding: 22px 16px;
+}
+
+.dash__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+  color: #fff;
+  padding: 4px 8px 20px;
+}
+.dash__brand-mark {
+  width: 16px;
+  height: 16px;
+  background: var(--color-purple);
+  /* a small geometric diamond */
+  transform: rotate(45deg);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.dash__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.dash__nav-label {
+  margin: 6px 8px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.dash__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  text-align: left;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.94rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+}
+.dash__tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.dash__tab.is-active {
+  background: rgba(109, 40, 217, 0.16);
+  border-color: rgba(167, 139, 250, 0.28);
+  color: #fff;
+}
+/* left accent bar on the active view */
+.dash__tab.is-active::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--color-purple);
+}
+.dash__tab-mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  border: 1.5px solid currentColor;
+  opacity: 0.55;
+}
+.dash__tab.is-active .dash__tab-mark {
+  background: var(--color-purple-light);
+  border-color: var(--color-purple-light);
+  opacity: 1;
+}
+
+/* ---- Account (pinned bottom) ------------------------------------------- */
+.dash__account {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+  margin-top: 10px;
+}
+.dash__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 10px;
+}
+.dash__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.dash__avatar--initial {
+  display: grid;
+  place-items: center;
+  background: rgba(167, 139, 250, 0.2);
+  color: var(--color-purple-light);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.dash__user-name {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.78);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dash__signout {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.86rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+.dash__signout:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+/* ---- Content ----------------------------------------------------------- */
+.dash__main {
+  padding: 40px 44px 64px;
+  overflow-x: hidden;
+}
+.dash__loading {
+  min-height: 60vh;
+}
+.dash__view {
+  max-width: 940px;
+  margin: 0 auto;
+}
+.dash__view-head {
+  margin-bottom: 26px;
+}
+.dash__view-head--row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.dash__view-title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.dash__view-sub {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.96rem;
+}
+
+/* Empty state — centered geometric card */
+.dash__empty {
+  display: grid;
+  place-items: center;
+  min-height: 62vh;
+}
+.dash__empty-card {
+  max-width: 480px;
+  text-align: center;
+  padding: 40px 34px;
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(167, 139, 250, 0.05), transparent 60%),
+    var(--color-void);
+}
+.dash__empty-mark {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+  border: 2px solid var(--color-purple);
+  border-radius: 8px;
+  transform: rotate(45deg);
+  box-shadow: inset 0 0 0 6px rgba(109, 40, 217, 0.16);
+}
+.dash__empty-title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 0 10px;
+}
+.dash__empty-sub {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  margin: 0 0 24px;
+}
+
+.btn--lg {
+  padding: 15px 34px;
+  font-size: 1rem;
+}
+
+/* ---- Embedded wizard overrides ----------------------------------------- */
+/* The wizard normally owns the full viewport; inside a tab it should just flow. */
+.wizard--embedded {
+  min-height: auto;
+  padding: 0;
+  display: block;
+}
+.wizard--embedded .wizard__inner {
+  margin: 0;
+  max-width: 760px;
+}
+.wizard--embedded .wizard__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.wizard__exit {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.14s, color 0.14s;
+}
+.wizard__exit:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+/* ---- Responsive: rail collapses to a top bar --------------------------- */
+@media (max-width: 720px) {
+  .dash {
+    grid-template-columns: 1fr;
+  }
+  .dash__rail {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-right: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.14);
+    padding: 12px 16px;
+  }
+  .dash__brand {
+    padding: 0 8px 0 0;
+  }
+  .dash__nav {
+    flex: 1 1 auto;
+    flex-direction: row;
+  }
+  .dash__nav-label {
+    display: none;
+  }
+  .dash__tab.is-active::before {
+    display: none;
+  }
+  .dash__account {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .dash__user {
+    padding: 0;
+  }
+  .dash__signout {
+    width: auto;
+  }
+  .dash__main {
+    padding: 24px 18px 48px;
+  }
+}

@@ -69,11 +69,18 @@ function Direction({ value, onChange, low, high }: { value: number; onChange: (n
 }
 
 export default function Preferences() {
-  const { data, update, back } = useWizard();
+  const { data, update, back, onComplete } = useWizard();
   const router = useRouter();
   const [card, setCard] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Hand the result to the embedding surface (the dashboard renders it in place). If
+  // there's no embedder, fall back to the dashboard route.
+  const finish = (result: unknown) => {
+    if (onComplete) onComplete(result);
+    else router.push("/dashboard");
+  };
 
   const spec = CARDS[card];
   const isLast = card === CARDS.length - 1;
@@ -88,7 +95,7 @@ export default function Preferences() {
     // placeholder list. Toggle with NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS.
     if (USE_PLACEHOLDER_RESULTS) {
       sessionStorage.setItem("uniseek.result.v1", JSON.stringify(PLACEHOLDER_RESULT));
-      router.push("/results");
+      finish(PLACEHOLDER_RESULT);
       return;
     }
 
@@ -112,7 +119,7 @@ export default function Preferences() {
       }
       const result = await res.json();
       sessionStorage.setItem("uniseek.result.v1", JSON.stringify(result));
-      router.push("/results");
+      finish(result);
     } catch {
       setError("Couldn't reach the server. Please try again.");
       setSubmitting(false);
