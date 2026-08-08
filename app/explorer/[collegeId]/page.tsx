@@ -9,6 +9,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toPayload } from "@/app/build/toPayload";
+import { USE_PLACEHOLDER_RESULTS } from "@/app/build/placeholderResult";
 import type { WizardData } from "@/app/build/model";
 import type { CollegeInsight } from "@/lib/collegeInsight";
 
@@ -124,6 +125,12 @@ export default function ExplorerPage() {
     setLoaded(true);
     if (!col) return;
 
+    // Placeholder mode: never call /api/explore — show the section outline only.
+    if (USE_PLACEHOLDER_RESULTS) {
+      setInsightState("idle");
+      return;
+    }
+
     const cacheKey = `uniseek.insight.${collegeId}`;
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
@@ -182,8 +189,9 @@ export default function ExplorerPage() {
     );
   }
 
-  const banner =
-    insightState === "loading"
+  const banner = USE_PLACEHOLDER_RESULTS
+    ? "Preview mode — here's an outline of what this page covers. Personalized insights are turned off."
+    : insightState === "loading"
       ? "Analyzing this college against your profile…"
       : insightState === "ready"
         ? "Personalized for you, based on your profile."

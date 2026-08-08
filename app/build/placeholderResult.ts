@@ -1,9 +1,15 @@
-// Placeholder results for UI testing — lets the ending screen render without
-// calling /api/score (which runs the Claude activity classifier). Toggle via
-// NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS in the submit path.
+// Placeholder mode for UI testing — lets the results list AND the College Explorer
+// render without spending any Claude API calls (the /api/score activity classifier
+// and the /api/explore personalized insight).
+//
+// Placeholder mode is ON BY DEFAULT and must be explicitly disabled to use real AI:
+//   NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS="false"   → real AI (classifier + insight)
+// This default matters for the cloud build: NEXT_PUBLIC_* is inlined at build time,
+// and the ACR Docker build has no .env, so an unset flag would otherwise fall through.
+// Defaulting to placeholders keeps the deployed app from spending API calls.
 
 export const USE_PLACEHOLDER_RESULTS =
-  process.env.NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS === "true";
+  process.env.NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS !== "false";
 
 export const PLACEHOLDER_RESULT = {
   majorRun: true,
