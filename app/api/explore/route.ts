@@ -3,6 +3,7 @@
 // (after the student confirms), never for the whole recommendation list.
 
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateCollegeInsight, type InsightCollege, type InsightStudent } from "@/lib/collegeInsight";
 
@@ -26,6 +27,9 @@ type PrismaCollegeNetPrice = {
 const num = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
 export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
   let body: { collegeId?: string; band?: Band; profile?: Record<string, unknown> };
   try {
     body = await request.json();

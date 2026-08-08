@@ -37,19 +37,51 @@ jobs:
           az acr build --registry ${{ vars.ACR_NAME }} \
             --image ${{ vars.STUDENT }}/web:${{ github.sha }} .
 
-      # Store the Anthropic API key as a Container App secret (from the GitHub
-      # secret — never in the repo). Enables the AI classifier + Explorer insight.
-      - name: Configure app secrets
+      # Store secrets as Container App secrets (from GitHub secrets — never in the repo)
+      # and point env vars at them. All values come from `env:` below (not interpolated
+      # into the shell) so special characters and secret masking are handled safely.
+      # OAuth provider creds are OPTIONAL here: if a GitHub secret is unset, that provider
+      # is simply skipped, so the app stays healthy before the OAuth apps exist. AUTH_SECRET
+      # is required for sessions — set it (repo secret) or sign-in and gating will 500.
+      - name: Configure secrets and deploy
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+          AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
         run: |
-          az containerapp secret set \
-            --resource-group rg-students-platform \
-            --name ca-${{ vars.STUDENT }} \
-            --secrets anthropic-api-key=${{ secrets.ANTHROPIC_API_KEY }}
+          set -euo pipefail
+          APP_ORIGIN="https://${{ vars.STUDENT }}.apps.human-angle.com"
 
-      - name: Deploy to Container App
-        run: |
+          # Build the secret list and matching env-var refs, skipping any empty value.
+          SECRET_ARGS=()
+          ENV_ARGS=(AUTH_TRUST_HOST=true "AUTH_URL=${APP_ORIGIN}")
+          add() { # <secret-name> <ENV_VAR_NAME> <value>
+            if [ -n "$3" ]; then
+              SECRET_ARGS+=("$1=$3")
+              ENV_ARGS+=("$2=secretref:$1")
+            else
+              echo "note: $2 not set — skipping (dependent feature stays off)"
+            fi
+          }
+          add anthropic-api-key   ANTHROPIC_API_KEY   "${ANTHROPIC_API_KEY:-}"
+          add auth-secret         AUTH_SECRET         "${AUTH_SECRET:-}"
+          add auth-google-id      AUTH_GOOGLE_ID      "${AUTH_GOOGLE_ID:-}"
+          add auth-google-secret  AUTH_GOOGLE_SECRET  "${AUTH_GOOGLE_SECRET:-}"
+          add auth-github-id      AUTH_GITHUB_ID      "${AUTH_GITHUB_ID:-}"
+          add auth-github-secret  AUTH_GITHUB_SECRET  "${AUTH_GITHUB_SECRET:-}"
+
+          if [ ${#SECRET_ARGS[@]} -gt 0 ]; then
+            az containerapp secret set \
+              --resource-group rg-students-platform \
+              --name ca-${{ vars.STUDENT }} \
+              --secrets "${SECRET_ARGS[@]}"
+          fi
+
           az containerapp update \
             --resource-group rg-students-platform \
             --name ca-${{ vars.STUDENT }} \
             --image ${{ vars.ACR_NAME }}.azurecr.io/${{ vars.STUDENT }}/web:${{ github.sha }} \
-            --set-env-vars ANTHROPIC_API_KEY=secretref:anthropic-api-key
+            --set-env-vars "${ENV_ARGS[@]}"

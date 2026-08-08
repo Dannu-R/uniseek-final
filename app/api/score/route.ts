@@ -1,8 +1,9 @@
 // POST /api/score — score the catalog against a student profile and return a
-// band-balanced reach/target/safety list. Stateless: the profile is in the request
-// body (anonymous-first — no account needed to score).
+// band-balanced reach/target/safety list. The profile is in the request body, but a
+// signed-in session is required (the search is gated behind sign-in).
 
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { rankColleges } from "@/lib/scoring/score";
 import { mapCollege, scorableCollege } from "@/lib/scoring/mapCollege";
@@ -11,6 +12,9 @@ import { classifyActivityTiers } from "@/lib/scoring/classifyActivities";
 import type { StudentInput } from "@/lib/scoring/types";
 
 export async function POST(req: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
   let body: unknown;
   try {
     body = await req.json();

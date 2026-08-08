@@ -1,5 +1,9 @@
-// @ts-nocheck
-export default function Navbar() {
+import { auth, signOut } from "@/auth";
+
+export default async function Navbar() {
+  const session = await auth();
+  const user = session?.user;
+
   return (
     <nav className="navbar" aria-label="Main">
       <div className="navbar__inner">
@@ -19,12 +23,35 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__actions">
-          <button type="button" className="navbar__login">
-            Log in
-          </button>
-          <a className="navbar__signup" href="/build">
-            Sign up
-          </a>
+          {user ? (
+            <>
+              <a className="navbar__login" href="/build">
+                Build my list
+              </a>
+              <span className="navbar__user" title={user.email ?? undefined}>
+                {user.name ?? user.email ?? "Signed in"}
+              </span>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/" });
+                }}
+              >
+                <button type="submit" className="navbar__signup">
+                  Sign out
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <a className="navbar__login" href="/login">
+                Log in
+              </a>
+              <a className="navbar__signup" href="/login?callbackUrl=/build">
+                Sign up
+              </a>
+            </>
+          )}
         </div>
       </div>
     </nav>

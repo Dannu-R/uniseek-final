@@ -1,0 +1,123 @@
+/* ================================================================
+   Sign-in page + navbar auth chip
+   ================================================================ */
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.25rem;
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(109, 40, 217, 0.25), transparent 70%),
+    var(--color-black);
+}
+
+.login__card {
+  width: 100%;
+  max-width: 26rem;
+  background: var(--color-void);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  border-radius: 18px;
+  padding: 2.25rem 2rem 1.75rem;
+  box-shadow: var(--glow-purple);
+  text-align: center;
+}
+
+.login__brand {
+  display: inline-block;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--color-purple-light);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+
+.login__title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.55rem;
+  line-height: 1.2;
+  color: var(--color-white);
+  margin: 0 0 0.6rem;
+}
+
+.login__sub {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 1.75rem;
+}
+
+.login__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login__buttons form {
+  margin: 0;
+}
+
+.login__btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-radius: 11px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.login__btn:hover {
+  transform: translateY(-1px);
+}
+
+.login__glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.login__btn--google {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+.login__btn--google .login__glyph {
+  color: #4285f4;
+}
+
+.login__btn--github {
+  background: #161b22;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.login__fine {
+  margin: 1.5rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.45;
+}
+
+/* Navbar signed-in chip */
+.navbar__user {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar__actions form {
+  margin: 0;
+}

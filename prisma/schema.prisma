@@ -209,7 +209,9 @@ model Major {
 
 model User {
   id        String     @id @default(cuid())
-  email     String?    @unique // optional; OAuth works without it
+  email     String?    @unique // optional; OAuth works without it (GitHub can hide it)
+  name      String? // display name from the OAuth profile
+  image     String? // avatar URL from the OAuth profile
   createdAt DateTime   @default(now())
   accounts  Account[]
   profile   Profile? // one profile per user (MVP)
