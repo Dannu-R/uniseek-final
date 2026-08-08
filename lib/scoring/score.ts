@@ -32,6 +32,7 @@ export interface CollegeScore {
   matchScore: number;
   preferenceFit: number;
   finalScore: number;
+  overallAdmitRate: number; // the college's overall published admit rate
   effectiveAdmitRate: number; // after the major offset (§6a)
   usedFactors: Factor[];
   flags: string[]; // low-confidence / missing-data notes
@@ -124,6 +125,7 @@ export function scoreCollege(student: StudentInput, college: CollegeInput): Coll
     matchScore: match,
     preferenceFit: fit.fit,
     finalScore: final,
+    overallAdmitRate: college.admitRate,
     effectiveAdmitRate: rate,
     usedFactors,
     flags,

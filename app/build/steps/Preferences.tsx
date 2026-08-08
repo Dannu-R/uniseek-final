@@ -11,6 +11,7 @@ import {
   FACTORS, WEIGHT_LABELS, type FactorKey, type SettingValue,
 } from "../model";
 import { toPayload, validate } from "../toPayload";
+import { USE_PLACEHOLDER_RESULTS, PLACEHOLDER_RESULT } from "../placeholderResult";
 
 type Card =
   | { type: "factor"; factor: (typeof FACTORS)[number] }
@@ -83,6 +84,14 @@ export default function Preferences() {
   const goBack = () => (card === 0 ? back() : setCard(card - 1));
 
   const submit = async () => {
+    // Testing shortcut: skip the API call (and the classifier) and show a
+    // placeholder list. Toggle with NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS.
+    if (USE_PLACEHOLDER_RESULTS) {
+      sessionStorage.setItem("uniseek.result.v1", JSON.stringify(PLACEHOLDER_RESULT));
+      router.push("/results");
+      return;
+    }
+
     const issues = validate(data);
     if (issues.length) {
       setError(issues[0].message);

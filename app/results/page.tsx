@@ -1,7 +1,7 @@
 "use client";
 
 // Results — reads the scored list from sessionStorage (anonymous-first) and renders
-// the reach/target/safety list. No account needed; "Save" (OAuth) comes later.
+// a simple reach/match/safety list: college name + overall acceptance rate.
 
 import { useEffect, useState } from "react";
 
@@ -9,12 +9,7 @@ interface CollegeScore {
   collegeId: string;
   name: string;
   band: "reach" | "target" | "safety";
-  odds: number;
-  quality: number;
-  finalScore: number;
-  effectiveAdmitRate: number;
-  flags: string[];
-  filterNotes: string[];
+  overallAdmitRate: number | null;
 }
 
 interface ScoreResult {
@@ -23,39 +18,15 @@ interface ScoreResult {
   empty: boolean;
   blockingFilter: string | null;
   list: CollegeScore[];
-  removedCount: number;
 }
 
 const BANDS: { key: CollegeScore["band"]; label: string; blurb: string }[] = [
   { key: "reach", label: "Reach", blurb: "Ambitious — worth a shot" },
-  { key: "target", label: "Target", blurb: "Realistic matches" },
+  { key: "target", label: "Match", blurb: "Realistic matches" },
   { key: "safety", label: "Safety", blurb: "Very likely admits" },
 ];
 
-const pct = (x: number) => `${Math.round(x * 100)}%`;
-
-function CollegeCard({ c }: { c: CollegeScore }) {
-  const notes = [...new Set([...c.filterNotes, ...c.flags])];
-  return (
-    <div className={`rs-card rs-card--${c.band}`}>
-      <div className="rs-card__main">
-        <span className="rs-card__name">{c.name}</span>
-        <span className="rs-card__odds">{pct(c.odds)} <em>chance</em></span>
-      </div>
-      <div className="rs-card__meta">
-        <span>Admit rate used {pct(c.effectiveAdmitRate)}</span>
-        <span>Program quality {c.quality.toFixed(2)}</span>
-      </div>
-      {notes.length > 0 && (
-        <ul className="rs-card__notes">
-          {notes.map((n, i) => (
-            <li key={i}>{n}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+const pct = (x: number | null) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function ResultsPage() {
   const [result, setResult] = useState<ScoreResult | null>(null);
@@ -91,9 +62,6 @@ export default function ResultsPage() {
         <header className="results__head">
           <a className="wizard__brand" href="/">Uniseek</a>
           <h1 className="results__title">Your college list</h1>
-          <p className="results__sub">
-            {result.majorRun ? "Scored for your intended major" : "General run"} · {result.scoredCount} colleges considered
-          </p>
           <div className="results__actions">
             <a className="btn btn--ghost" href="/build">Edit answers</a>
           </div>
@@ -121,7 +89,12 @@ export default function ResultsPage() {
                 </div>
                 <div className="rs-band__list">
                   {cols.map((c) => (
-                    <CollegeCard key={c.collegeId} c={c} />
+                    <div key={c.collegeId} className={`rs-card rs-card--${c.band}`}>
+                      <span className="rs-card__name">{c.name}</span>
+                      <span className="rs-card__rate">
+                        {pct(c.overallAdmitRate)} <em>acceptance rate</em>
+                      </span>
+                    </div>
                   ))}
                 </div>
               </section>

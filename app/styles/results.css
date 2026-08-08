@@ -93,6 +93,10 @@
   border-left: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 14px;
   padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
 }
 .rs-card--reach {
   border-left-color: var(--color-pink);
@@ -103,43 +107,21 @@
 .rs-card--safety {
   border-left-color: #34d399;
 }
-.rs-card__main {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
 .rs-card__name {
   font-size: 1.05rem;
   font-weight: 600;
   color: #fff;
 }
-.rs-card__odds {
-  font-size: 1.15rem;
+.rs-card__rate {
+  font-size: 1.05rem;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
 }
-.rs-card__odds em {
+.rs-card__rate em {
   font-size: 0.72rem;
   font-weight: 500;
   font-style: normal;
   color: #9c93c4;
   margin-left: 3px;
-}
-.rs-card__meta {
-  display: flex;
-  gap: 18px;
-  margin-top: 6px;
-  font-size: 0.82rem;
-  color: #a79fc9;
-}
-.rs-card__notes {
-  margin: 12px 0 0;
-  padding-left: 16px;
-  font-size: 0.8rem;
-  color: #c9a9dd;
-}
-.rs-card__notes li {
-  margin-top: 3px;
 }
