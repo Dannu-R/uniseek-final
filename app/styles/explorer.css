@@ -1,0 +1,122 @@
+/* ================================================================
+   College Explorer (/explorer/[collegeId]) — placeholder
+   ================================================================ */
+
+.explorer {
+  min-height: 100vh;
+  padding: clamp(18px, 4vh, 40px) clamp(16px, 4vw, 32px) 80px;
+  display: flex;
+  justify-content: center;
+  color: #f4f2ff;
+}
+.explorer__inner {
+  width: 100%;
+  max-width: 760px;
+}
+
+.explorer__missing {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 18vh;
+}
+.explorer__missing .btn {
+  margin-top: 8px;
+  text-decoration: none;
+}
+
+.explorer__bar {
+  margin-bottom: 22px;
+}
+.explorer__bar .btn {
+  cursor: pointer;
+}
+
+.explorer__head {
+  margin-bottom: 20px;
+}
+.explorer__band {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.explorer__band--reach {
+  color: var(--color-pink-light);
+  background: rgba(236, 72, 153, 0.14);
+}
+.explorer__band--target {
+  color: var(--color-purple-light);
+  background: rgba(139, 92, 246, 0.16);
+}
+.explorer__band--safety {
+  color: #7ee0c0;
+  background: rgba(52, 211, 153, 0.14);
+}
+.explorer__title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+}
+.explorer__rate {
+  color: #a79fc9;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.explorer__note {
+  border: 1px dashed rgba(167, 139, 250, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.86rem;
+  color: #c9bdf0;
+  margin-bottom: 24px;
+}
+
+.explorer__sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 560px) {
+  .explorer__sections {
+    grid-template-columns: 1fr;
+  }
+}
+.ex-card {
+  background: linear-gradient(180deg, rgba(23, 18, 48, 0.6), rgba(11, 9, 24, 0.6));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  position: relative;
+}
+.ex-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.ex-card__body {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #a79fc9;
+  margin: 0 0 12px;
+}
+.ex-card__soon {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8f86b6;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 3px 9px;
+}

@@ -88,6 +88,11 @@
 
 /* ---- College card ---- */
 .rs-card {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
   background: linear-gradient(180deg, rgba(23, 18, 48, 0.7), rgba(11, 9, 24, 0.7));
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-left: 3px solid rgba(255, 255, 255, 0.2);
@@ -97,6 +102,50 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.rs-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 10px 26px -16px rgba(109, 40, 217, 0.7);
+}
+
+/* ---- Confirmation modal ---- */
+.rs-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 4, 10, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+.rs-modal__card {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, rgba(23, 18, 48, 0.98), rgba(11, 9, 24, 0.98));
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 30px 80px -30px rgba(109, 40, 217, 0.7);
+}
+.rs-modal__title {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.rs-modal__body {
+  color: #a79fc9;
+  font-size: 0.92rem;
+  margin: 0 0 20px;
+}
+.rs-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 .rs-card--reach {
   border-left-color: var(--color-pink);

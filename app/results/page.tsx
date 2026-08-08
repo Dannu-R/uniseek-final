@@ -1,9 +1,11 @@
 "use client";
 
 // Results — reads the scored list from sessionStorage (anonymous-first) and renders
-// a simple reach/match/safety list: college name + overall acceptance rate.
+// a reach/match/safety list. Clicking a college confirms, then opens the (placeholder)
+// College Explorer for it (PRD Epic 6).
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface CollegeScore {
   collegeId: string;
@@ -29,8 +31,10 @@ const BANDS: { key: CollegeScore["band"]; label: string; blurb: string }[] = [
 const pct = (x: number | null) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function ResultsPage() {
+  const router = useRouter();
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [selected, setSelected] = useState<CollegeScore | null>(null);
 
   useEffect(() => {
     try {
@@ -62,6 +66,7 @@ export default function ResultsPage() {
         <header className="results__head">
           <a className="wizard__brand" href="/">Uniseek</a>
           <h1 className="results__title">Your college list</h1>
+          <p className="results__sub">Select a college to explore it in depth.</p>
           <div className="results__actions">
             <a className="btn btn--ghost" href="/build">Edit answers</a>
           </div>
@@ -89,12 +94,17 @@ export default function ResultsPage() {
                 </div>
                 <div className="rs-band__list">
                   {cols.map((c) => (
-                    <div key={c.collegeId} className={`rs-card rs-card--${c.band}`}>
+                    <button
+                      key={c.collegeId}
+                      type="button"
+                      className={`rs-card rs-card--${c.band}`}
+                      onClick={() => setSelected(c)}
+                    >
                       <span className="rs-card__name">{c.name}</span>
                       <span className="rs-card__rate">
                         {pct(c.overallAdmitRate)} <em>acceptance rate</em>
                       </span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </section>
@@ -102,6 +112,27 @@ export default function ResultsPage() {
           })
         )}
       </div>
+
+      {selected && (
+        <div className="rs-modal" role="dialog" aria-modal="true" onClick={() => setSelected(null)}>
+          <div className="rs-modal__card" onClick={(e) => e.stopPropagation()}>
+            <h3 className="rs-modal__title">Open {selected.name}?</h3>
+            <p className="rs-modal__body">Take a closer look at this college in the College Explorer.</p>
+            <div className="rs-modal__actions">
+              <button type="button" className="btn btn--ghost" onClick={() => setSelected(null)}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={() => router.push(`/explorer/${selected.collegeId}`)}
+              >
+                Open Explorer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
