@@ -112,6 +112,26 @@
   margin: 0;
   max-width: 62ch;
 }
+.ex-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ex-point {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  max-width: 70ch;
+}
+.ex-point__label {
+  color: #e7e2fb;
+  font-weight: 500;
+}
+.ex-point__note {
+  color: #8f86b6;
+}
 .ex-section__soon {
   font-size: 0.62rem;
   font-weight: 600;
