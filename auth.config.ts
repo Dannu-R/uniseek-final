@@ -6,8 +6,21 @@
 //   GitHub → AUTH_GITHUB_ID / AUTH_GITHUB_SECRET
 //   plus AUTH_SECRET (session encryption) and AUTH_TRUST_HOST (proxied deploys).
 import type { NextAuthConfig } from "next-auth";
+import type { Provider } from "next-auth/providers";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
+
+// Only enable a provider when its credentials are present. This keeps sign-in honest:
+// a provider you haven't (or can't) set up — e.g. Google, which needs an 18+ account to
+// create an OAuth client — simply doesn't appear, instead of showing a button that 401s.
+export const providerStatus = {
+  google: !!process.env.AUTH_GOOGLE_ID,
+  github: !!process.env.AUTH_GITHUB_ID,
+};
+
+const providers: Provider[] = [];
+if (providerStatus.google) providers.push(Google);
+if (providerStatus.github) providers.push(GitHub);
 
 // Routes that require a signed-in user. The wizard (/build) is the entry point of the
 // college search — gating it here is what makes "you can't even start unless you log in"
@@ -21,7 +34,7 @@ function isProtected(pathname: string): boolean {
 export default {
   // Behind the Azure Container Apps proxy, trust the forwarded host for callback URLs.
   trustHost: true,
-  providers: [Google, GitHub],
+  providers,
   pages: { signIn: "/login" },
   callbacks: {
     // Used by middleware to gate protected routes. Returning false on a protected

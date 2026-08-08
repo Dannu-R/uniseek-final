@@ -3,6 +3,7 @@
 // The buttons are server actions that kick off the OAuth flow and return the visitor
 // to where they were headed.
 import { signIn, auth } from "@/auth";
+import { providerStatus } from "@/auth.config";
 import { redirect } from "next/navigation";
 
 // Only ever redirect back to an internal path — never an attacker-supplied absolute URL.
@@ -34,29 +35,39 @@ export default async function LoginPage({
         </p>
 
         <div className="login__buttons">
-          <form
-            action={async () => {
-              "use server";
-              await signIn("google", { redirectTo });
-            }}
-          >
-            <button type="submit" className="login__btn login__btn--google">
-              <span className="login__glyph" aria-hidden="true">G</span>
-              Continue with Google
-            </button>
-          </form>
+          {providerStatus.google && (
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google", { redirectTo });
+              }}
+            >
+              <button type="submit" className="login__btn login__btn--google">
+                <span className="login__glyph" aria-hidden="true">G</span>
+                Continue with Google
+              </button>
+            </form>
+          )}
 
-          <form
-            action={async () => {
-              "use server";
-              await signIn("github", { redirectTo });
-            }}
-          >
-            <button type="submit" className="login__btn login__btn--github">
-              <span className="login__glyph" aria-hidden="true">⌥</span>
-              Continue with GitHub
-            </button>
-          </form>
+          {providerStatus.github && (
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github", { redirectTo });
+              }}
+            >
+              <button type="submit" className="login__btn login__btn--github">
+                <span className="login__glyph" aria-hidden="true">⌥</span>
+                Continue with GitHub
+              </button>
+            </form>
+          )}
+
+          {!providerStatus.google && !providerStatus.github && (
+            <p className="login__sub" role="status">
+              Sign-in isn't configured yet. Add an OAuth provider's credentials to enable it.
+            </p>
+          )}
         </div>
 
         <p className="login__fine">
