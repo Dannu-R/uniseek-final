@@ -82,10 +82,12 @@ export default function ExplorerPage() {
 
         <div className="explorer__sections">
           {SECTIONS.map((s) => (
-            <section key={s.title} className="ex-card">
-              <h3 className="ex-card__title">{s.title}</h3>
-              <p className="ex-card__body">{s.body}</p>
-              <span className="ex-card__soon">Coming soon</span>
+            <section key={s.title} className="ex-section">
+              <h2 className="ex-section__title">
+                {s.title}
+                <span className="ex-section__soon">Coming soon</span>
+              </h2>
+              <p className="ex-section__body">{s.body}</p>
             </section>
           ))}
         </div>
