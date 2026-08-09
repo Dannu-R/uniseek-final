@@ -11,7 +11,7 @@
 // The wizard is mounted under WizardProvider at the shell level, so its progress survives.
 // Completion drops the result into state and renders it in place.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { WizardProvider } from "@/app/build/WizardProvider";
@@ -37,11 +37,37 @@ interface ScoreResult {
 }
 
 type TabKey = "recommended" | "saved" | "stats";
-const TABS: { key: TabKey; label: string }[] = [
+type TabDef = { key: TabKey; label: string };
+
+// College views live under the "Views" heading; stats sits on its own below.
+const VIEW_TABS: TabDef[] = [
   { key: "recommended", label: "Recommended colleges" },
   { key: "saved", label: "Saved colleges" },
-  { key: "stats", label: "Your stats" },
 ];
+const STATS_TAB: TabDef = { key: "stats", label: "Your stats" };
+
+// Per-tab line icons (minimalist, currentColor).
+const TAB_ICON: Record<TabKey, ReactNode> = {
+  recommended: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+      <path d="M6 12v5c0 1 2.7 2.4 6 2.4s6-1.4 6-2.4v-5" />
+      <path d="M22 10v5" />
+    </svg>
+  ),
+  saved: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  stats: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="6" y1="20" x2="6" y2="14" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="18" y1="20" x2="18" y2="10" />
+    </svg>
+  ),
+};
 
 // Phases of the quiz transition. `opening` is the deliberate pause between the rail sliding
 // out and the first question appearing.
@@ -217,6 +243,22 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     );
   };
 
+  const renderTab = (t: TabDef) => (
+    <button
+      key={t.key}
+      type="button"
+      className={`dash__tab ${tab === t.key ? "is-active" : ""}`}
+      onClick={() => setTab(t.key)}
+      aria-current={tab === t.key}
+    >
+      <span className="dash__tab-icon" aria-hidden="true">
+        {TAB_ICON[t.key]}
+      </span>
+      {t.label}
+      {t.key === "saved" && saved.length > 0 && <span className="dash__tab-count">{saved.length}</span>}
+    </button>
+  );
+
   const filterBar = (
     <div className="dash__filter" role="group" aria-label="Filter by category">
       {FILTERS.map((f) => (
@@ -242,21 +284,11 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             Uniseek
           </div>
 
-          <nav className="dash__nav" aria-label="Views">
+          <nav className="dash__nav" aria-label="Dashboard sections">
             <p className="dash__nav-label">Views</p>
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                className={`dash__tab ${tab === t.key ? "is-active" : ""}`}
-                onClick={() => setTab(t.key)}
-                aria-current={tab === t.key}
-              >
-                <span className="dash__tab-mark" aria-hidden="true" />
-                {t.label}
-                {t.key === "saved" && saved.length > 0 && <span className="dash__tab-count">{saved.length}</span>}
-              </button>
-            ))}
+            {VIEW_TABS.map(renderTab)}
+            <div className="dash__nav-divider" aria-hidden="true" />
+            {renderTab(STATS_TAB)}
           </nav>
 
           <div className="dash__account">

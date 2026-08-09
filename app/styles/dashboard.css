@@ -115,12 +115,25 @@
   border-radius: 0 3px 3px 0;
   background: var(--color-purple);
 }
-.dash__tab-mark {
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-  border: 1.5px solid currentColor;
-  opacity: 0.55;
+.dash__tab-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  opacity: 0.72;
+}
+.dash__tab-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.dash__tab.is-active .dash__tab-icon {
+  opacity: 1;
+  color: var(--color-purple-light);
+}
+
+/* Separates the college views from "Your stats". */
+.dash__nav-divider {
+  height: 1px;
+  margin: 12px 10px;
+  background: rgba(255, 255, 255, 0.09);
 }
 .dash__tab-count {
   margin-left: auto;
@@ -134,11 +147,6 @@
   color: var(--color-purple-light);
   font-size: 0.72rem;
   font-weight: 700;
-}
-.dash__tab.is-active .dash__tab-mark {
-  background: var(--color-purple-light);
-  border-color: var(--color-purple-light);
-  opacity: 1;
 }
 
 /* ---- Account (pinned bottom) ------------------------------------------- */
@@ -662,6 +670,13 @@
   }
   .dash__nav-label {
     display: none;
+  }
+  /* Vertical separator instead of a horizontal rule when the nav is a row. */
+  .dash__nav-divider {
+    width: 1px;
+    height: 22px;
+    margin: 0 6px;
+    align-self: center;
   }
   .dash__tab.is-active::before {
     display: none;
