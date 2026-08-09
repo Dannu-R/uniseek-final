@@ -368,6 +368,169 @@
   transform: translateX(-2px);
 }
 
+/* ---- Your stats view --------------------------------------------------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+.stat-card {
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  border-radius: 14px;
+  background: var(--color-void);
+  padding: 26px 26px 30px;
+}
+.stat-card__title {
+  margin: 0 0 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.44);
+}
+.stat-card__note {
+  margin: 20px 0 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.5;
+}
+
+/* Circular percentile meter */
+.stat-meter {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 4px auto 0;
+}
+.stat-meter__svg {
+  width: 100%;
+  height: 100%;
+}
+.stat-meter__track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 12;
+}
+.stat-meter__arc {
+  fill: none;
+  stroke: url(#statGrad);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.stat-meter__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.stat-meter__num {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+.stat-meter__num sup {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-left: 1px;
+}
+.stat-meter__label {
+  margin-top: 6px;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* GPA strength bar */
+.stat-gpa {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.stat-gpa__value {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+.stat-gpa__scale {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.42);
+}
+.stat-bar__track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.stat-bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.stat-bar__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(11, 9, 24, 0.65);
+}
+.stat-bar__scale {
+  position: relative;
+  margin-top: 7px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+/* Position the scale labels under their thresholds (0 / 3.0 / 3.5 / 3.8 / 4.0). */
+.stat-bar__scale {
+  display: grid;
+  grid-template-columns: 0fr 3fr 0.5fr 0.3fr 0.2fr;
+}
+.stat-bar__scale span:first-child {
+  justify-self: start;
+}
+.stat-bar__scale span:last-child {
+  justify-self: end;
+}
+.stat-bar__scale span:not(:first-child):not(:last-child) {
+  justify-self: end;
+}
+.stat-tier {
+  margin-top: 22px;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.stat-desc {
+  margin: 8px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 0 8px;
+}
+.stat-empty__text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */
 @media (prefers-reduced-motion: reduce) {
   .dash__rail,

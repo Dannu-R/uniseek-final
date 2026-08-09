@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
+import StatsView from "./StatsView";
 
 interface DashUser {
   name?: string | null;
@@ -35,10 +36,11 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "recommended" | "saved";
+type TabKey = "recommended" | "saved" | "stats";
 const TABS: { key: TabKey; label: string }[] = [
   { key: "recommended", label: "Recommended colleges" },
   { key: "saved", label: "Saved colleges" },
+  { key: "stats", label: "Your stats" },
 ];
 
 // Phases of the quiz transition. `opening` is the deliberate pause between the rail sliding
@@ -305,6 +307,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               </header>
               <EmbeddedWizard />
             </div>
+          ) : tab === "stats" ? (
+            <StatsView onEdit={openQuiz} />
           ) : tab === "saved" ? (
             <section className="dash__view">
               <header className="dash__view-head">
