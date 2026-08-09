@@ -32,5 +32,8 @@ __pycache__/
 .next/
 tsconfig.tsbuildinfo
 
+# Test artifacts (Playwright MCP snapshots, console logs, screenshots)
+.playwright-mcp/
+
 # Misc
 *.tmp
