@@ -418,17 +418,19 @@
   stroke-linecap: round;
   transition: stroke-dasharray 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+/* Number sits at the bottom, inside the gauge's opening. */
 .stat-meter__center {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 30px;
 }
 .stat-meter__num {
   font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 2.6rem;
+  font-size: 2.5rem;
   font-weight: 800;
   line-height: 1;
   color: #fff;
@@ -439,8 +441,8 @@
   margin-left: 1px;
 }
 .stat-meter__label {
-  margin-top: 6px;
-  font-size: 0.74rem;
+  margin-bottom: 3px;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
@@ -531,6 +533,86 @@
   line-height: 1.5;
 }
 
+/* Extracurricular summary (placeholder) */
+.stat-ec {
+  margin-top: 20px;
+}
+.stat-ec__body {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.stat-ec__icon {
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+}
+.stat-ec__icon svg {
+  width: 52px;
+  height: 52px;
+}
+.stat-ec__content {
+  flex: 1;
+  min-width: 0;
+}
+.stat-ec__lead {
+  margin: 0 0 16px;
+  max-width: 62ch;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+.stat-ec__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+.stat-ec__skeleton span {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.06)
+  );
+  background-size: 200% 100%;
+  animation: statShimmer 1.6s ease-in-out infinite;
+}
+.stat-ec__skeleton span:nth-child(1) { width: 92%; }
+.stat-ec__skeleton span:nth-child(2) { width: 78%; }
+.stat-ec__skeleton span:nth-child(3) { width: 60%; }
+@keyframes statShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.stat-ec__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgba(109, 40, 217, 0.14);
+  color: var(--color-purple-light);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .stat-ec__body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+}
+
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */
 @media (prefers-reduced-motion: reduce) {
   .dash__rail,
@@ -538,8 +620,13 @@
     transition: none;
   }
   .dash__wizard-stage.is-in,
-  .dash__wizard-stage.is-out {
+  .dash__wizard-stage.is-out,
+  .stat-ec__skeleton span {
     animation: none;
+  }
+  .stat-meter__arc,
+  .stat-bar__fill {
+    transition: none;
   }
 }
 

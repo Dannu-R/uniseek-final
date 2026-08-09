@@ -92,10 +92,13 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   }
   const pctl = satEquiv != null ? satPercentile(satEquiv) : null;
 
-  // Circular meter geometry.
+  // Speedometer-style gauge: a 300° arc (5/6 of a circle) open at the bottom, filled
+  // proportional to the percentile. Rotated so the opening is centered at the bottom.
   const R = 54;
   const C = 2 * Math.PI * R;
-  const arc = pctl != null ? (C * pctl) / 100 : 0;
+  const GAUGE = 5 / 6;
+  const trackLen = C * GAUGE;
+  const arcLen = pctl != null ? (C * GAUGE * pctl) / 100 : 0;
 
   const tier = gpa != null ? gpaTier(gpa) : null;
   const gpaFill = gpa != null ? Math.max(0, Math.min(100, (gpa / 4) * 100)) : 0;
@@ -121,22 +124,29 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
                       <stop offset="100%" stopColor="#ec4899" />
                     </linearGradient>
                   </defs>
-                  <circle cx="64" cy="64" r={R} className="stat-meter__track" />
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r={R}
+                    className="stat-meter__track"
+                    strokeDasharray={`${trackLen} ${C}`}
+                    transform="rotate(120 64 64)"
+                  />
                   <circle
                     cx="64"
                     cy="64"
                     r={R}
                     className="stat-meter__arc"
-                    strokeDasharray={`${arc} ${C}`}
-                    transform="rotate(-90 64 64)"
+                    strokeDasharray={`${arcLen} ${C}`}
+                    transform="rotate(120 64 64)"
                   />
                 </svg>
                 <div className="stat-meter__center">
+                  <span className="stat-meter__label">percentile</span>
                   <span className="stat-meter__num">
                     {pctl}
                     <sup>{ord(pctl)}</sup>
                   </span>
-                  <span className="stat-meter__label">percentile</span>
                 </div>
               </div>
               <p className="stat-card__note">
@@ -195,6 +205,40 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
               </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Extracurricular summary — placeholder (generated via an API call later). */}
+      <div className="stat-card stat-ec">
+        <h2 className="stat-card__title">Extracurricular summary</h2>
+        <div className="stat-ec__body">
+          <div className="stat-ec__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="24" y1="24" x2="24" y2="8" />
+              <line x1="24" y1="24" x2="38" y2="15" />
+              <line x1="24" y1="24" x2="37" y2="35" />
+              <line x1="24" y1="24" x2="11" y2="36" />
+              <line x1="24" y1="24" x2="10" y2="16" />
+              <circle cx="24" cy="24" r="5" />
+              <circle cx="24" cy="8" r="3" />
+              <circle cx="38" cy="15" r="3" />
+              <circle cx="37" cy="35" r="3" />
+              <circle cx="11" cy="36" r="3" />
+              <circle cx="10" cy="16" r="3" />
+            </svg>
+          </div>
+          <div className="stat-ec__content">
+            <p className="stat-ec__lead">
+              A personalized read on your activities — the throughline across them and how it strengthens
+              your applications — will appear here.
+            </p>
+            <div className="stat-ec__skeleton" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <span className="stat-ec__tag">Summary coming soon</span>
+          </div>
         </div>
       </div>
     </section>
