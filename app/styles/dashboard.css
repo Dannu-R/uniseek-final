@@ -292,27 +292,33 @@
   margin: 0 auto; /* centered when the quiz takes the full width */
   max-width: 760px;
 }
-.wizard--embedded .wizard__head {
-  display: flex;
+/* "Save & exit" — top-left corner of the quiz, a clear back control. */
+.dash__back {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.wizard__exit {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
+  gap: 8px;
+  padding: 9px 16px 9px 12px;
+  margin-bottom: 22px;
+  border-radius: 9px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgba(109, 40, 217, 0.14);
+  color: #efeafd;
+  font-size: 0.9rem;
+  font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.14s, color 0.14s;
+  transition: background 0.14s, border-color 0.14s;
 }
-.wizard__exit:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+.dash__back:hover {
+  background: rgba(109, 40, 217, 0.24);
+  border-color: rgba(167, 139, 250, 0.5);
+}
+.dash__back-arrow {
+  flex-shrink: 0;
+  transition: transform 0.14s ease;
+}
+.dash__back:hover .dash__back-arrow {
+  transform: translateX(-2px);
 }
 
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */

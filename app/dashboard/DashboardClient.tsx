@@ -161,11 +161,29 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             <div className="dash__pause" aria-hidden="true" />
           ) : phase === "wizard" || phase === "closing" ? (
             <div className={`dash__wizard-stage ${phase === "closing" ? "is-out" : "is-in"}`}>
+              <button type="button" className="dash__back" onClick={closeQuiz}>
+                <svg
+                  className="dash__back-arrow"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M19 12H5" />
+                  <path d="M12 19l-7-7 7-7" />
+                </svg>
+                Save &amp; exit
+              </button>
               <header className="dash__view-head">
                 <h1 className="dash__view-title">Find your colleges</h1>
                 <p className="dash__view-sub">Answer a few questions — your progress is saved as you go.</p>
               </header>
-              <EmbeddedWizard onExit={closeQuiz} />
+              <EmbeddedWizard />
             </div>
           ) : tab === "recommended" ? (
             <section className="dash__view">

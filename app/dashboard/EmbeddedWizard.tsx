@@ -29,7 +29,7 @@ function Progress({ step, onJump }: { step: number; onJump: (n: number) => void 
   );
 }
 
-export default function EmbeddedWizard({ onExit }: { onExit?: () => void }) {
+export default function EmbeddedWizard() {
   const { step, next, back, setStep, hydrated } = useWizard();
   if (!hydrated) return <div className="wizard wizard--loading" />;
 
@@ -41,11 +41,6 @@ export default function EmbeddedWizard({ onExit }: { onExit?: () => void }) {
       <div className="wizard__inner">
         <header className="wizard__head">
           <Progress step={step} onJump={setStep} />
-          {onExit && (
-            <button type="button" className="wizard__exit" onClick={onExit}>
-              Save &amp; close
-            </button>
-          )}
         </header>
 
         <main className="wizard__panel">
