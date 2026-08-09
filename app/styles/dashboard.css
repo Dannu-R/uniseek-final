@@ -250,6 +250,40 @@
   font-size: 0.96rem;
 }
 
+/* Band filter (All / Reach / Match / Safety) — segmented control, both views. */
+.dash__filter {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 22px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.dash__filter-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+.dash__filter-btn:hover {
+  color: #fff;
+}
+.dash__filter-btn.is-active {
+  background: rgba(109, 40, 217, 0.32);
+  color: #fff;
+}
+.dash__filter-empty {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+}
+
 /* Empty state — centered geometric card */
 .dash__empty {
   display: grid;
