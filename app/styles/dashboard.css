@@ -3,10 +3,13 @@
    gradients). Fixed left rail of views + account; content area on the right.
    ================================================================ */
 
+/* The site header is a fixed 64px bar; offset the whole shell below it. */
 .dash {
+  --dash-header: 64px;
   display: grid;
   grid-template-columns: 248px 1fr;
   min-height: 100vh;
+  padding-top: var(--dash-header);
   background: var(--color-black);
   color: #e9e6f4;
 }
@@ -14,9 +17,9 @@
 /* ---- Left rail ---------------------------------------------------------- */
 .dash__rail {
   position: sticky;
-  top: 0;
+  top: var(--dash-header);
   align-self: start;
-  height: 100vh;
+  height: calc(100vh - var(--dash-header));
   display: flex;
   flex-direction: column;
   background: var(--color-void);
