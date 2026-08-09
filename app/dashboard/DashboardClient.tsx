@@ -12,11 +12,11 @@
 // Completion drops the result into state and renders it in place.
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
+import ExplorerView from "./ExplorerView";
 
 interface DashUser {
   name?: string | null;
@@ -96,14 +96,14 @@ const FILTERS: { key: BandFilter; label: string }[] = [
 const pct = (x: number | null | undefined) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function DashboardClient({ user }: { user: DashUser }) {
-  const router = useRouter();
   const [tab, setTab] = useState<TabKey>("recommended");
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [saved, setSaved] = useState<CollegeScore[]>([]);
   const [filter, setFilter] = useState<BandFilter>("all");
   const [loaded, setLoaded] = useState(false);
-  const [selected, setSelected] = useState<CollegeScore | null>(null);
+  const [exploring, setExploring] = useState<CollegeScore | null>(null);
+  const [unsaveTarget, setUnsaveTarget] = useState<CollegeScore | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Hydrate result + saved list + UI state once. If we were mid-quiz, restore straight to
@@ -163,63 +163,76 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   };
 
   const isSaved = (id: string) => saved.some((s) => s.collegeId === id);
-  const toggleSave = (c: CollegeScore) =>
-    setSaved((prev) =>
-      prev.some((s) => s.collegeId === c.collegeId)
-        ? prev.filter((s) => s.collegeId !== c.collegeId)
-        : [...prev, c],
-    );
+  const addSaved = (c: CollegeScore) =>
+    setSaved((prev) => (prev.some((s) => s.collegeId === c.collegeId) ? prev : [...prev, c]));
+  const removeSaved = (id: string) => setSaved((prev) => prev.filter((s) => s.collegeId !== id));
+
+  // Unsaving clears any personalized insight we stored for this college (session + DB).
+  const deleteInsight = (collegeId: string) => {
+    try {
+      sessionStorage.removeItem(`uniseek.insight.${collegeId}`);
+    } catch {
+      /* ignore */
+    }
+    fetch("/api/explore", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ collegeId }),
+    }).catch(() => {
+      /* best-effort */
+    });
+  };
+
+  // Saving is immediate; unsaving warns first (it deletes personal insights).
+  const handleSaveClick = (c: CollegeScore) => {
+    if (isSaved(c.collegeId)) setUnsaveTarget(c);
+    else addSaved(c);
+  };
+  const confirmUnsave = () => {
+    if (!unsaveTarget) return;
+    removeSaved(unsaveTarget.collegeId);
+    deleteInsight(unsaveTarget.collegeId);
+    setUnsaveTarget(null);
+  };
 
   const focused = phase !== "idle"; // rail slid away, content full width
   const hasList = !!result && !result.empty && (result.list?.length ?? 0) > 0;
   const displayName = user.name ?? user.email ?? "Your account";
   const initial = (user.name ?? user.email ?? "U").trim().charAt(0).toUpperCase();
 
-  // `explicitExplore` renders a dedicated "Explore" button and makes the body static
-  // (used in the Saved tab); otherwise the whole card body opens the Explorer.
-  const renderCard = (c: CollegeScore, explicitExplore = false) => {
+  // Every card has a static body plus an Explore button and a save toggle.
+  const renderCard = (c: CollegeScore) => {
     const on = isSaved(c.collegeId);
-    const body = (
-      <>
-        <span className="rs-card__name">{c.name}</span>
-        <span className="rs-card__rate">
-          {pct(c.overallAdmitRate)} <em>acceptance rate</em>
-        </span>
-      </>
-    );
     return (
       <div key={c.collegeId} className={`rs-card rs-card--${c.band}`}>
-        {explicitExplore ? (
-          <div className="rs-card__open rs-card__open--static">{body}</div>
-        ) : (
-          <button type="button" className="rs-card__open" onClick={() => setSelected(c)}>
-            {body}
-          </button>
-        )}
+        <div className="rs-card__open rs-card__open--static">
+          <span className="rs-card__name">{c.name}</span>
+          <span className="rs-card__rate">
+            {pct(c.overallAdmitRate)} <em>acceptance rate</em>
+          </span>
+        </div>
         <div className="rs-card__actions">
-          {explicitExplore && (
-            <button type="button" className="rs-card__explore" onClick={() => setSelected(c)}>
-              Explore
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14" />
-                <path d="M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
+          <button type="button" className="rs-card__explore" onClick={() => setExploring(c)}>
+            Explore
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </button>
           <button
             type="button"
             className={`rs-card__save ${on ? "is-saved" : ""}`}
-            onClick={() => toggleSave(c)}
+            onClick={() => handleSaveClick(c)}
             aria-pressed={on}
             aria-label={on ? `Remove ${c.name} from saved` : `Save ${c.name}`}
             title={on ? "Saved — click to remove" : "Save"}
@@ -339,6 +352,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               </header>
               <EmbeddedWizard />
             </div>
+          ) : exploring ? (
+            <ExplorerView college={exploring} onBack={() => setExploring(null)} />
           ) : tab === "stats" ? (
             <StatsView onEdit={openQuiz} />
           ) : tab === "saved" ? (
@@ -361,7 +376,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   {(() => {
                     const visible = saved.filter((c) => filter === "all" || c.band === filter);
                     return visible.length ? (
-                      <div className="rs-band__list">{visible.map((c) => renderCard(c, true))}</div>
+                      <div className="rs-band__list">{visible.map((c) => renderCard(c))}</div>
                     ) : (
                       <p className="dash__filter-empty">No saved colleges in this category.</p>
                     );
@@ -438,24 +453,20 @@ export default function DashboardClient({ user }: { user: DashUser }) {
         </main>
       </div>
 
-      {selected && (
-        <div className="rs-modal" role="dialog" aria-modal="true" onClick={() => setSelected(null)}>
+      {unsaveTarget && (
+        <div className="rs-modal" role="dialog" aria-modal="true" onClick={() => setUnsaveTarget(null)}>
           <div className="rs-modal__card" onClick={(e) => e.stopPropagation()}>
-            <h3 className="rs-modal__title">See personalized insights for {selected.name}?</h3>
+            <h3 className="rs-modal__title">Remove {unsaveTarget.name} from saved?</h3>
             <p className="rs-modal__body">
-              We'll analyze this college against your profile and write up how you fit — it takes a moment.
-              We only do this for colleges you choose to explore.
+              Any personalized insights we've saved for this college will be permanently deleted. You can
+              save it again and re-generate them later.
             </p>
             <div className="rs-modal__actions">
-              <button type="button" className="btn btn--ghost" onClick={() => setSelected(null)}>
+              <button type="button" className="btn btn--ghost" onClick={() => setUnsaveTarget(null)}>
                 Cancel
               </button>
-              <button
-                type="button"
-                className="btn btn--primary"
-                onClick={() => router.push(`/explorer/${selected.collegeId}`)}
-              >
-                Show me
+              <button type="button" className="btn btn--danger" onClick={confirmUnsave}>
+                Remove &amp; delete
               </button>
             </div>
           </div>

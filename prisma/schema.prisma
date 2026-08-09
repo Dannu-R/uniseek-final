@@ -216,6 +216,23 @@ model User {
   accounts  Account[]
   profile   Profile? // one profile per user (MVP)
   runs      SavedRun[]
+  insights  CollegeInsight[]
+}
+
+// Personalized College Explorer insight, cached per user+college so re-opening a college
+// serves the stored copy instead of regenerating it. Deleted when the user unsaves the
+// college. `collegeId` is the id the client uses (the catalog College id in real mode).
+model CollegeInsight {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId String
+  band      String?
+  data      Json // the generated CollegeInsight payload
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, collegeId])
 }
 
 // OAuth identity link. No passwords are ever stored — the provider authenticates.

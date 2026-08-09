@@ -3,6 +3,7 @@
 // (after the student confirms), never for the whole recommendation list.
 
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateCollegeInsight, type InsightCollege, type InsightStudent } from "@/lib/collegeInsight";
@@ -38,6 +39,14 @@ export async function POST(request: Request) {
   }
   const { collegeId, band = "target", profile = {} } = body;
   if (!collegeId) return NextResponse.json({ error: "collegeId required" }, { status: 400 });
+
+  const userId = session.user.id;
+
+  // Serve a previously stored insight instead of regenerating it.
+  const stored = await prisma.collegeInsight.findUnique({
+    where: { userId_collegeId: { userId, collegeId } },
+  });
+  if (stored) return NextResponse.json({ insight: stored.data, cached: true });
 
   const college = await prisma.college.findUnique({
     where: { id: collegeId },
@@ -96,5 +105,34 @@ export async function POST(request: Request) {
   };
 
   const insight = await generateCollegeInsight(collegeInput, studentInput);
-  return NextResponse.json({ insight });
+
+  // Persist the generated insight so future opens serve it from the DB.
+  if (insight) {
+    await prisma.collegeInsight.upsert({
+      where: { userId_collegeId: { userId, collegeId } },
+      update: { data: insight as unknown as Prisma.InputJsonValue, band },
+      create: { userId, collegeId, band, data: insight as unknown as Prisma.InputJsonValue },
+    });
+  }
+
+  return NextResponse.json({ insight, cached: false });
+}
+
+// Remove a stored insight (used when the student unsaves a college).
+export async function DELETE(request: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+  let body: { collegeId?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+  if (!body.collegeId) return NextResponse.json({ error: "collegeId required" }, { status: 400 });
+
+  const { count } = await prisma.collegeInsight.deleteMany({
+    where: { userId: session.user.id, collegeId: body.collegeId },
+  });
+  return NextResponse.json({ ok: true, deleted: count });
 }
