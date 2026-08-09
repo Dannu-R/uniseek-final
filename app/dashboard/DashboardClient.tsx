@@ -1,15 +1,17 @@
 "use client";
 
-// The dashboard shell: a fixed left rail (views + account) and a content area. The only
-// view today is "Recommended colleges", which has three states:
-//   1. no list yet, not building  → centered "Find colleges" call to action
-//   2. building                   → the intake wizard, embedded in the tab
-//   3. has a list                 → the reach / match / safety results
-// The wizard is mounted under WizardProvider at the shell level, so switching views
-// mid-quiz never loses progress. Completion (onComplete) drops the result into state and
-// renders it in place — no navigation.
+// The dashboard shell: a fixed left rail (views + account) and a content area, below the
+// shared site header. The only view today is "Recommended colleges", with three states:
+//   1. no list yet   → centered "Find colleges" call to action
+//   2. building       → the intake wizard, FULL WIDTH (the rail slides away)
+//   3. has a list     → the reach / match / safety results
+//
+// Starting the quiz is a phased, animated transition (idle → opening → wizard): the rail
+// fades/slides out, a beat passes, then the first question pops in. Closing reverses it.
+// The wizard is mounted under WizardProvider at the shell level, so its progress survives
+// the whole time. Completion drops the result into state and renders it in place.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { WizardProvider } from "@/app/build/WizardProvider";
@@ -36,6 +38,12 @@ interface ScoreResult {
 type TabKey = "recommended";
 const TABS: { key: TabKey; label: string }[] = [{ key: "recommended", label: "Recommended colleges" }];
 
+// Phases of the quiz transition. `opening` is the deliberate pause between the rail sliding
+// out and the first question appearing.
+type Phase = "idle" | "opening" | "wizard" | "closing";
+const OPEN_DELAY = 850; // rail slide (0.5s) + a beat before the question pops in
+const CLOSE_DELAY = 340; // wizard fades out before the rail slides back
+
 const RESULT_KEY = "uniseek.result.v1";
 const UI_KEY = "uniseek.dashboard.v1";
 
@@ -50,50 +58,63 @@ const pct = (x: number | null | undefined) => (x == null ? "—" : `${Math.round
 export default function DashboardClient({ user }: { user: DashUser }) {
   const router = useRouter();
   const [tab, setTab] = useState<TabKey>("recommended");
-  const [building, setBuilding] = useState(false);
+  const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState<CollegeScore | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Hydrate result + UI state from storage once.
+  // Hydrate result + UI state from storage once. If we were mid-quiz, restore straight to
+  // the wizard (no entrance animation on a reload).
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(RESULT_KEY);
       if (raw) setResult(JSON.parse(raw));
       const ui = sessionStorage.getItem(UI_KEY);
-      if (ui) {
-        const parsed = JSON.parse(ui) as { building?: boolean };
-        if (parsed.building) setBuilding(true);
-      }
+      if (ui && (JSON.parse(ui) as { building?: boolean }).building) setPhase("wizard");
     } catch {
       /* ignore corrupt storage */
     }
     setLoaded(true);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
   }, []);
 
-  // Persist the "building" flag so a refresh resumes the wizard rather than the CTA.
+  // Persist whether we're in the quiz so a refresh resumes it rather than the CTA.
   useEffect(() => {
-    if (loaded) {
-      try {
-        sessionStorage.setItem(UI_KEY, JSON.stringify({ building }));
-      } catch {
-        /* ignore quota */
-      }
+    if (!loaded) return;
+    try {
+      sessionStorage.setItem(UI_KEY, JSON.stringify({ building: phase === "wizard" || phase === "opening" }));
+    } catch {
+      /* ignore quota */
     }
-  }, [building, loaded]);
+  }, [phase, loaded]);
+
+  const openQuiz = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setPhase("opening");
+    timer.current = setTimeout(() => setPhase("wizard"), OPEN_DELAY);
+  };
+  const closeQuiz = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setPhase("closing");
+    timer.current = setTimeout(() => setPhase("idle"), CLOSE_DELAY);
+  };
 
   const handleComplete = (r: unknown) => {
     setResult(r as ScoreResult);
-    setBuilding(false);
+    closeQuiz();
   };
 
+  const focused = phase !== "idle"; // rail slid away, content full width
   const hasList = !!result && !result.empty && (result.list?.length ?? 0) > 0;
   const displayName = user.name ?? user.email ?? "Your account";
   const initial = (user.name ?? user.email ?? "U").trim().charAt(0).toUpperCase();
 
   return (
     <WizardProvider onComplete={handleComplete}>
-      <div className="dash">
+      <div className={`dash ${focused ? "is-focused" : ""}`}>
         <aside className="dash__rail">
           <div className="dash__brand">
             <span className="dash__brand-mark" aria-hidden="true" />
@@ -135,24 +156,27 @@ export default function DashboardClient({ user }: { user: DashUser }) {
         <main className="dash__main">
           {!loaded ? (
             <div className="dash__loading" />
+          ) : phase === "opening" ? (
+            // Deliberate pause: rail is sliding out, question not shown yet.
+            <div className="dash__pause" aria-hidden="true" />
+          ) : phase === "wizard" || phase === "closing" ? (
+            <div className={`dash__wizard-stage ${phase === "closing" ? "is-out" : "is-in"}`}>
+              <header className="dash__view-head">
+                <h1 className="dash__view-title">Find your colleges</h1>
+                <p className="dash__view-sub">Answer a few questions — your progress is saved as you go.</p>
+              </header>
+              <EmbeddedWizard onExit={closeQuiz} />
+            </div>
           ) : tab === "recommended" ? (
             <section className="dash__view">
-              {building ? (
-                <>
-                  <header className="dash__view-head">
-                    <h1 className="dash__view-title">Find your colleges</h1>
-                    <p className="dash__view-sub">Answer a few questions — your progress is saved as you go.</p>
-                  </header>
-                  <EmbeddedWizard onExit={() => setBuilding(false)} />
-                </>
-              ) : hasList ? (
+              {hasList ? (
                 <>
                   <header className="dash__view-head dash__view-head--row">
                     <div>
                       <h1 className="dash__view-title">Your recommended colleges</h1>
                       <p className="dash__view-sub">Select a college to explore how you fit.</p>
                     </div>
-                    <button type="button" className="btn btn--ghost" onClick={() => setBuilding(true)}>
+                    <button type="button" className="btn btn--ghost" onClick={openQuiz}>
                       Edit answers &amp; re-run
                     </button>
                   </header>
@@ -194,7 +218,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                         ? `Your ${result.blockingFilter} filter is the tightest constraint — loosening it would bring colleges back.`
                         : "Try loosening your hard filters, then run the search again."}
                     </p>
-                    <button type="button" className="btn btn--primary" onClick={() => setBuilding(true)}>
+                    <button type="button" className="btn btn--primary" onClick={openQuiz}>
                       Adjust answers
                     </button>
                   </div>
@@ -208,7 +232,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                       Answer a few questions about your grades, goals, and preferences, and we'll build a
                       reach / match / safety list tailored to you.
                     </p>
-                    <button type="button" className="btn btn--primary btn--lg" onClick={() => setBuilding(true)}>
+                    <button type="button" className="btn btn--primary btn--lg" onClick={openQuiz}>
                       Find colleges
                     </button>
                   </div>

@@ -3,11 +3,13 @@
    gradients). Fixed left rail of views + account; content area on the right.
    ================================================================ */
 
-/* The site header is a fixed 64px bar; offset the whole shell below it. */
+/* The site header is a fixed 64px bar; offset the whole shell below it. The rail is
+   fixed on the left and the content is offset by its width, so starting the quiz can
+   slide the rail away and expand the content to full width (both animated). */
 .dash {
   --dash-header: 64px;
-  display: grid;
-  grid-template-columns: 248px 1fr;
+  --dash-rail: 248px;
+  position: relative;
   min-height: 100vh;
   padding-top: var(--dash-header);
   background: var(--color-black);
@@ -16,15 +18,28 @@
 
 /* ---- Left rail ---------------------------------------------------------- */
 .dash__rail {
-  position: sticky;
+  position: fixed;
   top: var(--dash-header);
-  align-self: start;
+  left: 0;
+  width: var(--dash-rail);
   height: calc(100vh - var(--dash-header));
+  z-index: 20;
   display: flex;
   flex-direction: column;
   background: var(--color-void);
   border-right: 1px solid rgba(167, 139, 250, 0.14);
   padding: 22px 16px;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+/* Quiz focus mode — rail slides/fades out, content takes the full width. */
+.dash.is-focused .dash__rail {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.dash.is-focused .dash__main {
+  margin-left: 0;
 }
 
 .dash__brand {
@@ -166,11 +181,35 @@
 
 /* ---- Content ----------------------------------------------------------- */
 .dash__main {
+  margin-left: var(--dash-rail);
+  min-height: calc(100vh - var(--dash-header));
   padding: 40px 44px 64px;
   overflow-x: hidden;
+  transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .dash__loading {
   min-height: 60vh;
+}
+
+/* The pause between the rail sliding out and the first question popping in. */
+.dash__pause {
+  min-height: 40vh;
+}
+
+/* The quiz, once it appears — pops in / out. */
+.dash__wizard-stage.is-in {
+  animation: dashPopIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.dash__wizard-stage.is-out {
+  animation: dashPopOut 0.3s ease both;
+}
+@keyframes dashPopIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dashPopOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(8px) scale(0.99); }
 }
 .dash__view {
   max-width: 940px;
@@ -250,7 +289,7 @@
   display: block;
 }
 .wizard--embedded .wizard__inner {
-  margin: 0;
+  margin: 0 auto; /* centered when the quiz takes the full width */
   max-width: 760px;
 }
 .wizard--embedded .wizard__head {
@@ -276,14 +315,25 @@
   color: #fff;
 }
 
+/* Respect reduced-motion: no slide/fade/pop, just cut between states. */
+@media (prefers-reduced-motion: reduce) {
+  .dash__rail,
+  .dash__main {
+    transition: none;
+  }
+  .dash__wizard-stage.is-in,
+  .dash__wizard-stage.is-out {
+    animation: none;
+  }
+}
+
 /* ---- Responsive: rail collapses to a top bar --------------------------- */
 @media (max-width: 720px) {
-  .dash {
-    grid-template-columns: 1fr;
-  }
   .dash__rail {
     position: static;
+    width: auto;
     height: auto;
+    z-index: auto;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
@@ -291,6 +341,14 @@
     border-right: none;
     border-bottom: 1px solid rgba(167, 139, 250, 0.14);
     padding: 12px 16px;
+  }
+  .dash__main {
+    margin-left: 0;
+    padding: 24px 18px 48px;
+  }
+  /* Focus mode on small screens: just hide the bar (no horizontal slide). */
+  .dash.is-focused .dash__rail {
+    display: none;
   }
   .dash__brand {
     padding: 0 8px 0 0;
@@ -318,8 +376,5 @@
   }
   .dash__signout {
     width: auto;
-  }
-  .dash__main {
-    padding: 24px 18px 48px;
   }
 }
