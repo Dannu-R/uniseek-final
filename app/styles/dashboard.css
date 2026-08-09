@@ -388,6 +388,11 @@
   background: var(--color-void);
   padding: 26px 26px 30px;
 }
+/* Full-width cards stack below the two-up grid — keep the same rhythm as its gap. */
+.stat-grid + .stat-card,
+.stat-card + .stat-card {
+  margin-top: 20px;
+}
 .stat-card__title {
   margin: 0 0 20px;
   font-size: 0.78rem;
@@ -542,9 +547,6 @@
 }
 
 /* Extracurricular summary (placeholder) */
-.stat-ec {
-  margin-top: 20px;
-}
 .stat-ec__body {
   display: flex;
   align-items: center;
@@ -713,9 +715,9 @@
   height: auto;
   display: block;
   overflow: visible;
-  /* The viewBox is cropped tight to the geometry, so the breathing room above and
-     below the map has to come from here. */
-  margin: 22px 0;
+  /* The viewBox is cropped tight to the geometry, so the breathing room inside the
+     card has to come from here. */
+  margin: 10px 0;
 }
 .usmap__state {
   fill: rgba(167, 139, 250, 0.09);
