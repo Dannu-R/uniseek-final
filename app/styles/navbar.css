@@ -97,8 +97,126 @@
   box-shadow: 0 6px 18px -6px rgba(255, 255, 255, 0.5);
 }
 
+/* ---- Refined right-side actions --------------------------------------- */
+.navbar__actions {
+  gap: 10px;
+}
+.navbar__actions form {
+  margin: 0;
+  display: flex;
+}
+
+/* Pill buttons (Dashboard / Log in / Sign up) */
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.18s ease, box-shadow 0.18s ease;
+}
+.nav-pill--ghost {
+  color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.045);
+}
+.nav-pill--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.nav-pill--primary {
+  color: #fff;
+  background: var(--gradient-fit);
+  box-shadow: 0 8px 22px -10px rgba(236, 72, 153, 0.7);
+}
+.nav-pill--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px -10px rgba(236, 72, 153, 0.85);
+}
+
+/* Thin separator between navigation and identity */
+.nav-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0 2px;
+}
+
+/* Signed-in identity chip */
+.nav-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 14px 5px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.nav-user__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.nav-user__avatar--initial {
+  display: grid;
+  place-items: center;
+  background: var(--gradient-fit);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.nav-user__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Circular sign-out icon button */
+.nav-iconbtn {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.nav-iconbtn:hover {
+  background: rgba(236, 72, 153, 0.14);
+  border-color: rgba(236, 72, 153, 0.4);
+  color: #fff;
+}
+
 @media (max-width: 720px) {
   .navbar__links {
     display: none;
+  }
+}
+@media (max-width: 560px) {
+  /* Tighten identity to just the avatar on very small screens. */
+  .nav-user__name,
+  .nav-divider {
+    display: none;
+  }
+  .nav-user {
+    padding: 4px;
+    border: none;
+    background: none;
   }
 }
