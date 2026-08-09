@@ -147,24 +147,59 @@
   color: rgba(255, 255, 255, 0.28);
 }
 
-/* Section cards — masonry columns */
-.ex2-grid {
-  columns: 2;
-  column-gap: 18px;
+/* Section cards — bento grid (Admissions is the wide centerpiece) */
+.ex2-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 .ex2-card {
-  break-inside: avoid;
-  margin: 0 0 18px;
-  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 24px;
   border: 1px solid rgba(167, 139, 250, 0.16);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--color-void);
+}
+.ex2-card--w2 {
+  grid-column: span 2;
+}
+.ex2-card--w3 {
+  grid-column: 1 / -1;
+}
+.ex2-card--click {
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.ex2-card--click:hover {
+  border-color: rgba(167, 139, 250, 0.42);
+  background: #120c26;
+}
+.ex2-card--click:focus-visible {
+  outline: 2px solid var(--color-purple-light);
+  outline-offset: 2px;
 }
 .ex2-card__head {
   display: flex;
   align-items: center;
   gap: 11px;
   margin-bottom: 14px;
+}
+.ex2-card__src {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.15s;
+}
+.ex2-card__src svg {
+  width: 13px;
+  height: 13px;
+}
+.ex2-card--click:hover .ex2-card__src {
+  color: var(--color-purple-light);
 }
 .ex2-card__icon {
   flex-shrink: 0;
@@ -214,14 +249,24 @@
   font-size: 0.68rem;
 }
 
-@media (max-width: 760px) {
-  .ex2-grid {
-    columns: 1;
+@media (max-width: 920px) {
+  .ex2-bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ex2-card--w2 {
+    grid-column: 1 / -1;
   }
 }
 @media (max-width: 640px) {
   .ex2-stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .ex2-bento {
+    grid-template-columns: 1fr;
+  }
+  .ex2-card--w2,
+  .ex2-card--w3 {
+    grid-column: auto;
   }
 }
 .explorer__inner {
@@ -379,50 +424,58 @@
   gap: 28px;
   margin-bottom: 18px;
 }
-.adm__gauge {
-  position: relative;
-  width: 148px;
-  height: 148px;
+/* Half-circle acceptance dial (3 tiers + needle) */
+.gauge {
   flex-shrink: 0;
-}
-.adm__gauge svg {
-  width: 100%;
-  height: 100%;
-}
-.adm__gauge-track {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
-  stroke-width: 9;
-}
-.adm__gauge-arc {
-  fill: none;
-  stroke: url(#admGrad);
-  stroke-width: 9;
-  stroke-linecap: round;
-}
-.adm__gauge-center {
-  position: absolute;
-  inset: 0;
+  width: 212px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  text-align: center;
 }
-.adm__gauge-num {
+.gauge__svg {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+}
+.gauge__pct {
+  margin-top: -6px;
   font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.9rem;
+  font-size: 2.2rem;
   font-weight: 800;
   line-height: 1;
   color: #fff;
 }
-.adm__gauge-label {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 5px;
+.gauge__cap {
+  margin-top: 4px;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
+}
+.gauge__legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.gauge__leg {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+.gauge__leg i {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  opacity: 0.5;
+}
+.gauge__leg.is-on {
+  color: #fff;
+}
+.gauge__leg.is-on i {
+  opacity: 1;
 }
 .adm__ranges {
   flex: 1;
@@ -519,29 +572,20 @@
   vertical-align: baseline;
 }
 
-/* Sources drawer (slides in from the right) */
-.ex-drawer-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: rgba(5, 4, 10, 0.55);
-  display: flex;
-  justify-content: flex-end;
-  animation: exFade 0.2s ease both;
-}
+/* Sticky sources side panel — pinned below the header; the page scrolls behind it. */
 .ex-drawer {
-  width: min(440px, 92vw);
-  height: 100vh;
+  position: fixed;
+  top: 64px;
+  right: 0;
+  z-index: 55;
+  width: min(420px, 92vw);
+  height: calc(100vh - 64px);
   background: var(--color-void);
-  border-left: 1px solid rgba(167, 139, 250, 0.2);
-  box-shadow: -20px 0 60px -20px rgba(0, 0, 0, 0.7);
+  border-left: 1px solid rgba(167, 139, 250, 0.22);
+  box-shadow: -24px 0 60px -24px rgba(0, 0, 0, 0.8);
   padding: 24px 24px 32px;
   overflow-y: auto;
   animation: exSlide 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-@keyframes exFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 @keyframes exSlide {
   from { transform: translateX(24px); opacity: 0; }
@@ -649,7 +693,6 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ex-drawer-overlay,
   .ex-drawer {
     animation: none;
   }

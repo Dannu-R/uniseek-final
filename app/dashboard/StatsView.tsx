@@ -99,6 +99,55 @@ const ord = (n: number): string => {
   return s[(v - 20) % 10] || s[v] || s[0];
 };
 
+// Line chart of 10th → 11th → 12th unweighted GPA. Draws the empty grid when there
+// aren't at least two years of data (the caller overlays a caption in that case).
+function TrendChart({ values }: { values: (number | null)[] }) {
+  const W = 320;
+  const H = 178;
+  const padL = 40;
+  const padR = 18;
+  const padT = 18;
+  const padB = 42;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const yMin = 2;
+  const yMax = 4;
+  const xs = [padL, padL + plotW / 2, padL + plotW];
+  const yFor = (v: number) => padT + plotH * (1 - (Math.max(yMin, Math.min(yMax, v)) - yMin) / (yMax - yMin));
+  const grid = [2, 2.5, 3, 3.5, 4];
+  const labels = ["10th", "11th", "12th"];
+  const pts = values
+    .map((v, i) => (v != null ? { x: xs[i], y: yFor(v), v } : null))
+    .filter((p): p is { x: number; y: number; v: number } => p != null);
+  const has = pts.length >= 2;
+  const line = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="trend__svg" role="img" aria-label="Grade trend">
+      {grid.map((g) => (
+        <g key={g}>
+          <line x1={padL} y1={yFor(g)} x2={W - padR} y2={yFor(g)} className="trend__grid" />
+          <text x={padL - 8} y={yFor(g) + 3.5} textAnchor="end" className="trend__ylabel">{g.toFixed(1)}</text>
+        </g>
+      ))}
+      {labels.map((l, i) => (
+        <text key={l} x={xs[i]} y={H - padB + 24} textAnchor="middle" className="trend__xlabel">{l}</text>
+      ))}
+      {has && (
+        <>
+          <path d={line} className="trend__line" />
+          {pts.map((p, i) => (
+            <g key={i}>
+              <circle cx={p.x} cy={p.y} r="4.5" className="trend__dot" />
+              <text x={p.x} y={p.y - 11} textAnchor="middle" className="trend__value">{p.v.toFixed(2)}</text>
+            </g>
+          ))}
+        </>
+      )}
+    </svg>
+  );
+}
+
 export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const { data, hydrated } = useWizard();
 
@@ -137,6 +186,9 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const trackLen = C * GAUGE;
   const arcLen = mounted && pctl != null ? (C * GAUGE * pctl) / 100 : 0;
   const gpaFill = mounted && gpa != null ? Math.max(0, Math.min(100, (gpa / 4) * 100)) : 0;
+
+  const gradeValues = [num(data.gpaGrade10), num(data.gpaGrade11), num(data.gpaGrade12)];
+  const hasTrend = gradeValues.filter((v) => v != null).length >= 2;
 
   return (
     <section className="dash__view">
@@ -237,6 +289,22 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
               <p className="stat-empty__text">Add your unweighted GPA in the quiz to see its strength.</p>
               <button type="button" className="btn btn--ghost" onClick={onEdit}>
                 Edit answers
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Grade trend — 10th → 12th unweighted GPA. */}
+      <div className="stat-card">
+        <h2 className="stat-card__title">Grade trend</h2>
+        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+          <TrendChart values={gradeValues} />
+          {!hasTrend && (
+            <div className="trend__empty">
+              <p className="trend__empty-text">Take the quiz again and add your year-by-year GPAs to see your grade trend.</p>
+              <button type="button" className="btn btn--ghost" onClick={onEdit}>
+                Take the quiz again
               </button>
             </div>
           )}

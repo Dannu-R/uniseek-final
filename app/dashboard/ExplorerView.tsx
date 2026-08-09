@@ -1,13 +1,13 @@
 "use client";
 
-// College Explorer, rendered INLINE inside a dashboard tab (expands to fill the content
-// area). Modern layout: a hero, a quick-stats strip, an Admissions viz block (gauge +
-// you-vs-admitted range bars), and a card grid of sections. Every point carries a small
-// source marker that opens a slide-in sources drawer — so long / multiple citations stay
-// out of the way until asked for. Personalized insight is generated on demand via
-// /api/explore (served from the DB if already stored). Placeholder mode shows the outline.
+// College Explorer, rendered INLINE inside a dashboard tab. Bento layout with Admissions
+// as the centerpiece (a 3-tier acceptance dial + you-vs-admitted range bars); the other
+// section cards fit around it. Each card is clickable to open its sources in a sticky
+// side panel. Personalized insight is generated on demand via /api/explore (served from
+// the DB if already stored). Placeholder mode shows the outline.
 
 import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { toPayload } from "@/app/build/toPayload";
 import { USE_PLACEHOLDER_RESULTS } from "@/app/build/placeholderResult";
 import type { WizardData } from "@/app/build/model";
@@ -67,7 +67,6 @@ const SECTION_SOURCES: Record<IconKey, Source[]> = {
   consider: [SRC_MODEL, SRC_SCORECARD],
 };
 
-// --- Section icons ---------------------------------------------------------------------
 const ICON: Record<IconKey, ReactNode> = {
   fit: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -127,8 +126,8 @@ type TextField = "whyFits" | "admissions" | "cost" | "studentLife" | "thingsToCo
 type Point = { label: string; note: string };
 type Section = { title: string; icon: IconKey; field?: TextField; dynamic?: "ec"; points?: Point[] };
 
-const SECTIONS: Section[] = [
-  {
+const SECTIONS: Record<IconKey, Section> = {
+  fit: {
     title: "Why this fits you",
     icon: "fit",
     field: "whyFits",
@@ -139,11 +138,10 @@ const SECTIONS: Section[] = [
       { label: "Preference match", note: "the things you said you care about, scored for this college" },
     ],
   },
-  {
+  admissions: {
     title: "Admissions",
     icon: "admissions",
     field: "admissions",
-    // The gauge + range bars cover acceptance rate, GPA, and test scores; these are the rest.
     points: [
       { label: "Acceptance rate for your major", note: "program-specific rate, where published" },
       { label: "In-state vs out-of-state", note: "residency-adjusted odds" },
@@ -151,7 +149,7 @@ const SECTIONS: Section[] = [
       { label: "Class rank", note: "where you sit in your class" },
     ],
   },
-  {
+  cost: {
     title: "Cost",
     icon: "cost",
     field: "cost",
@@ -161,7 +159,7 @@ const SECTIONS: Section[] = [
       { label: "Merit aid", note: "non-need scholarships on offer" },
     ],
   },
-  {
+  life: {
     title: "Student life",
     icon: "life",
     field: "studentLife",
@@ -174,8 +172,8 @@ const SECTIONS: Section[] = [
       { label: "Setting", note: "urban, suburban, or rural" },
     ],
   },
-  { title: "Extracurricular fit", icon: "ec", dynamic: "ec" },
-  {
+  ec: { title: "Extracurricular fit", icon: "ec", dynamic: "ec" },
+  consider: {
     title: "Things to consider",
     icon: "consider",
     field: "thingsToConsider",
@@ -185,7 +183,9 @@ const SECTIONS: Section[] = [
       { label: "Trade-offs", note: "honest concerns worth weighing" },
     ],
   },
-];
+};
+// Bento order: admissions centerpiece, then the rest around it.
+const ORDER: IconKey[] = ["admissions", "fit", "cost", "life", "ec", "consider"];
 
 function PhotoTile({ label }: { label: string }) {
   return (
@@ -200,28 +200,57 @@ function PhotoTile({ label }: { label: string }) {
   );
 }
 
-type OpenSources = (label: string, sources: Source[]) => void;
+// Half-circle acceptance dial: three tier zones (reach / match / safety) with a needle
+// pointing to this college's band, and the acceptance percentage below.
+function AcceptanceGauge({ admitRate, band }: { admitRate: number | null; band: College["band"] }) {
+  const cx = 100;
+  const cy = 100;
+  const R = 78;
+  const pt = (a: number, r = R) => [cx + r * Math.cos((a * Math.PI) / 180), cy - r * Math.sin((a * Math.PI) / 180)];
+  const arc = (a0: number, a1: number) => {
+    const [x0, y0] = pt(a0);
+    const [x1, y1] = pt(a1);
+    return `M ${x0} ${y0} A ${R} ${R} 0 0 1 ${x1} ${y1}`;
+  };
+  const zones: { key: College["band"]; label: string; color: string; a0: number; a1: number }[] = [
+    { key: "reach", label: "Reach", color: "#f472b6", a0: 180, a1: 120 },
+    { key: "target", label: "Match", color: "#a78bfa", a0: 120, a1: 60 },
+    { key: "safety", label: "Safety", color: "#34d399", a0: 60, a1: 0 },
+  ];
+  const needleAngle = band === "reach" ? 150 : band === "safety" ? 30 : 90;
+  const [nx, ny] = pt(needleAngle, R - 18);
 
-// Tiny inline source marker — faint until hovered; opens the sources drawer on click.
-function Cite({ label, sources, onOpen }: { label: string; sources: Source[]; onOpen: OpenSources }) {
   return (
-    <button
-      type="button"
-      className="ex-cite"
-      title={`View source${sources.length > 1 ? "s" : ""}`}
-      aria-label={`Sources for ${label}`}
-      onClick={() => onOpen(label, sources)}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M6 3h9l3 3v15H6z" />
-        <path d="M9 9h6M9 13h6M9 17h4" />
+    <div className="gauge">
+      <svg viewBox="0 0 200 116" className="gauge__svg" aria-hidden="true">
+        {zones.map((z) => (
+          <path
+            key={z.key}
+            d={arc(z.a0, z.a1)}
+            stroke={z.color}
+            strokeWidth="15"
+            fill="none"
+            opacity={band === z.key ? 1 : 0.3}
+          />
+        ))}
+        <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx={cx} cy={cy} r="7.5" fill="#fff" />
+        <circle cx={cx} cy={cy} r="3.5" fill="#0b0918" />
       </svg>
-      {sources.length > 1 && <span className="ex-cite__count">{sources.length}</span>}
-    </button>
+      <div className="gauge__pct">{admitRate != null ? `${Math.round(admitRate * 100)}%` : "—"}</div>
+      <div className="gauge__cap">acceptance rate</div>
+      <div className="gauge__legend">
+        {zones.map((z) => (
+          <span key={z.key} className={`gauge__leg ${band === z.key ? "is-on" : ""}`}>
+            <i style={{ background: z.color }} />
+            {z.label}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
-// Horizontal "you vs admitted range" bar.
 function RangeBar({
   label,
   min,
@@ -232,7 +261,6 @@ function RangeBar({
   color,
   minTick,
   maxTick,
-  onSource,
 }: {
   label: string;
   min: number;
@@ -243,18 +271,14 @@ function RangeBar({
   color?: string;
   minTick: string;
   maxTick: string;
-  onSource: OpenSources;
 }) {
   const span = max - min;
-  const bandLeft = (clamp(band.lo, min, max) - min) / span * 100;
-  const bandWidth = (clamp(band.hi, min, max) - clamp(band.lo, min, max)) / span * 100;
-  const markLeft = marker != null ? (clamp(marker, min, max) - min) / span * 100 : null;
+  const bandLeft = ((clamp(band.lo, min, max) - min) / span) * 100;
+  const bandWidth = ((clamp(band.hi, min, max) - clamp(band.lo, min, max)) / span) * 100;
+  const markLeft = marker != null ? ((clamp(marker, min, max) - min) / span) * 100 : null;
   return (
     <div className="rb">
-      <div className="rb__label">
-        {label}
-        <Cite label={label} sources={SECTION_SOURCES.admissions} onOpen={onSource} />
-      </div>
+      <div className="rb__label">{label}</div>
       <div className="rb__track">
         <div className="rb__band" style={{ left: `${bandLeft}%`, width: `${bandWidth}%` }} />
         {markLeft != null && (
@@ -274,55 +298,22 @@ function RangeBar({
 
 function AdmissionsViz({
   admitRate,
+  band,
   gpa,
   sat,
   act,
-  onSource,
 }: {
   admitRate: number | null;
+  band: College["band"];
   gpa: number | null;
   sat: number | null;
   act: number | null;
-  onSource: OpenSources;
 }) {
-  const R = 40;
-  const C = 2 * Math.PI * R;
-  const arc = admitRate != null ? C * clamp(admitRate, 0.02, 1) : 0;
-
   const satVal = sat ?? (act != null ? ACT_TO_SAT[clamp(Math.round(act), 9, 36)] ?? null : null);
   const satLabel = satVal != null ? `You ${satVal}${sat == null && act != null ? " (ACT est.)" : ""}` : null;
-
   return (
     <div className="adm">
-      <div className="adm__gauge">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <linearGradient id="admGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#8b5cf6" />
-              <stop offset="100%" stopColor="#ec4899" />
-            </linearGradient>
-          </defs>
-          <circle cx="50" cy="50" r={R} className="adm__gauge-track" />
-          {admitRate != null && (
-            <circle
-              cx="50"
-              cy="50"
-              r={R}
-              className="adm__gauge-arc"
-              strokeDasharray={`${arc} ${C}`}
-              transform="rotate(-90 50 50)"
-            />
-          )}
-        </svg>
-        <div className="adm__gauge-center">
-          <span className="adm__gauge-num">{admitRate != null ? `${Math.round(admitRate * 100)}%` : "—"}</span>
-          <span className="adm__gauge-label">
-            acceptance
-            <Cite label="Acceptance rate" sources={SECTION_SOURCES.admissions} onOpen={onSource} />
-          </span>
-        </div>
-      </div>
-
+      <AcceptanceGauge admitRate={admitRate} band={band} />
       <div className="adm__ranges">
         <RangeBar
           label="Your SAT vs admitted"
@@ -333,7 +324,6 @@ function AdmissionsViz({
           band={{ lo: 1380, hi: 1540 }}
           minTick="400"
           maxTick="1600"
-          onSource={onSource}
         />
         <RangeBar
           label="Your GPA vs admitted"
@@ -345,7 +335,6 @@ function AdmissionsViz({
           color={gpa != null ? gpaColor(gpa) : undefined}
           minTick="0"
           maxTick="4.0"
-          onSource={onSource}
         />
       </div>
     </div>
@@ -360,7 +349,23 @@ export default function ExplorerView({ college, onBack }: { college: College; on
   const [insight, setInsight] = useState<CollegeInsight | null>(null);
   const [insightState, setInsightState] = useState<InsightState>("idle");
   const [drawer, setDrawer] = useState<{ label: string; sources: Source[] } | null>(null);
-  const openSources: OpenSources = (label, sources) => setDrawer({ label, sources });
+  const openSources = (label: string, sources: Source[]) => setDrawer({ label, sources });
+
+  // Close the sticky sources panel on Escape or a click outside it (no blocking overlay,
+  // so the page keeps scrolling with the panel pinned in view).
+  useEffect(() => {
+    if (!drawer) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDrawer(null);
+    const onDown = (e: MouseEvent) => {
+      if (!(e.target as Element)?.closest?.(".ex-drawer")) setDrawer(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onDown);
+    };
+  }, [drawer]);
 
   useEffect(() => {
     let active = true;
@@ -430,67 +435,46 @@ export default function ExplorerView({ college, onBack }: { college: College; on
   }, [college.collegeId, college.band]);
 
   const banner = USE_PLACEHOLDER_RESULTS
-    ? "Preview mode — an outline of what this page covers. Personalized insights are turned off."
+    ? "Preview mode — an outline of what this page covers. Click any card to view its sources."
     : insightState === "loading"
       ? "Analyzing this college against your profile…"
       : insightState === "ready"
-        ? "Personalized for you, based on your profile."
+        ? "Personalized for you. Click any card to view its sources."
         : insightState === "error"
           ? "Couldn't generate personalized insights right now — here's an outline."
           : "Build your profile to get personalized insights.";
 
-  const outline = (points: Point[], sources: Source[]) => (
+  const outline = (points: Point[]) => (
     <ul className="ex-points">
       {points.map((p) => (
         <li key={p.label} className="ex-point">
           <span className="ex-point__label">{p.label}</span>
           <span className="ex-point__note"> — {p.note}</span>
-          <Cite label={p.label} sources={sources} onOpen={openSources} />
         </li>
       ))}
     </ul>
   );
 
   const sectionBody = (s: Section) => {
-    const sources = SECTION_SOURCES[s.icon];
-
     if (s.dynamic === "ec") {
       const items = insight
         ? insight.extracurriculars.map((e) => ({ label: e.activity, note: e.note }))
         : activities.map((a) => ({ label: a, note: "how this activity could strengthen your case here" }));
       if (!items.length)
         return <p className="ex-section__body">Add activities to your profile and we'll cover how each one might help you here.</p>;
-      return outline(items, sources);
+      return outline(items);
     }
-
     if (s.icon === "admissions") {
       return (
         <>
-          <AdmissionsViz admitRate={college.overallAdmitRate} gpa={stu.gpa} sat={stu.sat} act={stu.act} onSource={openSources} />
-          {s.field && insightState === "ready" && insight ? (
-            <p className="ex-section__body">
-              {insight[s.field]}
-              <Cite label={s.title} sources={sources} onOpen={openSources} />
-            </p>
-          ) : (
-            outline(s.points ?? [], sources)
-          )}
+          <AdmissionsViz admitRate={college.overallAdmitRate} band={college.band} gpa={stu.gpa} sat={stu.sat} act={stu.act} />
+          {s.field && insightState === "ready" && insight ? <p className="ex-section__body">{insight[s.field]}</p> : outline(s.points ?? [])}
         </>
       );
     }
-
-    if (s.field && insightState === "ready" && insight)
-      return (
-        <p className="ex-section__body">
-          {insight[s.field]}
-          <Cite label={s.title} sources={sources} onOpen={openSources} />
-        </p>
-      );
-    return outline(s.points ?? [], sources);
+    if (s.field && insightState === "ready" && insight) return <p className="ex-section__body">{insight[s.field]}</p>;
+    return outline(s.points ?? []);
   };
-
-  const admissions = SECTIONS.find((s) => s.icon === "admissions")!;
-  const rest = SECTIONS.filter((s) => s.icon !== "admissions");
 
   return (
     <div className="explorer explorer--inline">
@@ -533,86 +517,96 @@ export default function ExplorerView({ college, onBack }: { college: College; on
           </div>
         </div>
 
-        {/* Admissions — full-width statistical block (gauge + range bars). */}
-        <section className="ex2-card ex2-card--full">
-          <div className="ex2-card__head">
-            <span className="ex2-card__icon" aria-hidden="true">
-              {ICON.admissions}
-            </span>
-            <h2 className="ex2-card__title">{admissions.title}</h2>
-          </div>
-          <div className="ex2-card__body">{sectionBody(admissions)}</div>
-        </section>
-
-        <div className="ex2-grid">
-          {rest.map((s) => (
-            <section key={s.title} className="ex2-card">
-              <div className="ex2-card__head">
-                <span className="ex2-card__icon" aria-hidden="true">
-                  {ICON[s.icon]}
-                </span>
-                <h2 className="ex2-card__title">{s.title}</h2>
-              </div>
-              <div className="ex2-card__body">{sectionBody(s)}</div>
-
-              {s.icon === "life" && (
-                <div className="ex2-gallery">
-                  <PhotoTile label="Campus" />
-                  <PhotoTile label="Dorms" />
-                  <PhotoTile label="Quad" />
+        {/* Bento — Admissions is the wide centerpiece; the rest fit around it. */}
+        <div className="ex2-bento">
+          {ORDER.map((key) => {
+            const s = SECTIONS[key];
+            const sources = SECTION_SOURCES[key];
+            const spanClass = key === "admissions" ? "ex2-card--w2" : key === "consider" ? "ex2-card--w3" : "";
+            return (
+              <section
+                key={key}
+                className={`ex2-card ex2-card--click ${spanClass}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`View sources for ${s.title}`}
+                onClick={() => openSources(s.title, sources)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openSources(s.title, sources);
+                  }
+                }}
+              >
+                <div className="ex2-card__head">
+                  <span className="ex2-card__icon" aria-hidden="true">
+                    {ICON[key]}
+                  </span>
+                  <h2 className="ex2-card__title">{s.title}</h2>
+                  <span className="ex2-card__src" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6 3h9l3 3v15H6z" />
+                      <path d="M9 9h6M9 13h6M9 17h4" />
+                    </svg>
+                    Sources
+                  </span>
                 </div>
-              )}
-            </section>
-          ))}
+                <div className="ex2-card__body">{sectionBody(s)}</div>
+
+                {key === "life" && (
+                  <div className="ex2-gallery">
+                    <PhotoTile label="Campus" />
+                    <PhotoTile label="Dorms" />
+                    <PhotoTile label="Quad" />
+                  </div>
+                )}
+              </section>
+            );
+          })}
         </div>
       </div>
 
-      {drawer && (
-        <div className="ex-drawer-overlay" onClick={() => setDrawer(null)}>
-          <aside
-            className="ex-drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Sources for ${drawer.label}`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="ex-drawer__head">
-              <div>
-                <p className="ex-drawer__eyebrow">Sources</p>
-                <h3 className="ex-drawer__title">{drawer.label}</h3>
-              </div>
-              <button type="button" className="ex-drawer__close" onClick={() => setDrawer(null)} aria-label="Close sources">
-                ✕
-              </button>
+      {drawer &&
+        typeof document !== "undefined" &&
+        createPortal(
+        <aside className="ex-drawer" role="dialog" aria-label={`Sources for ${drawer.label}`}>
+          <div className="ex-drawer__head">
+            <div>
+              <p className="ex-drawer__eyebrow">Sources</p>
+              <h3 className="ex-drawer__title">{drawer.label}</h3>
             </div>
+            <button type="button" className="ex-drawer__close" onClick={() => setDrawer(null)} aria-label="Close sources">
+              ✕
+            </button>
+          </div>
 
-            {drawer.sources.length ? (
-              <ol className="ex-src-list">
-                {drawer.sources.map((s, i) => (
-                  <li key={i} className="ex-src">
-                    <span className="ex-src__num">{i + 1}</span>
-                    <div className="ex-src__body">
-                      <p className="ex-src__title">{s.title}</p>
-                      {s.detail && <p className="ex-src__detail">{s.detail}</p>}
-                      {s.url && s.url !== "#" && (
-                        <a className="ex-src__link" href={s.url} target="_blank" rel="noreferrer">
-                          {s.url}
-                        </a>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className="ex-src-empty">No source recorded yet.</p>
-            )}
+          {drawer.sources.length ? (
+            <ol className="ex-src-list">
+              {drawer.sources.map((s, i) => (
+                <li key={i} className="ex-src">
+                  <span className="ex-src__num">{i + 1}</span>
+                  <div className="ex-src__body">
+                    <p className="ex-src__title">{s.title}</p>
+                    {s.detail && <p className="ex-src__detail">{s.detail}</p>}
+                    {s.url && s.url !== "#" && (
+                      <a className="ex-src__link" href={s.url} target="_blank" rel="noreferrer">
+                        {s.url}
+                      </a>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="ex-src-empty">No source recorded yet.</p>
+          )}
 
-            <p className="ex-drawer__note">
-              In preview mode these are illustrative. Real citations are attached to each point when insights are generated.
-            </p>
-          </aside>
-        </div>
-      )}
+          <p className="ex-drawer__note">
+            In preview mode these are illustrative. Real citations are attached to each point when insights are generated.
+          </p>
+        </aside>,
+          document.body,
+        )}
     </div>
   );
 }
