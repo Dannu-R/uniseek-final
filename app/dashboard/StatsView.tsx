@@ -4,7 +4,32 @@
 // (so it reflects the latest quiz answers). Shows an SAT/ACT percentile meter and an
 // unweighted-GPA strength bar. Purely a visualization of already-entered data.
 
+import { useEffect, useState } from "react";
 import { useWizard } from "@/app/build/WizardProvider";
+
+// Ease a number from 0 → target once `active` turns true (the on-load count-up). Honors
+// prefers-reduced-motion by jumping straight to the target.
+function useCountUp(target: number | null, active: boolean, duration = 900): number {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!active || target == null) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setVal(target);
+      return;
+    }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      setVal(target * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, active, duration]);
+  return val;
+}
 
 // SAT total (400–1600) → approximate national percentile. Anchor points interpolated.
 const SAT_ANCHORS: [number, number][] = [
@@ -76,7 +101,6 @@ const ord = (n: number): string => {
 
 export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const { data, hydrated } = useWizard();
-  if (!hydrated) return <section className="dash__view" />;
 
   const gpa = num(data.gpaUnweighted);
   const sat = num(data.satSuperscore);
@@ -91,6 +115,19 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
     fromAct = satEquiv != null;
   }
   const pctl = satEquiv != null ? satPercentile(satEquiv) : null;
+  const tier = gpa != null ? gpaTier(gpa) : null;
+
+  // On-load animations: trigger just after mount so the fills transition from 0 and the
+  // numbers count up. (Hooks run before any early return.)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setMounted(true), 60);
+    return () => clearTimeout(id);
+  }, []);
+  const pctlShown = useCountUp(pctl, mounted);
+  const gpaShown = useCountUp(gpa, mounted);
+
+  if (!hydrated) return <section className="dash__view" />;
 
   // Speedometer-style gauge: a 300° arc (5/6 of a circle) open at the bottom, filled
   // proportional to the percentile. Rotated so the opening is centered at the bottom.
@@ -98,10 +135,8 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const C = 2 * Math.PI * R;
   const GAUGE = 5 / 6;
   const trackLen = C * GAUGE;
-  const arcLen = pctl != null ? (C * GAUGE * pctl) / 100 : 0;
-
-  const tier = gpa != null ? gpaTier(gpa) : null;
-  const gpaFill = gpa != null ? Math.max(0, Math.min(100, (gpa / 4) * 100)) : 0;
+  const arcLen = mounted && pctl != null ? (C * GAUGE * pctl) / 100 : 0;
+  const gpaFill = mounted && gpa != null ? Math.max(0, Math.min(100, (gpa / 4) * 100)) : 0;
 
   return (
     <section className="dash__view">
@@ -144,8 +179,8 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
                 <div className="stat-meter__center">
                   <span className="stat-meter__label">percentile</span>
                   <span className="stat-meter__num">
-                    {pctl}
-                    <sup>{ord(pctl)}</sup>
+                    {Math.round(pctlShown)}
+                    <sup>{ord(Math.round(pctlShown))}</sup>
                   </span>
                 </div>
               </div>
@@ -174,7 +209,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
           {gpa != null && tier ? (
             <>
               <div className="stat-gpa">
-                <span className="stat-gpa__value">{gpa.toFixed(2)}</span>
+                <span className="stat-gpa__value">{gpaShown.toFixed(2)}</span>
                 <span className="stat-gpa__scale">/ 4.0</span>
               </div>
               <div className="stat-bar">
