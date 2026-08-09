@@ -2,6 +2,14 @@
 
 import { FACTORS, type WizardData } from "./model";
 
+// The state hard filter, collapsed to the single state a college must be in
+// (null = no restriction). "In-state only" just means the home state.
+export function requiredState(d: WizardData): string | null {
+  if (d.stateFilterMode === "IN_STATE") return d.homeState || null;
+  if (d.stateFilterMode === "SPECIFIC") return d.goalState || null;
+  return null;
+}
+
 function num(s: string): number | null {
   const t = s.trim();
   if (t === "") return null;
@@ -20,6 +28,10 @@ export function validate(d: WizardData): PayloadIssue[] {
   if (num(d.gpaUnweighted) == null) issues.push({ field: "GPA", message: "Enter your GPA in the Academics step." });
   if (num(d.apCoursesTaken) == null) issues.push({ field: "AP courses", message: "Enter your AP course count in the Academics step." });
   if (num(d.budgetMaxNetPrice) == null) issues.push({ field: "Budget", message: "Enter a yearly budget in the Filters step." });
+  if (d.stateFilterMode === "SPECIFIC" && !d.goalState)
+    issues.push({ field: "State", message: "Pick the state you want to study in, in the Filters step." });
+  if (d.stateFilterMode === "IN_STATE" && !d.homeState)
+    issues.push({ field: "State", message: "Set your home state in the Goals step to filter to in-state colleges." });
   return issues;
 }
 
@@ -58,7 +70,7 @@ export function toPayload(d: WizardData) {
     budgetMaxNetPrice: num(d.budgetMaxNetPrice) ?? 0,
     incomeBand: d.incomeBand || null,
     maxDistanceMiles: num(d.maxDistanceMiles),
-    inStateOnly: d.inStateOnly,
+    requiredState: requiredState(d),
     religiousPreference: d.religiousPreference,
     preferences,
   };

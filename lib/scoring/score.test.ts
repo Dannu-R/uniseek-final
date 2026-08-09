@@ -16,7 +16,7 @@ function student(overrides: Partial<StudentInput> = {}): StudentInput {
     activities: [{ tier: 3 }, { tier: 2 }, { tier: 1 }],
     volunteerHoursPerYear: 40,
     budgetMaxNetPrice: 40000,
-    inStateOnly: false,
+    requiredState: null,
     religiousPreference: "NO_PREFERENCE",
     preferences: {},
     ...overrides,

@@ -1,8 +1,8 @@
 "use client";
 
 import { useWizard } from "../WizardProvider";
-import { Field, TextInput, Select, Toggle, Segmented } from "../fields";
-import { INCOME_BANDS } from "../model";
+import { Field, TextInput, Select, Segmented } from "../fields";
+import { INCOME_BANDS, US_STATES, stateLabel, type StateFilterMode } from "../model";
 
 export default function Filters() {
   const { data, update } = useWizard();
@@ -39,7 +39,39 @@ export default function Filters() {
             <TextInput value={data.maxDistanceMiles} onChange={(v) => update({ maxDistanceMiles: v })} inputMode="numeric" placeholder="500" />
           </Field>
         </div>
-        <Toggle checked={data.inStateOnly} onChange={(v) => update({ inStateOnly: v })} label="In-state colleges only" />
+      </section>
+
+      <section className="wz-group">
+        <h3 className="wz-group__title">State</h3>
+        <p className="wz-group__note">Restrict the list to a single state, or leave it open.</p>
+        <Segmented
+          value={data.stateFilterMode}
+          onChange={(v: StateFilterMode) => update({ stateFilterMode: v })}
+          options={[
+            { value: "ANY", label: "Anywhere" },
+            { value: "IN_STATE", label: "In-state only" },
+            { value: "SPECIFIC", label: "A specific state" },
+          ]}
+        />
+
+        {data.stateFilterMode === "IN_STATE" && !data.homeState && (
+          <p className="wz-group__note">
+            Set your home state in the Goals step — without it this filter can't be applied.
+          </p>
+        )}
+
+        {data.stateFilterMode === "SPECIFIC" && (
+          <div className="wz-grid">
+            <Field label="Goal state" hint="Only colleges in this state will be considered.">
+              <Select value={data.goalState} onChange={(v) => update({ goalState: v })}>
+                <option value="">Select a state</option>
+                {US_STATES.map((s) => (
+                  <option key={s} value={s}>{stateLabel(s)}</option>
+                ))}
+              </Select>
+            </Field>
+          </div>
+        )}
       </section>
 
       <section className="wz-group">

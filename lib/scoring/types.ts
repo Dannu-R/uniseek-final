@@ -38,7 +38,7 @@ export interface StudentInput {
   budgetMaxNetPrice: number;
   incomeBand?: IncomeBand | null;
   maxDistanceMiles?: number | null;
-  inStateOnly: boolean;
+  requiredState?: string | null; // colleges must be in this state (null = anywhere)
   religiousPreference: ReligiousPreference;
 
   // Soft preferences

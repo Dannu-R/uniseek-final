@@ -7,6 +7,12 @@ export type FactorKey =
 
 export type SettingValue = "URBAN" | "SUBURBAN" | "RURAL";
 
+// How the student constrains WHERE a college can be (a hard filter, §2).
+//   ANY       — no state restriction
+//   IN_STATE  — the home state only
+//   SPECIFIC  — one chosen "goal state", which may or may not be the home state
+export type StateFilterMode = "ANY" | "IN_STATE" | "SPECIFIC";
+
 // Text-only. The EC tier is inferred from the description by the AI classifier at
 // scoring time (lib/scoring/classifyActivities.ts), per the §8 rarity rubric.
 export interface ActivityEntry {
@@ -40,7 +46,8 @@ export interface WizardData {
   budgetMaxNetPrice: string;
   incomeBand: string; // "" = not given
   maxDistanceMiles: string;
-  inStateOnly: boolean;
+  stateFilterMode: StateFilterMode;
+  goalState: string; // only meaningful when stateFilterMode === "SPECIFIC"
   religiousPreference: "REQUIRE" | "EXCLUDE" | "NO_PREFERENCE";
 
   // Soft preferences
@@ -87,6 +94,24 @@ export const US_STATES = [
   "OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC",
 ];
 
+export const US_STATE_NAMES: Record<string, string> = {
+  AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California",
+  CO: "Colorado", CT: "Connecticut", DE: "Delaware", FL: "Florida", GA: "Georgia",
+  HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas",
+  KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts",
+  MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana",
+  NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey",
+  NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota",
+  OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island",
+  SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah",
+  VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia",
+  WI: "Wisconsin", WY: "Wyoming", DC: "District of Columbia",
+};
+
+// "CA" → "California (CA)"; falls back to the bare code if it's ever unknown.
+export const stateLabel = (code: string): string =>
+  US_STATE_NAMES[code] ? `${US_STATE_NAMES[code]} (${code})` : code;
+
 const emptyPrefs = () =>
   FACTORS.reduce(
     (acc, f) => ({ ...acc, [f.key]: { weight: 0, direction: 2 } }),
@@ -115,7 +140,8 @@ export const DEFAULT_DATA: WizardData = {
   budgetMaxNetPrice: "",
   incomeBand: "",
   maxDistanceMiles: "",
-  inStateOnly: false,
+  stateFilterMode: "ANY",
+  goalState: "",
   religiousPreference: "NO_PREFERENCE",
   prefs: emptyPrefs(),
   setting: { weight: 0, selections: [] },

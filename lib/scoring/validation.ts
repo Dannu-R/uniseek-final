@@ -51,7 +51,7 @@ export const StudentInputSchema = z.object({
   budgetMaxNetPrice: z.number().min(0),
   incomeBand: z.enum(["LT_30K", "B30_48K", "B48_75K", "B75_110K", "GT_110K"]).nullish(),
   maxDistanceMiles: z.number().min(0).nullish(),
-  inStateOnly: z.boolean().default(false),
+  requiredState: z.string().nullish(),
   religiousPreference: z.enum(["REQUIRE", "EXCLUDE", "NO_PREFERENCE"]).default("NO_PREFERENCE"),
   preferences: Preferences,
 });

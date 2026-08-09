@@ -15,7 +15,7 @@ import { admissionOdds, labelOf, type Band } from "./odds";
 import { programQuality, qualityRank } from "./quality";
 import { ambition, matchScore } from "./match";
 import {
-  majorOfferedFilter, netPriceFilter, distanceFilter, inStateFilter,
+  majorOfferedFilter, netPriceFilter, distanceFilter, stateFilter,
   religiousFilter, selectNetPrice, applyHardFilters,
 } from "./filters";
 import { preferenceFit, finalScore } from "./preferences";
@@ -106,7 +106,7 @@ export function scoreCollege(student: StudentInput, college: CollegeInput): Coll
     major: majorOfferedFilter(student.majorCip ?? null, college.offeredCips),
     price: netPriceFilter(student.budgetMaxNetPrice, netPrice),
     distance: distanceFilter(student.maxDistanceMiles, student.homeLat, student.homeLon, college.latitude, college.longitude),
-    inState: inStateFilter(student.inStateOnly, student.homeState, college.state),
+    state: stateFilter(student.requiredState, college.state),
     religious: religiousFilter(student.religiousPreference, college.religiousAffiliation),
   };
   const hard = applyHardFilters(filters);

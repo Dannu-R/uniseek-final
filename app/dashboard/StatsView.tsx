@@ -6,6 +6,8 @@
 
 import { useEffect, useState } from "react";
 import { useWizard } from "@/app/build/WizardProvider";
+import { requiredState } from "@/app/build/toPayload";
+import UsMap from "./UsMap";
 
 // Ease a number from 0 → target once `active` turns true (the on-load count-up). Honors
 // prefers-reduced-motion by jumping straight to the target.
@@ -103,10 +105,12 @@ const ord = (n: number): string => {
 // aren't at least two years of data (the caller overlays a caption in that case).
 function TrendChart({ values }: { values: (number | null)[] }) {
   const W = 320;
-  const H = 178;
+  const H = 192;
   const padL = 40;
   const padR = 18;
-  const padT = 18;
+  // Top padding has to clear the value label that sits above each dot (~19px of
+  // ascent + offset), otherwise a 4.0 point gets its label clipped by the viewBox.
+  const padT = 32;
   const padB = 42;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
@@ -189,6 +193,10 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
 
   const gradeValues = [num(data.gpaGrade10), num(data.gpaGrade11), num(data.gpaGrade12)];
   const hasTrend = gradeValues.filter((v) => v != null).length >= 2;
+
+  // The goal state is whatever the hard filter resolves to — "in-state only" makes it
+  // the home state, which the map then draws as the both-states crosshatch.
+  const goalState = requiredState(data);
 
   return (
     <section className="dash__view">
@@ -293,6 +301,20 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Where you're coming from and where you're aiming. */}
+      <div className="stat-card">
+        <h2 className="stat-card__title">Where you're looking</h2>
+        <UsMap homeState={data.homeState || null} goalState={goalState} />
+        {!data.homeState && (
+          <div className="usmap__cta">
+            <p className="stat-empty__text">Set your home state in the quiz to see it on the map.</p>
+            <button type="button" className="btn btn--ghost" onClick={onEdit}>
+              Edit answers
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Grade trend — 10th → 12th unweighted GPA. */}

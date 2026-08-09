@@ -68,15 +68,15 @@ export function distanceFilter(
   return { passes: haversineMiles(homeLat, homeLon, collegeLat, collegeLon) <= maxMiles, missing: false };
 }
 
-// Inactive unless in-state-only is on.
-export function inStateFilter(
-  inStateOnly: boolean,
-  homeState: string | null | undefined,
+// Restricts the list to a single state. `requiredState` is already resolved by the
+// caller — "in-state only" is just the home state — so null means inactive.
+export function stateFilter(
+  requiredState: string | null | undefined,
   collegeState: string | null | undefined,
 ): FilterResult {
-  if (!inStateOnly) return pass;
-  if (!homeState || !collegeState) return { passes: true, missing: true, note: "state data unavailable" };
-  return { passes: homeState === collegeState, missing: false };
+  if (!requiredState) return pass;
+  if (!collegeState) return { passes: true, missing: true, note: "state data unavailable" };
+  return { passes: requiredState === collegeState, missing: false };
 }
 
 // null affiliation is treated as secular (§4 notes none/unreported can look alike).

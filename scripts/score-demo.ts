@@ -28,7 +28,7 @@ const danush: StudentInput = {
   budgetMaxNetPrice: 60000,
   incomeBand: null,
   maxDistanceMiles: null,
-  inStateOnly: false,
+  requiredState: null,
   religiousPreference: "NO_PREFERENCE",
   preferences: {
     schoolSize: { weight: 2, direction: 4 }, // prefers large

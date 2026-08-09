@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   haversineMiles, selectNetPrice, majorOfferedFilter, netPriceFilter,
-  distanceFilter, inStateFilter, religiousFilter, applyHardFilters,
+  distanceFilter, stateFilter, religiousFilter, applyHardFilters,
 } from "./filters";
 import {
   collegeValue, schoolSizeValue, factorScore, preferenceFit, finalScore,
@@ -39,10 +39,11 @@ describe("hard filters (§2)", () => {
     expect(distanceFilter(50, 41.88, -87.63, 40.1, -88.23).passes).toBe(false);
   });
 
-  it("in_state: inactive unless on; then state must match", () => {
-    expect(inStateFilter(false, "IL", "CA").passes).toBe(true); // inactive
-    expect(inStateFilter(true, "IL", "IL").passes).toBe(true);
-    expect(inStateFilter(true, "IL", "CA").passes).toBe(false);
+  it("state: inactive unless a state is required; then it must match", () => {
+    expect(stateFilter(null, "CA").passes).toBe(true); // inactive
+    expect(stateFilter("IL", "IL").passes).toBe(true);
+    expect(stateFilter("IL", "CA").passes).toBe(false);
+    expect(stateFilter("IL", null).missing).toBe(true); // missing data keeps the college
   });
 
   it("religious: require/exclude/no-preference (null affiliation = secular)", () => {

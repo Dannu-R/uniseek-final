@@ -25,6 +25,14 @@ interface WizardContextValue {
 
 const WizardContext = createContext<WizardContextValue | null>(null);
 
+// Bring a profile saved by an older build forward. The boolean `inStateOnly` toggle
+// became the three-way state filter (Anywhere / in-state / a specific goal state).
+function migrate(d: WizardData & { inStateOnly?: boolean }): WizardData {
+  const { inStateOnly, ...rest } = d;
+  if (inStateOnly && rest.stateFilterMode === "ANY") rest.stateFilterMode = "IN_STATE";
+  return rest;
+}
+
 export function WizardProvider({
   children,
   onComplete,
@@ -40,7 +48,7 @@ export function WizardProvider({
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setData({ ...DEFAULT_DATA, ...JSON.parse(raw) });
+      if (raw) setData(migrate({ ...DEFAULT_DATA, ...JSON.parse(raw) }));
       const s = localStorage.getItem(STEP_KEY);
       if (s) setStepState(Math.min(Math.max(0, Number(s)), STEPS.length - 1));
     } catch {

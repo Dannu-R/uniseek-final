@@ -697,6 +697,102 @@
   }
 }
 
+/* ---- US map (home state / goal state) ---------------------------------- */
+.usmap {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.usmap__figure {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+.usmap__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  /* The viewBox is cropped tight to the geometry, so the breathing room above and
+     below the map has to come from here. */
+  margin: 22px 0;
+}
+.usmap__state {
+  fill: rgba(167, 139, 250, 0.09);
+  stroke: rgba(167, 139, 250, 0.22);
+  stroke-width: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+.usmap__code {
+  fill: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  paint-order: stroke;
+  stroke: rgba(5, 4, 10, 0.75);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.usmap__key {
+  flex: 0 1 220px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.usmap__key-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.usmap__swatch {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 1px;
+}
+.usmap__key-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.usmap__key-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.44);
+}
+.usmap__key-value {
+  font-size: 0.94rem;
+  color: #fff;
+  line-height: 1.35;
+}
+.usmap__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .usmap {
+    gap: 20px;
+  }
+  .usmap__key {
+    flex-basis: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+  }
+}
+
 /* ---- Grade-trend line chart -------------------------------------------- */
 .trend {
   position: relative;
