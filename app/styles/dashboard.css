@@ -122,6 +122,19 @@
   border: 1.5px solid currentColor;
   opacity: 0.55;
 }
+.dash__tab-count {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.22);
+  color: var(--color-purple-light);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
 .dash__tab.is-active .dash__tab-mark {
   background: var(--color-purple-light);
   border-color: var(--color-purple-light);

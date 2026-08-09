@@ -113,6 +113,15 @@ export default function ExplorerPage() {
         const result = JSON.parse(raw) as { list?: College[] };
         col = result.list?.find((c) => c.collegeId === collegeId) ?? null;
       }
+      // Fall back to the saved list — a saved college may not be in the current run
+      // (e.g. after re-running the search, or in a new session).
+      if (!col) {
+        const savedRaw = localStorage.getItem("uniseek.saved.v1");
+        if (savedRaw) {
+          const savedList = JSON.parse(savedRaw) as College[];
+          col = savedList.find((c) => c.collegeId === collegeId) ?? null;
+        }
+      }
       const rawProfile = localStorage.getItem("uniseek.profile.v1");
       if (rawProfile) {
         profileData = JSON.parse(rawProfile) as WizardData;

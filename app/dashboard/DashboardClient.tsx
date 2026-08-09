@@ -1,15 +1,15 @@
 "use client";
 
 // The dashboard shell: a fixed left rail (views + account) and a content area, below the
-// shared site header. The only view today is "Recommended colleges", with three states:
-//   1. no list yet   → centered "Find colleges" call to action
-//   2. building       → the intake wizard, FULL WIDTH (the rail slides away)
-//   3. has a list     → the reach / match / safety results
+// shared site header. Views:
+//   - "Recommended colleges": no list yet → "Find colleges" CTA; building → the quiz (full
+//     width, rail slides away); has a list → reach / match / safety results.
+//   - "Saved colleges": colleges the student bookmarked from their list; empty by default.
 //
 // Starting the quiz is a phased, animated transition (idle → opening → wizard): the rail
 // fades/slides out, a beat passes, then the first question pops in. Closing reverses it.
-// The wizard is mounted under WizardProvider at the shell level, so its progress survives
-// the whole time. Completion drops the result into state and renders it in place.
+// The wizard is mounted under WizardProvider at the shell level, so its progress survives.
+// Completion drops the result into state and renders it in place.
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -35,8 +35,11 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "recommended";
-const TABS: { key: TabKey; label: string }[] = [{ key: "recommended", label: "Recommended colleges" }];
+type TabKey = "recommended" | "saved";
+const TABS: { key: TabKey; label: string }[] = [
+  { key: "recommended", label: "Recommended colleges" },
+  { key: "saved", label: "Saved colleges" },
+];
 
 // Phases of the quiz transition. `opening` is the deliberate pause between the rail sliding
 // out and the first question appearing.
@@ -46,6 +49,7 @@ const CLOSE_DELAY = 340; // wizard fades out before the rail slides back
 
 const RESULT_KEY = "uniseek.result.v1";
 const UI_KEY = "uniseek.dashboard.v1";
+const SAVED_KEY = "uniseek.saved.v1";
 
 const BANDS: { key: CollegeScore["band"]; label: string; blurb: string }[] = [
   { key: "reach", label: "Reach", blurb: "Ambitious — worth a shot" },
@@ -60,16 +64,19 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   const [tab, setTab] = useState<TabKey>("recommended");
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
+  const [saved, setSaved] = useState<CollegeScore[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState<CollegeScore | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Hydrate result + UI state from storage once. If we were mid-quiz, restore straight to
+  // Hydrate result + saved list + UI state once. If we were mid-quiz, restore straight to
   // the wizard (no entrance animation on a reload).
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(RESULT_KEY);
       if (raw) setResult(JSON.parse(raw));
+      const savedRaw = localStorage.getItem(SAVED_KEY);
+      if (savedRaw) setSaved(JSON.parse(savedRaw));
       const ui = sessionStorage.getItem(UI_KEY);
       if (ui && (JSON.parse(ui) as { building?: boolean }).building) setPhase("wizard");
     } catch {
@@ -91,8 +98,19 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     }
   }, [phase, loaded]);
 
+  // Persist the saved list (survives across sessions, unlike the run itself).
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+    } catch {
+      /* ignore quota */
+    }
+  }, [saved, loaded]);
+
   const openQuiz = () => {
     if (timer.current) clearTimeout(timer.current);
+    setTab("recommended");
     setPhase("opening");
     timer.current = setTimeout(() => setPhase("wizard"), OPEN_DELAY);
   };
@@ -107,10 +125,54 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     closeQuiz();
   };
 
+  const isSaved = (id: string) => saved.some((s) => s.collegeId === id);
+  const toggleSave = (c: CollegeScore) =>
+    setSaved((prev) =>
+      prev.some((s) => s.collegeId === c.collegeId)
+        ? prev.filter((s) => s.collegeId !== c.collegeId)
+        : [...prev, c],
+    );
+
   const focused = phase !== "idle"; // rail slid away, content full width
   const hasList = !!result && !result.empty && (result.list?.length ?? 0) > 0;
   const displayName = user.name ?? user.email ?? "Your account";
   const initial = (user.name ?? user.email ?? "U").trim().charAt(0).toUpperCase();
+
+  const renderCard = (c: CollegeScore) => {
+    const on = isSaved(c.collegeId);
+    return (
+      <div key={c.collegeId} className={`rs-card rs-card--${c.band}`}>
+        <button type="button" className="rs-card__open" onClick={() => setSelected(c)}>
+          <span className="rs-card__name">{c.name}</span>
+          <span className="rs-card__rate">
+            {pct(c.overallAdmitRate)} <em>acceptance rate</em>
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`rs-card__save ${on ? "is-saved" : ""}`}
+          onClick={() => toggleSave(c)}
+          aria-pressed={on}
+          aria-label={on ? `Remove ${c.name} from saved` : `Save ${c.name}`}
+          title={on ? "Saved — click to remove" : "Save"}
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill={on ? "currentColor" : "none"}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg>
+        </button>
+      </div>
+    );
+  };
 
   return (
     <WizardProvider onComplete={handleComplete}>
@@ -133,6 +195,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               >
                 <span className="dash__tab-mark" aria-hidden="true" />
                 {t.label}
+                {t.key === "saved" && saved.length > 0 && <span className="dash__tab-count">{saved.length}</span>}
               </button>
             ))}
           </nav>
@@ -185,14 +248,32 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               </header>
               <EmbeddedWizard />
             </div>
-          ) : tab === "recommended" ? (
+          ) : tab === "saved" ? (
+            <section className="dash__view">
+              <header className="dash__view-head">
+                <h1 className="dash__view-title">Saved colleges</h1>
+                <p className="dash__view-sub">Colleges you've set aside from your list.</p>
+              </header>
+              {saved.length === 0 ? (
+                <div className="dash__empty">
+                  <div className="dash__empty-card">
+                    <span className="dash__empty-mark" aria-hidden="true" />
+                    <h1 className="dash__empty-title">No saved colleges yet</h1>
+                    <p className="dash__empty-sub">Save colleges to explore further.</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="rs-band__list">{saved.map(renderCard)}</div>
+              )}
+            </section>
+          ) : (
             <section className="dash__view">
               {hasList ? (
                 <>
                   <header className="dash__view-head dash__view-head--row">
                     <div>
                       <h1 className="dash__view-title">Your recommended colleges</h1>
-                      <p className="dash__view-sub">Select a college to explore how you fit.</p>
+                      <p className="dash__view-sub">Select a college to explore how you fit, or save it for later.</p>
                     </div>
                     <button type="button" className="btn btn--ghost" onClick={openQuiz}>
                       Edit answers &amp; re-run
@@ -208,21 +289,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                           <h2 className={`rs-band__title rs-band__title--${key}`}>{label}</h2>
                           <span className="rs-band__blurb">{blurb}</span>
                         </div>
-                        <div className="rs-band__list">
-                          {cols.map((c) => (
-                            <button
-                              key={c.collegeId}
-                              type="button"
-                              className={`rs-card rs-card--${c.band}`}
-                              onClick={() => setSelected(c)}
-                            >
-                              <span className="rs-card__name">{c.name}</span>
-                              <span className="rs-card__rate">
-                                {pct(c.overallAdmitRate)} <em>acceptance rate</em>
-                              </span>
-                            </button>
-                          ))}
-                        </div>
+                        <div className="rs-band__list">{cols.map(renderCard)}</div>
                       </div>
                     );
                   })}
@@ -257,7 +324,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 </div>
               )}
             </section>
-          ) : null}
+          )}
         </main>
       </div>
 
