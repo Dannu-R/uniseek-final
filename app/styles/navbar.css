@@ -42,16 +42,16 @@
   color: #ffffff;
   text-decoration: none;
 }
+/* The mark is taller than it is wide, so it's sized on height and left to find its own
+   width rather than being squeezed into a square. */
 .navbar__brand-mark {
-  width: 15px;
-  height: 15px;
-  background: #6236e8;
-  transform: rotate(45deg);
-  border-radius: 3px;
-  transition: background 0.2s ease;
+  height: 22px;
+  width: auto;
+  color: #6236e8;
+  transition: color 0.2s ease;
 }
 .navbar__brand:hover .navbar__brand-mark {
-  background: #a78bfa;
+  color: #a78bfa;
 }
 .navbar__brand:focus-visible {
   outline: 2px solid #a78bfa;

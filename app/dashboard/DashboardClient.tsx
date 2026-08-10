@@ -369,8 +369,10 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     <WizardProvider onComplete={handleComplete}>
       <div className={`dash ${focused ? "is-focused" : ""}`}>
         <aside className="dash__rail">
-          {/* Whose dashboard this is, at the top. No wordmark here — the site header
-              carries it now, directly above this corner. */}
+          {/* Names the panel, above everything in it. No wordmark here — the site header
+              carries that now, directly above this corner. */}
+          <p className="dash__nav-title">Dashboard</p>
+
           <div className="dash__user">
             {user.image ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -382,9 +384,6 @@ export default function DashboardClient({ user }: { user: DashUser }) {
           </div>
 
           <nav className="dash__nav" aria-label="Dashboard sections">
-            {/* Names the panel, above its first entry. It sits under the account block
-                rather than over it — that block was put at the very top deliberately. */}
-            <p className="dash__nav-title">Dashboard</p>
             {renderTab(HOME_TAB)}
             <div className="dash__nav-divider" aria-hidden="true" />
             <p className="dash__nav-label">Views</p>

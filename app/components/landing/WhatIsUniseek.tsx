@@ -1,6 +1,7 @@
 // @ts-nocheck
 import Reveal from "../shared/Reveal";
 import Ribbons from "../shared/Ribbons";
+import UniseekMark from "@/app/components/UniseekMark";
 
 const STEPS = [
   {
@@ -28,21 +29,7 @@ export default function WhatIsUniseek() {
 
       <div className="section__inner">
         <Reveal className="whatis__logo">
-          <svg
-            viewBox="0 0 53.54897 63.90451"
-            role="img"
-            aria-label="Uniseek logo"
-          >
-            <g
-              transform="translate(-206.93265,-157.98483)"
-              fill="currentColor"
-            >
-              <path d="M220.40922,221.88934l-13.47657,-37.2094l27.26349,-9.87434l13.47657,37.2094z" />
-              <path d="M247.36661,212.12256l-4.22689,-11.67064l13.11501,-4.75002l4.22689,11.67064z" />
-              <path d="M238.2259,186.65474l-4.25975,-11.76135l13.11501,-4.75002l4.25975,11.76135z" />
-              <path d="M217.29163,177.1945l-4.91598,-13.57324l15.56242,-5.63643l4.91598,13.57324z" />
-            </g>
-          </svg>
+          <UniseekMark />
         </Reveal>
 
         <Reveal as="p" className="section__eyebrow whatis__eyebrow">

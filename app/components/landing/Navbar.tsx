@@ -1,4 +1,5 @@
 import { auth, signOut } from "@/auth";
+import UniseekMark from "@/app/components/UniseekMark";
 
 // One black bar across the whole site, signed in or out.
 export default async function Navbar() {
@@ -10,7 +11,7 @@ export default async function Navbar() {
       <div className="navbar__inner">
         {/* Home, in the place every site puts it. */}
         <a className="navbar__brand" href="/">
-          <span className="navbar__brand-mark" aria-hidden="true" />
+          <UniseekMark className="navbar__brand-mark" />
           Uniseek
         </a>
 
