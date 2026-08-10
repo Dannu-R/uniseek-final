@@ -14,6 +14,7 @@ import { useWizard } from "@/app/build/WizardProvider";
 import { requiredState } from "@/app/build/toPayload";
 import UsMap from "./UsMap";
 import StudentFigure from "@/app/components/3d/StudentFigure";
+import CoinScene from "@/app/components/3d/Coin";
 
 // Ease a number from 0 → target once `active` turns true (the on-load count-up). Honors
 // prefers-reduced-motion by jumping straight to the target.
@@ -662,9 +663,25 @@ export default function StatsView({
         <h2 className="stat-card__title">Cost</h2>
         {budget != null ? (
           <div className="card__body">
-            <div className="gpa__value">
-              <span className="gpa__num">{money(budget)}</span>
-              <span className="gpa__scale">a year — the most you said you can pay</span>
+            <div className="cost__head">
+              <CoinScene className="cost__coin" animate={false} />
+              <div className="cost__figures">
+                <div className="cost__figure">
+                  <span className="cost__label">Family budget</span>
+                  <span className="cost__num">{money(budget)}</span>
+                  <span className="cost__per">a year, the most you can pay</span>
+                </div>
+                {costTypical != null && (
+                  <div className="cost__figure">
+                    <span className="cost__label">Typical cost</span>
+                    <span className="cost__num">{money(costTypical)}</span>
+                    <span className="cost__per">
+                      a year across your {recommended.length}{" "}
+                      {recommended.length === 1 ? "college" : "colleges"}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {costLow != null && costHigh != null && costTypical != null ? (
@@ -691,10 +708,9 @@ export default function StatsView({
                 </div>
 
                 <p className="cost__read">
-                  Your colleges are estimated at{" "}
-                  <strong>{money(costLow)}–{money(costHigh)}</strong> a year, typically{" "}
-                  <strong>{money(costTypical)}</strong>
-                  {headroom != null && headroom > 0 && <> — about {money(headroom)} under your ceiling</>}.
+                  They range from <strong>{money(costLow)}</strong> to{" "}
+                  <strong>{money(costHigh)}</strong> a year
+                  {headroom != null && headroom > 0 && <> — typically about {money(headroom)} under your budget</>}.
                 </p>
                 <p className="cost__note">
                   {data.incomeBand

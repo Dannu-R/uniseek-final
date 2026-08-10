@@ -102,7 +102,7 @@ const FLOAT_SPEED = 1.7;
 const FINAL_ROT = [-0.55, -0.28, -0.3]; // resting tilt: face up + slight turns
 const SPIN_TURNS = 2; // full spins as it flies in
 
-function Coin() {
+function Coin({ animate }) {
   const root = useRef();
   const tilt = useRef();
   const tRef = useRef(0);
@@ -117,7 +117,7 @@ function Coin() {
   useFrame((_, delta) => {
     const el = root.current;
     const tg = tilt.current;
-    if (!el || !tg) return;
+    if (!el || !tg || !animate) return;
 
     if (reduceRef.current) {
       el.position.y = 0;
@@ -153,7 +153,8 @@ function Coin() {
   });
 
   return (
-    <group ref={root} position={[0, START_Y, 0]} scale={0.15}>
+    // Without the entrance, the coin starts where the animation would have left it.
+    <group ref={root} position={[0, animate ? START_Y : 0, 0]} scale={animate ? 0.15 : 1}>
       {/* tilt group — spins during the intro, then rests at FINAL_ROT
           (face up/north, slight Y turn, a bit clockwise on Z) */}
       <group ref={tilt} rotation={FINAL_ROT}>
@@ -163,18 +164,21 @@ function Coin() {
   );
 }
 
-export default function CoinScene() {
+// `className` lets a caller place the coin somewhere other than the landing page;
+// `animate={false}` renders it at rest and stops the render loop after one frame.
+export default function CoinScene({ className = "why__coin", animate = true }) {
   // render WebGL only after mount (avoids SSR window access)
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="why__coin" aria-hidden="true" />;
+  if (!mounted) return <div className={className} aria-hidden="true" />;
 
   return (
-    <div className="why__coin" aria-hidden="true">
+    <div className={className} aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 4.8], fov: 40 }}
         dpr={[1, 2]}
+        frameloop={animate ? "always" : "demand"}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.4} />
@@ -206,7 +210,7 @@ export default function CoinScene() {
           />
         </Environment>
 
-        <Coin />
+        <Coin animate={animate} />
       </Canvas>
     </div>
   );

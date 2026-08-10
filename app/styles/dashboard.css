@@ -1104,6 +1104,51 @@
   color: var(--ac-ink-3);
 }
 
+/* ---- Cost --------------------------------------------------------------- */
+.cost__head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+/* The landing page's coin, reused at rest. */
+.cost__coin {
+  flex: none;
+  width: 86px;
+  height: 86px;
+}
+.cost__figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  min-width: 0;
+}
+.cost__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cost__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.cost__num {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ac-ink);
+}
+.cost__per {
+  font-size: 0.76rem;
+  color: var(--ac-ink-3);
+}
+
 /* ---- Cost scale --------------------------------------------------------- */
 /* Runs from nothing to the student's ceiling. The band is where their colleges
    actually land, so the empty stretch to its right is the room they have left. */
