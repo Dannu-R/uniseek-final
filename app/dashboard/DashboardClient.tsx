@@ -91,6 +91,12 @@ const BANDS: { key: CollegeScore["band"]; label: string; blurb: string }[] = [
   { key: "safety", label: "Safety", blurb: "Very likely admits" },
 ];
 
+const BAND_LABEL: Record<CollegeScore["band"], string> = {
+  reach: "Reach",
+  target: "Match",
+  safety: "Safety",
+};
+
 type BandFilter = "all" | CollegeScore["band"];
 const FILTERS: { key: BandFilter; label: string }[] = [
   { key: "all", label: "All" },
@@ -298,13 +304,23 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     );
   };
 
+  // Picking a view has to take the explorer down with it. The explorer is stacked on top
+  // of a view rather than being one of its own, and it's checked before `tab` when
+  // choosing what to render — so without this the rail moves its highlight to the new
+  // view while the old college stays on screen, and the only way out is the explorer's
+  // own back button.
+  const selectTab = (key: TabKey) => {
+    setExploring(null);
+    setTab(key);
+  };
+
   const renderTab = (t: TabDef) => (
     <button
       key={t.key}
       type="button"
-      className={`dash__tab ${tab === t.key ? "is-active" : ""}`}
-      onClick={() => setTab(t.key)}
-      aria-current={tab === t.key}
+      className={`dash__tab ${tab === t.key && !exploring ? "is-active" : ""}`}
+      onClick={() => selectTab(t.key)}
+      aria-current={tab === t.key && !exploring}
     >
       <span className="dash__tab-icon" aria-hidden="true">
         {TAB_ICON[t.key]}
@@ -395,7 +411,20 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               <EmbeddedWizard />
             </div>
           ) : exploring ? (
-            <ExplorerView college={exploring} onBack={() => setExploring(null)} />
+            <>
+              {/* The explorer gets the same bar as every other view — the college's name
+                  is the title, and "Back to list" is its one primary action. */}
+              <ViewHeader
+                title={exploring.name}
+                subtitle={`${BAND_LABEL[exploring.band]} · ${pct(exploring.overallAdmitRate)} acceptance rate`}
+                action={
+                  <button type="button" className="btn btn--ghost" onClick={() => setExploring(null)}>
+                    Back to list
+                  </button>
+                }
+              />
+              <ExplorerView college={exploring} />
+            </>
           ) : tab === "home" ? (
             <>
               <ViewHeader
