@@ -39,6 +39,18 @@
   --ac-green: #0f9d76;
   --ac-green-soft: #e8f6f1;
 
+  /* Rail — a deep purple panel against the paper content area. It's the one dark
+     surface in the signed-in product: navigation is a frame around the work, and giving
+     it its own ground stops it competing with the white cards it sits beside. Its ink
+     scale is separate from the page's for that reason — nothing on it is navy. */
+  --ac-rail: #291b52;
+  --ac-rail-2: #372563;
+  --ac-rail-ink: #ffffff;
+  --ac-rail-ink-2: #c3b8e6;
+  --ac-rail-ink-3: #9184bb;
+  --ac-rail-line: rgba(255, 255, 255, 0.12);
+  --ac-rail-violet: #a78bfa;
+
   --ac-shadow: 0 1px 2px rgba(22, 34, 63, 0.05), 0 12px 30px -18px rgba(22, 34, 63, 0.35);
   --ac-shadow-lift: 0 2px 5px rgba(22, 34, 63, 0.07), 0 20px 42px -22px rgba(22, 34, 63, 0.5);
   --ac-radius: 16px;
@@ -109,8 +121,8 @@
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: var(--ac-card);
-  border-right: 1px solid var(--ac-line);
+  background: var(--ac-rail);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
   padding: 22px 16px;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
@@ -132,13 +144,14 @@
   font-size: 1.18rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--ac-ink);
+  color: var(--ac-rail-ink);
   padding: 4px 8px 20px;
 }
 .dash__brand-mark {
   width: 16px;
   height: 16px;
-  background: var(--ac-violet);
+  /* The page's violet goes muddy on this ground; the rail keeps a lighter one. */
+  background: var(--ac-rail-violet);
   /* a small geometric diamond */
   transform: rotate(45deg);
   border-radius: 3px;
@@ -156,7 +169,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ac-ink-4);
+  color: var(--ac-rail-ink-3);
 }
 
 .dash__tab {
@@ -170,7 +183,7 @@
   border: 1px solid transparent;
   border-radius: 11px;
   background: transparent;
-  color: var(--ac-ink-2);
+  color: var(--ac-rail-ink-2);
   font-size: 0.94rem;
   font-weight: 500;
   font-family: inherit;
@@ -178,32 +191,32 @@
   transition: background 0.14s, color 0.14s;
 }
 .dash__tab:hover {
-  background: var(--ac-sunk);
-  color: var(--ac-ink);
+  background: var(--ac-rail-2);
+  color: var(--ac-rail-ink);
 }
 .dash__tab.is-active {
-  background: var(--ac-violet-soft);
-  color: var(--ac-violet-deep);
+  background: var(--ac-violet);
+  color: var(--ac-rail-ink);
   font-weight: 600;
 }
 .dash__tab-icon {
   display: inline-flex;
   flex-shrink: 0;
-  color: var(--ac-ink-3);
+  color: var(--ac-rail-ink-3);
 }
 .dash__tab-icon svg {
   width: 18px;
   height: 18px;
 }
 .dash__tab.is-active .dash__tab-icon {
-  color: var(--ac-violet);
+  color: var(--ac-rail-ink);
 }
 
 /* Separates the college views from "Your stats". */
 .dash__nav-divider {
   height: 1px;
   margin: 12px 10px;
-  background: var(--ac-line);
+  background: var(--ac-rail-line);
 }
 .dash__tab-count {
   margin-left: auto;
@@ -213,15 +226,19 @@
   display: inline-grid;
   place-items: center;
   border-radius: 999px;
-  background: var(--ac-violet-soft);
-  color: var(--ac-violet-deep);
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--ac-rail-ink);
   font-size: 0.72rem;
   font-weight: 700;
+}
+/* On the active tab the badge sits on violet, where a translucent white washes out. */
+.dash__tab.is-active .dash__tab-count {
+  background: rgba(0, 0, 0, 0.28);
 }
 
 /* ---- Account (pinned bottom) ------------------------------------------- */
 .dash__account {
-  border-top: 1px solid var(--ac-line);
+  border-top: 1px solid var(--ac-rail-line);
   padding-top: 14px;
   margin-top: 10px;
 }
@@ -241,14 +258,14 @@
 .dash__avatar--initial {
   display: grid;
   place-items: center;
-  background: var(--ac-violet-soft);
-  color: var(--ac-violet-deep);
+  background: var(--ac-violet);
+  color: var(--ac-rail-ink);
   font-weight: 700;
   font-size: 0.9rem;
 }
 .dash__user-name {
   font-size: 0.86rem;
-  color: var(--ac-ink-2);
+  color: var(--ac-rail-ink-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -257,17 +274,17 @@
   width: 100%;
   padding: 9px 12px;
   border-radius: 10px;
-  border: 1px solid var(--ac-line);
-  background: var(--ac-card);
-  color: var(--ac-ink-2);
+  border: 1px solid var(--ac-rail-line);
+  background: transparent;
+  color: var(--ac-rail-ink-2);
   font-size: 0.86rem;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.14s, color 0.14s;
 }
 .dash__signout:hover {
-  background: var(--ac-sunk);
-  color: var(--ac-ink);
+  background: var(--ac-rail-2);
+  color: var(--ac-rail-ink);
 }
 
 /* ---- Content ----------------------------------------------------------- */
