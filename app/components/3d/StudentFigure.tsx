@@ -93,12 +93,26 @@ function Student() {
           the shift again — he still looks left, just less past the viewer. */}
       {[-1, 1].map((side) => (
         <group key={side} position={[side * 0.27, -0.13, 0.66]} rotation={[0, -TURN / 2, 0]}>
+          {/* Emissive, so the shaded half of the sphere still reads as white. Lit
+              normally, only the key-lit side looked white and the pupil appeared to
+              sit off-centre inside a crescent rather than a disk. */}
           <mesh scale={[1, 1, 0.7]}>
             <sphereGeometry args={[0.14, 24, 20]} />
-            <meshStandardMaterial color="#ffffff" roughness={0.35} metalness={0} />
+            <meshStandardMaterial
+              color="#ffffff"
+              emissive="#ffffff"
+              emissiveIntensity={0.55}
+              roughness={0.45}
+              metalness={0}
+            />
           </mesh>
-          <mesh position={[0, 0, 0.075]}>
-            <sphereGeometry args={[0.045, 20, 16]} />
+          {/* Nudged outward. Sitting on the eye's own axis they converge on screen —
+              the pupil stands in front of the white, and once the head is turned the
+              projection pulls both of them toward the nose. Measured off the render
+              rather than derived; the figure and camera are both fixed, so a constant
+              is honest here. */}
+          <mesh position={[side * 0.039, 0, 0.072]}>
+            <sphereGeometry args={[0.058, 20, 16]} />
             <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
           </mesh>
         </group>
