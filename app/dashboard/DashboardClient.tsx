@@ -369,8 +369,18 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     <WizardProvider onComplete={handleComplete}>
       <div className={`dash ${focused ? "is-focused" : ""}`}>
         <aside className="dash__rail">
-          {/* No wordmark here — the site header carries it now, directly above this
-              corner, and two of them stacked reads as a mistake. */}
+          {/* Whose dashboard this is, at the top. No wordmark here — the site header
+              carries it now, directly above this corner. */}
+          <div className="dash__user">
+            {user.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="dash__avatar" src={user.image} alt="" />
+            ) : (
+              <span className="dash__avatar dash__avatar--initial" aria-hidden="true">{initial}</span>
+            )}
+            <span className="dash__user-name" title={user.email ?? undefined}>{displayName}</span>
+          </div>
+
           <nav className="dash__nav" aria-label="Dashboard sections">
             {renderTab(HOME_TAB)}
             <div className="dash__nav-divider" aria-hidden="true" />
@@ -381,16 +391,9 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             {FEATURE_TABS.map(renderTab)}
           </nav>
 
+          {/* Sign out stays pinned at the bottom. It's the one destructive control in
+              here and it doesn't need to sit in the rail's best space to be findable. */}
           <div className="dash__account">
-            <div className="dash__user">
-              {user.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="dash__avatar" src={user.image} alt="" />
-              ) : (
-                <span className="dash__avatar dash__avatar--initial" aria-hidden="true">{initial}</span>
-              )}
-              <span className="dash__user-name" title={user.email ?? undefined}>{displayName}</span>
-            </div>
             <button type="button" className="dash__signout" onClick={() => signOut({ callbackUrl: "/" })}>
               Sign out
             </button>

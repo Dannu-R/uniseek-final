@@ -171,20 +171,25 @@
 }
 
 /* ---- Account (pinned bottom) ------------------------------------------- */
+/* Just the sign-out now; `flex: 1` on the nav above keeps it against the bottom. */
 .dash__account {
   border-top: 1px solid var(--ac-rail-line);
   padding-top: 14px;
   margin-top: 10px;
 }
+/* The identity block, now at the top of the rail. It reads as a heading for everything
+   under it rather than as a footer, so it takes the rule below it instead of above. */
 .dash__user {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 4px 6px 10px;
+  padding: 4px 6px 16px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--ac-rail-line);
 }
 .dash__avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 9px;
   object-fit: cover;
   flex-shrink: 0;
@@ -199,7 +204,8 @@
 }
 .dash__user-name {
   font-size: 0.86rem;
-  color: var(--ac-rail-ink-2);
+  font-weight: 600;
+  color: var(--ac-rail-ink);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
