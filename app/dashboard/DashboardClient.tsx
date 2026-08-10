@@ -368,7 +368,12 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   </button>
                 }
               />
-              <StatsView onEdit={openQuiz} />
+              <StatsView
+                onEdit={openQuiz}
+                name={user.name ?? null}
+                saved={saved}
+                recommended={result?.list ?? []}
+              />
             </>
           ) : tab === "saved" ? (
             <>

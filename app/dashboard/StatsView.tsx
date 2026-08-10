@@ -69,29 +69,42 @@ function gpaTier(gpa: number): { label: string; color: string; desc: string } {
   if (gpa >= 3.8)
     return {
       label: "Excellent",
-      color: "#34d399",
+      color: "#0f9d76",
       desc: "Ideal for competitive, highly selective, or Ivy League universities.",
     };
   if (gpa >= 3.5)
     return {
       label: "Good and solid",
-      color: "#a78bfa",
+      color: "#5b2ee5",
       desc: "Meets or exceeds the requirements for many great state schools and regional colleges.",
     };
   if (gpa >= 3.0)
     return {
       label: "Average",
-      color: "#f59e0b",
+      color: "#c47b0d",
       desc:
         "Keeps many college options open, though more selective schools may want stronger test scores or essays to balance it out.",
     };
   return {
     label: "Needs attention",
-    color: "#f472b6",
+    color: "#c72f65",
     desc:
       "May limit your choices, though community colleges and less selective schools will still consider applicants in this range.",
   };
 }
+
+// How demanding the schedule is, as a share of what the school actually offers —
+// the only honest denominator we have. Absent a course list, we don't guess.
+function rigorRead(taken: number, offered: number): { label: string; color: string } {
+  const share = taken / offered;
+  if (share >= 0.75) return { label: "Very demanding", color: "#0f9d76" };
+  if (share >= 0.5) return { label: "Demanding", color: "#5b2ee5" };
+  if (share >= 0.25) return { label: "Moderate", color: "#c47b0d" };
+  return { label: "Light", color: "#c72f65" };
+}
+
+// Bands are named for students, not for the engine.
+const BAND_LABEL: Record<string, string> = { reach: "Reach", target: "Match", safety: "Safety" };
 
 const num = (s?: string): number | null => {
   if (s == null || s.trim() === "") return null;
@@ -248,7 +261,23 @@ function TrendChart({ values }: { values: (number | null)[] }) {
   );
 }
 
-export default function StatsView({ onEdit }: { onEdit: () => void }) {
+interface College {
+  collegeId: string;
+  name: string;
+  band: "reach" | "target" | "safety";
+}
+
+export default function StatsView({
+  onEdit,
+  name,
+  saved,
+  recommended,
+}: {
+  onEdit: () => void;
+  name: string | null;
+  saved: College[];
+  recommended: College[];
+}) {
   const { data, hydrated } = useWizard();
 
   const gpa = num(data.gpaUnweighted);
@@ -300,6 +329,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   // The goal state is whatever the hard filter resolves to — "in-state only" makes it
   // the home state, which the map then draws as the both-states crosshatch.
   const goalState = requiredState(data);
+  const firstName = name?.trim().split(/\s+/)[0] ?? null;
 
   // ---- The widget row: only what the student actually entered. ----
   const rankPct = rank != null && classSize != null && classSize > 0
@@ -307,35 +337,6 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
     : null;
 
   const stats: Stat[] = [
-    {
-      key: "gpa",
-      tone: "violet",
-      label: "Unweighted GPA",
-      value: gpa != null ? gpa.toFixed(2) : "—",
-      caption: gpa != null ? "of 4.0" : "not entered",
-      empty: gpa == null,
-    },
-    {
-      key: "test",
-      tone: "amber",
-      label: "Test percentile",
-      value: pctl != null ? `${pctl}${ord(pctl)}` : "—",
-      caption: pctl != null ? (fromAct ? `ACT ${act}` : `SAT ${satEquiv}`) : data.notSubmittingScores ? "test-optional" : "not entered",
-      empty: pctl == null,
-    },
-    {
-      key: "courses",
-      tone: "blue",
-      label: "AP courses",
-      value: apTaken != null ? String(apTaken) : "—",
-      caption:
-        apTaken == null
-          ? "not entered"
-          : apOffered != null
-            ? `of ${apOffered} offered`
-            : "course list not given",
-      empty: apTaken == null,
-    },
     {
       key: "rank",
       tone: "pink",
@@ -383,38 +384,124 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
 
   return (
     <section className="dash__view stat-bento">
-      {/* ---- The numbers you entered, at a glance. ---------------------- */}
-      <div className="kpi-row">
-        {stats.map((s) => (
-          <StatWidget key={s.key} stat={s} />
-        ))}
+      {/* ---- Where the list stands, before any of the detail. ----------- */}
+      <div className="stat-card tile--full tile--ink welcome">
+        <div className="welcome__head">
+          <h2 className="welcome__greet">Welcome back{firstName ? `, ${firstName}` : ""}</h2>
+          <p className="welcome__sub">
+            {recommended.length
+              ? "Here's where your list stands today."
+              : "Answer the quiz and we'll build your list — this is what we know so far."}
+          </p>
+        </div>
+
+        <div className="welcome__body">
+          <div className="welcome__figures">
+            <div className="welcome__figure">
+              <span className="welcome__num">{recommended.length}</span>
+              <span className="welcome__cap">colleges recommended</span>
+            </div>
+            <div className="welcome__figure">
+              <span className="welcome__num">{saved.length}</span>
+              <span className="welcome__cap">saved so far</span>
+            </div>
+            {recommended.length > 0 && (
+              <div className="welcome__bands">
+                {(["reach", "target", "safety"] as const).map((b) => (
+                  <span key={b} className={`welcome__band welcome__band--${b}`}>
+                    {recommended.filter((c) => c.band === b).length} {BAND_LABEL[b]}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="welcome__saved">
+            <h3 className="welcome__saved-title">Saved colleges</h3>
+            {saved.length ? (
+              <ul className="welcome__list">
+                {saved.slice(0, 5).map((c) => (
+                  <li key={c.collegeId} className="welcome__item">
+                    <span className="welcome__item-name">{c.name}</span>
+                    <span className={`welcome__chip welcome__chip--${c.band}`}>{BAND_LABEL[c.band]}</span>
+                  </li>
+                ))}
+                {saved.length > 5 && (
+                  <li className="welcome__more">+{saved.length - 5} more in Saved colleges</li>
+                )}
+              </ul>
+            ) : (
+              <p className="welcome__empty">
+                Nothing saved yet. Bookmark a college from your list and it'll show up here with its category.
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* ---- Grade trend takes the width; the dial sits beside it. ------ */}
-      <div className="stat-card tile--wide">
-        <div className="stat-card__head">
-          <h2 className="stat-card__title">Grade trend</h2>
-          {hasTrend && (
-            <span className={`trend-badge trend-badge--${direction.key}`}>
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d={direction.arrow} />
-              </svg>
-              {direction.label}
-            </span>
-          )}
-        </div>
-        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-          <TrendChart values={gradeValues} />
-          {!hasTrend && (
-            <div className="trend__empty">
-              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+      {/* ---- GPA, course rigor and the test score, one card each. ------- */}
+      <div className="stat-card">
+        <h2 className="stat-card__title">Unweighted GPA</h2>
+        {gpa != null && tier ? (
+          <div className="card__body">
+            <div className="gpa__value">
+              <span className="gpa__num">{gpa.toFixed(2)}</span>
+              <span className="gpa__scale">/ 4.0</span>
             </div>
-          )}
-        </div>
+            <div className="gpa__track">
+              <span
+                className="gpa__fill"
+                style={{ width: `${mounted ? (gpa / 4) * 100 : 0}%`, background: tier.color }}
+              />
+              {[3.0, 3.5, 3.8].map((t) => (
+                <span key={t} className="gpa__tick" style={{ left: `${(t / 4) * 100}%` }} />
+              ))}
+            </div>
+            <div className="gpa__marks">
+              <span className="gpa__mark gpa__mark--start">0</span>
+              <span className="gpa__mark" style={{ left: "75%" }}>3.0</span>
+              <span className="gpa__mark gpa__mark--end">4.0</span>
+            </div>
+            <p className="gpa__tier" style={{ color: tier.color }}>{tier.label}</p>
+          </div>
+        ) : (
+          <p className="card__empty">Add your GPA in the quiz to see where it sits on the 4.0 scale.</p>
+        )}
+      </div>
+
+      <div className="stat-card">
+        <h2 className="stat-card__title">Course rigor</h2>
+        {apTaken != null && apOffered != null && apOffered > 0 ? (
+          <div className="card__body">
+            <div className="gpa__value">
+              <span className="gpa__num">{apTaken}</span>
+              <span className="gpa__scale">of {apOffered} offered</span>
+            </div>
+            {/* One block per AP course the school offers; filled for the ones taken. */}
+            <div className="rigor__meter" role="img" aria-label={`${apTaken} of ${apOffered} AP courses taken`}>
+              {Array.from({ length: Math.min(apOffered, 24) }, (_, i) => (
+                <span
+                  key={i}
+                  className={`rigor__block ${i < apTaken ? "is-on" : ""}`}
+                  style={{ transitionDelay: `${i * 28}ms`, opacity: mounted ? 1 : 0 }}
+                />
+              ))}
+            </div>
+            <p className="gpa__tier" style={{ color: rigorRead(apTaken, apOffered).color }}>
+              {rigorRead(apTaken, apOffered).label}
+            </p>
+          </div>
+        ) : (
+          <p className="card__empty">
+            {apTaken != null
+              ? `You've taken ${apTaken} AP ${apTaken === 1 ? "course" : "courses"}. Add how many your school offers to see how demanding that is.`
+              : "Add your AP course count in the quiz to see how demanding your schedule is."}
+          </p>
+        )}
       </div>
 
       <div className="stat-card dial-tile tile--violet">
-        <h2 className="stat-card__title">Where your score lands</h2>
+        <h2 className="stat-card__title">{fromAct ? "ACT score" : "SAT score"}</h2>
         <div className="dial-tile__body">
           {pctl != null ? (
             <>
@@ -445,9 +532,13 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
                   </span>
                 </div>
               </div>
+              <div className="score">
+                <span className="score__num">{fromAct ? act : satEquiv}</span>
+                <span className="score__label">{fromAct ? "ACT composite" : "SAT superscore"}</span>
+              </div>
               <p className="dial-tile__note">
-                {fromAct ? `ACT ${act} — an SAT ${satEquiv} equivalent.` : `SAT ${satEquiv}.`} Higher than about{" "}
-                {pctl}% of test-takers nationally.
+                {fromAct && `Equivalent to an SAT ${satEquiv}. `}Higher than about {pctl}% of SAT
+                test-takers nationally.
               </p>
             </>
           ) : (
@@ -463,8 +554,37 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
         </div>
       </div>
 
+      {/* ---- The remaining figures, at a glance. ------------------------ */}
+      <div className="kpi-row">
+        {stats.map((st) => (
+          <StatWidget key={st.key} stat={st} />
+        ))}
+      </div>
+
+      {/* ---- Grade trend takes the width; the dial sits beside it. ------ */}
+      <div className="stat-card tile--wide">
+        <div className="stat-card__head">
+          <h2 className="stat-card__title">Grade trend</h2>
+          {hasTrend && (
+            <span className={`trend-badge trend-badge--${direction.key}`}>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={direction.arrow} />
+              </svg>
+              {direction.label}
+            </span>
+          )}
+        </div>
+        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+          <TrendChart values={gradeValues} />
+          {!hasTrend && (
+            <div className="trend__empty">
+              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+            </div>
+          )}
+        </div>
+      </div>
       {/* ---- Our reading, kept separate from the figures above. --------- */}
-      <div className="stat-card tile--wide tile--ink">
+      <div className="stat-card">
         <h2 className="stat-card__title">What this means</h2>
         <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
         {reads.length ? (
@@ -488,7 +608,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
       </div>
 
       {/* ---- The widest graphic gets the full width. -------------------- */}
-      <div className="stat-card tile--full">
+      <div className="stat-card tile--wide">
         <h2 className="stat-card__title">Where you're looking</h2>
         <UsMap homeState={data.homeState || null} goalState={goalState} />
         {!data.homeState && (

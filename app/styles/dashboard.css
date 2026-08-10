@@ -644,6 +644,246 @@
   color: rgba(255, 255, 255, 0.66);
 }
 
+/* ---- Welcome hero ------------------------------------------------------- */
+/* Opens the view with the state of the list: how many colleges, how they split
+   across the bands, and which ones have been set aside. */
+.welcome {
+  padding: 30px 30px 32px;
+}
+.welcome__greet {
+  margin: 0;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #fff;
+}
+.welcome__sub {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+.welcome__body {
+  display: flex;
+  gap: 36px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+.welcome__figures {
+  display: flex;
+  align-items: flex-start;
+  gap: 34px;
+  flex-wrap: wrap;
+}
+.welcome__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.welcome__num {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.welcome__cap {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.welcome__bands {
+  display: flex;
+  align-self: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.welcome__band {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--band-ink);
+}
+.welcome__band--reach { --band-ink: #ff9ec2; }
+.welcome__band--target { --band-ink: #b9a3ff; }
+.welcome__band--safety { --band-ink: #6fe0bd; }
+.welcome__saved {
+  flex: 1 1 300px;
+  max-width: 460px;
+  min-width: 0;
+  padding-left: 34px;
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+.welcome__saved-title {
+  margin: 0 0 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.welcome__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.welcome__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+.welcome__item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.welcome__chip {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--band-ink);
+}
+.welcome__chip--reach { --band-ink: #ff9ec2; }
+.welcome__chip--target { --band-ink: #b9a3ff; }
+.welcome__chip--safety { --band-ink: #6fe0bd; }
+.welcome__more,
+.welcome__empty {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---- GPA bar & rigor meter --------------------------------------------- */
+.gpa__value {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+.gpa__num {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ac-ink);
+}
+.gpa__scale {
+  font-size: 0.92rem;
+  color: var(--ac-ink-3);
+}
+.gpa__track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--ac-sunk);
+  overflow: hidden;
+}
+.gpa__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Notches at the tier boundaries, so the bar shows position, not just amount. */
+.gpa__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  opacity: 0.85;
+}
+.gpa__marks {
+  position: relative;
+  height: 15px;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--ac-ink-4);
+}
+.gpa__mark {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.gpa__mark--start { left: 0; transform: none; }
+.gpa__mark--end { right: 0; transform: none; }
+.gpa__tier {
+  margin: 16px 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+/* Fills the card so short content centres instead of hanging from the title. */
+.card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card__empty {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ac-ink-3);
+}
+
+/* One block per AP course the school offers, filled for the ones taken. */
+.rigor__meter {
+  display: flex;
+  gap: 4px;
+  align-items: stretch;
+}
+.rigor__block {
+  flex: 1 1 0;
+  min-width: 6px;
+  height: 30px;
+  border-radius: 5px;
+  background: var(--ac-sunk);
+  transition: opacity 0.35s ease;
+}
+.rigor__block.is-on {
+  background: var(--ac-blue);
+}
+
+/* ---- Score readout on the test card ------------------------------------ */
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 18px;
+  padding: 10px 22px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.score__num {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.score__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+}
+
 /* ---- Stat widgets ------------------------------------------------------- */
 /* The numbers at a glance, colour-coded so the eye can find one without reading.
    The tints stay pale on purpose: a fully saturated block would claim the page,
@@ -651,7 +891,7 @@
 .kpi-row {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 .kpi {
@@ -799,7 +1039,7 @@
 .read__caveat {
   margin: -12px 0 16px;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #94743f;
 }
 .read__list {
   list-style: none;
@@ -814,7 +1054,7 @@
   padding-left: 20px;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.84);
+  color: var(--ac-ink-2);
 }
 /* A small diamond, echoing the brand mark, instead of a generic bullet. */
 .read__item::before {
@@ -824,14 +1064,14 @@
   top: 0.55em;
   width: 6px;
   height: 6px;
-  background: #f7b93f;
+  background: var(--ac-amber);
   transform: rotate(45deg);
 }
 .read__empty {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ac-ink-3);
 }
 
 /* ---- Outside the classroom --------------------------------------------- */
@@ -1065,11 +1305,6 @@
 }
 
 /* ---- Responsive --------------------------------------------------------- */
-@media (max-width: 1180px) {
-  .kpi-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
 @media (max-width: 1080px) {
   /* Three across no longer fits — the wide cards take the full row. */
   .stat-bento {
@@ -1077,6 +1312,15 @@
   }
   .tile--wide {
     grid-column: 1 / -1;
+  }
+}
+@media (max-width: 900px) {
+  .welcome__saved {
+    flex-basis: 100%;
+    padding-left: 0;
+    padding-top: 24px;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
 }
 @media (max-width: 760px) {
