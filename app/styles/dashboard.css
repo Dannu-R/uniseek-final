@@ -1114,18 +1114,27 @@
   border-color: #ecdcb4;
   padding: 26px 30px 30px;
 }
-.cost__head {
+/* Coin holds the left edge at a fixed size; everything else stacks in a column
+   beside it, so the figures, the scale and the sentence all share one left margin. */
+.cost__body {
   display: flex;
   align-items: center;
-  gap: 30px;
-  margin-bottom: 26px;
-  flex-wrap: wrap;
+  gap: 42px;
+  flex: 1;
 }
 /* The landing page's coin, reused at rest. */
 .cost__coin {
   flex: none;
-  width: 132px;
-  height: 132px;
+  width: 232px;
+  height: 232px;
+  margin: -10px 0 -10px -14px; /* the render carries its own padding */
+}
+.cost__main {
+  flex: 1;
+  min-width: 0;
+}
+.cost__figures {
+  margin-bottom: 26px;
 }
 .cost__figures {
   display: flex;
@@ -1537,6 +1546,21 @@
   }
 }
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */
+@media (max-width: 900px) {
+  /* No room for a column beside the content — the coin sits above it. */
+  .cost__body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .cost__coin {
+    width: 140px;
+    height: 140px;
+  }
+  .cost__main {
+    width: 100%;
+  }
+}
 @media (max-width: 720px) {
   .cost__figure {
     padding: 0;

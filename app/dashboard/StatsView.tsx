@@ -677,9 +677,9 @@ export default function StatsView({
       <div className="stat-card tile--full cost">
         <h2 className="stat-card__title">Cost</h2>
         {budget != null ? (
-          <div className="card__body">
-            <div className="cost__head">
-              <CoinScene className="cost__coin" animate={false} />
+          <div className="cost__body">
+            <CoinScene className="cost__coin" animate={false} />
+            <div className="cost__main">
               <div className="cost__figures">
                 <div className="cost__figure">
                   <span className="cost__label">Family budget</span>
@@ -704,7 +704,6 @@ export default function StatsView({
                   </div>
                 )}
               </div>
-            </div>
 
             {costLow != null && costHigh != null && costTypical != null ? (
               <>
@@ -748,6 +747,7 @@ export default function StatsView({
                   : "Run your list and we'll show what it costs against this budget."}
               </p>
             )}
+            </div>
           </div>
         ) : (
           <p className="card__empty">Add a yearly budget in the quiz — it's the one filter that removes colleges outright.</p>
