@@ -17,6 +17,9 @@ import { Component, Suspense, useEffect, useState } from "react";
 // Y swings the figure's front (+Z) toward -X, which is the left of the screen.
 const TURN = -0.3;
 
+// How far forward the eyes sit. Derived from the head geometry — see the eye block.
+const EYE_Z = 0.78;
+
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
 const GOWN = "#16161f";
@@ -83,25 +86,27 @@ function Student() {
       {/* Eyes — a rounded white with the pupil riding on its front. Two parts rather
           than one dark dot: the white is what makes it read as an eye rather than a
           hole punched in the head.
-          
-          Only the pupil's front cap clears the white, and that cap sits further
-          forward than the white's own centre — so seen off head-on, the gap between
-          them projects sideways and walks the pupil toward the edge. The fix is
-          proportion rather than geometry: a wide white against a small dot leaves
-          enough margin that the shift never reaches the rim. The eyes are also
-          turned half of the head's own turn back toward the camera, which halves
-          the shift again — he still looks left, just less past the viewer. */}
+
+          EYE_Z is the one number here that isn't taste. The head is an ellipsoid of
+          radii (0.82, 0.853, 0.787), so its surface at the eye's x/y sits at z 0.734
+          and the surface drops another 0.10 across the eye's own width. Set the white
+          any shallower than its rim needs and the head swallows the outer edge — the
+          white comes out cut off with a straight side rather than round, worst on the
+          far eye where the view is most oblique. 0.78 clears the whole rim while the
+          back of the white still sits inside the face, so it reads as set into the
+          head rather than stuck on it. */}
       {[-1, 1].map((side) => (
-        <group key={side} position={[side * 0.27, -0.13, 0.66]} rotation={[0, -TURN / 2, 0]}>
-          {/* Emissive, so the shaded half of the sphere still reads as white. Lit
-              normally, only the key-lit side looked white and the pupil appeared to
-              sit off-centre inside a crescent rather than a disk. */}
-          <mesh scale={[1, 1, 0.7]}>
-            <sphereGeometry args={[0.14, 24, 20]} />
+        <group key={side} position={[side * 0.27, -0.13, EYE_Z]} rotation={[0, -TURN / 2, 0]}>
+          {/* Flattened to a lens — a full sphere this far forward bulges, which is
+              most of what made him look googly. Emissive so the shaded half still
+              reads as white; lit normally only the key-lit side looked white and the
+              pupil appeared to sit in a crescent rather than a disk. */}
+          <mesh scale={[1, 1, 0.55]}>
+            <sphereGeometry args={[0.115, 24, 20]} />
             <meshStandardMaterial
               color="#ffffff"
               emissive="#ffffff"
-              emissiveIntensity={0.55}
+              emissiveIntensity={0.38}
               roughness={0.45}
               metalness={0}
             />
@@ -111,8 +116,8 @@ function Student() {
               projection pulls both of them toward the nose. Measured off the render
               rather than derived; the figure and camera are both fixed, so a constant
               is honest here. */}
-          <mesh position={[side * 0.039, 0, 0.072]}>
-            <sphereGeometry args={[0.058, 20, 16]} />
+          <mesh position={[side * 0.03, 0, 0.048]}>
+            <sphereGeometry args={[0.05, 20, 16]} />
             <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
           </mesh>
         </group>
