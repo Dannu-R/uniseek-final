@@ -96,7 +96,7 @@ function Student() {
           lens. */}
       {[-1, 1].map((side) => (
         <mesh key={side} position={[side * EYE_X, -0.13, EYE_Z]}>
-          <sphereGeometry args={[0.062, 24, 18]} />
+          <sphereGeometry args={[0.075, 24, 18]} />
           <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
         </mesh>
       ))}

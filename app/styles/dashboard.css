@@ -97,6 +97,15 @@
   gap: 4px;
   flex: 1;
 }
+/* The panel's own name. Bigger and in full ink so it reads as a title rather than as
+   another of the section labels below it. */
+.dash__nav-title {
+  margin: 2px 8px 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ac-rail-ink);
+}
 .dash__nav-label {
   margin: 6px 8px 8px;
   font-size: 0.68rem;

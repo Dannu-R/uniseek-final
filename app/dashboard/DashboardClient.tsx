@@ -382,6 +382,9 @@ export default function DashboardClient({ user }: { user: DashUser }) {
           </div>
 
           <nav className="dash__nav" aria-label="Dashboard sections">
+            {/* Names the panel, above its first entry. It sits under the account block
+                rather than over it — that block was put at the very top deliberately. */}
+            <p className="dash__nav-title">Dashboard</p>
             {renderTab(HOME_TAB)}
             <div className="dash__nav-divider" aria-hidden="true" />
             <p className="dash__nav-label">Views</p>
