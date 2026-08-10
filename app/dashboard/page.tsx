@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   return (
     <>
       {/* The shared site header (fixed, 64px). dashboard.css offsets the shell below it. */}
-      <Navbar />
+      <Navbar variant="light" />
       <DashboardClient user={{ name, email, image }} />
     </>
   );

@@ -179,12 +179,22 @@ function TrendChart({ values }: { values: (number | null)[] }) {
       {has && (
         <>
           <path d={line} className="trend__line" />
-          {pts.map((p, i) => (
-            <g key={i}>
-              <circle cx={p.x} cy={p.y} r="4.5" className="trend__dot" />
-              <text x={p.x} y={p.y - 11} textAnchor="middle" className="trend__value">{p.v.toFixed(2)}</text>
-            </g>
-          ))}
+          {pts.map((p, i) => {
+            // The end points sit on the plot edges, so a centred label would hang over
+            // the y-axis numbers (left) or the card padding (right). Anchor them inward.
+            const first = i === 0;
+            const last = i === pts.length - 1;
+            const anchor = first ? "start" : last ? "end" : "middle";
+            const dx = first ? -4 : last ? 4 : 0;
+            return (
+              <g key={i}>
+                <circle cx={p.x} cy={p.y} r="4.5" className="trend__dot" />
+                <text x={p.x + dx} y={p.y - 11} textAnchor={anchor} className="trend__value">
+                  {p.v.toFixed(2)}
+                </text>
+              </g>
+            );
+          })}
         </>
       )}
     </svg>
@@ -301,22 +311,29 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
     reads.push("You've marked yourself test-optional, so we lean on your GPA and coursework instead.");
 
   return (
-    <section className="dash__view">
-      {/* ---- Facts: what you told us. ---------------------------------- */}
-      <div className="stat-card profile">
-        <h2 className="stat-card__title">Your academic profile</h2>
-        <div className="profile__body">
-        <div className="profile__dial">
+    <section className="dash__view stat-bento">
+      {/* ---- Facts: the numbers you entered, each on its own scale. ----- */}
+      <div className="stat-card tile--wide">
+        <h2 className="stat-card__title">Your numbers</h2>
+        <Ledger rows={measures} active={mounted} />
+        {!hasAnyMeasure && (
+          <div className="stat-empty">
+            <p className="stat-empty__text">Nothing here yet — your quiz answers fill this in.</p>
+            <button type="button" className="btn btn--primary" onClick={onEdit}>
+              Answer the quiz
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* The one saturated tile on the page: the single most graphic figure. */}
+      <div className={`stat-card dial-tile ${pctl != null ? "tile--accent" : ""}`}>
+        <h2 className="stat-card__title">Test score</h2>
+        <div className="dial-tile__body">
           {pctl != null ? (
             <>
               <div className="stat-meter">
                 <svg viewBox="0 0 128 128" className="stat-meter__svg" aria-hidden="true">
-                  <defs>
-                    <linearGradient id="statGrad" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#8b5cf6" />
-                      <stop offset="100%" stopColor="#ec4899" />
-                    </linearGradient>
-                  </defs>
                   <circle
                     cx="64"
                     cy="64"
@@ -342,15 +359,15 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
                   </span>
                 </div>
               </div>
-              <p className="profile__dial-note">
+              <p className="dial-tile__note">
                 {fromAct ? `ACT ${act} — an SAT ${satEquiv} equivalent.` : `SAT ${satEquiv}.`} Higher than about{" "}
                 {pctl}% of test-takers nationally.
               </p>
             </>
           ) : (
-            <div className="profile__dial-empty">
-              <span className="profile__dial-ring" aria-hidden="true" />
-              <p className="profile__dial-note">
+            <div className="dial-tile__empty">
+              <span className="dial-tile__ring" aria-hidden="true" />
+              <p className="dial-tile__note">
                 {data.notSubmittingScores
                   ? "You're applying test-optional, so there's no score to place."
                   : "Add an SAT or ACT score in the quiz to see where you land nationally."}
@@ -358,81 +375,61 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
             </div>
           )}
         </div>
+      </div>
 
-        <div className="profile__ledger">
-          <Ledger rows={measures} active={mounted} />
-          {!hasAnyMeasure && (
-            <div className="stat-empty">
-              <p className="stat-empty__text">Nothing here yet — your quiz answers fill this in.</p>
-              <button type="button" className="btn btn--primary" onClick={onEdit}>
-                Answer the quiz
-              </button>
+      {/* ---- Three small tiles: the record, our reading, and activities. */}
+      <div className="stat-card">
+        <h2 className="stat-card__title">Grade trend</h2>
+        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+          <TrendChart values={gradeValues} />
+          {!hasTrend && (
+            <div className="trend__empty">
+              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
             </div>
           )}
         </div>
-        </div>
       </div>
 
-      {/* ---- Interpretation, kept visibly separate from the facts. ------ */}
-      <div className="stat-row">
-        <div className="stat-card">
-          <h2 className="stat-card__title">Grade trend</h2>
-          <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-            <TrendChart values={gradeValues} />
-            {!hasTrend && (
-              <div className="trend__empty">
-                <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
-              </div>
-            )}
+      <div className="stat-card tile--amber">
+        <h2 className="stat-card__title">What this means</h2>
+        <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
+        {reads.length ? (
+          <ul className="read__list">
+            {reads.map((r) => (
+              <li key={r} className="read__item">{r}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
+        )}
+      </div>
+
+      <div className="stat-card tile--green">
+        <h2 className="stat-card__title">Outside the classroom</h2>
+        <div className="stat-ec__figures">
+          <div className="stat-ec__figure">
+            <span className="stat-ec__num">{activities.length}</span>
+            <span className="stat-ec__cap">{activities.length === 1 ? "activity" : "activities"}</span>
+          </div>
+          <div className="stat-ec__figure">
+            <span className="stat-ec__num">{serviceHours ?? 0}</span>
+            <span className="stat-ec__cap">service hours a year</span>
           </div>
         </div>
-
-        <div className="stat-card read">
-          <h2 className="stat-card__title read__title">What this means</h2>
-          <p className="read__caveat">Our reading of the numbers — not a score, and not a prediction.</p>
-          {reads.length ? (
-            <ul className="read__list">
-              {reads.map((r) => (
-                <li key={r} className="read__item">{r}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
-          )}
-        </div>
+        <p className="stat-ec__lead">
+          A personalized read on your activities — the throughline across them and how it strengthens your
+          applications — will appear here.
+        </p>
+        <span className="stat-ec__tag">Summary coming soon</span>
       </div>
 
-      {/* ---- Where you're coming from and where you're aiming. ---------- */}
-      <div className="stat-card">
+      {/* ---- The widest graphic gets the full width. -------------------- */}
+      <div className="stat-card tile--full">
         <h2 className="stat-card__title">Where you're looking</h2>
         <UsMap homeState={data.homeState || null} goalState={goalState} />
         {!data.homeState && (
           <p className="usmap__cta">Set your home state in the quiz to see it on the map.</p>
         )}
-      </div>
-
-      {/* ---- Extracurriculars — counts now, the written read later. ----- */}
-      <div className="stat-card stat-ec">
-        <h2 className="stat-card__title">Outside the classroom</h2>
-        <div className="stat-ec__body">
-          <div className="stat-ec__figures">
-            <div className="stat-ec__figure">
-              <span className="stat-ec__num">{activities.length}</span>
-              <span className="stat-ec__cap">{activities.length === 1 ? "activity" : "activities"}</span>
-            </div>
-            <div className="stat-ec__figure">
-              <span className="stat-ec__num">{serviceHours ?? 0}</span>
-              <span className="stat-ec__cap">service hours a year</span>
-            </div>
-          </div>
-          <div className="stat-ec__content">
-            <p className="stat-ec__lead">
-              A personalized read on your activities — the throughline across them and how it strengthens
-              your applications — will appear here.
-            </p>
-            <span className="stat-ec__tag">Summary coming soon</span>
-          </div>
-        </div>
       </div>
 
       <p className="stat-foot">

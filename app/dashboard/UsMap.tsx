@@ -8,8 +8,8 @@
 import { US_MAP_VIEWBOX, US_STATE_PATHS, US_STATE_CENTROIDS } from "./usStatePaths";
 import { stateLabel } from "@/app/build/model";
 
-const HOME = "#3b82f6"; // --color-blue
-const GOAL = "#ec4899"; // --color-pink
+const HOME = "#2563eb"; // --ac-blue
+const GOAL = "#e8407f"; // --ac-pink
 
 type Role = "home" | "goal" | "both";
 

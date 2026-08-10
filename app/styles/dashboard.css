@@ -1,19 +1,101 @@
 /* ================================================================
-   Dashboard — flat, geometric, restrained (one accent, no metallic
-   gradients). Fixed left rail of views + account; content area on the right.
+   Dashboard — "study desk" theme.
+
+   The signed-in product reads as academic and friendly rather than dark-tech:
+   paper ground, white cards, navy ink, a soft text serif for headings, and a
+   small set of accent colours that each mean something (violet = your score,
+   amber = our reading, green = activities, blue/pink = home/goal state).
+
+   Scoped entirely to `.dash` — the marketing pages keep the dark identity.
    ================================================================ */
 
-/* The site header is a fixed 64px bar; offset the whole shell below it. The rail is
-   fixed on the left and the content is offset by its width, so starting the quiz can
-   slide the rail away and expand the content to full width (both animated). */
 .dash {
   --dash-header: 64px;
   --dash-rail: 248px;
+
+  /* Ground & surfaces */
+  --ac-paper: #eef1f7;
+  --ac-card: #ffffff;
+  --ac-sunk: #f4f6fb;
+
+  /* Ink scale — navy, never pure black */
+  --ac-ink: #16223f;
+  --ac-ink-2: #4c5a7a;
+  --ac-ink-3: #7a87a3;
+  --ac-ink-4: #a8b2c6;
+
+  /* Hairlines */
+  --ac-line: #e3e8f1;
+  --ac-line-2: #eef2f8;
+
+  /* Accents — each carries a meaning, not decoration */
+  --ac-violet: #6236e8;
+  --ac-violet-deep: #4a24c4;
+  --ac-violet-soft: #f0ecff;
+  --ac-blue: #2563eb;
+  --ac-pink: #e8407f;
+  --ac-amber: #a4650a;
+  --ac-amber-soft: #fdf4e3;
+  --ac-green: #0f9d76;
+  --ac-green-soft: #e8f6f1;
+
+  --ac-shadow: 0 1px 2px rgba(22, 34, 63, 0.05), 0 12px 30px -18px rgba(22, 34, 63, 0.35);
+  --ac-shadow-lift: 0 2px 5px rgba(22, 34, 63, 0.07), 0 20px 42px -22px rgba(22, 34, 63, 0.5);
+  --ac-radius: 16px;
+
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+
   position: relative;
   min-height: 100vh;
   padding-top: var(--dash-header);
-  background: var(--color-black);
-  color: #e9e6f4;
+  background: var(--ac-paper);
+  color: var(--ac-ink-2);
+}
+
+/* ---- Site header, paper variant ---------------------------------------- */
+/* The header is shared with the marketing pages; the dashboard route asks for the
+   light variant so the whole signed-in surface reads as one thing. */
+.navbar--light {
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8f1;
+  box-shadow: 0 1px 3px rgba(22, 34, 63, 0.06);
+}
+.navbar--light .navbar__link {
+  color: #4c5a7a;
+}
+.navbar--light .navbar__link:hover {
+  color: #16223f;
+}
+.navbar--light .nav-pill--ghost {
+  color: #4c5a7a;
+  background: #f4f6fb;
+  border-color: #e3e8f1;
+}
+.navbar--light .nav-pill--ghost:hover {
+  background: #eef2f8;
+  color: #16223f;
+}
+.navbar--light .nav-divider {
+  background: #e3e8f1;
+}
+.navbar--light .nav-user {
+  background: #f4f6fb;
+}
+.navbar--light .nav-user__name {
+  color: #16223f;
+}
+.navbar--light .nav-user__avatar--initial {
+  background: #6236e8;
+  color: #fff;
+}
+.navbar--light .nav-iconbtn {
+  background: #f4f6fb;
+  border-color: #e3e8f1;
+  color: #7a87a3;
+}
+.navbar--light .nav-iconbtn:hover {
+  background: #f0ecff;
+  color: #6236e8;
 }
 
 /* ---- Left rail ---------------------------------------------------------- */
@@ -26,8 +108,8 @@
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: var(--color-void);
-  border-right: 1px solid rgba(167, 139, 250, 0.14);
+  background: var(--ac-card);
+  border-right: 1px solid var(--ac-line);
   padding: 22px 16px;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
@@ -46,20 +128,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ac-ink);
   padding: 4px 8px 20px;
 }
 .dash__brand-mark {
   width: 16px;
   height: 16px;
-  background: var(--color-purple);
+  background: var(--ac-violet);
   /* a small geometric diamond */
   transform: rotate(45deg);
   border-radius: 3px;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
 }
 
 .dash__nav {
@@ -74,7 +156,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.34);
+  color: var(--ac-ink-4);
 }
 
 .dash__tab {
@@ -86,54 +168,42 @@
   text-align: left;
   padding: 11px 12px;
   border: 1px solid transparent;
-  border-radius: 9px;
+  border-radius: 11px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--ac-ink-2);
   font-size: 0.94rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.14s, color 0.14s, border-color 0.14s;
+  transition: background 0.14s, color 0.14s;
 }
 .dash__tab:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
+  background: var(--ac-sunk);
+  color: var(--ac-ink);
 }
 .dash__tab.is-active {
-  background: rgba(109, 40, 217, 0.16);
-  border-color: rgba(167, 139, 250, 0.28);
-  color: #fff;
-}
-/* left accent bar on the active view */
-.dash__tab.is-active::before {
-  content: "";
-  position: absolute;
-  left: -16px;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: var(--color-purple);
+  background: var(--ac-violet-soft);
+  color: var(--ac-violet-deep);
+  font-weight: 600;
 }
 .dash__tab-icon {
   display: inline-flex;
   flex-shrink: 0;
-  opacity: 0.72;
+  color: var(--ac-ink-3);
 }
 .dash__tab-icon svg {
   width: 18px;
   height: 18px;
 }
 .dash__tab.is-active .dash__tab-icon {
-  opacity: 1;
-  color: var(--color-purple-light);
+  color: var(--ac-violet);
 }
 
 /* Separates the college views from "Your stats". */
 .dash__nav-divider {
   height: 1px;
   margin: 12px 10px;
-  background: rgba(255, 255, 255, 0.09);
+  background: var(--ac-line);
 }
 .dash__tab-count {
   margin-left: auto;
@@ -143,15 +213,15 @@
   display: inline-grid;
   place-items: center;
   border-radius: 999px;
-  background: rgba(167, 139, 250, 0.22);
-  color: var(--color-purple-light);
+  background: var(--ac-violet-soft);
+  color: var(--ac-violet-deep);
   font-size: 0.72rem;
   font-weight: 700;
 }
 
 /* ---- Account (pinned bottom) ------------------------------------------- */
 .dash__account {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--ac-line);
   padding-top: 14px;
   margin-top: 10px;
 }
@@ -164,21 +234,21 @@
 .dash__avatar {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 9px;
   object-fit: cover;
   flex-shrink: 0;
 }
 .dash__avatar--initial {
   display: grid;
   place-items: center;
-  background: rgba(167, 139, 250, 0.2);
-  color: var(--color-purple-light);
+  background: var(--ac-violet-soft);
+  color: var(--ac-violet-deep);
   font-weight: 700;
   font-size: 0.9rem;
 }
 .dash__user-name {
   font-size: 0.86rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--ac-ink-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -186,18 +256,18 @@
 .dash__signout {
   width: 100%;
   padding: 9px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.72);
+  border-radius: 10px;
+  border: 1px solid var(--ac-line);
+  background: var(--ac-card);
+  color: var(--ac-ink-2);
   font-size: 0.86rem;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.14s, color 0.14s;
 }
 .dash__signout:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  background: var(--ac-sunk);
+  color: var(--ac-ink);
 }
 
 /* ---- Content ----------------------------------------------------------- */
@@ -220,10 +290,10 @@
   z-index: 15;
   margin: -40px -44px 30px;
   padding: 17px 44px;
-  background: rgba(5, 4, 10, 0.93);
+  background: rgba(238, 241, 247, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(167, 139, 250, 0.14);
+  border-bottom: 1px solid var(--ac-line);
 }
 .dash__bar-inner {
   max-width: 940px;
@@ -235,15 +305,17 @@
 }
 .dash__bar-title {
   margin: 0;
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.42rem;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   line-height: 1.15;
-  color: #fff;
+  color: var(--ac-ink);
 }
 .dash__bar-sub {
-  margin: 5px 0 0;
+  margin: 4px 0 0;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--ac-ink-3);
 }
 .dash__bar-action {
   flex: none;
@@ -286,15 +358,16 @@
   gap: 16px;
 }
 .dash__view-title {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-family: var(--font-display);
   font-size: 1.7rem;
+  font-weight: 600;
   line-height: 1.15;
-  color: #fff;
+  color: var(--ac-ink);
   margin: 0 0 6px;
 }
 .dash__view-sub {
   margin: 0;
-  color: rgba(255, 255, 255, 0.56);
+  color: var(--ac-ink-3);
   font-size: 0.96rem;
 }
 
@@ -304,237 +377,312 @@
   gap: 4px;
   padding: 4px;
   margin-bottom: 22px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: var(--ac-card);
+  border: 1px solid var(--ac-line);
 }
 .dash__filter-btn {
-  padding: 7px 16px;
-  border-radius: 8px;
+  padding: 8px 16px;
   border: none;
+  border-radius: 9px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.62);
-  font: inherit;
+  color: var(--ac-ink-3);
   font-size: 0.88rem;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   transition: background 0.14s, color 0.14s;
 }
 .dash__filter-btn:hover {
-  color: #fff;
+  color: var(--ac-ink);
 }
 .dash__filter-btn.is-active {
-  background: rgba(109, 40, 217, 0.32);
+  background: var(--ac-violet);
   color: #fff;
 }
 .dash__filter-empty {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.95rem;
+  color: var(--ac-ink-3);
+  font-size: 0.94rem;
 }
 
-/* Empty state — centered geometric card */
+/* ---- Empty states ------------------------------------------------------- */
 .dash__empty {
   display: grid;
   place-items: center;
-  min-height: 62vh;
+  min-height: 46vh;
 }
 .dash__empty-card {
   max-width: 480px;
   text-align: center;
-  padding: 40px 34px;
-  border: 1px solid rgba(167, 139, 250, 0.16);
-  border-radius: 14px;
-  background:
-    linear-gradient(180deg, rgba(167, 139, 250, 0.05), transparent 60%),
-    var(--color-void);
+  padding: 44px 38px 40px;
+  border-radius: 20px;
+  border: 1px solid var(--ac-line);
+  background: var(--ac-card);
+  box-shadow: var(--ac-shadow);
 }
 .dash__empty-mark {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 20px;
-  border: 2px solid var(--color-purple);
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 22px;
+  border: 2px solid var(--ac-violet);
   border-radius: 8px;
   transform: rotate(45deg);
-  box-shadow: inset 0 0 0 6px rgba(109, 40, 217, 0.16);
 }
 .dash__empty-title {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-family: var(--font-display);
   font-size: 1.5rem;
-  color: #fff;
+  font-weight: 600;
+  color: var(--ac-ink);
   margin: 0 0 10px;
 }
 .dash__empty-sub {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.98rem;
-  line-height: 1.55;
-  margin: 0 0 24px;
+  margin: 0 0 26px;
+  color: var(--ac-ink-3);
+  font-size: 0.96rem;
+  line-height: 1.6;
 }
 
-.btn--lg {
-  padding: 15px 34px;
+/* ---- Buttons (scoped: the global .btn is built for the dark pages) ------ */
+/* A flat fill with a solid bottom lip — the button reads as a physical key, which
+   is the friendly end of "academic" this product wants. */
+.dash .btn {
+  border: none;
+  border-radius: 11px;
+  padding: 11px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s, background 0.14s, box-shadow 0.14s;
+}
+.dash .btn--primary {
+  background: var(--ac-violet);
+  color: #fff;
+  box-shadow: 0 2px 0 var(--ac-violet-deep);
+}
+.dash .btn--primary:hover {
+  background: #5730d8;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--ac-violet-deep);
+}
+.dash .btn--primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--ac-violet-deep);
+}
+.dash .btn--ghost {
+  background: var(--ac-card);
+  color: var(--ac-ink-2);
+  border: 1px solid var(--ac-line);
+  box-shadow: 0 2px 0 var(--ac-line);
+}
+.dash .btn--ghost:hover {
+  background: var(--ac-sunk);
+  color: var(--ac-ink);
+  transform: translateY(-1px);
+}
+.dash .btn--lg {
+  padding: 14px 30px;
   font-size: 1rem;
+}
+.dash .btn:focus-visible {
+  outline: 3px solid rgba(98, 54, 232, 0.35);
+  outline-offset: 2px;
 }
 
 /* ---- Embedded wizard overrides ----------------------------------------- */
-/* The wizard normally owns the full viewport; inside a tab it should just flow. */
 .wizard--embedded {
-  min-height: auto;
   padding: 0;
-  display: block;
+  min-height: auto;
 }
 .wizard--embedded .wizard__inner {
-  margin: 0 auto; /* centered when the quiz takes the full width */
-  max-width: 760px;
+  max-width: 860px;
 }
-/* "Save & exit" — top-left corner of the quiz, a clear back control. */
 .dash__back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 16px 9px 12px;
   margin-bottom: 22px;
-  border-radius: 9px;
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  background: rgba(109, 40, 217, 0.14);
-  color: #efeafd;
+  padding: 9px 16px 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ac-line);
+  background: var(--ac-card);
+  color: var(--ac-ink-2);
   font-size: 0.9rem;
-  font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.14s, border-color 0.14s;
+  transition: background 0.14s, color 0.14s;
 }
 .dash__back:hover {
-  background: rgba(109, 40, 217, 0.24);
-  border-color: rgba(167, 139, 250, 0.5);
+  background: var(--ac-sunk);
+  color: var(--ac-ink);
 }
 .dash__back-arrow {
-  flex-shrink: 0;
-  transition: transform 0.14s ease;
+  transition: transform 0.15s;
 }
 .dash__back:hover .dash__back-arrow {
   transform: translateX(-2px);
 }
 
-/* ---- Your stats view ---------------------------------------------------- */
-/* One container type — the card. Hierarchy comes from what's inside them and the
-   order they're read in: the numbers the student entered, then our reading of
-   those numbers, then context (trend, map), then activities. */
-.stat-card {
-  border: 1px solid rgba(167, 139, 250, 0.16);
+/* ---- Recommendation cards (defined dark in results.css; relit here) ----- */
+.dash .rs-band__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.dash .rs-band__title--reach { color: var(--ac-pink); }
+.dash .rs-band__title--target { color: var(--ac-violet); }
+.dash .rs-band__title--safety { color: var(--ac-green); }
+.dash .rs-band__blurb {
+  color: var(--ac-ink-3);
+}
+.dash .rs-card {
+  background: var(--ac-card);
+  border: 1px solid var(--ac-line);
+  border-left: 4px solid var(--ac-line);
   border-radius: 14px;
-  background: var(--color-void);
-  padding: 26px 26px 30px;
+  box-shadow: var(--ac-shadow);
 }
-.stat-card + .stat-card,
-.stat-card + .stat-row,
-.stat-row + .stat-card {
-  margin-top: 20px;
+.dash .rs-card--reach { border-left-color: var(--ac-pink); }
+.dash .rs-card--target { border-left-color: var(--ac-violet); }
+.dash .rs-card--safety { border-left-color: var(--ac-green); }
+.dash .rs-card:hover {
+  border-color: var(--ac-ink-4);
+  box-shadow: var(--ac-shadow-lift);
 }
-.stat-row {
+.dash .rs-card__name {
+  color: var(--ac-ink);
+}
+.dash .rs-card__rate {
+  color: var(--ac-ink);
+  font-variant-numeric: tabular-nums;
+}
+.dash .rs-card__rate em {
+  color: var(--ac-ink-3);
+}
+.dash .rs-card__explore,
+.dash .rs-card__save {
+  color: var(--ac-ink-3);
+  border-color: var(--ac-line);
+  background: var(--ac-card);
+}
+.dash .rs-card__explore:hover,
+.dash .rs-card__save:hover {
+  color: var(--ac-violet);
+  border-color: var(--ac-violet);
+  background: var(--ac-violet-soft);
+}
+.dash .rs-card__save.is-saved {
+  color: var(--ac-violet);
+  border-color: var(--ac-violet);
+}
+.rs-modal__card {
+  color: var(--ac-ink-2);
+}
+
+/* ================================================================
+   Your stats — a bento of cards whose size tracks how graphic and how
+   important their content is: the ledger and the map get the room, the
+   three interpretive tiles sit small and colour-coded beside each other.
+   ================================================================ */
+.stat-bento {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+  align-items: start;
 }
-/* Paired cards stretch to the taller of the two; the chart centers in the leftover
-   space rather than hanging from the top of its card. */
-.stat-row > .stat-card {
+.tile--wide { grid-column: span 2; }
+.tile--full { grid-column: 1 / -1; }
+
+/* Cards stretch to their row, so the content column grows to fill rather than
+   leaving a pool of empty space under short content. */
+.stat-card {
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--ac-line);
+  border-radius: var(--ac-radius);
+  background: var(--ac-card);
+  box-shadow: var(--ac-shadow);
+  padding: 24px 24px 28px;
+  height: 100%;
 }
-.stat-row .trend {
+.ledger,
+.stat-card .trend {
   flex: 1;
-  display: grid;
-  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .stat-card__title {
   margin: 0 0 20px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.44);
+  color: var(--ac-ink-3);
 }
 .stat-card__note {
   margin: 20px 0 0;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--ac-ink-2);
   line-height: 1.5;
 }
 
-/* ---- Profile hero: one graphic (the dial) + the ledger of measures ------ */
-.profile__body {
-  display: grid;
-  grid-template-columns: 244px minmax(0, 1fr);
-  gap: 40px;
-  align-items: center;
+/* Colour-keyed tiles. One saturated block only — the test score — with the two
+   supporting tiles tinted rather than filled. */
+.tile--accent {
+  background: var(--ac-violet);
+  border-color: var(--ac-violet);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05), 0 18px 36px -20px rgba(98, 54, 232, 0.9);
 }
-.profile__dial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.tile--accent .stat-card__title { color: rgba(255, 255, 255, 0.72); }
+.tile--amber {
+  background: var(--ac-amber-soft);
+  border-color: #f4e3c4;
 }
-.profile__dial-note {
-  margin: 14px 0 0;
-  max-width: 232px;
-  font-size: 0.84rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.52);
+.tile--amber .stat-card__title { color: var(--ac-amber); }
+.tile--green {
+  background: var(--ac-green-soft);
+  border-color: #cfe9e0;
 }
-.profile__dial-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.profile__dial-ring {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 2px dashed rgba(167, 139, 250, 0.22);
-}
-.profile__ledger {
-  border-left: 1px solid rgba(167, 139, 250, 0.14);
-  padding-left: 40px;
-}
+.tile--green .stat-card__title { color: var(--ac-green); }
 
-/* The ledger: every measure on its own true scale, bars sharing one column so the
-   shape of the profile reads down the page without inventing a common score. */
+/* ---- The ledger: every measure on its own true scale, bars sharing one
+   column so the shape of the profile reads down the page. ---------------- */
 .ledger {
   margin: 0;
 }
 /* Fixed value/scale columns rather than `auto`: every row is its own grid, so an
-   intrinsic column would resolve per row and the bars would stop lining up — and the
-   shared bar column is the whole point of reading the ledger down the page. */
+   intrinsic column would resolve per row and the bars would stop lining up. */
 .ledger__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 116px minmax(72px, 0.95fr) 122px;
   align-items: center;
   gap: 18px;
-  padding: 15px 0;
+  padding: 16px 0;
 }
 .ledger__row + .ledger__row {
-  border-top: 1px solid rgba(167, 139, 250, 0.12);
+  border-top: 1px solid var(--ac-line-2);
 }
 .ledger__label {
   font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.74);
+  color: var(--ac-ink-2);
 }
 .ledger__value {
   margin: 0;
   justify-self: end;
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-family: var(--font-display);
   font-size: 1.7rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: #fff;
+  color: var(--ac-ink);
   white-space: nowrap;
 }
 .ledger__track {
-  height: 8px;
+  height: 9px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--ac-sunk);
   overflow: hidden;
 }
 .ledger__fill {
@@ -545,20 +693,32 @@
 }
 .ledger__scale {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--ac-ink-3);
 }
 .ledger__row.is-muted .ledger__value {
-  color: rgba(255, 255, 255, 0.26);
+  color: var(--ac-ink-4);
 }
 .ledger__row.is-muted .ledger__track {
   background: none;
 }
 
-/* Circular percentile meter */
+/* ---- Test-score tile ---------------------------------------------------- */
+.dial-tile {
+  display: flex;
+  flex-direction: column;
+}
+.dial-tile__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 .stat-meter {
   position: relative;
-  width: 190px;
-  height: 190px;
+  width: 176px;
+  height: 176px;
   margin: 0 auto;
 }
 .stat-meter__svg {
@@ -567,18 +727,17 @@
 }
 .stat-meter__track {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.09);
+  stroke: rgba(255, 255, 255, 0.22);
   stroke-width: 11;
   stroke-linecap: round;
 }
 .stat-meter__arc {
   fill: none;
-  stroke: url(#statGrad);
+  stroke: #fff;
   stroke-width: 11;
   stroke-linecap: round;
   transition: stroke-dasharray 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* Readout centered in the gauge (label above the number) — balanced. */
 .stat-meter__center {
   position: absolute;
   inset: 0;
@@ -588,53 +747,53 @@
   justify-content: center;
 }
 .stat-meter__num {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-family: var(--font-display);
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   color: #fff;
 }
 .stat-meter__num sup {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-left: 1px;
 }
 .stat-meter__label {
   margin-bottom: 3px;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.68);
+}
+.dial-tile__note {
+  margin: 16px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* Without a score the tile drops the fill — a saturated block that says nothing
+   would shout for no reason. */
+.dial-tile__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.dial-tile__ring {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px dashed var(--ac-line);
+}
+.dial-tile__empty .dial-tile__note {
+  color: var(--ac-ink-3);
 }
 
-/* ---- Interpretation card ------------------------------------------------ */
-/* Deliberately a different surface from the fact cards: tinted, pink-keyed, and
-   marked with its own rail — a reading is not a measurement. */
-.read {
-  position: relative;
-  border-color: rgba(236, 72, 153, 0.24);
-  background:
-    linear-gradient(180deg, rgba(236, 72, 153, 0.07), rgba(236, 72, 153, 0) 62%),
-    var(--color-void);
-}
-.read::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 22px;
-  bottom: 22px;
-  width: 2px;
-  border-radius: 999px;
-  background: var(--gradient-fit);
-}
-.read__title {
-  margin-bottom: 7px;
-  color: var(--color-pink-light);
-}
+/* ---- Interpretation tile ------------------------------------------------ */
 .read__caveat {
-  margin: 0 0 18px;
-  font-size: 0.79rem;
-  color: rgba(255, 255, 255, 0.42);
+  margin: -12px 0 16px;
+  font-size: 0.78rem;
+  color: #94743f;
 }
 .read__list {
   list-style: none;
@@ -647,26 +806,26 @@
 .read__item {
   position: relative;
   padding-left: 20px;
-  font-size: 0.93rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.76);
+  color: var(--ac-ink-2);
 }
 /* A small diamond, echoing the brand mark, instead of a generic bullet. */
 .read__item::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.58em;
+  top: 0.55em;
   width: 6px;
   height: 6px;
-  background: var(--color-pink);
+  background: var(--ac-amber);
   transform: rotate(45deg);
 }
 .read__empty {
   margin: 0;
-  font-size: 0.93rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--ac-ink-3);
 }
 
 .stat-empty {
@@ -674,92 +833,238 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
-  padding: 20px 0 8px;
+  padding: 20px 0 4px;
 }
 .stat-empty__text {
   margin: 0;
-  color: rgba(255, 255, 255, 0.56);
+  color: var(--ac-ink-3);
   font-size: 0.95rem;
 }
 
 /* ---- Outside the classroom --------------------------------------------- */
-.stat-ec__body {
-  display: flex;
-  align-items: stretch;
-  gap: 32px;
-}
 .stat-ec__figures {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 18px;
-  flex: none;
-  padding-right: 32px;
-  border-right: 1px solid rgba(167, 139, 250, 0.14);
+  gap: 26px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #cfe9e0;
 }
 .stat-ec__figure {
   display: flex;
-  align-items: baseline;
-  gap: 9px;
+  flex-direction: column;
+  gap: 4px;
 }
 .stat-ec__num {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.7rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: #fff;
+  color: var(--ac-ink);
 }
 .stat-ec__cap {
-  font-size: 0.84rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-.stat-ec__content {
-  flex: 1;
-  min-width: 0;
-  align-self: center;
+  font-size: 0.8rem;
+  color: var(--ac-ink-3);
 }
 .stat-ec__lead {
   margin: 0 0 16px;
-  max-width: 62ch;
-  font-size: 0.98rem;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ac-ink-2);
 }
 .stat-ec__tag {
   display: inline-flex;
   align-items: center;
+  /* The card is a flex column, so an inline pill would otherwise stretch edge to edge. */
+  align-self: flex-start;
+  margin-top: auto;
   padding: 6px 13px;
   border-radius: 999px;
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  background: rgba(109, 40, 217, 0.14);
-  color: var(--color-purple-light);
-  font-size: 0.76rem;
+  border: 1px solid #cfe9e0;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ac-green);
+  font-size: 0.74rem;
   font-weight: 600;
 }
 
 .stat-foot {
-  margin: 26px auto 0;
+  grid-column: 1 / -1;
+  margin: 6px auto 0;
   max-width: 60ch;
   text-align: center;
   font-size: 0.79rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.34);
+  color: var(--ac-ink-4);
 }
 
-@media (max-width: 900px) {
-  .stat-row {
+/* ---- US map (home state / goal state) ---------------------------------- */
+.usmap {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.usmap__figure {
+  flex: 1 1 420px;
+  max-width: 680px;
+  min-width: 0;
+}
+.usmap__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  margin: 10px 0;
+}
+/* States read as cut paper: a flat tint with white seams between them. */
+.usmap__state {
+  fill: #dde4f0;
+  stroke: var(--ac-card);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.usmap__code {
+  fill: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  paint-order: stroke;
+  stroke: rgba(22, 34, 63, 0.28);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.usmap__key {
+  flex: 0 0 200px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.usmap__key-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.usmap__swatch {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 1px;
+}
+.usmap__key-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.usmap__key-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.usmap__key-value {
+  font-size: 0.94rem;
+  color: var(--ac-ink);
+  line-height: 1.35;
+}
+/* No button here — "Edit answers" already sits in the view header bar, and the view
+   should offer one next step, not the same one twice. */
+.usmap__cta {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--ac-ink-3);
+}
+
+/* ---- Grade-trend line chart -------------------------------------------- */
+.trend {
+  position: relative;
+}
+.trend__svg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.trend__grid {
+  stroke: var(--ac-line);
+  stroke-width: 1;
+}
+.trend__ylabel,
+.trend__xlabel {
+  fill: var(--ac-ink-3);
+  font-size: 12px;
+}
+.trend__xlabel {
+  font-size: 13px;
+}
+.trend__line {
+  fill: none;
+  stroke: var(--ac-violet);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.trend__dot {
+  fill: var(--ac-card);
+  stroke: var(--ac-violet);
+  stroke-width: 2.5;
+}
+.trend__value {
+  fill: var(--ac-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.trend.is-empty .trend__svg {
+  opacity: 0.5;
+}
+.trend__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 0 12px;
+}
+/* Sits on top of the faded grid, so it carries its own ground to stay legible. */
+.trend__empty-text {
+  margin: 0;
+  max-width: 260px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ac-ink-3);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---- Responsive --------------------------------------------------------- */
+@media (max-width: 1080px) {
+  /* Three small tiles no longer fit — the interpretation and activities tiles
+     pair up under a full-width ledger. */
+  .stat-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tile--wide {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 760px) {
+  .stat-bento {
     grid-template-columns: minmax(0, 1fr);
   }
-  .profile__body {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 26px;
-  }
-  .profile__ledger {
-    border-left: none;
-    border-top: 1px solid rgba(167, 139, 250, 0.14);
-    padding-left: 0;
-    padding-top: 24px;
+  .tile--wide,
+  .tile--full {
+    grid-column: auto;
   }
 }
 @media (max-width: 560px) {
@@ -767,23 +1072,9 @@
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 6px 14px;
   }
-  .ledger__track {
-    grid-column: 1 / -1;
-  }
+  .ledger__track,
   .ledger__scale {
     grid-column: 1 / -1;
-  }
-  .stat-ec__body {
-    flex-direction: column;
-    gap: 22px;
-  }
-  .stat-ec__figures {
-    flex-direction: row;
-    gap: 26px;
-    padding-right: 0;
-    padding-bottom: 20px;
-    border-right: none;
-    border-bottom: 1px solid rgba(167, 139, 250, 0.14);
   }
 }
 
@@ -801,6 +1092,9 @@
   .ledger__fill {
     transition: none;
   }
+  .dash .btn:hover {
+    transform: none;
+  }
 }
 
 /* ---- Responsive: rail collapses to a top bar --------------------------- */
@@ -815,7 +1109,7 @@
     flex-wrap: wrap;
     gap: 10px;
     border-right: none;
-    border-bottom: 1px solid rgba(167, 139, 250, 0.14);
+    border-bottom: 1px solid var(--ac-line);
     padding: 12px 16px;
   }
   .dash__main {
@@ -852,9 +1146,6 @@
     margin: 0 6px;
     align-self: center;
   }
-  .dash__tab.is-active::before {
-    display: none;
-  }
   .dash__account {
     border-top: none;
     padding-top: 0;
@@ -869,167 +1160,4 @@
   .dash__signout {
     width: auto;
   }
-}
-
-/* ---- US map (home state / goal state) ---------------------------------- */
-.usmap {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  flex-wrap: wrap;
-}
-/* Capped so the map stays a supporting card — the profile hero is the focal point. */
-.usmap__figure {
-  flex: 1 1 380px;
-  max-width: 560px;
-  min-width: 0;
-}
-.usmap__svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
-  /* The viewBox is cropped tight to the geometry, so the breathing room inside the
-     card has to come from here. */
-  margin: 10px 0;
-}
-.usmap__state {
-  fill: rgba(167, 139, 250, 0.09);
-  stroke: rgba(167, 139, 250, 0.22);
-  stroke-width: 0.7;
-  vector-effect: non-scaling-stroke;
-}
-.usmap__code {
-  fill: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  paint-order: stroke;
-  stroke: rgba(5, 4, 10, 0.75);
-  stroke-width: 3.5;
-  stroke-linejoin: round;
-  pointer-events: none;
-}
-.usmap__key {
-  flex: 0 1 220px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.usmap__key-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-}
-.usmap__swatch {
-  width: 18px;
-  height: 18px;
-  flex: none;
-  margin-top: 1px;
-}
-.usmap__key-text {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-.usmap__key-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.44);
-}
-.usmap__key-value {
-  font-size: 0.94rem;
-  color: #fff;
-  line-height: 1.35;
-}
-/* No button here — "Edit answers" already sits in the view header bar, and the view
-   should offer one next step, not the same one twice. */
-.usmap__cta {
-  margin: 16px 0 0;
-  text-align: center;
-  font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-@media (max-width: 720px) {
-  .usmap {
-    gap: 20px;
-  }
-  .usmap__key {
-    flex-basis: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px 22px;
-  }
-}
-
-/* ---- Grade-trend line chart -------------------------------------------- */
-.trend {
-  position: relative;
-}
-.trend__svg {
-  width: 100%;
-  max-width: 440px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-.trend__grid {
-  stroke: rgba(255, 255, 255, 0.08);
-  stroke-width: 1;
-}
-.trend__ylabel,
-.trend__xlabel {
-  fill: rgba(255, 255, 255, 0.42);
-  font-size: 10px;
-}
-.trend__xlabel {
-  font-size: 11px;
-}
-.trend__line {
-  fill: none;
-  stroke: var(--color-purple-light);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.trend__dot {
-  fill: #fff;
-  stroke: var(--color-purple);
-  stroke-width: 2.5;
-}
-.trend__value {
-  fill: #fff;
-  font-size: 11px;
-  font-weight: 700;
-}
-.trend.is-empty .trend__svg {
-  opacity: 0.22;
-}
-.trend__empty {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  text-align: center;
-  padding: 0 16px;
-}
-/* Sits on top of the faded grid, so it carries its own ground to stay legible. */
-.trend__empty-text {
-  margin: 0;
-  max-width: 300px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  background: rgba(11, 9, 24, 0.92);
-  color: rgba(255, 255, 255, 0.64);
-  font-size: 0.92rem;
-  line-height: 1.5;
 }
