@@ -20,7 +20,7 @@ const TURN = -0.3;
 // Where the eyes sit. Both are derived from the head geometry, not taste — see the
 // eye block. They move together: bringing the eyes inward puts them on a fatter part
 // of the head, so the surface there sits further forward and EYE_Z has to follow.
-const EYE_X = 0.225;
+const EYE_X = 0.25;
 const EYE_Z = 0.79;
 
 const SKIN = "#f0b58a";
