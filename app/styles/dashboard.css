@@ -1741,3 +1741,213 @@
     width: auto;
   }
 }
+
+/* ---- Compare ------------------------------------------------------------ */
+/* One column per college over a shared column of row labels. It's a grid rather than a
+   <table> because the header cells carry a control and the body cells carry a marker,
+   and the row labels have to stay put while the columns scroll sideways. */
+.cmp {
+  padding: 24px 24px 22px;
+}
+
+.cmp__picker {
+  padding-bottom: 20px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--ac-line-2);
+}
+.cmp__picker-label {
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.cmp__picker-hint {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ac-ink-4);
+}
+.cmp__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cmp__pick {
+  padding: 7px 14px;
+  border: 1px solid var(--ac-line);
+  border-radius: 999px;
+  background: var(--ac-card);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ac-ink-2);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.cmp__pick:hover:not(:disabled) {
+  border-color: var(--ac-violet);
+  color: var(--ac-violet);
+}
+.cmp__pick.is-on {
+  background: var(--ac-violet);
+  border-color: var(--ac-violet);
+  color: #fff;
+}
+/* Dimmed rather than hidden: the cap is easier to understand when you can still see
+   what you'd be choosing between. */
+.cmp__pick:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.cmp__pick:focus-visible {
+  outline: 2px solid var(--ac-violet);
+  outline-offset: 2px;
+}
+
+.cmp__scroll {
+  overflow-x: auto;
+}
+.cmp__grid {
+  display: grid;
+  min-width: 100%;
+}
+/* Each row is its own subgrid so the cells keep the columns set on the parent — laying
+   every cell out as a direct child instead would let the rows drift out of alignment. */
+.cmp__row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  border-top: 1px solid var(--ac-line-2);
+}
+
+.cmp__corner {
+  border-bottom: 1px solid var(--ac-line);
+}
+.cmp__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--ac-line);
+}
+.cmp__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ac-ink);
+}
+.cmp__drop {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ac-ink-4);
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.cmp__drop:hover {
+  background: var(--ac-sunk);
+  color: var(--ac-ink);
+}
+
+.cmp__rowlabel {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 18px 16px;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--ac-ink);
+}
+.cmp__rowhint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ac-ink-3);
+}
+.cmp__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 16px;
+}
+.cmp__num {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ac-ink);
+}
+.cmp__delta {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ac-green);
+}
+.cmp__delta.is-over {
+  color: var(--ac-pink);
+}
+.cmp__chip {
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.cmp__chip--reach {
+  background: #fdeef4;
+  color: #b32b60;
+}
+.cmp__chip--target {
+  background: var(--ac-violet-soft);
+  color: var(--ac-violet-deep);
+}
+.cmp__chip--safety {
+  background: var(--ac-green-soft);
+  color: #0b7a5c;
+}
+
+/* The standout on a row, marked with a word rather than a fill. Tinting the whole cell
+   meant that when one college happened to lead every ranked row — which is common, since
+   a safety is usually both the least selective and the cheapest — its entire column lit
+   up and read as a verdict on the college. The label says what the cell actually leads
+   on, and it's a word rather than only colour so it survives being colour-blind. */
+.cmp__flag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--ac-violet-soft);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ac-violet-deep);
+}
+
+.cmp__none {
+  margin: 20px 0 0;
+  font-size: 0.9rem;
+  color: var(--ac-ink-3);
+}
+.cmp__foot {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--ac-line-2);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ac-ink-3);
+}
+
+@media (max-width: 720px) {
+  .cmp {
+    padding: 20px 16px 18px;
+  }
+  .cmp__rowlabel,
+  .cmp__cell,
+  .cmp__head {
+    padding: 14px 12px;
+  }
+}

@@ -18,6 +18,7 @@ import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
 import ExplorerView from "./ExplorerView";
+import CompareView from "./CompareView";
 import ViewHeader from "./ViewHeader";
 import { DEMO_PROFILE } from "@/app/build/demoProfile";
 import { toPayload } from "@/app/build/toPayload";
@@ -41,16 +42,18 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "home" | "recommended" | "saved";
+type TabKey = "home" | "recommended" | "saved" | "compare";
 type TabDef = { key: TabKey; label: string };
 
-// Home leads — it's the view that says where everything stands. The college views
-// sit under their own heading below it.
+// Home leads — it's the view that says where everything stands. Below it, two groups:
+// Views are lists of colleges, Features are the things you do with them. Compare reads
+// as a tool rather than as a third list, so it belongs in the second group.
 const HOME_TAB: TabDef = { key: "home", label: "Home" };
 const VIEW_TABS: TabDef[] = [
   { key: "recommended", label: "Recommended colleges" },
   { key: "saved", label: "Saved colleges" },
 ];
+const FEATURE_TABS: TabDef[] = [{ key: "compare", label: "Compare" }];
 
 // Per-tab line icons (minimalist, currentColor).
 const TAB_ICON: Record<TabKey, ReactNode> = {
@@ -71,6 +74,13 @@ const TAB_ICON: Record<TabKey, ReactNode> = {
       <path d="M3 10.5 12 3.5l9 7" />
       <path d="M5.5 9.5V20h13V9.5" />
       <path d="M9.75 20v-5.5h4.5V20" />
+    </svg>
+  ),
+  // Two columns of different heights — the shape of the view itself.
+  compare: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="9" width="6" height="11" rx="1.5" />
+      <rect x="14" y="4" width="6" height="16" rx="1.5" />
     </svg>
   ),
 };
@@ -360,6 +370,9 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             <div className="dash__nav-divider" aria-hidden="true" />
             <p className="dash__nav-label">Views</p>
             {VIEW_TABS.map(renderTab)}
+            <div className="dash__nav-divider" aria-hidden="true" />
+            <p className="dash__nav-label">Features</p>
+            {FEATURE_TABS.map(renderTab)}
           </nav>
 
           <div className="dash__account">
@@ -442,6 +455,14 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 saved={saved}
                 recommended={result?.list ?? []}
               />
+            </>
+          ) : tab === "compare" ? (
+            <>
+              <ViewHeader
+                title="Compare"
+                subtitle="Your saved colleges, side by side."
+              />
+              <CompareView saved={saved} />
             </>
           ) : tab === "saved" ? (
             <>
