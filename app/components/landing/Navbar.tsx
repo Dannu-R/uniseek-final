@@ -1,14 +1,19 @@
 import { auth, signOut } from "@/auth";
 
-// `variant="light"` is the signed-in product's paper theme — the dashboard sets it so
-// the header belongs to the page under it. Marketing pages use the default dark bar.
-export default async function Navbar({ variant }: { variant?: "light" }) {
+// One black bar across the whole site, signed in or out.
+export default async function Navbar() {
   const session = await auth();
   const user = session?.user;
 
   return (
-    <nav className={`navbar ${variant === "light" ? "navbar--light" : ""}`} aria-label="Main">
+    <nav className="navbar" aria-label="Main">
       <div className="navbar__inner">
+        {/* Home, in the place every site puts it. */}
+        <a className="navbar__brand" href="/">
+          <span className="navbar__brand-mark" aria-hidden="true" />
+          Uniseek
+        </a>
+
         <div className="navbar__links">
           <button type="button" className="navbar__link">
             Discover

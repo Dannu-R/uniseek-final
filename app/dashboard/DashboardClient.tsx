@@ -369,11 +369,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     <WizardProvider onComplete={handleComplete}>
       <div className={`dash ${focused ? "is-focused" : ""}`}>
         <aside className="dash__rail">
-          <div className="dash__brand">
-            <span className="dash__brand-mark" aria-hidden="true" />
-            Uniseek
-          </div>
-
+          {/* No wordmark here — the site header carries it now, directly above this
+              corner, and two of them stacked reads as a mistake. */}
           <nav className="dash__nav" aria-label="Dashboard sections">
             {renderTab(HOME_TAB)}
             <div className="dash__nav-divider" aria-hidden="true" />
