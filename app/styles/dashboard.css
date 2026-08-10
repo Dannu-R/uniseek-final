@@ -583,14 +583,27 @@
    important their content is: a row of small colour-coded widgets for the raw
    figures, then the chart and the map get the room.
    ================================================================ */
+/* Four columns, so a card can be a quarter, a half or the whole width and the page
+   stops reading as a uniform grid. Size follows importance and how graphic the
+   content is: the welcome band, then the record, then everything else. */
 .stat-bento {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
-.tile--wide { grid-column: span 2; }
 .tile--full { grid-column: 1 / -1; }
+.tile--half { grid-column: span 2; }
+/* The page's feature: two columns wide and two rows tall. */
+.tile--feature {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+/* A single column running the full height of the feature beside it. */
+.tile--tall {
+  grid-column: span 1;
+  grid-row: span 2;
+}
 
 /* Cards stretch to their row, so the content column grows to fill rather than
    leaving a pool of empty space under short content. */
@@ -833,6 +846,10 @@
   flex-direction: column;
   justify-content: center;
 }
+.card__body--center {
+  align-items: center;
+  text-align: center;
+}
 .card__empty {
   margin: 0;
   font-size: 0.92rem;
@@ -840,22 +857,47 @@
   color: var(--ac-ink-3);
 }
 
-/* One block per AP course the school offers, filled for the ones taken. */
-.rigor__meter {
+/* Thermostat dial — one tick per AP course offered, lit to the number taken. */
+.dial {
+  position: relative;
+  width: 180px;
+  margin: 0 auto;
+}
+.dial__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.dial__tick {
+  stroke: var(--ac-line);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: opacity 0.3s ease;
+}
+.dial__tick.is-on {
+  stroke-width: 6;
+}
+.dial__center {
+  position: absolute;
+  inset: 0 0 12% 0;
   display: flex;
-  gap: 4px;
-  align-items: stretch;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
-.rigor__block {
-  flex: 1 1 0;
-  min-width: 6px;
-  height: 30px;
-  border-radius: 5px;
-  background: var(--ac-sunk);
-  transition: opacity 0.35s ease;
+.dial__num {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ac-ink);
 }
-.rigor__block.is-on {
-  background: var(--ac-blue);
+.dial__of {
+  margin-top: 4px;
+  font-size: 0.76rem;
+  color: var(--ac-ink-3);
 }
 
 /* ---- Score readout on the test card ------------------------------------ */
@@ -1114,8 +1156,8 @@
   flex-wrap: wrap;
 }
 .usmap__figure {
-  flex: 1 1 420px;
-  max-width: 680px;
+  flex: 1 1 300px;
+  max-width: 760px;
   min-width: 0;
 }
 .usmap__svg {
@@ -1224,9 +1266,10 @@
 .trend {
   position: relative;
 }
+/* Fills the feature card rather than floating in it; the viewBox is proportioned
+   for that card, so the type inside stays close to its true size. */
 .trend__svg {
   width: 100%;
-  max-width: 640px;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -1306,12 +1349,16 @@
 
 /* ---- Responsive --------------------------------------------------------- */
 @media (max-width: 1080px) {
-  /* Three across no longer fits — the wide cards take the full row. */
   .stat-bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .tile--wide {
+  .tile--feature,
+  .tile--half {
     grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .tile--tall {
+    grid-row: auto;
   }
 }
 @media (max-width: 900px) {
@@ -1331,9 +1378,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-  .tile--wide,
-  .tile--full {
+  .tile--full,
+  .tile--half,
+  .tile--feature,
+  .tile--tall {
     grid-column: auto;
+    grid-row: auto;
   }
 }
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */

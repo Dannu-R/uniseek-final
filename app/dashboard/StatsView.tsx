@@ -189,19 +189,72 @@ function StatWidget({ stat }: { stat: Stat }) {
   );
 }
 
+// Course rigor as a thermostat dial: one tick per AP course the school offers, lit up
+// to the number taken. The ticks aren't decoration — each one is a real course, so the
+// dial can't imply a precision the underlying count doesn't have.
+function RigorDial({ taken, offered, color, active }: {
+  taken: number;
+  offered: number;
+  color: string;
+  active: boolean;
+}) {
+  const CX = 90;
+  const CY = 88;
+  const R_IN = 58;
+  const R_OUT = 78;
+  const START = 135; // bottom-left, sweeping up and over to bottom-right
+  const SWEEP = 270;
+
+  const ticks = Array.from({ length: offered }, (_, i) => {
+    const t = offered === 1 ? 0 : i / (offered - 1);
+    const a = ((START + t * SWEEP) * Math.PI) / 180;
+    const cos = Math.cos(a);
+    const sin = Math.sin(a);
+    return {
+      x1: CX + R_IN * cos, y1: CY + R_IN * sin,
+      x2: CX + R_OUT * cos, y2: CY + R_OUT * sin,
+      on: i < taken,
+    };
+  });
+
+  return (
+    <div className="dial">
+      <svg viewBox="0 0 180 176" className="dial__svg" role="img"
+        aria-label={`${taken} of ${offered} AP courses taken`}>
+        {ticks.map((t, i) => (
+          <line
+            key={i}
+            x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
+            className={`dial__tick ${t.on ? "is-on" : ""}`}
+            style={{
+              stroke: t.on ? color : undefined,
+              opacity: active ? 1 : 0,
+              transitionDelay: `${i * 45}ms`,
+            }}
+          />
+        ))}
+      </svg>
+      <div className="dial__center">
+        <span className="dial__num">{taken}</span>
+        <span className="dial__of">of {offered} offered</span>
+      </div>
+    </div>
+  );
+}
+
 // Line chart of 10th → 11th → 12th unweighted GPA. Draws the empty grid when there
 // aren't at least two years of data (the caller overlays a caption in that case).
 function TrendChart({ values }: { values: (number | null)[] }) {
   // The viewBox is sized to how the card actually renders, so the type inside stays
   // at its true pixel size instead of being scaled up with the drawing.
-  const W = 640;
-  const H = 230;
-  const padL = 52;
-  const padR = 28;
+  const W = 560;
+  const H = 380;
+  const padL = 50;
+  const padR = 26;
   // Top padding has to clear the value label that sits above each dot (~19px of
   // ascent + offset), otherwise a 4.0 point gets its label clipped by the viewBox.
-  const padT = 34;
-  const padB = 46;
+  const padT = 46;
+  const padB = 62;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
   const yMin = 2;
@@ -439,68 +492,31 @@ export default function StatsView({
         </div>
       </div>
 
-      {/* ---- GPA, course rigor and the test score, one card each. ------- */}
-      <div className="stat-card">
-        <h2 className="stat-card__title">Unweighted GPA</h2>
-        {gpa != null && tier ? (
-          <div className="card__body">
-            <div className="gpa__value">
-              <span className="gpa__num">{gpa.toFixed(2)}</span>
-              <span className="gpa__scale">/ 4.0</span>
+      {/* ---- The feature: the shape of the whole record. ---------------- */}
+      <div className="stat-card tile--feature">
+        <div className="stat-card__head">
+          <h2 className="stat-card__title">Grade trend</h2>
+          {hasTrend && (
+            <span className={`trend-badge trend-badge--${direction.key}`}>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={direction.arrow} />
+              </svg>
+              {direction.label}
+            </span>
+          )}
+        </div>
+        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+          <TrendChart values={gradeValues} />
+          {!hasTrend && (
+            <div className="trend__empty">
+              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
             </div>
-            <div className="gpa__track">
-              <span
-                className="gpa__fill"
-                style={{ width: `${mounted ? (gpa / 4) * 100 : 0}%`, background: tier.color }}
-              />
-              {[3.0, 3.5, 3.8].map((t) => (
-                <span key={t} className="gpa__tick" style={{ left: `${(t / 4) * 100}%` }} />
-              ))}
-            </div>
-            <div className="gpa__marks">
-              <span className="gpa__mark gpa__mark--start">0</span>
-              <span className="gpa__mark" style={{ left: "75%" }}>3.0</span>
-              <span className="gpa__mark gpa__mark--end">4.0</span>
-            </div>
-            <p className="gpa__tier" style={{ color: tier.color }}>{tier.label}</p>
-          </div>
-        ) : (
-          <p className="card__empty">Add your GPA in the quiz to see where it sits on the 4.0 scale.</p>
-        )}
+          )}
+        </div>
       </div>
 
-      <div className="stat-card">
-        <h2 className="stat-card__title">Course rigor</h2>
-        {apTaken != null && apOffered != null && apOffered > 0 ? (
-          <div className="card__body">
-            <div className="gpa__value">
-              <span className="gpa__num">{apTaken}</span>
-              <span className="gpa__scale">of {apOffered} offered</span>
-            </div>
-            {/* One block per AP course the school offers; filled for the ones taken. */}
-            <div className="rigor__meter" role="img" aria-label={`${apTaken} of ${apOffered} AP courses taken`}>
-              {Array.from({ length: Math.min(apOffered, 24) }, (_, i) => (
-                <span
-                  key={i}
-                  className={`rigor__block ${i < apTaken ? "is-on" : ""}`}
-                  style={{ transitionDelay: `${i * 28}ms`, opacity: mounted ? 1 : 0 }}
-                />
-              ))}
-            </div>
-            <p className="gpa__tier" style={{ color: rigorRead(apTaken, apOffered).color }}>
-              {rigorRead(apTaken, apOffered).label}
-            </p>
-          </div>
-        ) : (
-          <p className="card__empty">
-            {apTaken != null
-              ? `You've taken ${apTaken} AP ${apTaken === 1 ? "course" : "courses"}. Add how many your school offers to see how demanding that is.`
-              : "Add your AP course count in the quiz to see how demanding your schedule is."}
-          </p>
-        )}
-      </div>
-
-      <div className="stat-card dial-tile tile--violet">
+      {/* ---- The score, a full-height column of its own. ---------------- */}
+      <div className="stat-card dial-tile tile--violet tile--tall">
         <h2 className="stat-card__title">{fromAct ? "ACT score" : "SAT score"}</h2>
         <div className="dial-tile__body">
           {pctl != null ? (
@@ -554,6 +570,58 @@ export default function StatsView({
         </div>
       </div>
 
+      {/* ---- The two standing measures, stacked beside the feature. ----- */}
+      <div className="stat-card">
+        <h2 className="stat-card__title">Unweighted GPA</h2>
+        {gpa != null && tier ? (
+          <div className="card__body">
+            <div className="gpa__value">
+              <span className="gpa__num">{gpa.toFixed(2)}</span>
+              <span className="gpa__scale">/ 4.0</span>
+            </div>
+            <div className="gpa__track">
+              <span
+                className="gpa__fill"
+                style={{ width: `${mounted ? (gpa / 4) * 100 : 0}%`, background: tier.color }}
+              />
+              {[3.0, 3.5, 3.8].map((t) => (
+                <span key={t} className="gpa__tick" style={{ left: `${(t / 4) * 100}%` }} />
+              ))}
+            </div>
+            <div className="gpa__marks">
+              <span className="gpa__mark gpa__mark--start">0</span>
+              <span className="gpa__mark" style={{ left: "75%" }}>3.0</span>
+              <span className="gpa__mark gpa__mark--end">4.0</span>
+            </div>
+            <p className="gpa__tier" style={{ color: tier.color }}>{tier.label}</p>
+          </div>
+        ) : (
+          <p className="card__empty">Add your GPA in the quiz to see where it sits on the 4.0 scale.</p>
+        )}
+      </div>
+
+      <div className="stat-card">
+        <h2 className="stat-card__title">Course rigor</h2>
+        {apTaken != null && apOffered != null && apOffered > 0 ? (
+          <div className="card__body card__body--center">
+            <RigorDial
+              taken={apTaken}
+              offered={apOffered}
+              color={rigorRead(apTaken, apOffered).color}
+              active={mounted}
+            />
+            <p className="gpa__tier" style={{ color: rigorRead(apTaken, apOffered).color }}>
+              {rigorRead(apTaken, apOffered).label}
+            </p>
+          </div>
+        ) : (
+          <p className="card__empty">
+            {apTaken != null
+              ? `You've taken ${apTaken} AP ${apTaken === 1 ? "course" : "courses"}. Add how many your school offers to see how demanding that is.`
+              : "Add your AP course count in the quiz to see how demanding your schedule is."}
+          </p>
+        )}
+      </div>
       {/* ---- The remaining figures, at a glance. ------------------------ */}
       <div className="kpi-row">
         {stats.map((st) => (
@@ -561,30 +629,8 @@ export default function StatsView({
         ))}
       </div>
 
-      {/* ---- Grade trend takes the width; the dial sits beside it. ------ */}
-      <div className="stat-card tile--wide">
-        <div className="stat-card__head">
-          <h2 className="stat-card__title">Grade trend</h2>
-          {hasTrend && (
-            <span className={`trend-badge trend-badge--${direction.key}`}>
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d={direction.arrow} />
-              </svg>
-              {direction.label}
-            </span>
-          )}
-        </div>
-        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-          <TrendChart values={gradeValues} />
-          {!hasTrend && (
-            <div className="trend__empty">
-              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
-            </div>
-          )}
-        </div>
-      </div>
       {/* ---- Our reading, kept separate from the figures above. --------- */}
-      <div className="stat-card">
+      <div className="stat-card tile--half">
         <h2 className="stat-card__title">What this means</h2>
         <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
         {reads.length ? (
@@ -598,7 +644,7 @@ export default function StatsView({
         )}
       </div>
 
-      <div className="stat-card">
+      <div className="stat-card tile--half">
         <h2 className="stat-card__title">Outside the classroom</h2>
         <p className="stat-ec__lead">
           A personalized read on your activities — the throughline across them and how it strengthens your
@@ -607,8 +653,8 @@ export default function StatsView({
         <span className="stat-ec__tag">Summary coming soon</span>
       </div>
 
-      {/* ---- The widest graphic gets the full width. -------------------- */}
-      <div className="stat-card tile--wide">
+      {/* ---- Where you're aiming. --------------------------------------- */}
+      <div className="stat-card tile--full">
         <h2 className="stat-card__title">Where you're looking</h2>
         <UsMap homeState={data.homeState || null} goalState={goalState} />
         {!data.homeState && (
