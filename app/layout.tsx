@@ -18,7 +18,7 @@ import "./styles/results.css";
 import "./styles/explorer.css";
 import "./styles/auth.css";
 import "./styles/dashboard.css";
-import { Inter, Stack_Sans_Notch, Fraunces } from "next/font/google";
+import { Inter, Stack_Sans_Notch, Plus_Jakarta_Sans } from "next/font/google";
 import ScrollManager from "./components/shared/ScrollManager";
 
 const inter = Inter({
@@ -34,14 +34,12 @@ const stackSans = Stack_Sans_Notch({
   variable: "--font-stack",
 });
 
-// The dashboard's display face. Fraunces is a soft, slightly wonky text serif — it
-// reads academic without the stiffness of a classic didone, which is the tone the
-// signed-in product wants. Marketing pages keep Stack Sans.
-const fraunces = Fraunces({
+// The dashboard's face — one clean geometric sans for headings, figures and UI, so
+// the signed-in product reads modern and uncluttered. Marketing keeps Stack Sans.
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  axes: ["SOFT", "WONK", "opsz"],
-  variable: "--font-fraunces",
+  variable: "--font-jakarta",
 });
 
 export const metadata = {
@@ -52,7 +50,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${stackSans.variable} ${fraunces.variable}`}>
+    <html lang="en" className={`${inter.variable} ${stackSans.variable} ${jakarta.variable}`}>
       {/* browser extensions (e.g. Grammarly) inject attributes on <body>
           before React hydrates; ignore those attribute-only mismatches */}
       <body suppressHydrationWarning>

@@ -4,12 +4,12 @@
 // is involved. The view answers one question: how strong does my profile look, and
 // where am I aiming?
 //
-// Reading order is deliberate: the facts they typed (profile ledger + test dial), then
-// what those facts mean (clearly marked as our reading, never mixed into the numbers),
-// then context — grade trend and the map — then extracurriculars. Nothing here is
-// invented: every figure traces back to a quiz answer.
+// Reading order is deliberate: the figures they typed (the widget row), then the shape
+// of the record and where their score lands, then what those facts mean — clearly
+// marked as our reading, never mixed into the numbers — then where they're aiming.
+// Nothing here is invented: every figure traces back to a quiz answer.
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useWizard } from "@/app/build/WizardProvider";
 import { requiredState } from "@/app/build/toPayload";
 import UsMap from "./UsMap";
@@ -106,51 +106,81 @@ const ord = (n: number): string => {
   return s[(v - 20) % 10] || s[v] || s[0];
 };
 
-// One line of the profile ledger. `fill` (0–1) positions the value on its own scale;
-// rows without it (a missing or unscaled answer) print the note instead of a bar, so a
-// gap always reads as "not entered" rather than as a zero.
-interface Measure {
+// Line icons for the widget row — one per measure, drawn in the widget's own accent.
+const ICON: Record<string, ReactNode> = {
+  gpa: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 7.5 12 4l9 3.5-9 3.5-9-3.5Z" />
+      <path d="M7 10v4.5c0 1.1 2.2 2 5 2s5-.9 5-2V10" />
+    </svg>
+  ),
+  test: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3a9 9 0 1 1-9 9" />
+      <path d="M12 3v9l6.5 6.5" />
+    </svg>
+  ),
+  courses: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H19v14H5.5A1.5 1.5 0 0 0 4 19.5Z" />
+      <path d="M19 18v2H5.5" />
+    </svg>
+  ),
+  rank: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="9" r="5" />
+      <path d="M9 13.5 8 21l4-2 4 2-1-7.5" />
+    </svg>
+  ),
+  activities: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 4v5M12 15v5M4 12h5M15 12h5" />
+    </svg>
+  ),
+  service: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  ),
+};
+
+// One widget in the top row. `caption` carries the scale the number sits on, so a
+// bare figure never has to stand in for a measurement it can't make on its own.
+interface Stat {
+  key: string;
+  tone: "violet" | "amber" | "blue" | "pink" | "green" | "teal";
   label: string;
   value: string;
-  scale: string;
-  fill: number | null;
-  color: string;
-  muted?: boolean;
+  caption: string;
+  empty?: boolean;
 }
 
-function Ledger({ rows, active }: { rows: Measure[]; active: boolean }) {
+function StatWidget({ stat }: { stat: Stat }) {
   return (
-    <dl className="ledger">
-      {rows.map((m) => (
-        <div key={m.label} className={`ledger__row ${m.muted ? "is-muted" : ""}`}>
-          <dt className="ledger__label">{m.label}</dt>
-          <dd className="ledger__value">{m.value}</dd>
-          <div className="ledger__track" aria-hidden="true">
-            {m.fill != null && (
-              <span
-                className="ledger__fill"
-                style={{ width: `${active ? Math.max(2, Math.min(100, m.fill * 100)) : 0}%`, background: m.color }}
-              />
-            )}
-          </div>
-          <span className="ledger__scale">{m.scale}</span>
-        </div>
-      ))}
-    </dl>
+    <div className={`kpi kpi--${stat.tone} ${stat.empty ? "is-empty" : ""}`}>
+      <span className="kpi__icon" aria-hidden="true">{ICON[stat.key]}</span>
+      <span className="kpi__label">{stat.label}</span>
+      <span className="kpi__value">{stat.value}</span>
+      <span className="kpi__caption">{stat.caption}</span>
+    </div>
   );
 }
 
 // Line chart of 10th → 11th → 12th unweighted GPA. Draws the empty grid when there
 // aren't at least two years of data (the caller overlays a caption in that case).
 function TrendChart({ values }: { values: (number | null)[] }) {
-  const W = 320;
-  const H = 192;
-  const padL = 40;
-  const padR = 18;
+  // The viewBox is sized to how the card actually renders, so the type inside stays
+  // at its true pixel size instead of being scaled up with the drawing.
+  const W = 640;
+  const H = 230;
+  const padL = 52;
+  const padR = 28;
   // Top padding has to clear the value label that sits above each dot (~19px of
   // ascent + offset), otherwise a 4.0 point gets its label clipped by the viewBox.
-  const padT = 32;
-  const padB = 42;
+  const padT = 34;
+  const padB = 46;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
   const yMin = 2;
@@ -170,11 +200,11 @@ function TrendChart({ values }: { values: (number | null)[] }) {
       {grid.map((g) => (
         <g key={g}>
           <line x1={padL} y1={yFor(g)} x2={W - padR} y2={yFor(g)} className="trend__grid" />
-          <text x={padL - 8} y={yFor(g) + 3.5} textAnchor="end" className="trend__ylabel">{g.toFixed(1)}</text>
+          <text x={padL - 10} y={yFor(g) + 4} textAnchor="end" className="trend__ylabel">{g.toFixed(1)}</text>
         </g>
       ))}
       {labels.map((l, i) => (
-        <text key={l} x={xs[i]} y={H - padB + 24} textAnchor="middle" className="trend__xlabel">{l}</text>
+        <text key={l} x={xs[i]} y={H - padB + 28} textAnchor="middle" className="trend__xlabel">{l}</text>
       ))}
       {has && (
         <>
@@ -188,8 +218,8 @@ function TrendChart({ values }: { values: (number | null)[] }) {
             const dx = first ? -4 : last ? 4 : 0;
             return (
               <g key={i}>
-                <circle cx={p.x} cy={p.y} r="4.5" className="trend__dot" />
-                <text x={p.x + dx} y={p.y - 11} textAnchor={anchor} className="trend__value">
+                <circle cx={p.x} cy={p.y} r="5" className="trend__dot" />
+                <text x={p.x + dx} y={p.y - 13} textAnchor={anchor} className="trend__value">
                   {p.v.toFixed(2)}
                 </text>
               </g>
@@ -253,48 +283,71 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   // the home state, which the map then draws as the both-states crosshatch.
   const goalState = requiredState(data);
 
-  // ---- Profile ledger: only what the student actually entered. ----
+  // ---- The widget row: only what the student actually entered. ----
   const rankPct = rank != null && classSize != null && classSize > 0
     ? Math.max(1, Math.round((rank / classSize) * 100))
     : null;
 
-  const measures: Measure[] = [
+  const stats: Stat[] = [
     {
+      key: "gpa",
+      tone: "violet",
       label: "Unweighted GPA",
       value: gpa != null ? gpa.toFixed(2) : "—",
-      scale: gpa != null ? "of 4.0" : "not entered",
-      fill: gpa != null ? gpa / 4 : null,
-      color: tier?.color ?? "#a78bfa",
-      muted: gpa == null,
+      caption: gpa != null ? "of 4.0" : "not entered",
+      empty: gpa == null,
     },
     {
-      label: "AP courses taken",
+      key: "test",
+      tone: "amber",
+      label: "Test percentile",
+      value: pctl != null ? `${pctl}${ord(pctl)}` : "—",
+      caption: pctl != null ? (fromAct ? `ACT ${act}` : `SAT ${satEquiv}`) : data.notSubmittingScores ? "test-optional" : "not entered",
+      empty: pctl == null,
+    },
+    {
+      key: "courses",
+      tone: "blue",
+      label: "AP courses",
       value: apTaken != null ? String(apTaken) : "—",
-      scale:
+      caption:
         apTaken == null
           ? "not entered"
           : apOffered != null
             ? `of ${apOffered} offered`
             : "course list not given",
-      fill: apTaken != null && apOffered != null && apOffered > 0 ? apTaken / apOffered : null,
-      color: "#a78bfa",
-      muted: apTaken == null,
+      empty: apTaken == null,
     },
     {
+      key: "rank",
+      tone: "pink",
       label: "Class rank",
       value: rankPct != null ? `top ${rankPct}%` : "—",
-      scale:
+      caption:
         rankPct != null
           ? `${rank} of ${classSize}`
           : data.schoolDoesNotRank
             ? "school doesn't rank"
             : "not entered",
-      fill: rankPct != null ? 1 - rankPct / 100 : null,
-      color: "#818cf8",
-      muted: rankPct == null,
+      empty: rankPct == null,
+    },
+    {
+      key: "activities",
+      tone: "green",
+      label: "Activities",
+      value: String(activities.length),
+      caption: activities.length ? "in your profile" : "none added",
+      empty: activities.length === 0,
+    },
+    {
+      key: "service",
+      tone: "teal",
+      label: "Service",
+      value: String(serviceHours ?? 0),
+      caption: "hours a year",
+      empty: serviceHours == null,
     },
   ];
-  const hasAnyMeasure = gpa != null || apTaken != null || rankPct != null;
 
   // ---- Interpretation. Kept apart from the numbers above, and phrased as a reading. ----
   const reads: string[] = [];
@@ -312,23 +365,28 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
 
   return (
     <section className="dash__view stat-bento">
-      {/* ---- Facts: the numbers you entered, each on its own scale. ----- */}
-      <div className="stat-card tile--wide">
-        <h2 className="stat-card__title">Your numbers</h2>
-        <Ledger rows={measures} active={mounted} />
-        {!hasAnyMeasure && (
-          <div className="stat-empty">
-            <p className="stat-empty__text">Nothing here yet — your quiz answers fill this in.</p>
-            <button type="button" className="btn btn--primary" onClick={onEdit}>
-              Answer the quiz
-            </button>
-          </div>
-        )}
+      {/* ---- The numbers you entered, at a glance. ---------------------- */}
+      <div className="kpi-row">
+        {stats.map((s) => (
+          <StatWidget key={s.key} stat={s} />
+        ))}
       </div>
 
-      {/* The one saturated tile on the page: the single most graphic figure. */}
-      <div className={`stat-card dial-tile ${pctl != null ? "tile--accent" : ""}`}>
-        <h2 className="stat-card__title">Test score</h2>
+      {/* ---- Grade trend takes the width; the dial sits beside it. ------ */}
+      <div className="stat-card tile--wide">
+        <h2 className="stat-card__title">Grade trend</h2>
+        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+          <TrendChart values={gradeValues} />
+          {!hasTrend && (
+            <div className="trend__empty">
+              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="stat-card dial-tile">
+        <h2 className="stat-card__title">Where your score lands</h2>
         <div className="dial-tile__body">
           {pctl != null ? (
             <>
@@ -377,20 +435,8 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
         </div>
       </div>
 
-      {/* ---- Three small tiles: the record, our reading, and activities. */}
-      <div className="stat-card">
-        <h2 className="stat-card__title">Grade trend</h2>
-        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-          <TrendChart values={gradeValues} />
-          {!hasTrend && (
-            <div className="trend__empty">
-              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="stat-card tile--amber">
+      {/* ---- Our reading, kept separate from the figures above. --------- */}
+      <div className="stat-card tile--wide">
         <h2 className="stat-card__title">What this means</h2>
         <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
         {reads.length ? (
@@ -404,18 +450,8 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
         )}
       </div>
 
-      <div className="stat-card tile--green">
+      <div className="stat-card">
         <h2 className="stat-card__title">Outside the classroom</h2>
-        <div className="stat-ec__figures">
-          <div className="stat-ec__figure">
-            <span className="stat-ec__num">{activities.length}</span>
-            <span className="stat-ec__cap">{activities.length === 1 ? "activity" : "activities"}</span>
-          </div>
-          <div className="stat-ec__figure">
-            <span className="stat-ec__num">{serviceHours ?? 0}</span>
-            <span className="stat-ec__cap">service hours a year</span>
-          </div>
-        </div>
         <p className="stat-ec__lead">
           A personalized read on your activities — the throughline across them and how it strengthens your
           applications — will appear here.

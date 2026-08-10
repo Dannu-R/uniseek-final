@@ -2,9 +2,9 @@
    Dashboard — "study desk" theme.
 
    The signed-in product reads as academic and friendly rather than dark-tech:
-   paper ground, white cards, navy ink, a soft text serif for headings, and a
-   small set of accent colours that each mean something (violet = your score,
-   amber = our reading, green = activities, blue/pink = home/goal state).
+   paper ground, white cards, navy ink, and one modern geometric sans throughout.
+   Colour lives in the small stat widgets and in chart marks, not in big filled
+   blocks — a saturated surface has to earn its place.
 
    Scoped entirely to `.dash` — the marketing pages keep the dark identity.
    ================================================================ */
@@ -43,13 +43,14 @@
   --ac-shadow-lift: 0 2px 5px rgba(22, 34, 63, 0.07), 0 20px 42px -22px rgba(22, 34, 63, 0.5);
   --ac-radius: 16px;
 
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
 
   position: relative;
   min-height: 100vh;
   padding-top: var(--dash-header);
   background: var(--ac-paper);
   color: var(--ac-ink-2);
+  font-family: var(--font-display);
 }
 
 /* ---- Site header, paper variant ---------------------------------------- */
@@ -128,10 +129,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--ac-ink);
   padding: 4px 8px 20px;
 }
@@ -283,7 +283,7 @@
 
 /* ---- View header bar ---------------------------------------------------- */
 /* Names the open view and holds its one primary action. Spans the content area,
-   sticks below the site header, and aligns its text to the 940px content column. */
+   sticks below the site header, and aligns its text to the content column. */
 .dash__bar {
   position: sticky;
   top: var(--dash-header);
@@ -296,7 +296,7 @@
   border-bottom: 1px solid var(--ac-line);
 }
 .dash__bar-inner {
-  max-width: 940px;
+  max-width: 1320px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -305,10 +305,9 @@
 }
 .dash__bar-title {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.55rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.15;
   color: var(--ac-ink);
 }
@@ -345,7 +344,7 @@
   to   { opacity: 0; transform: translateY(8px) scale(0.99); }
 }
 .dash__view {
-  max-width: 940px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 .dash__view-head {
@@ -358,9 +357,9 @@
   gap: 16px;
 }
 .dash__view-title {
-  font-family: var(--font-display);
-  font-size: 1.7rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.15;
   color: var(--ac-ink);
   margin: 0 0 6px;
@@ -430,9 +429,9 @@
   transform: rotate(45deg);
 }
 .dash__empty-title {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--ac-ink);
   margin: 0 0 10px;
 }
@@ -526,8 +525,8 @@
 
 /* ---- Recommendation cards (defined dark in results.css; relit here) ----- */
 .dash .rs-band__title {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 .dash .rs-band__title--reach { color: var(--ac-pink); }
 .dash .rs-band__title--target { color: var(--ac-violet); }
@@ -581,8 +580,8 @@
 
 /* ================================================================
    Your stats — a bento of cards whose size tracks how graphic and how
-   important their content is: the ledger and the map get the room, the
-   three interpretive tiles sit small and colour-coded beside each other.
+   important their content is: a row of small colour-coded widgets for the raw
+   figures, then the chart and the map get the room.
    ================================================================ */
 .stat-bento {
   display: grid;
@@ -605,7 +604,6 @@
   padding: 24px 24px 28px;
   height: 100%;
 }
-.ledger,
 .stat-card .trend {
   flex: 1;
   display: flex;
@@ -627,80 +625,66 @@
   line-height: 1.5;
 }
 
-/* Colour-keyed tiles. One saturated block only — the test score — with the two
-   supporting tiles tinted rather than filled. */
-.tile--accent {
-  background: var(--ac-violet);
-  border-color: var(--ac-violet);
-  color: #fff;
-  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05), 0 18px 36px -20px rgba(98, 54, 232, 0.9);
-}
-.tile--accent .stat-card__title { color: rgba(255, 255, 255, 0.72); }
-.tile--amber {
-  background: var(--ac-amber-soft);
-  border-color: #f4e3c4;
-}
-.tile--amber .stat-card__title { color: var(--ac-amber); }
-.tile--green {
-  background: var(--ac-green-soft);
-  border-color: #cfe9e0;
-}
-.tile--green .stat-card__title { color: var(--ac-green); }
-
-/* ---- The ledger: every measure on its own true scale, bars sharing one
-   column so the shape of the profile reads down the page. ---------------- */
-.ledger {
-  margin: 0;
-}
-/* Fixed value/scale columns rather than `auto`: every row is its own grid, so an
-   intrinsic column would resolve per row and the bars would stop lining up. */
-.ledger__row {
+/* ---- Stat widgets ------------------------------------------------------- */
+/* The numbers at a glance, colour-coded so the eye can find one without reading.
+   The tints stay pale on purpose: a fully saturated block would claim the page,
+   and none of these six outranks the others. */
+.kpi-row {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 116px minmax(72px, 0.95fr) 122px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+}
+.kpi {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 18px;
-  padding: 16px 0;
+  text-align: center;
+  gap: 5px;
+  padding: 20px 12px 18px;
+  border-radius: 14px;
+  background: var(--kpi-tint);
 }
-.ledger__row + .ledger__row {
-  border-top: 1px solid var(--ac-line-2);
+.kpi__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 5px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--kpi-ink);
 }
-.ledger__label {
-  font-size: 0.92rem;
-  color: var(--ac-ink-2);
+.kpi__icon svg {
+  width: 19px;
+  height: 19px;
 }
-.ledger__value {
-  margin: 0;
-  justify-self: end;
-  font-family: var(--font-display);
-  font-size: 1.7rem;
+.kpi__label {
+  font-size: 0.76rem;
   font-weight: 600;
-  line-height: 1;
+  color: var(--kpi-ink);
+}
+.kpi__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   color: var(--ac-ink);
-  white-space: nowrap;
 }
-.ledger__track {
-  height: 9px;
-  border-radius: 999px;
-  background: var(--ac-sunk);
-  overflow: hidden;
-}
-.ledger__fill {
-  display: block;
-  height: 100%;
-  border-radius: 999px;
-  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.ledger__scale {
-  font-size: 0.78rem;
+.kpi__caption {
+  font-size: 0.72rem;
   color: var(--ac-ink-3);
 }
-.ledger__row.is-muted .ledger__value {
+.kpi.is-empty .kpi__value {
   color: var(--ac-ink-4);
 }
-.ledger__row.is-muted .ledger__track {
-  background: none;
-}
+.kpi--violet { --kpi-tint: #efeafe; --kpi-ink: #6236e8; }
+.kpi--amber  { --kpi-tint: #fdf1e0; --kpi-ink: #a4650a; }
+.kpi--blue   { --kpi-tint: #e7f0fe; --kpi-ink: #2563eb; }
+.kpi--pink   { --kpi-tint: #fdeaf1; --kpi-ink: #d1376e; }
+.kpi--green  { --kpi-tint: #e5f6f0; --kpi-ink: #0f8f6c; }
+.kpi--teal   { --kpi-tint: #e4f3f7; --kpi-ink: #0e7490; }
 
 /* ---- Test-score tile ---------------------------------------------------- */
 .dial-tile {
@@ -727,13 +711,13 @@
 }
 .stat-meter__track {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.22);
+  stroke: var(--ac-sunk);
   stroke-width: 11;
   stroke-linecap: round;
 }
 .stat-meter__arc {
   fill: none;
-  stroke: #fff;
+  stroke: var(--ac-violet);
   stroke-width: 11;
   stroke-linecap: round;
   transition: stroke-dasharray 0.9s cubic-bezier(0.22, 1, 0.36, 1);
@@ -747,15 +731,15 @@
   justify-content: center;
 }
 .stat-meter__num {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 600;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   line-height: 1;
-  color: #fff;
+  color: var(--ac-ink);
 }
 .stat-meter__num sup {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-left: 1px;
 }
 .stat-meter__label {
@@ -763,13 +747,13 @@
   font-size: 0.68rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--ac-ink-3);
 }
 .dial-tile__note {
   margin: 16px 0 0;
   font-size: 0.84rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--ac-ink-3);
 }
 /* Without a score the tile drops the fill — a saturated block that says nothing
    would shout for no reason. */
@@ -828,44 +812,7 @@
   color: var(--ac-ink-3);
 }
 
-.stat-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 0 4px;
-}
-.stat-empty__text {
-  margin: 0;
-  color: var(--ac-ink-3);
-  font-size: 0.95rem;
-}
-
 /* ---- Outside the classroom --------------------------------------------- */
-.stat-ec__figures {
-  display: flex;
-  gap: 26px;
-  padding-bottom: 18px;
-  margin-bottom: 18px;
-  border-bottom: 1px solid #cfe9e0;
-}
-.stat-ec__figure {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.stat-ec__num {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
-  font-weight: 600;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--ac-ink);
-}
-.stat-ec__cap {
-  font-size: 0.8rem;
-  color: var(--ac-ink-3);
-}
 .stat-ec__lead {
   margin: 0 0 16px;
   font-size: 0.9rem;
@@ -880,8 +827,8 @@
   margin-top: auto;
   padding: 6px 13px;
   border-radius: 999px;
-  border: 1px solid #cfe9e0;
-  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--ac-line);
+  background: var(--ac-sunk);
   color: var(--ac-green);
   font-size: 0.74rem;
   font-weight: 600;
@@ -987,7 +934,7 @@
 }
 .trend__svg {
   width: 100%;
-  max-width: 440px;
+  max-width: 640px;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -1048,9 +995,13 @@
 }
 
 /* ---- Responsive --------------------------------------------------------- */
+@media (max-width: 1180px) {
+  .kpi-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 @media (max-width: 1080px) {
-  /* Three small tiles no longer fit — the interpretation and activities tiles
-     pair up under a full-width ledger. */
+  /* Three across no longer fits — the wide cards take the full row. */
   .stat-bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1062,22 +1013,15 @@
   .stat-bento {
     grid-template-columns: minmax(0, 1fr);
   }
+  .kpi-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
   .tile--wide,
   .tile--full {
     grid-column: auto;
   }
 }
-@media (max-width: 560px) {
-  .ledger__row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 6px 14px;
-  }
-  .ledger__track,
-  .ledger__scale {
-    grid-column: 1 / -1;
-  }
-}
-
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */
 @media (prefers-reduced-motion: reduce) {
   .dash__rail,
@@ -1088,8 +1032,7 @@
   .dash__wizard-stage.is-out {
     animation: none;
   }
-  .stat-meter__arc,
-  .ledger__fill {
+  .stat-meter__arc {
     transition: none;
   }
   .dash .btn:hover {
