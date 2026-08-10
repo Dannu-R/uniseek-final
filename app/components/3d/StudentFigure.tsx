@@ -15,8 +15,9 @@ import { Component, Suspense, useEffect, useRef, useState } from "react";
 
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
-const SHIRT = "#7c53ff";
-const COLLAR = "#5b2ee5";
+const GOWN = "#16161f";
+const COLLAR = "#262633";
+const TASSEL = "#e8b53a";
 const EYE = "#241d33";
 
 function Student() {
@@ -26,7 +27,7 @@ function Student() {
           below the framing; the card edge is what ends it. */}
       <mesh position={[0, -2.95, 0]}>
         <capsuleGeometry args={[0.92, 1.6, 8, 32]} />
-        <meshStandardMaterial color={SHIRT} roughness={0.82} metalness={0} />
+        <meshStandardMaterial color={GOWN} roughness={0.62} metalness={0.04} />
       </mesh>
 
       {/* Arms, angled just off the body. */}
@@ -37,14 +38,14 @@ function Student() {
           rotation={[0, 0, side * -0.13]}
         >
           <capsuleGeometry args={[0.29, 1.0, 6, 20]} />
-          <meshStandardMaterial color={SHIRT} roughness={0.82} metalness={0} />
+          <meshStandardMaterial color={GOWN} roughness={0.62} metalness={0.04} />
         </mesh>
       ))}
 
       {/* Collar */}
       <mesh position={[0, -1.24, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.4, 0.1, 12, 28]} />
-        <meshStandardMaterial color={COLLAR} roughness={0.75} metalness={0} />
+        <meshStandardMaterial color={COLLAR} roughness={0.6} metalness={0.04} />
       </mesh>
 
       {/* Neck */}
@@ -88,6 +89,37 @@ function Student() {
         <torusGeometry args={[0.17, 0.033, 10, 22, Math.PI]} />
         <meshStandardMaterial color={EYE} roughness={0.5} metalness={0} />
       </mesh>
+
+      {/* Graduation cap. The dome stops well above the hairline so the hair still
+          shows beneath it, and the board is turned 45 degrees so a corner points at
+          the viewer — that's the silhouette that reads as a mortarboard head-on. */}
+      <group position={[0, 0.05, 0]} rotation={[-0.08, 0, 0]}>
+        <mesh>
+          <sphereGeometry args={[0.88, 40, 24, 0, Math.PI * 2, 0, Math.PI * 0.37]} />
+          <meshStandardMaterial color={GOWN} roughness={0.58} metalness={0.05} />
+        </mesh>
+
+        <mesh position={[0, 0.92, 0]} rotation={[0, Math.PI / 4, 0]}>
+          <boxGeometry args={[1.36, 0.08, 1.36]} />
+          <meshStandardMaterial color={GOWN} roughness={0.55} metalness={0.05} />
+        </mesh>
+
+        {/* Button at the centre of the board */}
+        <mesh position={[0, 0.99, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.06, 16]} />
+          <meshStandardMaterial color={TASSEL} roughness={0.45} metalness={0.15} />
+        </mesh>
+
+        {/* Tassel, hanging off the corner nearest the viewer's right */}
+        <mesh position={[0.82, 0.93, 0]}>
+          <sphereGeometry args={[0.075, 16, 12]} />
+          <meshStandardMaterial color={TASSEL} roughness={0.45} metalness={0.15} />
+        </mesh>
+        <mesh position={[0.82, 0.69, 0]}>
+          <capsuleGeometry args={[0.072, 0.26, 6, 16]} />
+          <meshStandardMaterial color={TASSEL} roughness={0.5} metalness={0.1} />
+        </mesh>
+      </group>
     </group>
   );
 }
@@ -99,8 +131,11 @@ const START_Y = -1.4;
 const AMP = 0.055;
 const FLOAT_SPEED = 1.1;
 const SWAY = 0.12;
-// Raises the figure in frame so the crown clears the top of the card.
-const LIFT = 1.05;
+// Framing. SCALE crops the torso — the band between the card's top and bottom edges
+// is fixed, so a larger figure spends more of it on the head and less on the body.
+// LIFT then puts the cap back where it belongs against the card's top edge.
+const SCALE = 1.25;
+const LIFT = 0.42;
 
 function StudentRig() {
   const root = useRef();
@@ -120,7 +155,7 @@ function StudentRig() {
     if (reduceRef.current) {
       el.position.y = 0;
       el.rotation.y = 0;
-      el.scale.setScalar(1);
+      el.scale.setScalar(SCALE);
       return;
     }
 
@@ -131,18 +166,18 @@ function StudentRig() {
       const p = t / INTRO;
       const e = 1 - Math.pow(1 - p, 3); // easeOutCubic
       el.position.y = START_Y * (1 - e);
-      el.scale.setScalar(0.86 + 0.14 * e);
+      el.scale.setScalar(SCALE * (0.86 + 0.14 * e));
       el.rotation.y = -0.5 * (1 - e);
     } else {
       const s = t - INTRO;
-      el.scale.setScalar(1);
+      el.scale.setScalar(SCALE);
       el.position.y = AMP * Math.sin(s * FLOAT_SPEED);
       el.rotation.y = SWAY * Math.sin(s * 0.55);
     }
   });
 
   return (
-    <group ref={root} position={[0, START_Y, 0]} scale={0.86}>
+    <group ref={root} position={[0, START_Y, 0]} scale={SCALE * 0.86}>
       {/* Framing lives on this inner group, not the root — the rig writes to the
           root's position every frame and would overwrite it. */}
       <group position={[0, LIFT, 0]}>
@@ -189,8 +224,10 @@ export default function StudentFigure() {
       >
         <ambientLight intensity={0.75} />
         <directionalLight position={[3, 4, 5]} intensity={1.5} />
-        <directionalLight position={[-4, 1, 2]} intensity={0.7} color="#b9a3ff" />
-        <directionalLight position={[0, -3, 3]} intensity={0.35} color="#9ecbff" />
+        <directionalLight position={[-4, 1, 2]} intensity={1.0} color="#b9a3ff" />
+        <directionalLight position={[0, -3, 3]} intensity={0.4} color="#9ecbff" />
+        {/* Rim from behind — black on navy needs an edge to read against. */}
+        <directionalLight position={[-2, 2, -4]} intensity={1.1} color="#cfd8ff" />
 
         <Environment resolution={128}>
           <Lightformer form="rect" intensity={1.5} position={[3, 3, 4]} scale={7} color="#ffffff" />
