@@ -17,6 +17,7 @@ import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
 import ExplorerView from "./ExplorerView";
+import ViewHeader from "./ViewHeader";
 
 interface DashUser {
   name?: string | null;
@@ -357,18 +358,27 @@ export default function DashboardClient({ user }: { user: DashUser }) {
           ) : exploring ? (
             <ExplorerView college={exploring} onBack={() => setExploring(null)} />
           ) : tab === "stats" ? (
-            <StatsView onEdit={openQuiz} />
+            <>
+              <ViewHeader
+                title="Your stats"
+                subtitle="What your profile looks like before we match you to colleges."
+                action={
+                  <button type="button" className="btn btn--ghost" onClick={openQuiz}>
+                    Edit answers
+                  </button>
+                }
+              />
+              <StatsView onEdit={openQuiz} />
+            </>
           ) : tab === "saved" ? (
-            <section className="dash__view">
-              <header className="dash__view-head">
-                <h1 className="dash__view-title">Saved colleges</h1>
-                <p className="dash__view-sub">Colleges you've set aside from your list.</p>
-              </header>
+            <>
+              <ViewHeader title="Saved colleges" subtitle="Colleges you've set aside from your list." />
+              <section className="dash__view">
               {saved.length === 0 ? (
                 <div className="dash__empty">
                   <div className="dash__empty-card">
                     <span className="dash__empty-mark" aria-hidden="true" />
-                    <h1 className="dash__empty-title">No saved colleges yet</h1>
+                    <h2 className="dash__empty-title">No saved colleges yet</h2>
                     <p className="dash__empty-sub">Save colleges to explore further.</p>
                   </div>
                 </div>
@@ -385,21 +395,28 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   })()}
                 </>
               )}
-            </section>
+              </section>
+            </>
           ) : (
-            <section className="dash__view">
-              {hasList ? (
-                <>
-                  <header className="dash__view-head dash__view-head--row">
-                    <div>
-                      <h1 className="dash__view-title">Your recommended colleges</h1>
-                      <p className="dash__view-sub">Select a college to explore how you fit, or save it for later.</p>
-                    </div>
+            <>
+              <ViewHeader
+                title="Recommended colleges"
+                subtitle={
+                  hasList
+                    ? "Select a college to explore how you fit, or save it for later."
+                    : "Your reach, match, and safety list — built from your answers."
+                }
+                action={
+                  hasList ? (
                     <button type="button" className="btn btn--ghost" onClick={openQuiz}>
                       Edit answers &amp; re-run
                     </button>
-                  </header>
-
+                  ) : undefined
+                }
+              />
+              <section className="dash__view">
+              {hasList ? (
+                <>
                   {filterBar}
 
                   {BANDS.map(({ key, label, blurb }) => {
@@ -424,7 +441,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               ) : result?.empty ? (
                 <div className="dash__empty">
                   <div className="dash__empty-card">
-                    <h1 className="dash__empty-title">No colleges matched your filters</h1>
+                    <h2 className="dash__empty-title">No colleges matched your filters</h2>
                     <p className="dash__empty-sub">
                       {result.blockingFilter
                         ? `Your ${result.blockingFilter} filter is the tightest constraint — loosening it would bring colleges back.`
@@ -439,7 +456,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 <div className="dash__empty">
                   <div className="dash__empty-card">
                     <span className="dash__empty-mark" aria-hidden="true" />
-                    <h1 className="dash__empty-title">No colleges yet</h1>
+                    <h2 className="dash__empty-title">No colleges yet</h2>
                     <p className="dash__empty-sub">
                       Answer a few questions about your grades, goals, and preferences, and we'll build a
                       reach / match / safety list tailored to you.
@@ -450,7 +467,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   </div>
                 </div>
               )}
-            </section>
+              </section>
+            </>
           )}
         </main>
       </div>

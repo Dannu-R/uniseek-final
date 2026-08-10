@@ -205,8 +205,48 @@
   margin-left: var(--dash-rail);
   min-height: calc(100vh - var(--dash-header));
   padding: 40px 44px 64px;
-  overflow-x: hidden;
+  /* `clip` rather than `hidden`: it contains the rail-slide overflow without making
+     this a scroll container, which would stop the view header bar from sticking. */
+  overflow-x: clip;
   transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- View header bar ---------------------------------------------------- */
+/* Names the open view and holds its one primary action. Spans the content area,
+   sticks below the site header, and aligns its text to the 940px content column. */
+.dash__bar {
+  position: sticky;
+  top: var(--dash-header);
+  z-index: 15;
+  margin: -40px -44px 30px;
+  padding: 17px 44px;
+  background: rgba(5, 4, 10, 0.93);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.14);
+}
+.dash__bar-inner {
+  max-width: 940px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.dash__bar-title {
+  margin: 0;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.42rem;
+  line-height: 1.15;
+  color: #fff;
+}
+.dash__bar-sub {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.dash__bar-action {
+  flex: none;
 }
 .dash__loading {
   min-height: 60vh;
@@ -376,22 +416,36 @@
   transform: translateX(-2px);
 }
 
-/* ---- Your stats view --------------------------------------------------- */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-}
+/* ---- Your stats view ---------------------------------------------------- */
+/* One container type — the card. Hierarchy comes from what's inside them and the
+   order they're read in: the numbers the student entered, then our reading of
+   those numbers, then context (trend, map), then activities. */
 .stat-card {
   border: 1px solid rgba(167, 139, 250, 0.16);
   border-radius: 14px;
   background: var(--color-void);
   padding: 26px 26px 30px;
 }
-/* Full-width cards stack below the two-up grid — keep the same rhythm as its gap. */
-.stat-grid + .stat-card,
-.stat-card + .stat-card {
+.stat-card + .stat-card,
+.stat-card + .stat-row,
+.stat-row + .stat-card {
   margin-top: 20px;
+}
+.stat-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+/* Paired cards stretch to the taller of the two; the chart centers in the leftover
+   space rather than hanging from the top of its card. */
+.stat-row > .stat-card {
+  display: flex;
+  flex-direction: column;
+}
+.stat-row .trend {
+  flex: 1;
+  display: grid;
+  align-content: center;
 }
 .stat-card__title {
   margin: 0 0 20px;
@@ -408,12 +462,104 @@
   line-height: 1.5;
 }
 
+/* ---- Profile hero: one graphic (the dial) + the ledger of measures ------ */
+.profile__body {
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+.profile__dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.profile__dial-note {
+  margin: 14px 0 0;
+  max-width: 232px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.52);
+}
+.profile__dial-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile__dial-ring {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px dashed rgba(167, 139, 250, 0.22);
+}
+.profile__ledger {
+  border-left: 1px solid rgba(167, 139, 250, 0.14);
+  padding-left: 40px;
+}
+
+/* The ledger: every measure on its own true scale, bars sharing one column so the
+   shape of the profile reads down the page without inventing a common score. */
+.ledger {
+  margin: 0;
+}
+/* Fixed value/scale columns rather than `auto`: every row is its own grid, so an
+   intrinsic column would resolve per row and the bars would stop lining up — and the
+   shared bar column is the whole point of reading the ledger down the page. */
+.ledger__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 116px minmax(72px, 0.95fr) 122px;
+  align-items: center;
+  gap: 18px;
+  padding: 15px 0;
+}
+.ledger__row + .ledger__row {
+  border-top: 1px solid rgba(167, 139, 250, 0.12);
+}
+.ledger__label {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.74);
+}
+.ledger__value {
+  margin: 0;
+  justify-self: end;
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  white-space: nowrap;
+}
+.ledger__track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.ledger__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ledger__scale {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.42);
+}
+.ledger__row.is-muted .ledger__value {
+  color: rgba(255, 255, 255, 0.26);
+}
+.ledger__row.is-muted .ledger__track {
+  background: none;
+}
+
 /* Circular percentile meter */
 .stat-meter {
   position: relative;
   width: 190px;
   height: 190px;
-  margin: 4px auto 0;
+  margin: 0 auto;
 }
 .stat-meter__svg {
   width: 100%;
@@ -461,75 +607,66 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* GPA strength bar */
-.stat-gpa {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 16px;
+/* ---- Interpretation card ------------------------------------------------ */
+/* Deliberately a different surface from the fact cards: tinted, pink-keyed, and
+   marked with its own rail — a reading is not a measurement. */
+.read {
+  position: relative;
+  border-color: rgba(236, 72, 153, 0.24);
+  background:
+    linear-gradient(180deg, rgba(236, 72, 153, 0.07), rgba(236, 72, 153, 0) 62%),
+    var(--color-void);
 }
-.stat-gpa__value {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1;
-  color: #fff;
+.read::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22px;
+  bottom: 22px;
+  width: 2px;
+  border-radius: 999px;
+  background: var(--gradient-fit);
 }
-.stat-gpa__scale {
-  font-size: 1rem;
+.read__title {
+  margin-bottom: 7px;
+  color: var(--color-pink-light);
+}
+.read__caveat {
+  margin: 0 0 18px;
+  font-size: 0.79rem;
   color: rgba(255, 255, 255, 0.42);
 }
-.stat-bar__track {
+.read__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.read__item {
   position: relative;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
+  padding-left: 20px;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.76);
 }
-.stat-bar__fill {
+/* A small diamond, echoing the brand mark, instead of a generic bullet. */
+.read__item::before {
+  content: "";
   position: absolute;
-  inset: 0 auto 0 0;
-  border-radius: 999px;
-  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  left: 0;
+  top: 0.58em;
+  width: 6px;
+  height: 6px;
+  background: var(--color-pink);
+  transform: rotate(45deg);
 }
-.stat-bar__tick {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(11, 9, 24, 0.65);
-}
-.stat-bar__scale {
-  position: relative;
-  margin-top: 7px;
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.4);
-}
-/* Position the scale labels under their thresholds (0 / 3.0 / 3.5 / 3.8 / 4.0). */
-.stat-bar__scale {
-  display: grid;
-  grid-template-columns: 0fr 3fr 0.5fr 0.3fr 0.2fr;
-}
-.stat-bar__scale span:first-child {
-  justify-self: start;
-}
-.stat-bar__scale span:last-child {
-  justify-self: end;
-}
-.stat-bar__scale span:not(:first-child):not(:last-child) {
-  justify-self: end;
-}
-.stat-tier {
-  margin-top: 22px;
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-.stat-desc {
-  margin: 8px 0 0;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.6);
+.read__empty {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .stat-empty {
@@ -543,33 +680,44 @@
   margin: 0;
   color: rgba(255, 255, 255, 0.56);
   font-size: 0.95rem;
-  line-height: 1.5;
 }
 
-/* Extracurricular summary (placeholder) */
+/* ---- Outside the classroom --------------------------------------------- */
 .stat-ec__body {
   display: flex;
-  align-items: center;
-  gap: 28px;
+  align-items: stretch;
+  gap: 32px;
 }
-.stat-ec__icon {
-  flex-shrink: 0;
-  width: 92px;
-  height: 92px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+.stat-ec__figures {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  flex: none;
+  padding-right: 32px;
+  border-right: 1px solid rgba(167, 139, 250, 0.14);
+}
+.stat-ec__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.stat-ec__num {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.stat-ec__cap {
+  font-size: 0.84rem;
   color: rgba(255, 255, 255, 0.5);
-}
-.stat-ec__icon svg {
-  width: 52px;
-  height: 52px;
 }
 .stat-ec__content {
   flex: 1;
   min-width: 0;
+  align-self: center;
 }
 .stat-ec__lead {
   margin: 0 0 16px;
@@ -577,31 +725,6 @@
   font-size: 0.98rem;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.72);
-}
-.stat-ec__skeleton {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  margin-bottom: 18px;
-}
-.stat-ec__skeleton span {
-  height: 9px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.06),
-    rgba(255, 255, 255, 0.14),
-    rgba(255, 255, 255, 0.06)
-  );
-  background-size: 200% 100%;
-  animation: statShimmer 1.6s ease-in-out infinite;
-}
-.stat-ec__skeleton span:nth-child(1) { width: 92%; }
-.stat-ec__skeleton span:nth-child(2) { width: 78%; }
-.stat-ec__skeleton span:nth-child(3) { width: 60%; }
-@keyframes statShimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
 }
 .stat-ec__tag {
   display: inline-flex;
@@ -615,11 +738,52 @@
   font-weight: 600;
 }
 
+.stat-foot {
+  margin: 26px auto 0;
+  max-width: 60ch;
+  text-align: center;
+  font-size: 0.79rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .profile__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+  .profile__ledger {
+    border-left: none;
+    border-top: 1px solid rgba(167, 139, 250, 0.14);
+    padding-left: 0;
+    padding-top: 24px;
+  }
+}
 @media (max-width: 560px) {
+  .ledger__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 14px;
+  }
+  .ledger__track {
+    grid-column: 1 / -1;
+  }
+  .ledger__scale {
+    grid-column: 1 / -1;
+  }
   .stat-ec__body {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
+    gap: 22px;
+  }
+  .stat-ec__figures {
+    flex-direction: row;
+    gap: 26px;
+    padding-right: 0;
+    padding-bottom: 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.14);
   }
 }
 
@@ -630,12 +794,11 @@
     transition: none;
   }
   .dash__wizard-stage.is-in,
-  .dash__wizard-stage.is-out,
-  .stat-ec__skeleton span {
+  .dash__wizard-stage.is-out {
     animation: none;
   }
   .stat-meter__arc,
-  .stat-bar__fill {
+  .ledger__fill {
     transition: none;
   }
 }
@@ -658,6 +821,15 @@
   .dash__main {
     margin-left: 0;
     padding: 24px 18px 48px;
+  }
+  /* Keep the bar flush with the narrower content padding. */
+  .dash__bar {
+    margin: -24px -18px 22px;
+    padding: 14px 18px;
+  }
+  .dash__bar-inner {
+    flex-wrap: wrap;
+    gap: 12px;
   }
   /* Focus mode on small screens: just hide the bar (no horizontal slide). */
   .dash.is-focused .dash__rail {
@@ -706,8 +878,10 @@
   gap: 28px;
   flex-wrap: wrap;
 }
+/* Capped so the map stays a supporting card — the profile hero is the focal point. */
 .usmap__figure {
-  flex: 1 1 420px;
+  flex: 1 1 380px;
+  max-width: 560px;
   min-width: 0;
 }
 .usmap__svg {
@@ -774,14 +948,13 @@
   color: #fff;
   line-height: 1.35;
 }
+/* No button here — "Edit answers" already sits in the view header bar, and the view
+   should offer one next step, not the same one twice. */
 .usmap__cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 20px;
+  margin: 16px 0 0;
   text-align: center;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 @media (max-width: 720px) {
   .usmap {
@@ -836,7 +1009,7 @@
   font-weight: 700;
 }
 .trend.is-empty .trend__svg {
-  opacity: 0.45;
+  opacity: 0.22;
 }
 .trend__empty {
   position: absolute;
@@ -849,9 +1022,13 @@
   text-align: center;
   padding: 0 16px;
 }
+/* Sits on top of the faded grid, so it carries its own ground to stay legible. */
 .trend__empty-text {
   margin: 0;
-  max-width: 340px;
+  max-width: 300px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(11, 9, 24, 0.92);
   color: rgba(255, 255, 255, 0.64);
   font-size: 0.92rem;
   line-height: 1.5;

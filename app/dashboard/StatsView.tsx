@@ -1,8 +1,13 @@
 "use client";
 
-// "Your stats" — a snapshot of the academic profile, read live from the wizard state
-// (so it reflects the latest quiz answers). Shows an SAT/ACT percentile meter and an
-// unweighted-GPA strength bar. Purely a visualization of already-entered data.
+// "Your stats" — the student's academic profile as they entered it, before any college
+// is involved. The view answers one question: how strong does my profile look, and
+// where am I aiming?
+//
+// Reading order is deliberate: the facts they typed (profile ledger + test dial), then
+// what those facts mean (clearly marked as our reading, never mixed into the numbers),
+// then context — grade trend and the map — then extracurriculars. Nothing here is
+// invented: every figure traces back to a quiz answer.
 
 import { useEffect, useState } from "react";
 import { useWizard } from "@/app/build/WizardProvider";
@@ -101,6 +106,40 @@ const ord = (n: number): string => {
   return s[(v - 20) % 10] || s[v] || s[0];
 };
 
+// One line of the profile ledger. `fill` (0–1) positions the value on its own scale;
+// rows without it (a missing or unscaled answer) print the note instead of a bar, so a
+// gap always reads as "not entered" rather than as a zero.
+interface Measure {
+  label: string;
+  value: string;
+  scale: string;
+  fill: number | null;
+  color: string;
+  muted?: boolean;
+}
+
+function Ledger({ rows, active }: { rows: Measure[]; active: boolean }) {
+  return (
+    <dl className="ledger">
+      {rows.map((m) => (
+        <div key={m.label} className={`ledger__row ${m.muted ? "is-muted" : ""}`}>
+          <dt className="ledger__label">{m.label}</dt>
+          <dd className="ledger__value">{m.value}</dd>
+          <div className="ledger__track" aria-hidden="true">
+            {m.fill != null && (
+              <span
+                className="ledger__fill"
+                style={{ width: `${active ? Math.max(2, Math.min(100, m.fill * 100)) : 0}%`, background: m.color }}
+              />
+            )}
+          </div>
+          <span className="ledger__scale">{m.scale}</span>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 // Line chart of 10th → 11th → 12th unweighted GPA. Draws the empty grid when there
 // aren't at least two years of data (the caller overlays a caption in that case).
 function TrendChart({ values }: { values: (number | null)[] }) {
@@ -158,6 +197,12 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const gpa = num(data.gpaUnweighted);
   const sat = num(data.satSuperscore);
   const act = num(data.actSuperscore);
+  const apTaken = num(data.apCoursesTaken);
+  const apOffered = data.apOfferedUnsure ? null : num(data.apCoursesOffered);
+  const rank = data.schoolDoesNotRank ? null : num(data.classRank);
+  const classSize = data.schoolDoesNotRank ? null : num(data.classSize);
+  const serviceHours = num(data.volunteerHoursPerYear);
+  const activities = data.activities.filter((a) => a.description.trim() !== "");
 
   // Prefer a real SAT; otherwise convert an ACT to its SAT-equivalent.
   let satEquiv: number | null = sat;
@@ -178,7 +223,6 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
     return () => clearTimeout(id);
   }, []);
   const pctlShown = useCountUp(pctl, mounted);
-  const gpaShown = useCountUp(gpa, mounted);
 
   if (!hydrated) return <section className="dash__view" />;
 
@@ -189,26 +233,80 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const GAUGE = 5 / 6;
   const trackLen = C * GAUGE;
   const arcLen = mounted && pctl != null ? (C * GAUGE * pctl) / 100 : 0;
-  const gpaFill = mounted && gpa != null ? Math.max(0, Math.min(100, (gpa / 4) * 100)) : 0;
 
   const gradeValues = [num(data.gpaGrade10), num(data.gpaGrade11), num(data.gpaGrade12)];
-  const hasTrend = gradeValues.filter((v) => v != null).length >= 2;
+  const knownGrades = gradeValues.filter((v): v is number => v != null);
+  const hasTrend = knownGrades.length >= 2;
+  const trendDelta = hasTrend ? knownGrades[knownGrades.length - 1] - knownGrades[0] : 0;
 
   // The goal state is whatever the hard filter resolves to — "in-state only" makes it
   // the home state, which the map then draws as the both-states crosshatch.
   const goalState = requiredState(data);
 
+  // ---- Profile ledger: only what the student actually entered. ----
+  const rankPct = rank != null && classSize != null && classSize > 0
+    ? Math.max(1, Math.round((rank / classSize) * 100))
+    : null;
+
+  const measures: Measure[] = [
+    {
+      label: "Unweighted GPA",
+      value: gpa != null ? gpa.toFixed(2) : "—",
+      scale: gpa != null ? "of 4.0" : "not entered",
+      fill: gpa != null ? gpa / 4 : null,
+      color: tier?.color ?? "#a78bfa",
+      muted: gpa == null,
+    },
+    {
+      label: "AP courses taken",
+      value: apTaken != null ? String(apTaken) : "—",
+      scale:
+        apTaken == null
+          ? "not entered"
+          : apOffered != null
+            ? `of ${apOffered} offered`
+            : "course list not given",
+      fill: apTaken != null && apOffered != null && apOffered > 0 ? apTaken / apOffered : null,
+      color: "#a78bfa",
+      muted: apTaken == null,
+    },
+    {
+      label: "Class rank",
+      value: rankPct != null ? `top ${rankPct}%` : "—",
+      scale:
+        rankPct != null
+          ? `${rank} of ${classSize}`
+          : data.schoolDoesNotRank
+            ? "school doesn't rank"
+            : "not entered",
+      fill: rankPct != null ? 1 - rankPct / 100 : null,
+      color: "#818cf8",
+      muted: rankPct == null,
+    },
+  ];
+  const hasAnyMeasure = gpa != null || apTaken != null || rankPct != null;
+
+  // ---- Interpretation. Kept apart from the numbers above, and phrased as a reading. ----
+  const reads: string[] = [];
+  if (tier) reads.push(`Your GPA is ${tier.label.toLowerCase()} for college applications. ${tier.desc}`);
+  if (hasTrend && trendDelta >= 0.1)
+    reads.push("Your grades climb year over year, which admissions officers read as momentum.");
+  if (hasTrend && trendDelta <= -0.1)
+    reads.push("Your grades slipped after 10th grade. A strong senior year, or a short explanation in your application, carries weight here.");
+  if (pctl != null && pctl >= 90)
+    reads.push("Your test score sits near the top of the national range — it's a strength worth submitting.");
+  if (pctl != null && pctl < 60)
+    reads.push("Your test score is below the middle range at selective colleges. Test-optional schools may suit your list better.");
+  if (data.notSubmittingScores)
+    reads.push("You've marked yourself test-optional, so we lean on your GPA and coursework instead.");
+
   return (
     <section className="dash__view">
-      <header className="dash__view-head">
-        <h1 className="dash__view-title">Your stats</h1>
-        <p className="dash__view-sub">A snapshot of your academic profile.</p>
-      </header>
-
-      <div className="stat-grid">
-        {/* Test-score percentile */}
-        <div className="stat-card">
-          <h2 className="stat-card__title">Test score percentile</h2>
+      {/* ---- Facts: what you told us. ---------------------------------- */}
+      <div className="stat-card profile">
+        <h2 className="stat-card__title">Your academic profile</h2>
+        <div className="profile__body">
+        <div className="profile__dial">
           {pctl != null ? (
             <>
               <div className="stat-meter">
@@ -244,128 +342,102 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
                   </span>
                 </div>
               </div>
-              <p className="stat-card__note">
-                {fromAct ? `ACT ${act} ≈ SAT ${satEquiv}` : `SAT ${satEquiv}`} — scoring higher than about{" "}
-                {pctl}% of test-takers.
+              <p className="profile__dial-note">
+                {fromAct ? `ACT ${act} — an SAT ${satEquiv} equivalent.` : `SAT ${satEquiv}.`} Higher than about{" "}
+                {pctl}% of test-takers nationally.
               </p>
             </>
           ) : (
-            <div className="stat-empty">
-              <p className="stat-empty__text">
+            <div className="profile__dial-empty">
+              <span className="profile__dial-ring" aria-hidden="true" />
+              <p className="profile__dial-note">
                 {data.notSubmittingScores
-                  ? "You've marked yourself test-optional, so there's no percentile to show."
-                  : "Add an SAT or ACT score in the quiz to see your percentile."}
+                  ? "You're applying test-optional, so there's no score to place."
+                  : "Add an SAT or ACT score in the quiz to see where you land nationally."}
               </p>
-              <button type="button" className="btn btn--ghost" onClick={onEdit}>
-                Edit answers
-              </button>
             </div>
           )}
         </div>
 
-        {/* Unweighted GPA strength */}
-        <div className="stat-card">
-          <h2 className="stat-card__title">Unweighted GPA</h2>
-          {gpa != null && tier ? (
-            <>
-              <div className="stat-gpa">
-                <span className="stat-gpa__value">{gpaShown.toFixed(2)}</span>
-                <span className="stat-gpa__scale">/ 4.0</span>
-              </div>
-              <div className="stat-bar">
-                <div className="stat-bar__track">
-                  <div className="stat-bar__fill" style={{ width: `${gpaFill}%`, background: tier.color }} />
-                  {[3.0, 3.5, 3.8].map((t) => (
-                    <span key={t} className="stat-bar__tick" style={{ left: `${(t / 4) * 100}%` }} />
-                  ))}
-                </div>
-                <div className="stat-bar__scale">
-                  <span>0</span>
-                  <span>3.0</span>
-                  <span>3.5</span>
-                  <span>3.8</span>
-                  <span>4.0</span>
-                </div>
-              </div>
-              <div className="stat-tier" style={{ color: tier.color }}>
-                {tier.label}
-              </div>
-              <p className="stat-desc">{tier.desc}</p>
-            </>
-          ) : (
+        <div className="profile__ledger">
+          <Ledger rows={measures} active={mounted} />
+          {!hasAnyMeasure && (
             <div className="stat-empty">
-              <p className="stat-empty__text">Add your unweighted GPA in the quiz to see its strength.</p>
-              <button type="button" className="btn btn--ghost" onClick={onEdit}>
-                Edit answers
+              <p className="stat-empty__text">Nothing here yet — your quiz answers fill this in.</p>
+              <button type="button" className="btn btn--primary" onClick={onEdit}>
+                Answer the quiz
               </button>
             </div>
+          )}
+        </div>
+        </div>
+      </div>
+
+      {/* ---- Interpretation, kept visibly separate from the facts. ------ */}
+      <div className="stat-row">
+        <div className="stat-card">
+          <h2 className="stat-card__title">Grade trend</h2>
+          <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+            <TrendChart values={gradeValues} />
+            {!hasTrend && (
+              <div className="trend__empty">
+                <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="stat-card read">
+          <h2 className="stat-card__title read__title">What this means</h2>
+          <p className="read__caveat">Our reading of the numbers — not a score, and not a prediction.</p>
+          {reads.length ? (
+            <ul className="read__list">
+              {reads.map((r) => (
+                <li key={r} className="read__item">{r}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
           )}
         </div>
       </div>
 
-      {/* Where you're coming from and where you're aiming. */}
+      {/* ---- Where you're coming from and where you're aiming. ---------- */}
       <div className="stat-card">
         <h2 className="stat-card__title">Where you're looking</h2>
         <UsMap homeState={data.homeState || null} goalState={goalState} />
         {!data.homeState && (
-          <div className="usmap__cta">
-            <p className="stat-empty__text">Set your home state in the quiz to see it on the map.</p>
-            <button type="button" className="btn btn--ghost" onClick={onEdit}>
-              Edit answers
-            </button>
-          </div>
+          <p className="usmap__cta">Set your home state in the quiz to see it on the map.</p>
         )}
       </div>
 
-      {/* Grade trend — 10th → 12th unweighted GPA. */}
-      <div className="stat-card">
-        <h2 className="stat-card__title">Grade trend</h2>
-        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-          <TrendChart values={gradeValues} />
-          {!hasTrend && (
-            <div className="trend__empty">
-              <p className="trend__empty-text">Take the quiz again and add your year-by-year GPAs to see your grade trend.</p>
-              <button type="button" className="btn btn--ghost" onClick={onEdit}>
-                Take the quiz again
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Extracurricular summary — placeholder (generated via an API call later). */}
+      {/* ---- Extracurriculars — counts now, the written read later. ----- */}
       <div className="stat-card stat-ec">
-        <h2 className="stat-card__title">Extracurricular summary</h2>
+        <h2 className="stat-card__title">Outside the classroom</h2>
         <div className="stat-ec__body">
-          <div className="stat-ec__icon" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="24" y1="24" x2="24" y2="8" />
-              <line x1="24" y1="24" x2="38" y2="15" />
-              <line x1="24" y1="24" x2="37" y2="35" />
-              <line x1="24" y1="24" x2="11" y2="36" />
-              <line x1="24" y1="24" x2="10" y2="16" />
-              <circle cx="24" cy="24" r="5" />
-              <circle cx="24" cy="8" r="3" />
-              <circle cx="38" cy="15" r="3" />
-              <circle cx="37" cy="35" r="3" />
-              <circle cx="11" cy="36" r="3" />
-              <circle cx="10" cy="16" r="3" />
-            </svg>
+          <div className="stat-ec__figures">
+            <div className="stat-ec__figure">
+              <span className="stat-ec__num">{activities.length}</span>
+              <span className="stat-ec__cap">{activities.length === 1 ? "activity" : "activities"}</span>
+            </div>
+            <div className="stat-ec__figure">
+              <span className="stat-ec__num">{serviceHours ?? 0}</span>
+              <span className="stat-ec__cap">service hours a year</span>
+            </div>
           </div>
           <div className="stat-ec__content">
             <p className="stat-ec__lead">
               A personalized read on your activities — the throughline across them and how it strengthens
               your applications — will appear here.
             </p>
-            <div className="stat-ec__skeleton" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
             <span className="stat-ec__tag">Summary coming soon</span>
           </div>
         </div>
       </div>
+
+      <p className="stat-foot">
+        Every figure here comes from your quiz answers. Nothing on this page is a prediction of admission.
+      </p>
     </section>
   );
 }
