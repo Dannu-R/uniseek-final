@@ -13,6 +13,10 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import { Component, Suspense, useEffect, useState } from "react";
 
+// A few degrees off head-on, turned toward the viewer's left. Negative rotation about
+// Y swings the figure's front (+Z) toward -X, which is the left of the screen.
+const TURN = -0.3;
+
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
 const GOWN = "#16161f";
@@ -76,17 +80,25 @@ function Student() {
         <meshStandardMaterial color={HAIR} roughness={0.78} metalness={0} />
       </mesh>
 
-      {/* Eyes — a white disk flattened against the face, with the pupil sitting just
-          proud of it. Two parts rather than one dark dot: the white is what makes it
-          read as an eye rather than a hole. */}
+      {/* Eyes — a rounded white with the pupil riding on its front. Two parts rather
+          than one dark dot: the white is what makes it read as an eye rather than a
+          hole punched in the head.
+          
+          Only the pupil's front cap clears the white, and that cap sits further
+          forward than the white's own centre — so seen off head-on, the gap between
+          them projects sideways and walks the pupil toward the edge. The fix is
+          proportion rather than geometry: a wide white against a small dot leaves
+          enough margin that the shift never reaches the rim. The eyes are also
+          turned half of the head's own turn back toward the camera, which halves
+          the shift again — he still looks left, just less past the viewer. */}
       {[-1, 1].map((side) => (
-        <group key={side} position={[side * 0.27, -0.13, 0.68]}>
-          <mesh scale={[1, 1.06, 0.5]}>
-            <sphereGeometry args={[0.125, 24, 20]} />
+        <group key={side} position={[side * 0.27, -0.13, 0.66]} rotation={[0, -TURN / 2, 0]}>
+          <mesh scale={[1, 1, 0.7]}>
+            <sphereGeometry args={[0.14, 24, 20]} />
             <meshStandardMaterial color="#ffffff" roughness={0.35} metalness={0} />
           </mesh>
-          <mesh position={[0, 0, 0.055]} scale={[1, 1, 0.7]}>
-            <sphereGeometry args={[0.058, 20, 16]} />
+          <mesh position={[0, 0, 0.075]}>
+            <sphereGeometry args={[0.045, 20, 16]} />
             <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
           </mesh>
         </group>
@@ -137,10 +149,6 @@ function Student() {
 // LIFT then puts the cap back where it belongs against the card's top edge.
 const SCALE = 1.25;
 const LIFT = 0.42;
-// A few degrees off head-on, turned toward the viewer's left. Negative rotation about
-// Y swings the figure's front (+Z) toward -X, which is the left of the screen.
-const TURN = -0.3;
-
 function StudentRig() {
   return (
     <group rotation={[0, TURN, 0]} scale={SCALE}>
