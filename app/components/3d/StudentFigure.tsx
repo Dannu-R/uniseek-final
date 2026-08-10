@@ -17,8 +17,11 @@ import { Component, Suspense, useEffect, useState } from "react";
 // Y swings the figure's front (+Z) toward -X, which is the left of the screen.
 const TURN = -0.3;
 
-// How far forward the eyes sit. Derived from the head geometry — see the eye block.
-const EYE_Z = 0.78;
+// Where the eyes sit. Both are derived from the head geometry, not taste — see the
+// eye block. They move together: bringing the eyes inward puts them on a fatter part
+// of the head, so the surface there sits further forward and EYE_Z has to follow.
+const EYE_X = 0.225;
+const EYE_Z = 0.79;
 
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
@@ -96,7 +99,7 @@ function Student() {
           back of the white still sits inside the face, so it reads as set into the
           head rather than stuck on it. */}
       {[-1, 1].map((side) => (
-        <group key={side} position={[side * 0.27, -0.13, EYE_Z]} rotation={[0, -TURN / 2, 0]}>
+        <group key={side} position={[side * EYE_X, -0.13, EYE_Z]} rotation={[0, -TURN / 2, 0]}>
           {/* Flattened to a lens — a full sphere this far forward bulges, which is
               most of what made him look googly. Emissive so the shaded half still
               reads as white; lit normally only the key-lit side looked white and the
@@ -111,14 +114,33 @@ function Student() {
               metalness={0}
             />
           </mesh>
-          {/* Nudged outward. Sitting on the eye's own axis they converge on screen —
-              the pupil stands in front of the white, and once the head is turned the
-              projection pulls both of them toward the nose. Measured off the render
-              rather than derived; the figure and camera are both fixed, so a constant
-              is honest here. */}
-          <mesh position={[side * 0.03, 0, 0.048]}>
+          {/* Dead centre on its own white, and the gaze comes entirely from the group
+              rotation the two eyes share. Anything mirrored here — an outward nudge,
+              say — aims the two pupils away from each other, and a split gaze is what
+              reads as looking two different ways. Whatever aims the eyes has to be
+              the same for both of them, never a function of `side`. */}
+          <mesh position={[0, 0, 0.048]}>
             <sphereGeometry args={[0.05, 20, 16]} />
             <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Brows. Each is a capsule laid along X by the inner mesh, then swung back at
+          the outer end by the group so it follows the head's curve — across a brow's
+          width the surface falls away by about 0.06, which is enough that a flat bar
+          buries its outer end. The slight downward tilt outward is the resting shape
+          of a real brow; tilting the inner ends instead would read as angry (down) or
+          worried (up), and he should read as neither. */}
+      {[-1, 1].map((side) => (
+        <group
+          key={side}
+          position={[side * EYE_X, 0.05, 0.79]}
+          rotation={[0, side * 0.27, side * -0.12]}
+        >
+          <mesh rotation={[0, 0, Math.PI / 2]} scale={[0.8, 1, 0.6]}>
+            <capsuleGeometry args={[0.028, 0.18, 4, 14]} />
+            <meshStandardMaterial color={HAIR} roughness={0.75} metalness={0} />
           </mesh>
         </group>
       ))}
