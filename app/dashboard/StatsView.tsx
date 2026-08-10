@@ -146,6 +146,14 @@ const ICON: Record<string, ReactNode> = {
   ),
 };
 
+// The verdict on the grade line. A tenth of a GPA point either way is the threshold
+// for calling it a direction at all — anything smaller is year-to-year noise.
+function trendDirection(delta: number): { key: "up" | "steady" | "down"; label: string; arrow: string } {
+  if (delta >= 0.1) return { key: "up", label: "Trending up", arrow: "M5 12l5-5 5 5" };
+  if (delta <= -0.1) return { key: "down", label: "Trending down", arrow: "M5 8l5 5 5-5" };
+  return { key: "steady", label: "Holding steady", arrow: "M4 10h12" };
+}
+
 // One widget in the top row. `caption` carries the scale the number sits on, so a
 // bare figure never has to stand in for a measurement it can't make on its own.
 interface Stat {
@@ -185,7 +193,15 @@ function TrendChart({ values }: { values: (number | null)[] }) {
   const plotH = H - padT - padB;
   const yMin = 2;
   const yMax = 4;
-  const xs = [padL, padL + plotW / 2, padL + plotW];
+  // Three years across a wide card would stretch into a near-flat line. Clustering
+  // the points into the middle band keeps the shape of the change readable.
+  const spread = plotW * 0.56;
+  const mid = padL + plotW / 2;
+  const xs = [mid - spread / 2, mid, mid + spread / 2];
+  // Rules stop just past the outer points rather than running the full card width,
+  // so the plot reads as one compact block instead of a cluster adrift in a grid.
+  const gridL = xs[0] - 44;
+  const gridR = xs[2] + 44;
   const yFor = (v: number) => padT + plotH * (1 - (Math.max(yMin, Math.min(yMax, v)) - yMin) / (yMax - yMin));
   const grid = [2, 2.5, 3, 3.5, 4];
   const labels = ["10th", "11th", "12th"];
@@ -199,8 +215,8 @@ function TrendChart({ values }: { values: (number | null)[] }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="trend__svg" role="img" aria-label="Grade trend">
       {grid.map((g) => (
         <g key={g}>
-          <line x1={padL} y1={yFor(g)} x2={W - padR} y2={yFor(g)} className="trend__grid" />
-          <text x={padL - 10} y={yFor(g) + 4} textAnchor="end" className="trend__ylabel">{g.toFixed(1)}</text>
+          <line x1={gridL} y1={yFor(g)} x2={gridR} y2={yFor(g)} className="trend__grid" />
+          <text x={gridL - 10} y={yFor(g) + 4} textAnchor="end" className="trend__ylabel">{g.toFixed(1)}</text>
         </g>
       ))}
       {labels.map((l, i) => (
@@ -208,7 +224,7 @@ function TrendChart({ values }: { values: (number | null)[] }) {
       ))}
       {has && (
         <>
-          <path d={line} className="trend__line" />
+          <path d={line} className="trend__line" pathLength={1} />
           {pts.map((p, i) => {
             // The end points sit on the plot edges, so a centred label would hang over
             // the y-axis numbers (left) or the card padding (right). Anchor them inward.
@@ -217,7 +233,8 @@ function TrendChart({ values }: { values: (number | null)[] }) {
             const anchor = first ? "start" : last ? "end" : "middle";
             const dx = first ? -4 : last ? 4 : 0;
             return (
-              <g key={i}>
+              // Each point lands just after the line has drawn past it.
+              <g key={i} className="trend__pt" style={{ animationDelay: `${0.45 + i * 0.22}s` }}>
                 <circle cx={p.x} cy={p.y} r="5" className="trend__dot" />
                 <text x={p.x + dx} y={p.y - 13} textAnchor={anchor} className="trend__value">
                   {p.v.toFixed(2)}
@@ -278,6 +295,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
   const knownGrades = gradeValues.filter((v): v is number => v != null);
   const hasTrend = knownGrades.length >= 2;
   const trendDelta = hasTrend ? knownGrades[knownGrades.length - 1] - knownGrades[0] : 0;
+  const direction = trendDirection(trendDelta);
 
   // The goal state is whatever the hard filter resolves to — "in-state only" makes it
   // the home state, which the map then draws as the both-states crosshatch.
@@ -374,7 +392,17 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
 
       {/* ---- Grade trend takes the width; the dial sits beside it. ------ */}
       <div className="stat-card tile--wide">
-        <h2 className="stat-card__title">Grade trend</h2>
+        <div className="stat-card__head">
+          <h2 className="stat-card__title">Grade trend</h2>
+          {hasTrend && (
+            <span className={`trend-badge trend-badge--${direction.key}`}>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={direction.arrow} />
+              </svg>
+              {direction.label}
+            </span>
+          )}
+        </div>
         <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
           <TrendChart values={gradeValues} />
           {!hasTrend && (
@@ -385,7 +413,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
         </div>
       </div>
 
-      <div className="stat-card dial-tile">
+      <div className="stat-card dial-tile tile--violet">
         <h2 className="stat-card__title">Where your score lands</h2>
         <div className="dial-tile__body">
           {pctl != null ? (
@@ -436,7 +464,7 @@ export default function StatsView({ onEdit }: { onEdit: () => void }) {
       </div>
 
       {/* ---- Our reading, kept separate from the figures above. --------- */}
-      <div className="stat-card tile--wide">
+      <div className="stat-card tile--wide tile--ink">
         <h2 className="stat-card__title">What this means</h2>
         <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
         {reads.length ? (

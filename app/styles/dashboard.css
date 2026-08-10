@@ -290,7 +290,7 @@
   z-index: 15;
   margin: -40px -44px 30px;
   padding: 17px 44px;
-  background: rgba(238, 241, 247, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--ac-line);
@@ -625,6 +625,25 @@
   line-height: 1.5;
 }
 
+/* Colour on a card is reserved for the two that benefit from standing apart: the
+   score dial and the takeaway. Type on them stays neutral white. */
+.tile--violet {
+  background: #5b2ee5;
+  border-color: #5b2ee5;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06), 0 18px 38px -22px rgba(91, 46, 229, 0.95);
+}
+.tile--ink {
+  background: #1b2745;
+  border-color: #1b2745;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06), 0 18px 38px -22px rgba(27, 39, 69, 0.9);
+}
+.tile--violet .stat-card__title,
+.tile--ink .stat-card__title {
+  color: rgba(255, 255, 255, 0.66);
+}
+
 /* ---- Stat widgets ------------------------------------------------------- */
 /* The numbers at a glance, colour-coded so the eye can find one without reading.
    The tints stay pale on purpose: a fully saturated block would claim the page,
@@ -644,6 +663,8 @@
   padding: 20px 12px 18px;
   border-radius: 14px;
   background: var(--kpi-tint);
+  border: 1px solid var(--kpi-edge);
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05), 0 10px 22px -14px rgba(22, 34, 63, 0.45);
 }
 .kpi__icon {
   display: grid;
@@ -652,7 +673,8 @@
   height: 38px;
   margin-bottom: 5px;
   border-radius: 11px;
-  background: rgba(255, 255, 255, 0.78);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.08);
   color: var(--kpi-ink);
 }
 .kpi__icon svg {
@@ -679,12 +701,12 @@
 .kpi.is-empty .kpi__value {
   color: var(--ac-ink-4);
 }
-.kpi--violet { --kpi-tint: #efeafe; --kpi-ink: #6236e8; }
-.kpi--amber  { --kpi-tint: #fdf1e0; --kpi-ink: #a4650a; }
-.kpi--blue   { --kpi-tint: #e7f0fe; --kpi-ink: #2563eb; }
-.kpi--pink   { --kpi-tint: #fdeaf1; --kpi-ink: #d1376e; }
-.kpi--green  { --kpi-tint: #e5f6f0; --kpi-ink: #0f8f6c; }
-.kpi--teal   { --kpi-tint: #e4f3f7; --kpi-ink: #0e7490; }
+.kpi--violet { --kpi-tint: #e6ddfd; --kpi-edge: #d3c4fb; --kpi-ink: #5b2ee5; }
+.kpi--amber  { --kpi-tint: #fce8ca; --kpi-edge: #f6d7ab; --kpi-ink: #9a5f08; }
+.kpi--blue   { --kpi-tint: #dbe8fd; --kpi-edge: #c3d8fb; --kpi-ink: #1d5ed8; }
+.kpi--pink   { --kpi-tint: #fcdde9; --kpi-edge: #f8c6da; --kpi-ink: #c72f65; }
+.kpi--green  { --kpi-tint: #d6f0e6; --kpi-edge: #b9e5d4; --kpi-ink: #0c8161; }
+.kpi--teal   { --kpi-tint: #d7ecf4; --kpi-edge: #bcdfec; --kpi-ink: #0b6b84; }
 
 /* ---- Test-score tile ---------------------------------------------------- */
 .dial-tile {
@@ -711,13 +733,13 @@
 }
 .stat-meter__track {
   fill: none;
-  stroke: var(--ac-sunk);
+  stroke: rgba(255, 255, 255, 0.22);
   stroke-width: 11;
   stroke-linecap: round;
 }
 .stat-meter__arc {
   fill: none;
-  stroke: var(--ac-violet);
+  stroke: #fff;
   stroke-width: 11;
   stroke-linecap: round;
   transition: stroke-dasharray 0.9s cubic-bezier(0.22, 1, 0.36, 1);
@@ -735,7 +757,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: var(--ac-ink);
+  color: #fff;
 }
 .stat-meter__num sup {
   font-size: 1rem;
@@ -747,13 +769,13 @@
   font-size: 0.68rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--ac-ink-3);
+  color: rgba(255, 255, 255, 0.66);
 }
 .dial-tile__note {
   margin: 16px 0 0;
   font-size: 0.84rem;
   line-height: 1.5;
-  color: var(--ac-ink-3);
+  color: rgba(255, 255, 255, 0.78);
 }
 /* Without a score the tile drops the fill — a saturated block that says nothing
    would shout for no reason. */
@@ -777,7 +799,7 @@
 .read__caveat {
   margin: -12px 0 16px;
   font-size: 0.78rem;
-  color: #94743f;
+  color: rgba(255, 255, 255, 0.5);
 }
 .read__list {
   list-style: none;
@@ -792,7 +814,7 @@
   padding-left: 20px;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--ac-ink-2);
+  color: rgba(255, 255, 255, 0.84);
 }
 /* A small diamond, echoing the brand mark, instead of a generic bullet. */
 .read__item::before {
@@ -802,14 +824,14 @@
   top: 0.55em;
   width: 6px;
   height: 6px;
-  background: var(--ac-amber);
+  background: #f7b93f;
   transform: rotate(45deg);
 }
 .read__empty {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--ac-ink-3);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ---- Outside the classroom --------------------------------------------- */
@@ -929,6 +951,36 @@
 }
 
 /* ---- Grade-trend line chart -------------------------------------------- */
+/* A card can carry a title and a verdict on the same line. */
+.stat-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.stat-card__head .stat-card__title {
+  margin: 0;
+}
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px 5px 8px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  background: var(--badge-tint);
+  color: var(--badge-ink);
+}
+.trend-badge svg {
+  width: 14px;
+  height: 14px;
+}
+.trend-badge--up { --badge-tint: #d6f0e6; --badge-ink: #0c8161; }
+.trend-badge--steady { --badge-tint: #e6eaf3; --badge-ink: #55637f; }
+.trend-badge--down { --badge-tint: #fce2d6; --badge-ink: #b4501c; }
+
 .trend {
   position: relative;
 }
@@ -957,6 +1009,24 @@
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  /* pathLength="1" on the element makes these normalised, so one keyframe works
+     whatever the line's real length is. */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: trendDraw 1s cubic-bezier(0.4, 0, 0.2, 1) 0.12s forwards;
+}
+@keyframes trendDraw {
+  to { stroke-dashoffset: 0; }
+}
+.trend__pt {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: trendPop 0.42s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+@keyframes trendPop {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
 }
 .trend__dot {
   fill: var(--ac-card);
@@ -1034,6 +1104,14 @@
   }
   .stat-meter__arc {
     transition: none;
+  }
+  .trend__line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .trend__pt {
+    animation: none;
+    opacity: 1;
   }
   .dash .btn:hover {
     transform: none;
