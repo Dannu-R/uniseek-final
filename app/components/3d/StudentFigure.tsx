@@ -126,25 +126,6 @@ function Student() {
         </group>
       ))}
 
-      {/* Brows. Each is a capsule laid along X by the inner mesh, then swung back at
-          the outer end by the group so it follows the head's curve — across a brow's
-          width the surface falls away by about 0.06, which is enough that a flat bar
-          buries its outer end. The slight downward tilt outward is the resting shape
-          of a real brow; tilting the inner ends instead would read as angry (down) or
-          worried (up), and he should read as neither. */}
-      {[-1, 1].map((side) => (
-        <group
-          key={side}
-          position={[side * EYE_X, 0.05, 0.79]}
-          rotation={[0, side * 0.27, side * -0.12]}
-        >
-          <mesh rotation={[0, 0, Math.PI / 2]} scale={[0.8, 1, 0.6]}>
-            <capsuleGeometry args={[0.028, 0.18, 4, 14]} />
-            <meshStandardMaterial color={HAIR} roughness={0.75} metalness={0} />
-          </mesh>
-        </group>
-      ))}
-
       {/* Smile — a half torus, flipped so the arc bows downward. */}
       <mesh position={[0, -0.42, 0.655]} rotation={[0, 0, Math.PI]}>
         <torusGeometry args={[0.17, 0.033, 10, 22, Math.PI]} />
