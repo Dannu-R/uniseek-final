@@ -104,6 +104,16 @@ function rigorRead(taken: number, offered: number): { label: string; color: stri
   return { label: "Light", color: "#c72f65" };
 }
 
+const INCOME_LABEL: Record<string, string> = {
+  LT_30K: "under $30k",
+  B30_48K: "$30k–$48k",
+  B48_75K: "$48k–$75k",
+  B75_110K: "$75k–$110k",
+  GT_110K: "over $110k",
+};
+
+const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
+
 // Bands are named for students, not for the engine.
 const BAND_LABEL: Record<string, string> = { reach: "Reach", target: "Match", safety: "Safety" };
 
@@ -319,6 +329,7 @@ interface College {
   collegeId: string;
   name: string;
   band: "reach" | "target" | "safety";
+  netPrice?: number | null;
 }
 
 export default function StatsView({
@@ -421,6 +432,20 @@ export default function StatsView({
       empty: serviceHours == null,
     },
   ];
+
+  // ---- Cost. Net price is what the budget filter compares against, so the list can
+  // only ever sit under the budget — the useful thing is how much room is left. ----
+  const budget = num(data.budgetMaxNetPrice);
+  const priced = recommended
+    .map((c) => c.netPrice)
+    .filter((n): n is number => typeof n === "number");
+  const unpriced = recommended.length - priced.length;
+  const costLow = priced.length ? Math.min(...priced) : null;
+  const costHigh = priced.length ? Math.max(...priced) : null;
+  const costTypical = priced.length
+    ? [...priced].sort((a, b) => a - b)[Math.floor(priced.length / 2)]
+    : null;
+  const headroom = budget != null && costTypical != null ? budget - costTypical : null;
 
   // ---- Interpretation. Kept apart from the numbers above, and phrased as a reading. ----
   const reads: string[] = [];
@@ -632,6 +657,65 @@ export default function StatsView({
         ))}
       </div>
 
+      {/* ---- Cost: the budget, and where the list actually sits under it. -- */}
+      <div className="stat-card tile--half">
+        <h2 className="stat-card__title">Cost</h2>
+        {budget != null ? (
+          <div className="card__body">
+            <div className="gpa__value">
+              <span className="gpa__num">{money(budget)}</span>
+              <span className="gpa__scale">a year — the most you said you can pay</span>
+            </div>
+
+            {costLow != null && costHigh != null && costTypical != null ? (
+              <>
+                {/* A scale from nothing to the budget. Everything on the list sits
+                    inside it by construction, so the band shows the room left over. */}
+                <div className="cost__scale">
+                  <span
+                    className="cost__band"
+                    style={{
+                      left: `${Math.max(0, Math.min(100, (costLow / budget) * 100))}%`,
+                      width: `${Math.max(2, Math.min(100, ((costHigh - costLow) / budget) * 100))}%`,
+                      opacity: mounted ? 1 : 0,
+                    }}
+                  />
+                  <span
+                    className="cost__marker"
+                    style={{ left: `${Math.max(0, Math.min(100, (costTypical / budget) * 100))}%` }}
+                  />
+                </div>
+                <div className="cost__ends">
+                  <span>$0</span>
+                  <span>{money(budget)}</span>
+                </div>
+
+                <p className="cost__read">
+                  Your colleges are estimated at{" "}
+                  <strong>{money(costLow)}–{money(costHigh)}</strong> a year, typically{" "}
+                  <strong>{money(costTypical)}</strong>
+                  {headroom != null && headroom > 0 && <> — about {money(headroom)} under your ceiling</>}.
+                </p>
+                <p className="cost__note">
+                  {data.incomeBand
+                    ? `Estimated for a family income ${INCOME_LABEL[data.incomeBand] ?? "in your band"}.`
+                    : "Based on each college's average net price — add your income band in the quiz for a closer estimate."}
+                  {unpriced > 0 && ` ${unpriced} ${unpriced === 1 ? "college has" : "colleges have"} no cost data; they were kept and flagged rather than dropped.`}
+                </p>
+              </>
+            ) : (
+              <p className="card__empty">
+                {recommended.length
+                  ? "None of your colleges have cost data yet, so there's nothing to compare against your budget."
+                  : "Run your list and we'll show what it costs against this budget."}
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="card__empty">Add a yearly budget in the quiz — it's the one filter that removes colleges outright.</p>
+        )}
+      </div>
+
       {/* ---- Our reading, kept separate from the figures above. --------- */}
       <div className="stat-card tile--half">
         <h2 className="stat-card__title">What this means</h2>
@@ -647,7 +731,7 @@ export default function StatsView({
         )}
       </div>
 
-      <div className="stat-card tile--half">
+      <div className="stat-card tile--full">
         <h2 className="stat-card__title">Outside the classroom</h2>
         <p className="stat-ec__lead">
           A personalized read on your activities — the throughline across them and how it strengthens your

@@ -34,6 +34,7 @@ export interface CollegeScore {
   finalScore: number;
   overallAdmitRate: number; // the college's overall published admit rate
   effectiveAdmitRate: number; // after the major offset (§6a)
+  netPrice: number | null; // the net price the budget filter used; null = unknown
   usedFactors: Factor[];
   flags: string[]; // low-confidence / missing-data notes
   filterNotes: string[]; // hard-filter missing-data notes (§2.3)
@@ -127,6 +128,7 @@ export function scoreCollege(student: StudentInput, college: CollegeInput): Coll
     finalScore: final,
     overallAdmitRate: college.admitRate,
     effectiveAdmitRate: rate,
+    netPrice,
     usedFactors,
     flags,
     filterNotes: hard.notes,

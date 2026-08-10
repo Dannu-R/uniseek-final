@@ -2,6 +2,7 @@
 
 // The dashboard shell: a fixed left rail (views + account) and a content area, below the
 // shared site header. Views:
+//   - "Home" (the landing view): where the list stands, the academic profile, and cost.
 //   - "Recommended colleges": no list yet → "Find colleges" CTA; building → the quiz (full
 //     width, rail slides away); has a list → reach / match / safety results.
 //   - "Saved colleges": colleges the student bookmarked from their list; empty by default.
@@ -30,6 +31,7 @@ interface CollegeScore {
   name: string;
   band: "reach" | "target" | "safety";
   overallAdmitRate: number | null;
+  netPrice?: number | null;
 }
 interface ScoreResult {
   empty?: boolean;
@@ -37,15 +39,16 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "recommended" | "saved" | "stats";
+type TabKey = "home" | "recommended" | "saved";
 type TabDef = { key: TabKey; label: string };
 
-// College views live under the "Views" heading; stats sits on its own below.
+// Home leads — it's the view that says where everything stands. The college views
+// sit under their own heading below it.
+const HOME_TAB: TabDef = { key: "home", label: "Home" };
 const VIEW_TABS: TabDef[] = [
   { key: "recommended", label: "Recommended colleges" },
   { key: "saved", label: "Saved colleges" },
 ];
-const STATS_TAB: TabDef = { key: "stats", label: "Your stats" };
 
 // Per-tab line icons (minimalist, currentColor).
 const TAB_ICON: Record<TabKey, ReactNode> = {
@@ -61,11 +64,11 @@ const TAB_ICON: Record<TabKey, ReactNode> = {
       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
     </svg>
   ),
-  stats: (
+  home: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="6" y1="20" x2="6" y2="14" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="18" y1="20" x2="18" y2="10" />
+      <path d="M3 10.5 12 3.5l9 7" />
+      <path d="M5.5 9.5V20h13V9.5" />
+      <path d="M9.75 20v-5.5h4.5V20" />
     </svg>
   ),
 };
@@ -97,7 +100,7 @@ const FILTERS: { key: BandFilter; label: string }[] = [
 const pct = (x: number | null | undefined) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function DashboardClient({ user }: { user: DashUser }) {
-  const [tab, setTab] = useState<TabKey>("recommended");
+  const [tab, setTab] = useState<TabKey>("home");
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [saved, setSaved] = useState<CollegeScore[]>([]);
@@ -301,10 +304,10 @@ export default function DashboardClient({ user }: { user: DashUser }) {
           </div>
 
           <nav className="dash__nav" aria-label="Dashboard sections">
+            {renderTab(HOME_TAB)}
+            <div className="dash__nav-divider" aria-hidden="true" />
             <p className="dash__nav-label">Views</p>
             {VIEW_TABS.map(renderTab)}
-            <div className="dash__nav-divider" aria-hidden="true" />
-            {renderTab(STATS_TAB)}
           </nav>
 
           <div className="dash__account">
@@ -357,11 +360,11 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             </div>
           ) : exploring ? (
             <ExplorerView college={exploring} onBack={() => setExploring(null)} />
-          ) : tab === "stats" ? (
+          ) : tab === "home" ? (
             <>
               <ViewHeader
-                title="Your stats"
-                subtitle="What your profile looks like before we match you to colleges."
+                title="Home"
+                subtitle="Where your list stands, and how your profile looks."
                 action={
                   <button type="button" className="btn btn--ghost" onClick={openQuiz}>
                     Edit answers
