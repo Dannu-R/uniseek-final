@@ -21,7 +21,7 @@ const TURN = -0.3;
 // eye block. They move together: bringing the eyes inward puts them on a fatter part
 // of the head, so the surface there sits further forward and EYE_Z has to follow.
 const EYE_X = 0.25;
-const EYE_Z = 0.79;
+const EYE_Z = 0.74;
 
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
@@ -86,44 +86,19 @@ function Student() {
         <meshStandardMaterial color={HAIR} roughness={0.78} metalness={0} />
       </mesh>
 
-      {/* Eyes — a rounded white with the pupil riding on its front. Two parts rather
-          than one dark dot: the white is what makes it read as an eye rather than a
-          hole punched in the head.
+      {/* Eyes — a dark dot each, no whites.
 
           EYE_Z is the one number here that isn't taste. The head is an ellipsoid of
-          radii (0.82, 0.853, 0.787), so its surface at the eye's x/y sits at z 0.734
-          and the surface drops another 0.10 across the eye's own width. Set the white
-          any shallower than its rim needs and the head swallows the outer edge — the
-          white comes out cut off with a straight side rather than round, worst on the
-          far eye where the view is most oblique. 0.78 clears the whole rim while the
-          back of the white still sits inside the face, so it reads as set into the
-          head rather than stuck on it. */}
+          radii (0.82, 0.853, 0.787), so its surface at the eye's x/y sits at z 0.740.
+          Sitting each dot's centre on that surface leaves exactly a hemisphere proud of
+          the face, which is what reads as a round dot from every angle — pushed forward
+          it starts to float off the cheek, and set back the head clips it into a
+          lens. */}
       {[-1, 1].map((side) => (
-        <group key={side} position={[side * EYE_X, -0.13, EYE_Z]} rotation={[0, -TURN / 2, 0]}>
-          {/* Flattened to a lens — a full sphere this far forward bulges, which is
-              most of what made him look googly. Emissive so the shaded half still
-              reads as white; lit normally only the key-lit side looked white and the
-              pupil appeared to sit in a crescent rather than a disk. */}
-          <mesh scale={[1, 1, 0.55]}>
-            <sphereGeometry args={[0.115, 24, 20]} />
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#ffffff"
-              emissiveIntensity={0.38}
-              roughness={0.45}
-              metalness={0}
-            />
-          </mesh>
-          {/* Dead centre on its own white, and the gaze comes entirely from the group
-              rotation the two eyes share. Anything mirrored here — an outward nudge,
-              say — aims the two pupils away from each other, and a split gaze is what
-              reads as looking two different ways. Whatever aims the eyes has to be
-              the same for both of them, never a function of `side`. */}
-          <mesh position={[0, 0, 0.048]}>
-            <sphereGeometry args={[0.05, 20, 16]} />
-            <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
-          </mesh>
-        </group>
+        <mesh key={side} position={[side * EYE_X, -0.13, EYE_Z]}>
+          <sphereGeometry args={[0.062, 24, 18]} />
+          <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
+        </mesh>
       ))}
 
       {/* Smile — a half torus, flipped so the arc bows downward. */}
