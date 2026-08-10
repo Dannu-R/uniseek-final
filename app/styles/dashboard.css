@@ -661,7 +661,34 @@
 /* Opens the view with the state of the list: how many colleges, how they split
    across the bands, and which ones have been set aside. */
 .welcome {
+  position: relative;
   padding: 30px 30px 32px;
+}
+/* The figure's box starts above the card and ends flush with its bottom edge, and
+   clips its own overflow — so the crown of the head shows above the card while the
+   torso is cut off square at the bottom. The card itself never clips. */
+.welcome__avatar {
+  position: absolute;
+  right: 26px;
+  top: -40px;
+  bottom: 0;
+  width: 250px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.welcome__avatar canvas {
+  display: block;
+}
+@media (min-width: 1181px) {
+  .welcome {
+    padding-right: 296px;
+  }
+}
+/* Below that there isn't room for the figure beside the content. */
+@media (max-width: 1180px) {
+  .welcome__avatar {
+    display: none;
+  }
 }
 .welcome__greet {
   margin: 0;

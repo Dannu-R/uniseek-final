@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useWizard } from "@/app/build/WizardProvider";
 import { requiredState } from "@/app/build/toPayload";
 import UsMap from "./UsMap";
+import StudentFigure from "@/app/components/3d/StudentFigure";
 
 // Ease a number from 0 → target once `active` turns true (the on-load count-up). Honors
 // prefers-reduced-motion by jumping straight to the target.
@@ -490,6 +491,8 @@ export default function StatsView({
             )}
           </div>
         </div>
+
+        <StudentFigure />
       </div>
 
       {/* ---- The feature: the shape of the whole record. ---------------- */}
