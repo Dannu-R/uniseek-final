@@ -28,37 +28,6 @@
   padding-inline: clamp(20px, 4vw, 48px);
 }
 
-/* ---- Brand ----
-   The wordmark is the way home, so it's a link rather than a button. It sits alone at
-   the far left, which pushes the nav links to the centre of the bar. */
-.navbar__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex: none;
-  font-size: 1.12rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  text-decoration: none;
-}
-/* The mark is taller than it is wide, so it's sized on height and left to find its own
-   width rather than being squeezed into a square. */
-.navbar__brand-mark {
-  height: 22px;
-  width: auto;
-  color: #6236e8;
-  transition: color 0.2s ease;
-}
-.navbar__brand:hover .navbar__brand-mark {
-  color: #a78bfa;
-}
-.navbar__brand:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
 /* filler nav links */
 .navbar__links {
   display: flex;

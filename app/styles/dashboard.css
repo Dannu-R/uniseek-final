@@ -97,14 +97,44 @@
   gap: 4px;
   flex: 1;
 }
-/* The panel's own name, at the very top. Bigger and in full ink so it reads as a title
-   rather than as another of the section labels further down. */
-.dash__nav-title {
-  margin: 2px 8px 18px;
-  font-size: 1.05rem;
+/* The wordmark, at the top of the rail. The mark is taller than it is wide, so it's
+   sized on height and left to find its own width rather than squeezed into a square. */
+.dash__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 8px 16px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--ac-rail-line);
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--ac-rail-ink);
+  text-decoration: none;
+}
+.dash__brand-mark {
+  height: 22px;
+  width: auto;
+  color: var(--ac-rail-violet);
+  transition: color 0.2s ease;
+}
+.dash__brand:hover .dash__brand-mark {
+  color: var(--ac-rail-ink);
+}
+.dash__brand:focus-visible {
+  outline: 2px solid var(--ac-rail-violet);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* The view's name under the product's. Set smaller and in the muted ink so the two
+   stacked headings read as a hierarchy rather than as competing titles. */
+.dash__nav-title {
+  margin: 2px 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ac-rail-ink-2);
 }
 .dash__nav-label {
   margin: 6px 8px 8px;

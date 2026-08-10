@@ -20,6 +20,7 @@ import StatsView from "./StatsView";
 import ExplorerView from "./ExplorerView";
 import CompareView from "./CompareView";
 import ProfileView from "./ProfileView";
+import UniseekMark from "@/app/components/UniseekMark";
 import ViewHeader from "./ViewHeader";
 import { DEMO_PROFILE } from "@/app/build/demoProfile";
 import { toPayload } from "@/app/build/toPayload";
@@ -374,8 +375,13 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     <WizardProvider onComplete={handleComplete}>
       <div className={`dash ${focused ? "is-focused" : ""}`}>
         <aside className="dash__rail">
-          {/* Names the panel, above everything in it. No wordmark here — the site header
-              carries that now, directly above this corner. */}
+          {/* The wordmark lives here rather than in the site header, and it's still the
+              way home. */}
+          <a className="dash__brand" href="/">
+            <UniseekMark className="dash__brand-mark" />
+            Uniseek
+          </a>
+
           <p className="dash__nav-title">Dashboard</p>
 
           {/* The portrait is the way into Profile — clicking your own face to reach your
