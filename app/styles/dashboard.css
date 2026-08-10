@@ -1105,29 +1105,50 @@
 }
 
 /* ---- Cost --------------------------------------------------------------- */
+/* Money is the one figure that decides whether a college is possible at all, so
+   this card gets the width and a warm ground of its own — keyed to the coin. */
+.cost {
+  background:
+    radial-gradient(720px 200px at 8% 0%, rgba(244, 199, 63, 0.16), rgba(255, 255, 255, 0) 62%),
+    var(--ac-card);
+  border-color: #ecdcb4;
+  padding: 26px 30px 30px;
+}
 .cost__head {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 30px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
 }
 /* The landing page's coin, reused at rest. */
 .cost__coin {
   flex: none;
-  width: 86px;
-  height: 86px;
+  width: 132px;
+  height: 132px;
 }
 .cost__figures {
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
-  gap: 12px 30px;
+  align-items: stretch;
+  gap: 16px 0;
   min-width: 0;
 }
+/* The figures share the width, so the dividers land on an even rhythm instead of
+   bunching at the left of a wide card. */
 .cost__figure {
+  flex: 1 1 180px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
+  padding: 2px 30px;
+  border-left: 1px solid var(--ac-line);
+}
+.cost__figure:first-child {
+  padding-left: 0;
+  border-left: none;
 }
 .cost__label {
   font-size: 0.7rem;
@@ -1137,12 +1158,17 @@
   color: var(--ac-ink-3);
 }
 .cost__num {
-  font-size: 1.75rem;
+  font-size: 2.1rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
   color: var(--ac-ink);
+}
+/* Income is a range, not a single figure — it shouldn't shout as loudly. */
+.cost__num--band {
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
 }
 .cost__per {
   font-size: 0.76rem;
@@ -1154,25 +1180,27 @@
    actually land, so the empty stretch to its right is the room they have left. */
 .cost__scale {
   position: relative;
-  height: 12px;
+  height: 18px;
   margin-top: 4px;
   border-radius: 999px;
   background: var(--ac-sunk);
-  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(22, 34, 63, 0.06);
 }
 .cost__band {
   position: absolute;
   top: 0;
   bottom: 0;
   border-radius: 999px;
-  background: var(--ac-green);
+  background: linear-gradient(90deg, #14b183, var(--ac-green));
+  box-shadow: 0 2px 8px -3px rgba(15, 157, 118, 0.7);
   transition: opacity 0.5s ease 0.15s;
 }
 .cost__marker {
   position: absolute;
-  top: -2px;
-  bottom: -2px;
-  width: 2px;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  border-radius: 2px;
   background: var(--ac-ink);
 }
 .cost__ends {
@@ -1183,8 +1211,8 @@
   color: var(--ac-ink-4);
 }
 .cost__read {
-  margin: 16px 0 0;
-  font-size: 0.92rem;
+  margin: 18px 0 0;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--ac-ink-2);
 }
@@ -1209,9 +1237,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 16px 32px;
 }
 .read__item {
   position: relative;
@@ -1509,6 +1537,16 @@
   }
 }
 /* Respect reduced-motion: no slide/fade/pop, just cut between states. */
+@media (max-width: 720px) {
+  .cost__figure {
+    padding: 0;
+    border-left: none;
+  }
+  .cost__figures {
+    gap: 16px 26px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dash__rail,
   .dash__main {

@@ -521,6 +521,21 @@ export default function StatsView({
         <StudentFigure />
       </div>
 
+      {/* ---- The read leads: the takeaway before any of the detail. ----- */}
+      <div className="stat-card tile--full">
+        <h2 className="stat-card__title">What this means</h2>
+        <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
+        {reads.length ? (
+          <ul className="read__list">
+            {reads.map((r) => (
+              <li key={r} className="read__item">{r}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
+        )}
+      </div>
+
       {/* ---- The feature: the shape of the whole record. ---------------- */}
       <div className="stat-card tile--feature">
         <div className="stat-card__head">
@@ -659,7 +674,7 @@ export default function StatsView({
       </div>
 
       {/* ---- Cost: the budget, and where the list actually sits under it. -- */}
-      <div className="stat-card tile--half">
+      <div className="stat-card tile--full cost">
         <h2 className="stat-card__title">Cost</h2>
         {budget != null ? (
           <div className="card__body">
@@ -679,6 +694,13 @@ export default function StatsView({
                       a year across your {recommended.length}{" "}
                       {recommended.length === 1 ? "college" : "colleges"}
                     </span>
+                  </div>
+                )}
+                {data.incomeBand && INCOME_LABEL[data.incomeBand] && (
+                  <div className="cost__figure">
+                    <span className="cost__label">Family income</span>
+                    <span className="cost__num cost__num--band">{INCOME_LABEL[data.incomeBand]}</span>
+                    <span className="cost__per">the band these estimates use</span>
                   </div>
                 )}
               </div>
@@ -704,7 +726,7 @@ export default function StatsView({
                 </div>
                 <div className="cost__ends">
                   <span>$0</span>
-                  <span>{money(budget)}</span>
+                  <span>your budget · {money(budget)}</span>
                 </div>
 
                 <p className="cost__read">
@@ -714,8 +736,8 @@ export default function StatsView({
                 </p>
                 <p className="cost__note">
                   {data.incomeBand
-                    ? `Estimated for a family income ${INCOME_LABEL[data.incomeBand] ?? "in your band"}.`
-                    : "Based on each college's average net price — add your income band in the quiz for a closer estimate."}
+                    ? "Net price estimated for your income band — the actual figure comes from each college's aid offer."
+                    : "Based on each college's average net price — add your family income band in the quiz for a closer estimate."}
                   {unpriced > 0 && ` ${unpriced} ${unpriced === 1 ? "college has" : "colleges have"} no cost data; they were kept and flagged rather than dropped.`}
                 </p>
               </>
@@ -729,21 +751,6 @@ export default function StatsView({
           </div>
         ) : (
           <p className="card__empty">Add a yearly budget in the quiz — it's the one filter that removes colleges outright.</p>
-        )}
-      </div>
-
-      {/* ---- Our reading, kept separate from the figures above. --------- */}
-      <div className="stat-card tile--half">
-        <h2 className="stat-card__title">What this means</h2>
-        <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
-        {reads.length ? (
-          <ul className="read__list">
-            {reads.map((r) => (
-              <li key={r} className="read__item">{r}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
         )}
       </div>
 
