@@ -9,9 +9,9 @@
 // above the card's top edge and the torso runs past the bottom, where the card's own
 // clipping cuts it off.
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
-import { Component, Suspense, useEffect, useRef, useState } from "react";
+import { Component, Suspense, useEffect, useState } from "react";
 
 const SKIN = "#f0b58a";
 const HAIR = "#3d2c2a";
@@ -76,12 +76,20 @@ function Student() {
         <meshStandardMaterial color={HAIR} roughness={0.78} metalness={0} />
       </mesh>
 
-      {/* Eyes */}
+      {/* Eyes — a white disk flattened against the face, with the pupil sitting just
+          proud of it. Two parts rather than one dark dot: the white is what makes it
+          read as an eye rather than a hole. */}
       {[-1, 1].map((side) => (
-        <mesh key={side} position={[side * 0.27, -0.13, 0.7]}>
-          <sphereGeometry args={[0.09, 20, 16]} />
-          <meshStandardMaterial color={EYE} roughness={0.4} metalness={0} />
-        </mesh>
+        <group key={side} position={[side * 0.27, -0.13, 0.68]}>
+          <mesh scale={[1, 1.06, 0.5]}>
+            <sphereGeometry args={[0.125, 24, 20]} />
+            <meshStandardMaterial color="#ffffff" roughness={0.35} metalness={0} />
+          </mesh>
+          <mesh position={[0, 0, 0.055]} scale={[1, 1, 0.7]}>
+            <sphereGeometry args={[0.058, 20, 16]} />
+            <meshStandardMaterial color={EYE} roughness={0.3} metalness={0} />
+          </mesh>
+        </group>
       ))}
 
       {/* Smile — a half torus, flipped so the arc bows downward. */}
@@ -124,62 +132,18 @@ function Student() {
   );
 }
 
-// Rises into frame once, then breathes. Deliberately calmer than the landing-page
-// rigs — a person that spins reads as a toy.
-const INTRO = 0.9;
-const START_Y = -1.4;
-const AMP = 0.055;
-const FLOAT_SPEED = 1.1;
-const SWAY = 0.12;
 // Framing. SCALE crops the torso — the band between the card's top and bottom edges
 // is fixed, so a larger figure spends more of it on the head and less on the body.
 // LIFT then puts the cap back where it belongs against the card's top edge.
 const SCALE = 1.25;
 const LIFT = 0.42;
+// A few degrees off head-on, turned toward the viewer's left. Negative rotation about
+// Y swings the figure's front (+Z) toward -X, which is the left of the screen.
+const TURN = -0.3;
 
 function StudentRig() {
-  const root = useRef();
-  const tRef = useRef(0);
-  const reduceRef = useRef(false);
-
-  useEffect(() => {
-    reduceRef.current =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-
-  useFrame((_, delta) => {
-    const el = root.current;
-    if (!el) return;
-
-    if (reduceRef.current) {
-      el.position.y = 0;
-      el.rotation.y = 0;
-      el.scale.setScalar(SCALE);
-      return;
-    }
-
-    tRef.current += Math.min(delta, 0.05);
-    const t = tRef.current;
-
-    if (t < INTRO) {
-      const p = t / INTRO;
-      const e = 1 - Math.pow(1 - p, 3); // easeOutCubic
-      el.position.y = START_Y * (1 - e);
-      el.scale.setScalar(SCALE * (0.86 + 0.14 * e));
-      el.rotation.y = -0.5 * (1 - e);
-    } else {
-      const s = t - INTRO;
-      el.scale.setScalar(SCALE);
-      el.position.y = AMP * Math.sin(s * FLOAT_SPEED);
-      el.rotation.y = SWAY * Math.sin(s * 0.55);
-    }
-  });
-
   return (
-    <group ref={root} position={[0, START_Y, 0]} scale={SCALE * 0.86}>
-      {/* Framing lives on this inner group, not the root — the rig writes to the
-          root's position every frame and would overwrite it. */}
+    <group rotation={[0, TURN, 0]} scale={SCALE}>
       <group position={[0, LIFT, 0]}>
         <Student />
       </group>
@@ -220,6 +184,7 @@ export default function StudentFigure() {
       <Canvas
         camera={{ position: [0, -1.05, 8.6], fov: 26 }}
         dpr={[1, 2]}
+        frameloop="demand"
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.75} />
