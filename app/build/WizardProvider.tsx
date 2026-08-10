@@ -5,7 +5,7 @@
 // is adopted into the account.
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { DEFAULT_DATA, STEPS, type WizardData } from "./model";
+import { DEFAULT_DATA, FACTORS, STEPS, type WizardData } from "./model";
 
 const STORAGE_KEY = "uniseek.profile.v1";
 const STEP_KEY = "uniseek.step.v1";
@@ -27,9 +27,34 @@ const WizardContext = createContext<WizardContextValue | null>(null);
 
 // Bring a profile saved by an older build forward. The boolean `inStateOnly` toggle
 // became the three-way state filter (Anywhere / in-state / a specific goal state).
+//
+// It also repairs the nested objects. Hydration spreads the stored profile over
+// DEFAULT_DATA, and that spread is shallow: a stored `prefs` replaces the defaults
+// whole rather than filling in around them. So a profile saved before a factor
+// existed — or any partial one — arrives missing that factor's entry, and the
+// preference cards read `.weight` straight off undefined. Rebuilding from FACTORS
+// keeps whatever was stored, fills the gaps, and drops keys for factors that are
+// gone.
 function migrate(d: WizardData & { inStateOnly?: boolean }): WizardData {
   const { inStateOnly, ...rest } = d;
   if (inStateOnly && rest.stateFilterMode === "ANY") rest.stateFilterMode = "IN_STATE";
+
+  const stored = (rest.prefs ?? {}) as Partial<WizardData["prefs"]>;
+  rest.prefs = FACTORS.reduce((acc, f) => {
+    const p = stored[f.key];
+    acc[f.key] = {
+      weight: typeof p?.weight === "number" ? p.weight : 0,
+      direction: typeof p?.direction === "number" ? p.direction : 2,
+    };
+    return acc;
+  }, {} as WizardData["prefs"]);
+
+  rest.setting = {
+    weight: typeof rest.setting?.weight === "number" ? rest.setting.weight : 0,
+    selections: Array.isArray(rest.setting?.selections) ? rest.setting.selections : [],
+  };
+  rest.activities = Array.isArray(rest.activities) ? rest.activities : [];
+
   return rest;
 }
 
