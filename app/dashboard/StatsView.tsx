@@ -10,11 +10,18 @@
 // Nothing here is invented: every figure traces back to a quiz answer.
 
 import { useEffect, useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { useWizard } from "@/app/build/WizardProvider";
 import { requiredState } from "@/app/build/toPayload";
 import UsMap from "./UsMap";
-import StudentFigure from "@/app/components/3d/StudentFigure";
-import CoinScene from "@/app/components/3d/Coin";
+import Reveal, { useInView } from "./Reveal";
+
+// The two WebGL scenes are the heaviest thing on the page by a wide margin — they pull
+// in three.js — and neither is needed to read a single number here. Loading them on
+// their own chunk keeps them out of the payload that renders the page; the coin waits
+// until its card is actually approached, since it sits well below the fold.
+const StudentFigure = dynamic(() => import("@/app/components/3d/StudentFigure"), { ssr: false });
+const CoinScene = dynamic(() => import("@/app/components/3d/Coin"), { ssr: false });
 
 // Ease a number from 0 → target once `active` turns true (the on-load count-up). Honors
 // prefers-reduced-motion by jumping straight to the target.
@@ -376,6 +383,10 @@ export default function StatsView({
   }, []);
   const pctlShown = useCountUp(pctl, mounted);
 
+  // A generous margin: start fetching the coin's chunk while it's still a screen away,
+  // so by the time the card is on screen the scene is there rather than popping in.
+  const [coinRef, coinNear] = useInView<HTMLDivElement>("0px 0px 60% 0px");
+
   if (!hydrated) return <section className="dash__view" />;
 
   // Speedometer-style gauge: a 300° arc (5/6 of a circle) open at the bottom, filled
@@ -465,316 +476,355 @@ export default function StatsView({
   return (
     <section className="dash__view stat-bento">
       {/* ---- Where the list stands, before any of the detail. ----------- */}
-      <div className="stat-card tile--full tile--ink welcome">
-        <div className="welcome__head">
-          <h2 className="welcome__greet">Welcome back{firstName ? `, ${firstName}` : ""}</h2>
-          <p className="welcome__sub">
-            {recommended.length
-              ? "Here's where your list stands today."
-              : "Answer the quiz and we'll build your list — this is what we know so far."}
-          </p>
-        </div>
-
-        <div className="welcome__body">
-          <div className="welcome__figures">
-            <div className="welcome__figure">
-              <span className="welcome__num">{recommended.length}</span>
-              <span className="welcome__cap">colleges recommended</span>
-            </div>
-            <div className="welcome__figure">
-              <span className="welcome__num">{saved.length}</span>
-              <span className="welcome__cap">saved so far</span>
-            </div>
-            {recommended.length > 0 && (
-              <div className="welcome__bands">
-                {(["reach", "target", "safety"] as const).map((b) => (
-                  <span key={b} className={`welcome__band welcome__band--${b}`}>
-                    {recommended.filter((c) => c.band === b).length} {BAND_LABEL[b]}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="welcome__saved">
-            <h3 className="welcome__saved-title">Saved colleges</h3>
-            {saved.length ? (
-              <ul className="welcome__list">
-                {saved.slice(0, 5).map((c) => (
-                  <li key={c.collegeId} className="welcome__item">
-                    <span className="welcome__item-name">{c.name}</span>
-                    <span className={`welcome__chip welcome__chip--${c.band}`}>{BAND_LABEL[c.band]}</span>
-                  </li>
-                ))}
-                {saved.length > 5 && (
-                  <li className="welcome__more">+{saved.length - 5} more in Saved colleges</li>
-                )}
-              </ul>
-            ) : (
-              <p className="welcome__empty">
-                Nothing saved yet. Bookmark a college from your list and it'll show up here with its category.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <StudentFigure />
-      </div>
-
-      {/* ---- The read leads: the takeaway before any of the detail. ----- */}
-      <div className="stat-card tile--full">
-        <h2 className="stat-card__title">What this means</h2>
-        <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
-        {reads.length ? (
-          <ul className="read__list">
-            {reads.map((r) => (
-              <li key={r} className="read__item">{r}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
-        )}
-      </div>
-
-      {/* ---- The feature: the shape of the whole record. ---------------- */}
-      <div className="stat-card tile--feature">
-        <div className="stat-card__head">
-          <h2 className="stat-card__title">Grade trend</h2>
-          {hasTrend && (
-            <span className={`trend-badge trend-badge--${direction.key}`}>
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d={direction.arrow} />
-              </svg>
-              {direction.label}
-            </span>
-          )}
-        </div>
-        <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-          <TrendChart values={gradeValues} />
-          {!hasTrend && (
-            <div className="trend__empty">
-              <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ---- The score, a full-height column of its own. ---------------- */}
-      <div className="stat-card dial-tile tile--violet tile--tall">
-        <h2 className="stat-card__title">{fromAct ? "ACT score" : "SAT score"}</h2>
-        <div className="dial-tile__body">
-          {pctl != null ? (
-            <>
-              <div className="stat-meter">
-                <svg viewBox="0 0 128 128" className="stat-meter__svg" aria-hidden="true">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r={R}
-                    className="stat-meter__track"
-                    strokeDasharray={`${trackLen} ${C}`}
-                    transform="rotate(120 64 64)"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r={R}
-                    className="stat-meter__arc"
-                    strokeDasharray={`${arcLen} ${C}`}
-                    transform="rotate(120 64 64)"
-                  />
-                </svg>
-                <div className="stat-meter__center">
-                  <span className="stat-meter__label">percentile</span>
-                  <span className="stat-meter__num">
-                    {Math.round(pctlShown)}
-                    <sup>{ord(Math.round(pctlShown))}</sup>
-                  </span>
-                </div>
-              </div>
-              <div className="score">
-                <span className="score__num">{fromAct ? act : satEquiv}</span>
-                <span className="score__label">{fromAct ? "ACT composite" : "SAT superscore"}</span>
-              </div>
-              <p className="dial-tile__note">
-                {fromAct && `Equivalent to an SAT ${satEquiv}. `}Higher than about {pctl}% of SAT
-                test-takers nationally.
-              </p>
-            </>
-          ) : (
-            <div className="dial-tile__empty">
-              <span className="dial-tile__ring" aria-hidden="true" />
-              <p className="dial-tile__note">
-                {data.notSubmittingScores
-                  ? "You're applying test-optional, so there's no score to place."
-                  : "Add an SAT or ACT score in the quiz to see where you land nationally."}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ---- The two standing measures, stacked beside the feature. ----- */}
-      <div className="stat-card">
-        <h2 className="stat-card__title">Unweighted GPA</h2>
-        {gpa != null && tier ? (
-          <div className="card__body">
-            <div className="gpa__value">
-              <span className="gpa__num">{gpa.toFixed(2)}</span>
-              <span className="gpa__scale">/ 4.0</span>
-            </div>
-            <div className="gpa__track">
-              <span
-                className="gpa__fill"
-                style={{ width: `${mounted ? (gpa / 4) * 100 : 0}%`, background: tier.color }}
-              />
-              {[3.0, 3.5, 3.8].map((t) => (
-                <span key={t} className="gpa__tick" style={{ left: `${(t / 4) * 100}%` }} />
-              ))}
-            </div>
-            <div className="gpa__marks">
-              <span className="gpa__mark gpa__mark--start">0</span>
-              <span className="gpa__mark" style={{ left: "75%" }}>3.0</span>
-              <span className="gpa__mark gpa__mark--end">4.0</span>
-            </div>
-            <p className="gpa__tier" style={{ color: tier.color }}>{tier.label}</p>
-          </div>
-        ) : (
-          <p className="card__empty">Add your GPA in the quiz to see where it sits on the 4.0 scale.</p>
-        )}
-      </div>
-
-      <div className="stat-card">
-        <h2 className="stat-card__title">Course rigor</h2>
-        {apTaken != null && apOffered != null && apOffered > 0 ? (
-          <div className="card__body card__body--center">
-            <RigorDial
-              taken={apTaken}
-              offered={apOffered}
-              color={rigorRead(apTaken, apOffered).color}
-              active={mounted}
-            />
-            <p className="gpa__tier" style={{ color: rigorRead(apTaken, apOffered).color }}>
-              {rigorRead(apTaken, apOffered).label}
+      <Reveal>
+        <div className="stat-card tile--full tile--ink welcome">
+          <div className="welcome__head">
+            <h2 className="welcome__greet">Welcome back{firstName ? `, ${firstName}` : ""}</h2>
+            <p className="welcome__sub">
+              {recommended.length
+                ? "Here's where your list stands today."
+                : "Answer the quiz and we'll build your list — this is what we know so far."}
             </p>
           </div>
-        ) : (
-          <p className="card__empty">
-            {apTaken != null
-              ? `You've taken ${apTaken} AP ${apTaken === 1 ? "course" : "courses"}. Add how many your school offers to see how demanding that is.`
-              : "Add your AP course count in the quiz to see how demanding your schedule is."}
-          </p>
-        )}
-      </div>
-      {/* ---- The remaining figures, at a glance. ------------------------ */}
-      <div className="kpi-row">
-        {stats.map((st) => (
-          <StatWidget key={st.key} stat={st} />
-        ))}
-      </div>
 
-      {/* ---- Cost: the budget, and where the list actually sits under it. -- */}
-      <div className="stat-card tile--full cost">
-        <h2 className="stat-card__title">Cost</h2>
-        {budget != null ? (
-          <div className="cost__body">
-            <CoinScene className="cost__coin" animate={false} />
-            <div className="cost__main">
-              <div className="cost__figures">
-                <div className="cost__figure">
-                  <span className="cost__label">Family budget</span>
-                  <span className="cost__num">{money(budget)}</span>
-                  <span className="cost__per">a year, the most you can pay</span>
+          <div className="welcome__body">
+            <div className="welcome__figures">
+              <div className="welcome__figure">
+                <span className="welcome__num">{recommended.length}</span>
+                <span className="welcome__cap">colleges recommended</span>
+              </div>
+              <div className="welcome__figure">
+                <span className="welcome__num">{saved.length}</span>
+                <span className="welcome__cap">saved so far</span>
+              </div>
+              {recommended.length > 0 && (
+                <div className="welcome__bands">
+                  {(["reach", "target", "safety"] as const).map((b) => (
+                    <span key={b} className={`welcome__band welcome__band--${b}`}>
+                      {recommended.filter((c) => c.band === b).length} {BAND_LABEL[b]}
+                    </span>
+                  ))}
                 </div>
-                {costTypical != null && (
-                  <div className="cost__figure">
-                    <span className="cost__label">Typical cost</span>
-                    <span className="cost__num">{money(costTypical)}</span>
-                    <span className="cost__per">
-                      a year across your {recommended.length}{" "}
-                      {recommended.length === 1 ? "college" : "colleges"}
+              )}
+            </div>
+
+            <div className="welcome__saved">
+              <h3 className="welcome__saved-title">Saved colleges</h3>
+              {saved.length ? (
+                <ul className="welcome__list">
+                  {saved.slice(0, 5).map((c) => (
+                    <li key={c.collegeId} className="welcome__item">
+                      <span className="welcome__item-name">{c.name}</span>
+                      <span className={`welcome__chip welcome__chip--${c.band}`}>{BAND_LABEL[c.band]}</span>
+                    </li>
+                  ))}
+                  {saved.length > 5 && (
+                    <li className="welcome__more">+{saved.length - 5} more in Saved colleges</li>
+                  )}
+                </ul>
+              ) : (
+                <p className="welcome__empty">
+                  Nothing saved yet. Bookmark a college from your list and it'll show up here with its category.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <StudentFigure />
+        </div>
+      </Reveal>
+
+      {/* ---- The read leads: the takeaway before any of the detail. ----- */}
+      <Reveal>
+        <div className="stat-card tile--full read">
+          {/* Pinned to the corner rather than set inside it, so the card reads as
+              tagged — this is the one tile that carries our interpretation rather
+              than the student's own figures, and it should announce that. The path
+              is a regular pentagram: points every 72°, inner radius at 0.382 of the
+              outer, which is the ratio that makes the arms straight. The corners are
+              rounded by stroking the shape in its own colour — the outer radius is
+              held at 10 rather than filling the box so that stroke has somewhere to
+              go without clipping the tips. */}
+          <span className="read__star" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12.00 2.00 14.25 8.91 21.51 8.91 15.63 13.18 17.88 20.09 12.00 15.82 6.12 20.09 8.37 13.18 2.49 8.91 9.75 8.91Z" />
+            </svg>
+          </span>
+          <h2 className="stat-card__title">What this means</h2>
+          <p className="read__caveat">Our reading — not a score, and not a prediction.</p>
+          {reads.length ? (
+            <ul className="read__list">
+              {reads.map((r) => (
+                <li key={r} className="read__item">{r}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="read__empty">Once you've entered a GPA or a test score, we'll read it back to you here.</p>
+          )}
+        </div>
+      </Reveal>
+
+      {/* ---- The feature: the shape of the whole record. ---------------- */}
+      <Reveal>
+        <div className="stat-card tile--feature">
+          <div className="stat-card__head">
+            <h2 className="stat-card__title">Grade trend</h2>
+            {hasTrend && (
+              <span className={`trend-badge trend-badge--${direction.key}`}>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d={direction.arrow} />
+                </svg>
+                {direction.label}
+              </span>
+            )}
+          </div>
+          <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
+            <TrendChart values={gradeValues} />
+            {!hasTrend && (
+              <div className="trend__empty">
+                <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </Reveal>
+
+      {/* ---- The score, a full-height column of its own. ---------------- */}
+      <Reveal>
+        <div className="stat-card dial-tile tile--violet tile--tall">
+          <h2 className="stat-card__title">{fromAct ? "ACT score" : "SAT score"}</h2>
+          <div className="dial-tile__body">
+            {pctl != null ? (
+              <>
+                <div className="stat-meter">
+                  <svg viewBox="0 0 128 128" className="stat-meter__svg" aria-hidden="true">
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r={R}
+                      className="stat-meter__track"
+                      strokeDasharray={`${trackLen} ${C}`}
+                      transform="rotate(120 64 64)"
+                    />
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r={R}
+                      className="stat-meter__arc"
+                      strokeDasharray={`${arcLen} ${C}`}
+                      transform="rotate(120 64 64)"
+                    />
+                  </svg>
+                  <div className="stat-meter__center">
+                    <span className="stat-meter__label">percentile</span>
+                    <span className="stat-meter__num">
+                      {Math.round(pctlShown)}
+                      <sup>{ord(Math.round(pctlShown))}</sup>
                     </span>
                   </div>
-                )}
-                {data.incomeBand && INCOME_LABEL[data.incomeBand] && (
-                  <div className="cost__figure">
-                    <span className="cost__label">Family income</span>
-                    <span className="cost__num cost__num--band">{INCOME_LABEL[data.incomeBand]}</span>
-                    <span className="cost__per">the band these estimates use</span>
-                  </div>
-                )}
-              </div>
-
-            {costLow != null && costHigh != null && costTypical != null ? (
-              <>
-                {/* A scale from nothing to the budget. Everything on the list sits
-                    inside it by construction, so the band shows the room left over. */}
-                <div className="cost__scale">
-                  <span
-                    className="cost__band"
-                    style={{
-                      left: `${Math.max(0, Math.min(100, (costLow / budget) * 100))}%`,
-                      width: `${Math.max(2, Math.min(100, ((costHigh - costLow) / budget) * 100))}%`,
-                      opacity: mounted ? 1 : 0,
-                    }}
-                  />
-                  <span
-                    className="cost__marker"
-                    style={{ left: `${Math.max(0, Math.min(100, (costTypical / budget) * 100))}%` }}
-                  />
                 </div>
-                <div className="cost__ends">
-                  <span>$0</span>
-                  <span>your budget · {money(budget)}</span>
+                <div className="score">
+                  <span className="score__num">{fromAct ? act : satEquiv}</span>
+                  <span className="score__label">{fromAct ? "ACT composite" : "SAT superscore"}</span>
                 </div>
-
-                <p className="cost__read">
-                  They range from <strong>{money(costLow)}</strong> to{" "}
-                  <strong>{money(costHigh)}</strong> a year
-                  {headroom != null && headroom > 0 && <> — typically about {money(headroom)} under your budget</>}.
-                </p>
-                <p className="cost__note">
-                  {data.incomeBand
-                    ? "Net price estimated for your income band — the actual figure comes from each college's aid offer."
-                    : "Based on each college's average net price — add your family income band in the quiz for a closer estimate."}
-                  {unpriced > 0 && ` ${unpriced} ${unpriced === 1 ? "college has" : "colleges have"} no cost data; they were kept and flagged rather than dropped.`}
+                <p className="dial-tile__note">
+                  {fromAct && `Equivalent to an SAT ${satEquiv}. `}Higher than about {pctl}% of SAT
+                  test-takers nationally.
                 </p>
               </>
             ) : (
-              <p className="card__empty">
-                {recommended.length
-                  ? "None of your colleges have cost data yet, so there's nothing to compare against your budget."
-                  : "Run your list and we'll show what it costs against this budget."}
-              </p>
+              <div className="dial-tile__empty">
+                <span className="dial-tile__ring" aria-hidden="true" />
+                <p className="dial-tile__note">
+                  {data.notSubmittingScores
+                    ? "You're applying test-optional, so there's no score to place."
+                    : "Add an SAT or ACT score in the quiz to see where you land nationally."}
+                </p>
+              </div>
             )}
-            </div>
           </div>
-        ) : (
-          <p className="card__empty">Add a yearly budget in the quiz — it's the one filter that removes colleges outright.</p>
-        )}
-      </div>
+        </div>
+      </Reveal>
 
-      <div className="stat-card tile--full">
-        <h2 className="stat-card__title">Outside the classroom</h2>
-        <p className="stat-ec__lead">
-          A personalized read on your activities — the throughline across them and how it strengthens your
-          applications — will appear here.
-        </p>
-        <span className="stat-ec__tag">Summary coming soon</span>
-      </div>
+      {/* ---- The two standing measures, stacked beside the feature. ----- */}
+      <Reveal>
+        <div className="stat-card">
+          <h2 className="stat-card__title">Unweighted GPA</h2>
+          {gpa != null && tier ? (
+            <div className="card__body">
+              <div className="gpa__value">
+                <span className="gpa__num">{gpa.toFixed(2)}</span>
+                <span className="gpa__scale">/ 4.0</span>
+              </div>
+              <div className="gpa__track">
+                <span
+                  className="gpa__fill"
+                  style={{ width: `${mounted ? (gpa / 4) * 100 : 0}%`, background: tier.color }}
+                />
+                {[3.0, 3.5, 3.8].map((t) => (
+                  <span key={t} className="gpa__tick" style={{ left: `${(t / 4) * 100}%` }} />
+                ))}
+              </div>
+              <div className="gpa__marks">
+                <span className="gpa__mark gpa__mark--start">0</span>
+                <span className="gpa__mark" style={{ left: "75%" }}>3.0</span>
+                <span className="gpa__mark gpa__mark--end">4.0</span>
+              </div>
+              <p className="gpa__tier" style={{ color: tier.color }}>{tier.label}</p>
+            </div>
+          ) : (
+            <p className="card__empty">Add your GPA in the quiz to see where it sits on the 4.0 scale.</p>
+          )}
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div className="stat-card">
+          <h2 className="stat-card__title">Course rigor</h2>
+          {apTaken != null && apOffered != null && apOffered > 0 ? (
+            <div className="card__body card__body--center">
+              <RigorDial
+                taken={apTaken}
+                offered={apOffered}
+                color={rigorRead(apTaken, apOffered).color}
+                active={mounted}
+              />
+              <p className="gpa__tier" style={{ color: rigorRead(apTaken, apOffered).color }}>
+                {rigorRead(apTaken, apOffered).label}
+              </p>
+            </div>
+          ) : (
+            <p className="card__empty">
+              {apTaken != null
+                ? `You've taken ${apTaken} AP ${apTaken === 1 ? "course" : "courses"}. Add how many your school offers to see how demanding that is.`
+                : "Add your AP course count in the quiz to see how demanding your schedule is."}
+            </p>
+          )}
+        </div>
+      </Reveal>
+      {/* ---- The remaining figures, at a glance. ------------------------ */}
+      <Reveal>
+        <div className="kpi-row">
+          {stats.map((st) => (
+            <StatWidget key={st.key} stat={st} />
+          ))}
+        </div>
+      </Reveal>
+
+      {/* ---- Cost: the budget, and where the list actually sits under it. -- */}
+      <Reveal>
+        <div className="stat-card tile--full cost">
+          <h2 className="stat-card__title">Cost</h2>
+          {budget != null ? (
+            <div className="cost__body">
+              {/* The slot keeps the coin's footprint whether or not the scene has
+                  mounted, so the figures beside it don't shift when it arrives. */}
+              <div className="cost__coin" ref={coinRef}>
+                {coinNear && <CoinScene className="cost__coin-scene" animate={false} />}
+              </div>
+              <div className="cost__main">
+                <div className="cost__figures">
+                  <div className="cost__figure">
+                    <span className="cost__label">Family budget</span>
+                    <span className="cost__num">{money(budget)}</span>
+                    <span className="cost__per">a year, the most you can pay</span>
+                  </div>
+                  {costTypical != null && (
+                    <div className="cost__figure">
+                      <span className="cost__label">Typical cost</span>
+                      <span className="cost__num">{money(costTypical)}</span>
+                      <span className="cost__per">
+                        a year across your {recommended.length}{" "}
+                        {recommended.length === 1 ? "college" : "colleges"}
+                      </span>
+                    </div>
+                  )}
+                  {data.incomeBand && INCOME_LABEL[data.incomeBand] && (
+                    <div className="cost__figure">
+                      <span className="cost__label">Family income</span>
+                      <span className="cost__num cost__num--band">{INCOME_LABEL[data.incomeBand]}</span>
+                      <span className="cost__per">the band these estimates use</span>
+                    </div>
+                  )}
+                </div>
+
+              {costLow != null && costHigh != null && costTypical != null ? (
+                <>
+                  {/* A scale from nothing to the budget. Everything on the list sits
+                      inside it by construction, so the band shows the room left over. */}
+                  <div className="cost__scale">
+                    <span
+                      className="cost__band"
+                      style={{
+                        left: `${Math.max(0, Math.min(100, (costLow / budget) * 100))}%`,
+                        width: `${Math.max(2, Math.min(100, ((costHigh - costLow) / budget) * 100))}%`,
+                        opacity: mounted ? 1 : 0,
+                      }}
+                    />
+                    <span
+                      className="cost__marker"
+                      style={{ left: `${Math.max(0, Math.min(100, (costTypical / budget) * 100))}%` }}
+                    />
+                  </div>
+                  <div className="cost__ends">
+                    <span>$0</span>
+                    <span>your budget · {money(budget)}</span>
+                  </div>
+
+                  <p className="cost__read">
+                    They range from <strong>{money(costLow)}</strong> to{" "}
+                    <strong>{money(costHigh)}</strong> a year
+                    {headroom != null && headroom > 0 && <> — typically about {money(headroom)} under your budget</>}.
+                  </p>
+                  <p className="cost__note">
+                    {data.incomeBand
+                      ? "Net price estimated for your income band — the actual figure comes from each college's aid offer."
+                      : "Based on each college's average net price — add your family income band in the quiz for a closer estimate."}
+                    {unpriced > 0 && ` ${unpriced} ${unpriced === 1 ? "college has" : "colleges have"} no cost data; they were kept and flagged rather than dropped.`}
+                  </p>
+                </>
+              ) : (
+                <p className="card__empty">
+                  {recommended.length
+                    ? "None of your colleges have cost data yet, so there's nothing to compare against your budget."
+                    : "Run your list and we'll show what it costs against this budget."}
+                </p>
+              )}
+              </div>
+            </div>
+          ) : (
+            <p className="card__empty">Add a yearly budget in the quiz — it's the one filter that removes colleges outright.</p>
+          )}
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div className="stat-card tile--full">
+          <h2 className="stat-card__title">Outside the classroom</h2>
+          <p className="stat-ec__lead">
+            A personalized read on your activities — the throughline across them and how it strengthens your
+            applications — will appear here.
+          </p>
+          <span className="stat-ec__tag">Summary coming soon</span>
+        </div>
+      </Reveal>
 
       {/* ---- Where you're aiming. --------------------------------------- */}
-      <div className="stat-card tile--full">
-        <h2 className="stat-card__title">Where you're looking</h2>
-        <UsMap homeState={data.homeState || null} goalState={goalState} />
-        {!data.homeState && (
-          <p className="usmap__cta">Set your home state in the quiz to see it on the map.</p>
-        )}
-      </div>
+      <Reveal>
+        <div className="stat-card tile--full">
+          <h2 className="stat-card__title">Where you're looking</h2>
+          <UsMap homeState={data.homeState || null} goalState={goalState} />
+          {!data.homeState && (
+            <p className="usmap__cta">Set your home state in the quiz to see it on the map.</p>
+          )}
+        </div>
+      </Reveal>
 
-      <p className="stat-foot">
-        Every figure here comes from your quiz answers. Nothing on this page is a prediction of admission.
-      </p>
+      <Reveal>
+        <p className="stat-foot">
+          Every figure here comes from your quiz answers. Nothing on this page is a prediction of admission.
+        </p>
+      </Reveal>
     </section>
   );
 }

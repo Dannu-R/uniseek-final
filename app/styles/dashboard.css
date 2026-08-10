@@ -586,6 +586,35 @@
 /* Four columns, so a card can be a quarter, a half or the whole width and the page
    stops reading as a uniform grid. Size follows importance and how graphic the
    content is: the welcome band, then the record, then everything else. */
+/* Cards rise into place as they reach the viewport rather than all at once. The
+   transform is on the card itself — the bento's children carry the grid placement, so
+   there's no wrapper to animate instead. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22, 0.9, 0.28, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal .read__star,
+  .reveal.is-in .read__star {
+    opacity: 1;
+    transform: var(--star-rest);
+    animation: none;
+  }
+}
+
 .stat-bento {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1122,12 +1151,17 @@
   gap: 42px;
   flex: 1;
 }
-/* The landing page's coin, reused at rest. */
+/* The landing page's coin, reused at rest. The slot holds the space while the scene's
+   chunk is still loading, so nothing beside it reflows when the coin arrives. */
 .cost__coin {
   flex: none;
   width: 232px;
   height: 232px;
   margin: -10px 0 -10px -14px; /* the render carries its own padding */
+}
+.cost__coin-scene {
+  width: 100%;
+  height: 100%;
 }
 .cost__main {
   flex: 1;
@@ -1237,6 +1271,53 @@
 }
 
 /* ---- Interpretation tile ------------------------------------------------ */
+/* The star hangs off the corner, so the card has to be the positioning context. */
+.read {
+  position: relative;
+}
+.read__star {
+  /* Hung well past the corner so it reads as pinned on top of the card rather than
+     tucked inside it. --star-rest is where the spin lands and what every non-animated
+     path falls back to, so the tilt can't drift between them. */
+  --star-rest: rotate(-14deg);
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  width: 46px;
+  height: 46px;
+  transform: var(--star-rest);
+  filter: drop-shadow(0 3px 6px rgba(146, 104, 12, 0.32));
+}
+.read__star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Stroking the fill in its own colour is what rounds the five points and the
+     notches between them; a plain fill leaves them needle-sharp. */
+  fill: #f7c22e;
+  stroke: #f7c22e;
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+}
+/* Spins and grows in, but only once the card itself has arrived — see .reveal. */
+.reveal .read__star {
+  opacity: 0;
+  transform: rotate(-150deg) scale(0.2);
+}
+.reveal.is-in .read__star {
+  animation: read-star-in 0.72s cubic-bezier(0.22, 0.9, 0.28, 1) 0.12s both;
+}
+@keyframes read-star-in {
+  from {
+    opacity: 0;
+    transform: rotate(-150deg) scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: var(--star-rest) scale(1);
+  }
+}
+
 .read__caveat {
   margin: -12px 0 16px;
   font-size: 0.78rem;
