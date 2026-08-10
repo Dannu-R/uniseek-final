@@ -1983,3 +1983,181 @@
   line-height: 1.65;
   color: var(--ac-ink-2);
 }
+
+/* ---- Rail account button ------------------------------------------------ */
+/* The portrait block is a control now, so it needs the button reset and a hit state. */
+.dash__user {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.14s;
+}
+.dash__user:hover {
+  background: var(--ac-rail-2);
+}
+.dash__user.is-active {
+  background: var(--ac-rail-2);
+}
+.dash__user:focus-visible {
+  outline: 2px solid var(--ac-rail-violet);
+  outline-offset: 2px;
+}
+/* Says what the block does, since a portrait alone doesn't read as clickable. */
+.dash__user-hint {
+  margin-top: -6px;
+  font-size: 0.72rem;
+  color: var(--ac-rail-ink-3);
+}
+.dash__user:hover .dash__user-hint,
+.dash__user.is-active .dash__user-hint {
+  color: var(--ac-rail-ink-2);
+}
+
+/* ---- Profile ------------------------------------------------------------ */
+.pf {
+  display: grid;
+  gap: 20px;
+  max-width: 860px;
+}
+.pf__done {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #c9e9de;
+  background: var(--ac-green-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #0b7a5c;
+}
+.pf-card {
+  padding: 26px 26px 24px;
+}
+
+.pf-id {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.pf-id__avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+.pf-id__avatar--initial {
+  display: grid;
+  place-items: center;
+  background: var(--ac-violet);
+  color: #fff;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.pf-fields {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  min-width: 0;
+}
+.pf-field__label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.pf-field__value {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ac-ink);
+  overflow-wrap: anywhere;
+}
+.pf-field__none {
+  font-weight: 500;
+  color: var(--ac-ink-4);
+}
+
+.pf-note {
+  margin: 22px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--ac-ink-3);
+}
+.pf-note--lead {
+  margin: -8px 0 22px;
+}
+.pf-card__foot {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ac-line-2);
+}
+
+.pf-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.pf-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 0;
+  border-top: 1px solid var(--ac-line-2);
+}
+.pf-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.pf-row__text {
+  flex: 1;
+  min-width: 0;
+}
+.pf-row__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--ac-ink);
+}
+/* Where the thing actually lives — the point of this section. */
+.pf-row__where {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ac-sunk);
+  border: 1px solid var(--ac-line);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ac-ink-3);
+}
+.pf-row__detail {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ac-ink-3);
+}
+.pf-row__btn {
+  flex: none;
+}
+
+@media (max-width: 640px) {
+  .pf-id {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .pf-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

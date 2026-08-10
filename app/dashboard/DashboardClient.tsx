@@ -19,6 +19,7 @@ import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
 import ExplorerView from "./ExplorerView";
 import CompareView from "./CompareView";
+import ProfileView from "./ProfileView";
 import ViewHeader from "./ViewHeader";
 import { DEMO_PROFILE } from "@/app/build/demoProfile";
 import { toPayload } from "@/app/build/toPayload";
@@ -42,8 +43,12 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "home" | "recommended" | "saved" | "compare" | "search";
-type TabDef = { key: TabKey; label: string };
+type TabKey = "home" | "recommended" | "saved" | "compare" | "search" | "profile";
+// Profile is reached through the portrait at the top of the rail, not through the nav
+// list, so it's the one view with no tab and no icon. Excluding it here keeps the icon
+// map exhaustive over the tabs that do get rendered.
+type NavKey = Exclude<TabKey, "profile">;
+type TabDef = { key: NavKey; label: string };
 
 // Home leads — it's the view that says where everything stands. Below it, two groups:
 // Views are lists of colleges, Features are the things you do with them. Compare reads
@@ -59,7 +64,7 @@ const FEATURE_TABS: TabDef[] = [
 ];
 
 // Per-tab line icons (minimalist, currentColor).
-const TAB_ICON: Record<TabKey, ReactNode> = {
+const TAB_ICON: Record<NavKey, ReactNode> = {
   recommended: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 10 12 5 2 10l10 5 10-5Z" />
@@ -373,7 +378,14 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               carries that now, directly above this corner. */}
           <p className="dash__nav-title">Dashboard</p>
 
-          <div className="dash__user">
+          {/* The portrait is the way into Profile — clicking your own face to reach your
+              settings is the convention, and it saves the rail a tab. */}
+          <button
+            type="button"
+            className={`dash__user ${tab === "profile" && !exploring ? "is-active" : ""}`}
+            onClick={() => selectTab("profile")}
+            aria-current={tab === "profile" && !exploring}
+          >
             {user.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img className="dash__avatar" src={user.image} alt="" />
@@ -381,7 +393,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               <span className="dash__avatar dash__avatar--initial" aria-hidden="true">{initial}</span>
             )}
             <span className="dash__user-name" title={user.email ?? undefined}>{displayName}</span>
-          </div>
+            <span className="dash__user-hint">View profile</span>
+          </button>
 
           <nav className="dash__nav" aria-label="Dashboard sections">
             {renderTab(HOME_TAB)}
@@ -465,6 +478,27 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 name={user.name ?? null}
                 saved={saved}
                 recommended={result?.list ?? []}
+              />
+            </>
+          ) : tab === "profile" ? (
+            <>
+              <ViewHeader title="Profile" subtitle="Your account, and what's stored where." />
+              <ProfileView
+                user={user}
+                savedCount={saved.length}
+                hasRun={hasList}
+                onClearSaved={() => {
+                  saved.forEach((c) => deleteInsight(c.collegeId));
+                  setSaved([]);
+                }}
+                onClearRun={() => {
+                  setResult(null);
+                  try {
+                    sessionStorage.removeItem(RESULT_KEY);
+                  } catch {
+                    /* ignore */
+                  }
+                }}
               />
             </>
           ) : tab === "search" ? (
