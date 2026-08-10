@@ -19,6 +19,8 @@ import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
 import ExplorerView from "./ExplorerView";
 import ViewHeader from "./ViewHeader";
+import { DEMO_PROFILE } from "@/app/build/demoProfile";
+import { toPayload } from "@/app/build/toPayload";
 
 interface DashUser {
   name?: string | null;
@@ -109,6 +111,40 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   const [exploring, setExploring] = useState<CollegeScore | null>(null);
   const [unsaveTarget, setUnsaveTarget] = useState<CollegeScore | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Dev-only: /dashboard?demo scores the sample profile through the real API and
+  // saves a few of its colleges, so the views have something to show without filling
+  // the quiz in by hand. WizardProvider seeds the answers themselves.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("demo")) return;
+    url.searchParams.delete("demo");
+    window.history.replaceState(null, "", url.toString());
+
+    (async () => {
+      try {
+        const res = await fetch("/api/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(toPayload(DEMO_PROFILE)),
+        });
+        const scored = (await res.json()) as ScoreResult;
+        sessionStorage.setItem(RESULT_KEY, JSON.stringify(scored));
+        setResult(scored);
+        // One per band rather than the first three — the list is ordered reach-first,
+        // so a plain slice would save three reaches and never show the other chips.
+        const list = scored.list ?? [];
+        setSaved(
+          (["reach", "target", "safety"] as const)
+            .map((b) => list.find((c) => c.band === b))
+            .filter((c): c is CollegeScore => !!c),
+        );
+      } catch {
+        /* leave whatever was there */
+      }
+    })();
+  }, []);
 
   // Hydrate result + saved list + UI state once. If we were mid-quiz, restore straight to
   // the wizard (no entrance animation on a reload).

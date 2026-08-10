@@ -6,6 +6,7 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { DEFAULT_DATA, FACTORS, STEPS, type WizardData } from "./model";
+import { DEMO_PROFILE } from "./demoProfile";
 
 const STORAGE_KEY = "uniseek.profile.v1";
 const STEP_KEY = "uniseek.step.v1";
@@ -72,6 +73,15 @@ export function WizardProvider({
   // Hydrate from localStorage once, after mount (avoids SSR mismatch).
   useEffect(() => {
     try {
+      // Dev-only: /?demo starts from the sample profile instead of storage. It has to
+      // happen here — the provider persists whatever it hydrated, so seeding storage
+      // from anywhere else just gets written over on the next tick.
+      if (process.env.NODE_ENV !== "production" && new URL(window.location.href).searchParams.has("demo")) {
+        setData(DEMO_PROFILE);
+        setStepState(0);
+        setHydrated(true);
+        return;
+      }
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setData(migrate({ ...DEFAULT_DATA, ...JSON.parse(raw) }));
       const s = localStorage.getItem(STEP_KEY);
