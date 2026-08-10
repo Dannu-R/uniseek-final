@@ -521,6 +521,17 @@ export default function ExplorerView({ college }: { college: College }) {
       <section className="dash__view ex">
         <p className={`ex__status ${insightState === "loading" ? "is-loading" : ""}`}>{banner}</p>
 
+        {/* The quick figures, at the top where they were — the headline numbers for this
+            college before any of the reading below. */}
+        <dl className="ex-stats">
+          {facts.map((f) => (
+            <div key={f.label} className={`ex-stat ${f.band ? `ex-stat--${college.band}` : ""}`}>
+              <dt className="ex-stat__label">{f.label}</dt>
+              <dd className="ex-stat__value">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+
         {/* The feature. Everything else on this page is context for it. */}
         <Reveal>
           <section className="ex-card ex-card--feature">
@@ -538,16 +549,7 @@ export default function ExplorerView({ college }: { college: College }) {
               act={stu.act}
             />
 
-            <dl className="ex-facts">
-              {facts.map((f) => (
-                <div key={f.label} className={`ex-fact ${f.band ? `ex-fact--${college.band}` : ""}`}>
-                  <dt className="ex-fact__label">{f.label}</dt>
-                  <dd className="ex-fact__value">{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <div className="ex-card__body">{sectionBody(SECTIONS.admissions)}</div>
+            <div className="ex-card__body ex-card__body--spaced">{sectionBody(SECTIONS.admissions)}</div>
           </section>
         </Reveal>
 

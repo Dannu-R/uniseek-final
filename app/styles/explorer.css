@@ -178,47 +178,57 @@
   grid-column: span 2;
 }
 
-/* ---- The facts we actually hold ----------------------------------------- */
-.ex-facts {
+/* ---- Quick figures strip ------------------------------------------------ */
+/* Small tiles across the top, ahead of everything else. Only figures we actually hold
+   get one — a tile reading "—" looks like the page failed rather than like data we were
+   never given — so the row is sized by what's there rather than to a fixed four. */
+.ex-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
-  margin: 24px 0 0;
+  margin: 0 0 20px;
 }
-.ex-fact {
+.ex-stat {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 16px 18px;
+  gap: 3px;
+  padding: 14px 16px;
   border-radius: 14px;
-  border: 1px solid var(--fact-edge, var(--ac-line));
-  background: var(--fact-tint, var(--ac-sunk));
+  border: 1px solid var(--stat-edge, var(--ac-line));
+  background: var(--stat-tint, var(--ac-card));
+  box-shadow: var(--ac-shadow);
 }
-.ex-fact--reach {
-  --fact-tint: #fdeef4;
-  --fact-edge: #f6d3e2;
+/* The band tint marks the category tile only. On all three, a reach college's net price
+   came out in warning pink whatever the number was. */
+.ex-stat--reach {
+  --stat-tint: #fdeef4;
+  --stat-edge: #f6d3e2;
 }
-.ex-fact--target {
-  --fact-tint: var(--ac-violet-soft);
-  --fact-edge: #ddd3fb;
+.ex-stat--target {
+  --stat-tint: var(--ac-violet-soft);
+  --stat-edge: #ddd3fb;
 }
-.ex-fact--safety {
-  --fact-tint: var(--ac-green-soft);
-  --fact-edge: #c9e9de;
+.ex-stat--safety {
+  --stat-tint: var(--ac-green-soft);
+  --stat-edge: #c9e9de;
 }
-.ex-fact__label {
-  font-size: 0.7rem;
+.ex-stat__label {
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ac-ink-3);
 }
-.ex-fact__value {
+.ex-stat__value {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 750;
   letter-spacing: -0.02em;
   color: var(--ac-ink);
+}
+
+.ex-card__body--spaced {
+  margin-top: 24px;
 }
 
 /* ---- Admissions visual -------------------------------------------------- */
