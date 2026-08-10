@@ -1951,3 +1951,60 @@
     padding: 14px 12px;
   }
 }
+
+/* ---- Placeholder view --------------------------------------------------- */
+/* A view whose shape exists before its behaviour does. */
+.soon {
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px 28px 30px;
+}
+.soon__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 560px;
+  padding: 14px 18px;
+  border: 1px solid var(--ac-line);
+  border-radius: 12px;
+  background: var(--ac-sunk);
+  color: var(--ac-ink-4);
+}
+.soon__field svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+.soon__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ac-ink-2);
+}
+.soon__input:disabled {
+  cursor: not-allowed;
+}
+.soon__input::placeholder {
+  color: var(--ac-ink-4);
+}
+.soon__tag {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--ac-amber-soft);
+  color: var(--ac-amber);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.soon__body {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ac-ink-2);
+}

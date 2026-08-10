@@ -42,7 +42,7 @@ interface ScoreResult {
   list: CollegeScore[];
 }
 
-type TabKey = "home" | "recommended" | "saved" | "compare";
+type TabKey = "home" | "recommended" | "saved" | "compare" | "search";
 type TabDef = { key: TabKey; label: string };
 
 // Home leads — it's the view that says where everything stands. Below it, two groups:
@@ -53,7 +53,10 @@ const VIEW_TABS: TabDef[] = [
   { key: "recommended", label: "Recommended colleges" },
   { key: "saved", label: "Saved colleges" },
 ];
-const FEATURE_TABS: TabDef[] = [{ key: "compare", label: "Compare" }];
+const FEATURE_TABS: TabDef[] = [
+  { key: "compare", label: "Compare" },
+  { key: "search", label: "Search" },
+];
 
 // Per-tab line icons (minimalist, currentColor).
 const TAB_ICON: Record<TabKey, ReactNode> = {
@@ -81,6 +84,12 @@ const TAB_ICON: Record<TabKey, ReactNode> = {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <rect x="4" y="9" width="6" height="11" rx="1.5" />
       <rect x="14" y="4" width="6" height="16" rx="1.5" />
+    </svg>
+  ),
+  search: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M15.8 15.8 20 20" />
     </svg>
   ),
 };
@@ -455,6 +464,35 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 saved={saved}
                 recommended={result?.list ?? []}
               />
+            </>
+          ) : tab === "search" ? (
+            <>
+              <ViewHeader title="Search" subtitle="Look up any college, whether or not it's on your list." />
+              <section className="dash__view">
+                {/* Placeholder. The field is shown so the view has its eventual shape, and
+                    it's disabled rather than inert-looking: a box that accepts typing and
+                    then does nothing would be the one dishonest thing on this page. */}
+                <div className="stat-card soon">
+                  <div className="soon__field" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="11" cy="11" r="6.5" />
+                      <path d="M15.8 15.8 20 20" />
+                    </svg>
+                    <input
+                      type="text"
+                      className="soon__input"
+                      placeholder="Search colleges by name, major, or state"
+                      disabled
+                    />
+                  </div>
+                  <span className="soon__tag">Coming soon</span>
+                  <p className="soon__body">
+                    Search will cover every college in the catalog, not just the ones your answers
+                    surfaced — so you can look up a college you already have in mind, see how you
+                    line up against it, and save it to your list.
+                  </p>
+                </div>
+              </section>
             </>
           ) : tab === "compare" ? (
             <>
