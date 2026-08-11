@@ -1,36 +1,28 @@
 "use client";
 
+// The hero's calls to action: one filled primary, one quiet secondary, centred under the
+// headline. Two equally-weighted buttons make the visitor choose before they know enough
+// to; "Get started" is the one we're recommending, so it's the one that looks like it.
+
 import { useRouter } from "next/navigation";
 
-// Two regular side-by-side buttons; each expands to reveal its description
-// on hover/focus (handled purely in CSS).
 export default function HeroDuo() {
   const router = useRouter();
 
-  const handleStartClick = () => {
-    // Gated: unauthenticated visitors get bounced to /login, then land on the dashboard.
-    router.push("/dashboard");
-  };
-
   return (
-    <div className="duo">
-      <button
-        type="button"
-        className="duo-btn duo-btn--start"
-        onClick={handleStartClick}
-      >
-        <span className="duo-btn__title">Get started</span>
-        <span className="duo-btn__desc">
-          Free to start — paid plans from $5/mo.
-        </span>
+    <div className="hx-cta">
+      {/* Gated: unauthenticated visitors get bounced to /login, then land on the dashboard. */}
+      <button type="button" className="hx-btn hx-btn--primary" onClick={() => router.push("/dashboard")}>
+        Get started
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M5 12h13" />
+          <path d="M12 5.5 18.5 12 12 18.5" />
+        </svg>
       </button>
 
-      <button type="button" className="duo-btn duo-btn--login">
-        <span className="duo-btn__title">Log in</span>
-        <span className="duo-btn__desc">
-          New here? Create an account in a minute.
-        </span>
-      </button>
+      <a className="hx-btn hx-btn--ghost" href="/login">
+        Log in
+      </a>
     </div>
   );
 }

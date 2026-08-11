@@ -9,8 +9,8 @@ import HowItWorks from "./components/landing/HowItWorks";
 import Pricing from "./components/landing/Pricing";
 import Reviews from "./components/landing/Reviews";
 import Footer from "./components/landing/Footer";
-import Ribbons from "./components/shared/Ribbons";
 import HeroDuo from "./components/landing/HeroDuo";
+import HeroObjects from "./components/landing/HeroObjects";
 
 export default function Home() {
   return (
@@ -18,81 +18,49 @@ export default function Home() {
     <main>
       <Navbar />
 
-      <section className="hero">
-        <div className="hero__clip">
-          <div className="hero__aurora" aria-hidden="true">
-            <div className="aurora-layer aurora-layer--1" />
-            <div className="aurora-layer aurora-layer--2" />
-            <div className="aurora-layer aurora-layer--3" />
-          </div>
+      {/* ---- Hero ------------------------------------------------------------
+          Centred: eyebrow, headline, one line of copy, the two actions, and then
+          the product itself rising into the frame and cut off by the fold — the
+          point being that there's a real thing behind the promise. Uniseek's own
+          objects drift in the outer thirds, framing that column without crossing
+          it. */}
+      <section className="hx">
+        <div className="hx__sky" aria-hidden="true" />
+        <HeroObjects />
 
-          <Ribbons />
+        <div className="hx__inner">
+          <p className="hx__eyebrow">Built for the college search</p>
 
-          <svg className="hero__metal" aria-hidden="true" preserveAspectRatio="none">
-            <filter id="metal-noise">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.8 0.35"
-                numOctaves="2"
-                stitchTiles="stitch"
-              />
-              <feColorMatrix type="saturate" values="0" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#metal-noise)" />
-          </svg>
-
-          <div className="hero__accents" aria-hidden="true" />
-
-          <div className="hero-photo" aria-hidden="true">
-            <img className="hero-photo__img" src="/campus.jpg" alt="" />
-          </div>
-
-          <div className="hero__fade-top" aria-hidden="true" />
-          <div className="hero__fade" aria-hidden="true" />
-        </div>
-
-        <div className="hero__fg">
-        <div className="hero__content">
-          <div className="hero__left">
-          <div className="brand">
-            <svg
-              className="brand__logo"
-              viewBox="0 0 53.54897 63.90451"
-              role="img"
-              aria-label="Uniseek logo"
-            >
-              <g transform="translate(-206.93265,-157.98483)" fill="currentColor">
-                <path d="M220.40922,221.88934l-13.47657,-37.2094l27.26349,-9.87434l13.47657,37.2094z" />
-                <path d="M247.36661,212.12256l-4.22689,-11.67064l13.11501,-4.75002l4.22689,11.67064z" />
-                <path d="M238.2259,186.65474l-4.25975,-11.76135l13.11501,-4.75002l4.25975,11.76135z" />
-                <path d="M217.29163,177.1945l-4.91598,-13.57324l15.56242,-5.63643l4.91598,13.57324z" />
-              </g>
-            </svg>
-            <span className="brand__title">Uniseek</span>
-          </div>
-
-          <h1 className="hero-slogan">
-            Discover the college that{" "}
-            <span className="hero-slogan__accent">fits</span>{" "}
-            <em className="hero-slogan__italic">you</em>.
+          <h1 className="hx__title">
+            Discover the college
+            <br />
+            that <span className="hx__title-accent">fits</span>{" "}
+            <em className="hx__title-em">you</em>.
           </h1>
 
-          <div className="hero-mission">
-            <span className="hero-mission__bar" aria-hidden="true" />
-            <p className="hero-mission__text">
-              Finding the right university that fits you has never been this
-              easy. From low costs to high adaptability, we provide the tools you
-              need to take the next step in your college journey.
-            </p>
-          </div>
-          </div>
+          <p className="hx__sub">
+            Answer a few questions about your grades, goals and budget. Get an honest
+            reach / match / safety list — and the reasoning behind every name on it.
+          </p>
 
           <HeroDuo />
+
+          <div className="hx__product">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="hx__product-img"
+              src="/product-home.png"
+              alt="The Uniseek dashboard, showing a student's recommended colleges alongside their grade trend, test score and course rigor."
+              width={3420}
+              height={1970}
+            />
+          </div>
         </div>
 
-          <LogoBanner />
-        </div>
       </section>
+
+      {/* Back on the dark ground these logos were drawn for — several of them are white. */}
+      <LogoBanner />
 
       <Problem />
 

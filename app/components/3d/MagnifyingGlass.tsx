@@ -5,7 +5,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 
-function Glass() {
+// Exported for the landing hero's shared scene — see HeroObjects.
+export function Glass() {
   const spinner = useRef();
 
   // spin around its own long axis — the line runs straight down the handle

@@ -1,132 +1,4 @@
-/* ================================================================
-   Hero — layout, content, brand, mission, 2×2 grid, logo banner,
-   aurora flow, metallic overlay, edge accents, and fades
-   ================================================================ */
 
-/* ---- Hero shell ---- */
-.hero {
-  position: relative;
-  /* full-bleed background — 160% wide for the gradual bottom curve */
-  width: 160%;
-  margin-left: -30%;
-  min-height: 80vh;
-}
-
-/* Clips the color flow to the hero shape. */
-.hero__clip {
-  position: absolute;
-  inset: 0;
-  background: var(--color-black);
-  overflow: hidden;
-}
-
-/* ---- Hero content ----
-   Constrained to the viewport width within the over-wide (160%) hero,
-   so content aligns to the real left edge of the screen. */
-.hero__fg {
-  position: relative;
-  z-index: 2;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  /* no bottom padding: the logo banner is the hero's true bottom edge,
-     so no color/image extends past it */
-  padding-bottom: 0;
-}
-
-.hero__content {
-  flex: 1;
-  width: 62.5%; /* 100% / 1.6 — matches the viewport */
-  max-width: 1400px; /* content stops growing on wide screens */
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: clamp(32px, 5vh, 60px);
-  text-align: left;
-  /* extra top padding lowers the block, clearing the navbar */
-  padding-block: 12vh 0;
-  padding-inline: clamp(24px, 5vw, 88px);
-}
-
-/* brand / slogan / mission — left-aligned stack */
-.hero__left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-/* ---- Hero photo (right side, blended) ---- */
-.hero-photo {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 52%; /* of the 160% hero — bleeds off the right of the viewport */
-  pointer-events: none;
-}
-
-.hero-photo__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* darken/desaturate so it sits in the dark hero */
-  filter: brightness(0.55) saturate(0.9) contrast(1.02);
-  /* fade the left edge into the content (top/bottom handled by the hero fades) */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 32%);
-  mask-image: linear-gradient(to right, transparent 0%, #000 32%);
-}
-
-.hero-slogan {
-  margin: 0;
-  max-width: 9ch;
-  color: var(--color-white);
-  font-weight: 400;
-  font-size: clamp(2.75rem, 6vw, 5.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  /* soft white glow around the whole slogan */
-  text-shadow: 0 0 24px rgba(255, 255, 255, 0.35),
-    0 0 10px rgba(255, 255, 255, 0.25);
-}
-
-.hero-slogan__italic {
-  font-style: italic;
-}
-
-/* "fit" — pink→purple metallic gradient with its own glow */
-.hero-slogan__accent {
-  background: var(--gradient-fit);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  /* text-shadow can't glow gradient-clipped text, so glow via filter */
-  filter: drop-shadow(0 0 14px rgba(236, 72, 153, 0.45))
-    drop-shadow(0 0 6px rgba(167, 139, 250, 0.4));
-}
-
-/* mission statement with a vertical accent bar */
-.hero-mission {
-  display: flex;
-  gap: 16px;
-  margin-top: clamp(22px, 3vh, 34px);
-  max-width: 46ch;
-}
-
-.hero-mission__bar {
-  flex: 0 0 3px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #ec4899, #8b5cf6);
-}
-
-.hero-mission__text {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-  line-height: 1.6;
-}
 
 /* Slogan line length: tall & narrow by default (small screens),
    lengthening as the viewport grows so it runs as long as it can
@@ -138,9 +10,6 @@
 }
 
 @media (min-width: 1440px) {
-  .hero-slogan {
-    max-width: 12ch;
-  }
 }
 
 @media (min-width: 1800px) {
@@ -149,114 +18,7 @@
   }
 }
 
-/* ---- Brand (above the slogan) ---- */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: clamp(28px, 4vh, 46px);
-}
-
-.brand__logo {
-  display: block;
-  height: 40px;
-  width: auto;
-  color: var(--color-white);
-}
-
-.brand__title {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  color: var(--color-white);
-  font-size: 1.85rem;
-  font-weight: 600;
-  letter-spacing: 0.005em;
-}
-
-/* ---- Hero CTA buttons (Get started / Log in) ----
-   Two centered buttons; each expands SIDEWAYS on hover to reveal a short
-   description. Get started → white, Log in → black. No rotating border. */
-.duo {
-  display: flex;
-  align-self: flex-start; /* left-aligned in the hero column */
-  justify-content: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.duo-btn {
-  display: inline-flex;
-  align-items: center;
-  height: 44px; /* fixed; overflow clips the collapsed description */
-  padding: 0 22px;
-  border-radius: 8px; /* sharper corners */
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(12px) saturate(0.9);
-  backdrop-filter: blur(12px) saturate(0.9);
-  color: var(--color-white);
-  font: inherit;
-  cursor: pointer;
-  overflow: hidden;
-  white-space: nowrap;
-  box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.7);
-  transition: background-color 0.3s ease, color 0.3s ease,
-    border-color 0.3s ease, transform 0.3s ease;
-}
-
-/* Get started — filled with the gradient, white text (unchanged on hover) */
-.duo-btn--start {
-  background: var(--gradient-fit);
-  color: #ffffff;
-  box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.7);
-}
-
-.duo-btn__title {
-  font-family: var(--font-inter), sans-serif;
-  font-size: clamp(0.86rem, 1vw, 0.98rem);
-  font-weight: 700;
-}
-
-/* description reveals to the RIGHT — grows sideways, height stays fixed */
-.duo-btn__desc {
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: normal;
-  font-size: 0.7rem;
-  line-height: 1.25;
-  color: inherit;
-  transition: max-width 0.4s ease, opacity 0.35s ease, margin-left 0.4s ease;
-}
-
-.duo-btn:hover,
-.duo-btn:focus-visible {
-  transform: translateY(-2px);
-  outline: none;
-  /* glow on hover */
-  box-shadow: 0 0 22px rgba(167, 139, 250, 0.5),
-    0 0 10px rgba(236, 72, 153, 0.4), 0 14px 34px -22px rgba(0, 0, 0, 0.7);
-}
-
-.duo-btn:hover .duo-btn__desc,
-.duo-btn:focus-visible .duo-btn__desc {
-  max-width: 190px;
-  opacity: 0.9;
-  margin-left: 12px;
-}
-
-/* Log in → black background, white text */
-.duo-btn--login:hover,
-.duo-btn--login:focus-visible {
-  background: #050509;
-  color: #ffffff;
-  border-color: #050509;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .duo-btn,
-  .duo-btn__desc {
-    transition: none;
-  }
 }
 
 /* ---- Logo banner ----
@@ -406,18 +168,6 @@
   }
 }
 
-/* ---- Aurora flow ----
-   Layered soft gradient fields that drift/rotate on offset timers.
-   `screen` blending lets the color washes add light and bleed into
-   one another against the dark base — no hard edges. */
-.hero__aurora {
-  position: absolute;
-  inset: -25%;
-  pointer-events: none;
-  filter: blur(50px) saturate(1.15);
-  animation: breathe 24s ease-in-out infinite;
-}
-
 /* Ebb & flow — sharp & glowing at peak, softens & dims as it recedes,
    then swells back more defined and colorful */
 @keyframes breathe {
@@ -437,36 +187,6 @@
     opacity: 1;
     filter: blur(42px) saturate(1.4) brightness(1.2) contrast(1.18);
   }
-}
-
-.aurora-layer {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: screen;
-  will-change: transform;
-}
-
-.aurora-layer--1 {
-  background:
-    radial-gradient(36% 44% at 28% 32%, rgba(124, 58, 237, 1) 0%, rgba(124, 58, 237, 0.82) 38%, transparent 58%),
-    radial-gradient(40% 48% at 70% 42%, rgba(236, 72, 153, 0.98) 0%, rgba(236, 72, 153, 0.78) 40%, transparent 60%),
-    radial-gradient(46% 50% at 48% 74%, rgba(167, 139, 250, 0.85) 0%, rgba(167, 139, 250, 0.62) 40%, transparent 62%);
-  animation: flow-1 18s ease-in-out infinite;
-}
-
-.aurora-layer--2 {
-  background:
-    radial-gradient(38% 46% at 62% 30%, rgba(217, 70, 160, 0.95) 0%, rgba(217, 70, 160, 0.72) 40%, transparent 60%),
-    radial-gradient(44% 52% at 32% 60%, rgba(109, 40, 217, 1) 0%, rgba(109, 40, 217, 0.75) 40%, transparent 60%),
-    radial-gradient(36% 42% at 78% 72%, rgba(249, 168, 212, 0.78) 0%, rgba(249, 168, 212, 0.55) 42%, transparent 62%);
-  animation: flow-2 22s ease-in-out infinite;
-}
-
-.aurora-layer--3 {
-  background:
-    radial-gradient(42% 48% at 45% 40%, rgba(59, 130, 246, 0.6) 0%, rgba(59, 130, 246, 0.42) 42%, transparent 62%),
-    radial-gradient(38% 44% at 20% 78%, rgba(147, 51, 234, 0.78) 0%, rgba(147, 51, 234, 0.55) 42%, transparent 62%);
-  animation: flow-3 26s ease-in-out infinite reverse;
 }
 
 @keyframes flow-1 {
@@ -586,36 +306,6 @@
   }
 }
 
-/* ---- Metallic overlay ----
-   SVG fractal-noise grain blended over the color flow for a
-   brushed-foil sheen. Sits above the aurora, below any content. */
-.hero__metal {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.14;
-  mix-blend-mode: soft-light;
-}
-
-/* ---- Edge accents ----
-   Soft color that blooms at the top & bottom during the ebb (when the
-   main flow dims) and recedes as the primary animation swells back —
-   so it runs anti-phase to `breathe`. */
-.hero__accents {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0;
-  filter: blur(30px);
-  background:
-    radial-gradient(140% 38% at 50% -4%, rgba(236, 72, 153, 0.55), rgba(147, 51, 234, 0.3) 45%, transparent 68%),
-    radial-gradient(140% 42% at 50% 104%, rgba(124, 58, 237, 0.55), rgba(59, 130, 246, 0.28) 45%, transparent 68%);
-  animation: edge-glow 24s ease-in-out infinite;
-}
-
 /* Inverse of `breathe`: dark at the peaks, bright at the dip */
 @keyframes edge-glow {
   0% {
@@ -632,42 +322,209 @@
   }
 }
 
-/* ---- Fades ----
-   Fade the color flow to black at the top and bottom edges. */
-.hero__fade {
+@media (prefers-reduced-motion: reduce) {
+}
+
+/* ================================================================
+   Hero — bright.
+
+   The composition is centred and vertical: eyebrow, headline, one line of copy, the
+   two actions, then the product screenshot rising into the frame and cut off by the
+   fold. Everything decorative lives in the outer thirds so nothing crosses that column.
+
+   This is the one light section on a dark page; the sections below it still carry the
+   night palette and will need their own pass.
+   ================================================================ */
+
+.hx {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: calc(64px + 72px) 24px 0;
+  text-align: center;
+  /* A high, soft sky rather than a flat panel: warm at the horizon, cool overhead. */
+  background:
+    radial-gradient(120% 70% at 50% 108%, #ffe9d2 0%, rgba(255, 233, 210, 0) 55%),
+    radial-gradient(90% 60% at 12% 8%, #e6dcff 0%, rgba(230, 220, 255, 0) 60%),
+    radial-gradient(90% 60% at 88% 4%, #d9e8ff 0%, rgba(217, 232, 255, 0) 58%),
+    linear-gradient(180deg, #f4f1fb 0%, #f7f4fc 45%, #eef1f9 100%);
+}
+/* The hero is the one light section on a dark page, so it has to hand over rather than
+   stop. The last stretch dissolves into the page's own black, which also takes care of
+   the product card's cut edge — it fades out instead of ending. */
+.hx::after {
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 42%;
+  height: 220px;
+  z-index: 3;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(5, 4, 10, 0.6) 58%,
-    var(--color-black) 92%
-  );
+  background: linear-gradient(180deg, rgba(5, 4, 10, 0) 0%, rgba(5, 4, 10, 0.75) 62%, #05040a 100%);
 }
 
-.hero__fade-top {
+/* A wash that lifts the very top, so the black header sits on light rather than on a
+   hard seam. */
+.hx__sky {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 30%;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(5, 4, 10, 0.6) 55%,
-    var(--color-black) 92%
-  );
+  inset: 0 0 auto;
+  height: 240px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  z-index: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .aurora-layer,
-  .hero__aurora,
-  .hero__accents {
-    animation: none;
+/* The drifting objects. Behind the text, never catching a click, and confined to the
+   band around the headline — spanning the whole hero put half of them behind the product
+   card where nothing could be seen of them. */
+.hx-objects {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 560px;
+  z-index: 1;
+  pointer-events: none;
+}
+.hx-objects canvas {
+  display: block;
+}
+
+.hx__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.hx__eyebrow {
+  display: inline-block;
+  margin: 0 0 26px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(98, 54, 232, 0.18);
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: #5b3ad1;
+}
+
+.hx__title {
+  margin: 0;
+  font-size: clamp(2.6rem, 6.2vw, 5rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: #16223f;
+}
+/* The promise of the product is in this one word, so it's the one that changes colour. */
+.hx__title-accent {
+  color: #6236e8;
+}
+.hx__title-em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.hx__sub {
+  max-width: 46ch;
+  margin: 24px auto 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #4c5a7a;
+}
+
+/* ---- Actions ------------------------------------------------------------ */
+.hx-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 34px;
+}
+.hx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+.hx-btn svg {
+  width: 17px;
+  height: 17px;
+}
+.hx-btn--primary {
+  background: #16223f;
+  color: #fff;
+  box-shadow: 0 10px 24px -12px rgba(22, 34, 63, 0.8);
+}
+.hx-btn--primary:hover {
+  background: #22315a;
+  transform: translateY(-1px);
+}
+.hx-btn--ghost {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(22, 34, 63, 0.14);
+  color: #16223f;
+}
+.hx-btn--ghost:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+.hx-btn:focus-visible {
+  outline: 2px solid #6236e8;
+  outline-offset: 3px;
+}
+
+/* ---- Product shot ------------------------------------------------------- */
+/* Deliberately not given a bottom edge: it runs past the fold, which is what says the
+   product continues rather than that this is a picture of it. */
+.hx__product {
+  position: relative;
+  max-width: 1080px;
+  /* Clipped, not scaled: showing the whole screenshot turns it into a picture of the
+     product sitting on the page. Cutting it off is what says the product continues. */
+  max-height: 460px;
+  margin: 64px auto 0;
+  border-radius: 18px 18px 0 0;
+  border: 1px solid rgba(22, 34, 63, 0.1);
+  border-bottom: 0;
+  background: #fff;
+  padding: 8px 8px 0;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.9) inset, 0 40px 80px -40px rgba(22, 34, 63, 0.55);
+  overflow: hidden;
+}
+.hx__product-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px 12px 0 0;
+}
+
+@media (max-width: 900px) {
+  .hx {
+    padding-top: calc(64px + 48px);
+  }
+  .hx__product {
+    margin-top: 44px;
+  }
+  /* The objects sit off the sides of a narrow viewport, so they'd only crop badly. */
+  .hx-objects {
+    display: none;
+  }
+}
+@media (max-width: 620px) {
+  .hx-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hx-btn {
+    justify-content: center;
   }
 }

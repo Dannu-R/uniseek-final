@@ -12,7 +12,8 @@ const SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.54897 63.90
 
 // Extrudes the logo paths into a deep-blue 3D piece, then centers +
 // normalizes it to ~2 units.
-function PuzzleModel() {
+// Exported for the landing hero's shared scene — see HeroObjects.
+export function PuzzleModel() {
   const object = useMemo(() => {
     const { paths } = new SVGLoader().parse(SVG);
     const mat = new THREE.MeshStandardMaterial({
