@@ -10,6 +10,7 @@ import "./styles/problem.css";
 import "./styles/values.css";
 import "./styles/product.css";
 import "./styles/pricing.css";
+import "./styles/props.css";
 import "./styles/reviews.css";
 import "./styles/footer.css";
 import "./styles/components.css";
@@ -18,7 +19,7 @@ import "./styles/results.css";
 import "./styles/explorer.css";
 import "./styles/auth.css";
 import "./styles/dashboard.css";
-import { Inter, Stack_Sans_Notch, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Stack_Sans_Notch, Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import ScrollManager from "./components/shared/ScrollManager";
 
 const inter = Inter({
@@ -42,6 +43,15 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
 });
 
+// Ink for the marketing page's sticky-note props — the one place on the site meant
+// to read as handwritten rather than typeset.
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  display: "swap",
+  variable: "--font-hand",
+});
+
 export const metadata = {
   title: "Uniseek — Discover colleges that fit you",
   description:
@@ -50,7 +60,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${stackSans.variable} ${jakarta.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${stackSans.variable} ${jakarta.variable} ${caveat.variable}`}
+    >
       {/* browser extensions (e.g. Grammarly) inject attributes on <body>
           before React hydrates; ignore those attribute-only mismatches */}
       <body suppressHydrationWarning>

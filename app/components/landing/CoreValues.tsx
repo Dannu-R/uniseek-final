@@ -8,6 +8,7 @@ import Glasses from "../3d/Glasses";
 import Book from "../3d/Book";
 import PuzzlePiece from "../3d/PuzzlePiece";
 import UniseekMark from "@/app/components/UniseekMark";
+import { PropMark, PropNote, propStyle } from "./PageProps";
 
 // useLayoutEffect on the client, useEffect on the server (avoids SSR warning)
 const useIsoLayoutEffect =
@@ -134,6 +135,11 @@ export default function CoreValues() {
     <section className="section why" id="features">
       {/* waving ribbons in the background */}
       <Ribbons className="ribbons--why" />
+
+      <PropMark icon="ribbon" tone="violet" style={propStyle({ left: "3%", top: "110px", "--prop-rot": "-8deg" })} />
+      <PropNote tone="blue" style={propStyle({ right: "4%", top: "90px", "--prop-rot": "7deg", "--prop-delay": "1.2s" })}>
+        Every claim traces back to a source.
+      </PropNote>
 
       {/* big faded logo + name watermark; only its top half shows */}
       <div className="why__brandmark" aria-hidden="true">

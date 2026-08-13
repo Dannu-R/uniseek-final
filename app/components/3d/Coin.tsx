@@ -55,9 +55,7 @@ function DollarSign() {
   );
 }
 
-// Exported so the landing hero can put it in a shared scene with the other objects
-// rather than spending a WebGL context per floating shape.
-export function CoinBody() {
+function CoinBody() {
   return (
     <>
       {/* core disc — its ±Z faces are the recessed panel floors */}

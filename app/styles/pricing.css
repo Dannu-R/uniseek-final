@@ -6,18 +6,18 @@
 
 /* clip the ribbons to the section */
 .pricing {
+  position: relative;
   overflow: hidden;
+  background: var(--lp-paper);
 }
 
 /* diagonal, more-vertical waving ribbons anchored to the top-right,
-   reusing the hero ribbon SVG + the Why Uniseek wave keyframes */
+   reusing the hero ribbon SVG — pastel wash on paper rather than glow */
 .ribbons--pricing {
   z-index: 0;
-  opacity: 0.4;
-  /* big + heavily blurred so it fills the whole section (down to the very
-     bottom) with no hard band edges; the default gentle drift avoids the
-     jumpy look the wave keyframes gave here */
-  filter: blur(26px) saturate(1.2);
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  filter: blur(64px) saturate(0.75);
   transform-origin: 58% 42%;
   transform: rotate(60deg) scale(2.5);
 }
@@ -56,6 +56,9 @@
     grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Unselected plans sit quiet on the band; the selected one lifts to white with
+   a violet ring. On the old dark page selection meant "turns white"; here that
+   distinction has to come from the ring and the lift instead. */
 .plan {
   position: relative;
   z-index: 0;
@@ -65,10 +68,10 @@
   display: flex;
   flex-direction: column;
   padding: clamp(16px, 1.8vw, 28px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--lp-line);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--lp-ink);
   cursor: pointer;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease,
@@ -79,17 +82,16 @@
 .plan:hover {
   z-index: 2;
   transform: scale(1.03);
-  border-color: rgba(255, 255, 255, 0.24);
+  border-color: rgba(98, 54, 232, 0.28);
 }
 
-/* clicked / selected — fully expanded (via grid) and white */
+/* clicked / selected — fully expanded (via grid), lifted and ringed */
 .plan.is-selected {
   z-index: 1;
-  background: #ffffff;
-  color: #180f30;
-  border-color: transparent;
-  box-shadow: 0 24px 56px -26px rgba(0, 0, 0, 0.6),
-    0 0 44px rgba(139, 92, 246, 0.28);
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  border-color: rgba(98, 54, 232, 0.35);
+  box-shadow: var(--lp-shadow), 0 0 0 3px rgba(98, 54, 232, 0.1);
 }
 
 .plan__head {
@@ -111,7 +113,7 @@
 .plan__price {
   font-weight: 700;
   font-size: clamp(1.05rem, 1.4vw, 1.45rem);
-  background: var(--gradient-fit);
+  background: var(--lp-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -155,7 +157,7 @@
 .plan__features li {
   position: relative;
   padding-left: 20px;
-  color: rgba(24, 15, 48, 0.72);
+  color: var(--lp-ink-2);
   font-size: 0.92rem;
   line-height: 1.4;
 }
@@ -168,7 +170,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--gradient-fit);
+  background: var(--lp-gradient);
 }
 
 .plan__cta {
@@ -176,7 +178,7 @@
   margin-top: 16px;
   padding: 9px 18px;
   border-radius: 999px;
-  background: linear-gradient(120deg, #ec4899, #7c3aed);
+  background: var(--lp-gradient);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;
@@ -198,19 +200,19 @@
   bottom: 4px;
   width: 3px;
   border-radius: 2px;
-  background: linear-gradient(180deg, #ec4899, #8b5cf6);
+  background: linear-gradient(180deg, #d6337e, #6236e8);
 }
 
 .pricing__detail-name {
   font-family: var(--font-stack), var(--font-inter), sans-serif;
   font-size: clamp(1.4rem, 2vw, 2rem);
   font-weight: 600;
-  color: var(--color-white);
+  color: var(--lp-ink);
 }
 
 .pricing__detail-text {
   margin: 14px 0 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--lp-ink-2);
   font-size: clamp(1rem, 1.15vw, 1.15rem);
   line-height: 1.65;
 }

@@ -37,4 +37,46 @@
 
   /* Pink → purple — a simple, gradual two-color blend */
   --gradient-fit: linear-gradient(115deg, #ec4899 0%, #8b5cf6 100%);
+
+  /* ---- Landing page: the academic palette --------------------------------
+     The marketing page used to run on the night palette above — near-black
+     grounds, white text, glowing white rules. The hero was rebuilt light
+     (campus photo, ink-navy type, pastel geometric marks) and the rest of the
+     page now follows it, so the two halves of the product read as one thing.
+
+     Values deliberately match the dashboard's own --ac-* set, so a visitor
+     who signs up walks into the same colours they were just looking at.
+     Prefixed --lp-* rather than reusing --ac-* because the dashboard scopes
+     its palette to its own shell and the two shouldn't fight. */
+  --lp-paper: #ffffff;           /* the page's white */
+  --lp-paper-2: #f6f4fc;         /* pale lavender — alternating band */
+  --lp-paper-3: #eef1f9;         /* cool grey-blue — third band */
+
+  --lp-ink: #16223f;             /* headings, the near-black of this theme */
+  --lp-ink-2: #4c5a7a;           /* body copy */
+  --lp-ink-3: #7a87a3;           /* captions, muted labels */
+
+  --lp-line: rgba(22, 34, 63, 0.12);   /* hairlines and card borders */
+  --lp-grid: rgba(22, 34, 63, 0.055);  /* graph-paper ruling */
+
+  --lp-violet: #6236e8;          /* the accent — links, active states */
+  --lp-violet-soft: #a78bfa;
+  --lp-pink: #f9a8d4;
+  --lp-blue: #93c5fd;
+  --lp-gold: #ffcf86;
+
+  /* Tints for badges and washes — the hero's pastels at wash strength. */
+  --lp-tint-violet: rgba(167, 139, 250, 0.16);
+  --lp-tint-pink: rgba(249, 168, 212, 0.16);
+  --lp-tint-blue: rgba(147, 197, 253, 0.16);
+  --lp-tint-gold: rgba(255, 207, 134, 0.18);
+
+  /* Accent gradient retuned for light grounds — the night one (#ec4899 →
+     #8b5cf6) reads neon on white; this keeps the pink→violet travel but
+     lands deeper so it stays legible as text. */
+  --lp-gradient: linear-gradient(115deg, #d6337e 0%, #6236e8 100%);
+
+  --lp-shadow-sm: 0 2px 8px -2px rgba(22, 34, 63, 0.08);
+  --lp-shadow: 0 18px 40px -24px rgba(22, 34, 63, 0.35);
+  --lp-shadow-lg: 0 40px 80px -40px rgba(22, 34, 63, 0.45);
 }

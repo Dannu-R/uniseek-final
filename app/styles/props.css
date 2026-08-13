@@ -1,0 +1,290 @@
+/* ================================================================
+   Page props — floating fragments of the product's own UI (a sticky note,
+   a Reach/Match/Safety trio, a stat card, an academic mark) scattered in
+   the outer margins of a section, the way a confident product site shows
+   pieces of its own interface as background texture. Same convention the
+   hero's doodles use: outer thirds, gentle idle float, gone below 900px.
+   ================================================================ */
+
+.prop {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  animation: prop-float 8s ease-in-out infinite;
+  animation-delay: var(--prop-delay, 0s);
+}
+
+@keyframes prop-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--prop-rot, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(calc(var(--prop-rot, 0deg) + 2deg));
+  }
+}
+
+/* ---- Sticky note — a real note pinned to the page, not a card ---- */
+.prop-note {
+  width: clamp(190px, 17vw, 240px);
+  padding: 24px 22px 26px;
+  border-radius: 3px 3px 12px 12px;
+  box-shadow: var(--lp-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* folded corner */
+.prop-note::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.1) 51%);
+  border-radius: 0 0 3px 0;
+}
+
+.prop-note--yellow {
+  background: #fdf3c8;
+}
+.prop-note--pink {
+  background: #fbe4ee;
+}
+.prop-note--blue {
+  background: #e3eefd;
+}
+
+.prop-note__pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #ff9fb6, #c9316e);
+  box-shadow: 0 2px 5px rgba(22, 34, 63, 0.3);
+}
+
+.prop-note__text {
+  margin: 8px 0 0;
+  font-family: var(--font-hand), cursive;
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.prop-note--yellow .prop-note__text {
+  color: #6b4a15;
+}
+.prop-note--pink .prop-note__text {
+  color: #86255a;
+}
+.prop-note--blue .prop-note__text {
+  color: #1e3f7a;
+}
+
+/* ---- Generic white card shell (pills / stat / mark) ---- */
+.prop-card {
+  padding: 18px 24px;
+  border-radius: 18px;
+  background: var(--lp-paper);
+  border: 1px solid var(--lp-line);
+  box-shadow: var(--lp-shadow);
+}
+
+/* ---- Reach / Match / Safety — the dashboard's own category pills ---- */
+.prop-pills {
+  display: flex;
+  gap: 7px;
+}
+.prop-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 15px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.prop-pill--reach {
+  background: var(--lp-tint-pink);
+  color: #be2d6f;
+}
+.prop-pill--match {
+  background: var(--lp-tint-violet);
+  color: var(--lp-violet);
+}
+.prop-pill--safety {
+  background: rgba(15, 157, 118, 0.14);
+  color: #0f9d76;
+}
+
+/* ---- A stat card, the same shape as the dashboard's own ---- */
+.prop-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 128px;
+}
+.prop-stat__value {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--lp-ink);
+}
+.prop-stat__label {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: var(--lp-ink-3);
+}
+
+/* ---- An academic mark, sealed in a card rather than a hero badge ---- */
+.prop-mark {
+  display: grid;
+  place-items: center;
+  width: 100px;
+  height: 100px;
+  padding: 0;
+}
+.prop-mark__icon {
+  width: 54px;
+  height: 54px;
+}
+.prop-mark__ink {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.prop-mark__ink--arc {
+  opacity: 0.5;
+  stroke-dasharray: 3 5;
+}
+.prop-mark__ink--axis {
+  opacity: 0.35;
+  stroke-width: 1.6;
+}
+.prop-mark__ink--line {
+  stroke: var(--lp-gold);
+}
+.prop-mark__ink-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.prop-mark--violet {
+  color: var(--lp-violet);
+}
+.prop-mark--pink {
+  color: #d6337e;
+}
+.prop-mark--blue {
+  color: #2563eb;
+}
+.prop-mark--gold {
+  color: #b8791f;
+}
+
+/* ---- Dashboard fragments — real .dash component classes (dashboard.css), given just
+   the CSS variables they read rather than that scope's page-layout rules. ---- */
+.prop-dash {
+  --ac-card: #ffffff;
+  --ac-sunk: #f4f6fb;
+  --ac-ink: #16223f;
+  --ac-ink-2: #4c5a7a;
+  --ac-ink-3: #7a87a3;
+  --ac-ink-4: #a8b2c6;
+  --ac-line: #e3e8f1;
+  --ac-green: #0f9d76;
+  --ac-shadow: var(--lp-shadow);
+  --ac-radius: 18px;
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+}
+.prop-dash .stat-card {
+  height: auto;
+}
+
+/* Sized to actually breathe — dropping the card's title (see PageProps.tsx) freed up
+   room for the ring and numbers instead of a redundant label. It sits in a section's
+   header band rather than beside a full-bleed row (see Stats.tsx), so it has real
+   margin on every side at typical desktop widths; the breakpoint below is just a
+   backstop for the narrow range where that margin has already collapsed. */
+.prop-satcard {
+  width: 190px;
+}
+.prop-satcard .stat-card {
+  padding: 18px 20px 20px;
+}
+.prop-satcard .stat-meter {
+  width: 114px;
+  height: 114px;
+}
+.prop-satcard .stat-meter__track,
+.prop-satcard .stat-meter__arc {
+  stroke-width: 10;
+}
+.prop-satcard .stat-meter__label {
+  font-size: 0.66rem;
+}
+.prop-satcard .stat-meter__num {
+  font-size: 1.75rem;
+}
+.prop-satcard .score {
+  margin-top: 12px;
+  padding: 7px 14px;
+}
+.prop-satcard .score__num {
+  font-size: 1.3rem;
+}
+.prop-satcard .score__label {
+  font-size: 0.62rem;
+}
+
+@media (max-width: 1150px) {
+  .prop-satcard {
+    display: none;
+  }
+}
+
+/* ---- Tapered squiggle / sparkline doodles (see Decor.tsx) — filled shapes, so a
+   plain currentColor / --*-color custom property is all the styling they need. ---- */
+.squiggle,
+.spark {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.squiggle {
+  fill: var(--squiggle-color, currentColor);
+}
+.spark path:not(.spark__axis) {
+  stroke: var(--spark-color, currentColor);
+}
+.spark circle {
+  fill: var(--spark-color, currentColor);
+  stroke: none;
+}
+.spark__axis {
+  fill: none;
+  stroke: #16223f;
+  stroke-width: 1.6;
+  opacity: 0.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 900px) {
+  .prop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prop {
+    animation: none;
+  }
+}

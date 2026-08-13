@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import Reveal from "../shared/Reveal";
+import { PropMark, PropSat, propStyle } from "./PageProps";
 
 const STATS = [
   { end: 1000, suffix: "+", label: "Colleges analyzed" },
@@ -168,6 +169,13 @@ function CollegeShowcase({ colleges }: { colleges: Array<{ name: string; src: st
 export default function Stats() {
   return (
     <section className="section stats">
+      <PropMark icon="bulb" tone="blue" style={propStyle({ left: "3%", top: "100px", "--prop-rot": "-8deg" })} />
+      {/* Sits in the header band above the KPI grid and the college carousel, both of
+          which run edge-to-edge — the one part of this section with real margin on
+          every side, so the card can be a comfortable size without reaching into
+          either row's photos or numbers. */}
+      <PropSat style={propStyle({ right: "4%", top: "50px", "--prop-rot": "5deg", "--prop-delay": "0.8s" })} />
+
       <div className="section__inner">
         <Reveal as="p" className="section__eyebrow stats__eyebrow">
           By the numbers

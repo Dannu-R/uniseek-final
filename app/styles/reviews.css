@@ -4,8 +4,10 @@
    ================================================================ */
 
 .reviews {
+  position: relative;
   padding-block: clamp(48px, 8vh, 100px);
   overflow: hidden;
+  background: var(--lp-paper-3);
 }
 
 /* bounded, centered container so the banners never touch the screen edges */
@@ -32,7 +34,8 @@
   text-align: center;
 }
 
-/* glowing dividers framing the banners */
+/* Rules framing the banners. The glow underneath is kept but retuned to the
+   pastels — on paper it reads as a soft highlighter stroke rather than light. */
 .reviews__glow {
   position: relative;
   height: 1px;
@@ -40,7 +43,7 @@
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.55) 50%,
+    rgba(22, 34, 63, 0.16) 50%,
     transparent 100%
   );
 }
@@ -48,15 +51,15 @@
 .reviews__glow::after {
   content: "";
   position: absolute;
-  inset: -7px 0;
+  inset: -6px 0;
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(167, 139, 250, 0.55) 45%,
-    rgba(236, 72, 153, 0.45) 55%,
+    rgba(167, 139, 250, 0.4) 45%,
+    rgba(249, 168, 212, 0.35) 55%,
     transparent 100%
   );
-  filter: blur(9px);
+  filter: blur(8px);
 }
 
 .reviews__row {
@@ -117,25 +120,26 @@
   padding: 20px 22px;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.55);
-  color: #1c1c22;
+  border: 1px solid var(--lp-line);
+  box-shadow: var(--lp-shadow-sm);
+  color: var(--lp-ink);
 }
 
 .review-card__stars {
-  color: #f59e0b;
+  color: #e0951c;
   font-size: 1rem;
   letter-spacing: 2px;
 }
 
 .review-card__text {
   margin: 12px 0 14px;
-  color: #333844;
+  color: var(--lp-ink-2);
   font-size: 0.95rem;
   line-height: 1.5;
 }
 
 .review-card__name {
-  color: #6b7280;
+  color: var(--lp-ink-3);
   font-size: 0.85rem;
   font-weight: 600;
 }

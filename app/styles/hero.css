@@ -22,23 +22,26 @@
 }
 
 /* ---- Logo banner ----
-   Clear strip with prominent top/bottom rules, scrolling the tech-stack
-   logos (colors intact) with the label. Two identical groups, each a
-   full viewport wide, both translating -100% → seamless, gap-free loop. */
+   White band handing off from the hero's own white fade — no more dark strip between
+   two light sections. No panel, no rule lines: those read as a frosted box (and a hard
+   edge) against dark, but as a visible rectangle against white. The logos just sit on
+   the band now, fading out at the left/right edges as they scroll. Two identical groups,
+   each a full viewport wide, both translating -100% → seamless, gap-free loop. */
+.logo-banner-band {
+  position: relative;
+  background: #ffffff;
+  padding-top: clamp(40px, 6vh, 80px);
+}
+
 .logo-banner {
   --logo-gap: clamp(48px, 5.5vw, 100px);
   position: relative;
   width: 62.5%; /* matches the viewport within the 160% hero */
   max-width: 1400px;
-  /* extra top margin keeps it clear of the CTA capsule above */
-  margin: clamp(40px, 6vh, 80px) auto 0;
+  margin: 0 auto;
   padding-block: clamp(18px, 2vw, 30px);
   padding-inline: clamp(20px, 3vw, 44px);
-  /* soft frosted glass background */
-  background: rgba(255, 255, 255, 0.05);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-  /* blend the frosted panel back into the hero at the left & right edges */
+  /* fades the scrolling logos out at the left & right edges */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
@@ -53,39 +56,6 @@
     #000 88%,
     transparent 100%
   );
-}
-
-/* prominent top line */
-.logo-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.32) 50%,
-    transparent 100%
-  );
-}
-
-/* prominent bottom line — brighter, with a soft glow (the banner's "border") */
-.logo-banner::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent 3%,
-    rgba(255, 255, 255, 0.85) 50%,
-    transparent 97%
-  );
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
 }
 
 .logo-banner__viewport {
@@ -109,7 +79,7 @@
 /* scrolls with the logos — Inter heavy, sentence case */
 .logo-banner__label {
   flex: 0 0 auto;
-  color: var(--color-white);
+  color: #16223f;
   font-family: var(--font-inter), sans-serif;
   font-weight: 800;
   font-size: clamp(1.7rem, 2.6vw, 2.8rem);
@@ -138,8 +108,7 @@
 
 .logo-banner__item--nextjs {
   height: clamp(74px, 7.2vw, 104px);
-  /* pure-black logo → render white so it shows on the dark strip */
-  filter: brightness(0) invert(1);
+  /* pure black, native — no filter needed on a white strip */
 }
 
 .logo-banner__item--jwt {
@@ -148,8 +117,7 @@
 
 .logo-banner__item--prisma {
   height: clamp(50px, 4.8vw, 70px);
-  /* dark-navy logo → render white so it shows on the dark strip */
-  filter: brightness(0) invert(1);
+  /* dark navy, native — no filter needed on a white strip */
 }
 
 /* travels left → right */
@@ -342,50 +310,260 @@
   overflow: hidden;
   padding: calc(64px + 72px) 24px 0;
   text-align: center;
-  /* A high, soft sky rather than a flat panel: warm at the horizon, cool overhead. */
-  background:
-    radial-gradient(120% 70% at 50% 108%, #ffe9d2 0%, rgba(255, 233, 210, 0) 55%),
-    radial-gradient(90% 60% at 12% 8%, #e6dcff 0%, rgba(230, 220, 255, 0) 60%),
-    radial-gradient(90% 60% at 88% 4%, #d9e8ff 0%, rgba(217, 232, 255, 0) 58%),
-    linear-gradient(180deg, #f4f1fb 0%, #f7f4fc 45%, #eef1f9 100%);
+  /* Fallback in case the photo is slow to arrive — the same base tone the wash lands on. */
+  background: #f4f1fb;
 }
-/* The hero is the one light section on a dark page, so it has to hand over rather than
-   stop. The last stretch dissolves into the page's own black, which also takes care of
-   the product card's cut edge — it fades out instead of ending. */
+/* The last stretch dissolves into white, which also takes care of the product card's cut
+   edge — a white card fading into white space rather than getting cut off. Lands on
+   fully opaque white, matching the solid white band right below it — anything less and
+   the seam between the two shows as a hairline. */
 .hx::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 220px;
+  height: 240px;
   z-index: 3;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(5, 4, 10, 0) 0%, rgba(5, 4, 10, 0.75) 62%, #05040a 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 55%, #ffffff 100%);
 }
 
-/* A wash that lifts the very top, so the black header sits on light rather than on a
-   hard seam. */
-.hx__sky {
+/* A real campus behind the promise, shown as-is — no blur, no color adjustment. Capped
+   to a band across the top rather than the whole hero: spanning the full section forced
+   `cover` to show the entire photo top-to-bottom (no crop headroom left for framing), so
+   sky and building landed in whatever ratio the source happened to have. A shorter band
+   gives back control over how much is sky vs. building, and its own bottom fades to
+   nothing so it dissolves into the wash rather than cutting off hard. */
+.hx__photo {
   position: absolute;
-  inset: 0 0 auto;
-  height: 240px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  height: 620px;
   z-index: 0;
+  background-image: url("/glasgow-hall.jpg");
+  background-size: cover;
+  background-position: center top;
+  opacity: 0.62;
+  transform: scale(1.08);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 88%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 88%);
 }
 
-/* The drifting objects. Behind the text, never catching a click, and confined to the
+/* The hero's sky, now a translucent veil over the photo rather than a flat panel — clearest
+   right at the top, where the photo should read plainly, then a steady climb into white
+   as it nears the headline's baseline and the product card below. */
+.hx__wash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 70% at 50% 108%, rgba(255, 233, 210, 0.75) 0%, rgba(255, 233, 210, 0) 55%),
+    radial-gradient(90% 55% at 12% 4%, rgba(230, 220, 255, 0.1) 0%, rgba(230, 220, 255, 0) 50%),
+    radial-gradient(90% 55% at 88% 2%, rgba(217, 232, 255, 0.1) 0%, rgba(217, 232, 255, 0) 48%),
+    linear-gradient(180deg, rgba(244, 241, 251, 0) 0%, rgba(244, 241, 251, 0) 22%, rgba(246, 243, 251, 0.24) 48%, rgba(240, 242, 250, 0.55) 100%);
+}
+
+/* The drifting marks. Behind the text, never catching a click, and confined to the
    band around the headline — spanning the whole hero put half of them behind the product
    card where nothing could be seen of them. */
-.hx-objects {
+.hero-geo {
   position: absolute;
   inset: 0 0 auto;
-  height: 560px;
+  height: 600px;
   z-index: 1;
   pointer-events: none;
 }
-.hx-objects canvas {
-  display: block;
+
+/* Each mark: a thin geometric badge (circle / hexagon / diamond) standing in for a
+   college seal, with a flat line-art glyph — cap, book, compass, glass — centred inside.
+   Position is the same outer-thirds spread the 3D objects used. */
+.hero-geo__item {
+  position: absolute;
+  width: 104px;
+  height: 104px;
+  animation: hero-geo-drift 9s ease-in-out infinite;
+}
+
+.hero-geo__badge {
+  width: 100%;
+  height: 100%;
+  stroke: #16223f;
+  stroke-width: 1.4;
+  opacity: 0.5;
+}
+
+.hero-geo__mark {
+  fill: none;
+  stroke: #16223f;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+}
+
+.hero-geo__mark--arc {
+  opacity: 0.45;
+  stroke-dasharray: 3 5;
+}
+
+.hero-geo__mark-fill {
+  fill: #16223f;
+  stroke: none;
+  opacity: 0.8;
+}
+
+/* Each badge gets a faint pastel wash behind its ink — a sticker on a page rather than
+   a plain outline. Colors are the brand's own light variants, so the new warmth reads as
+   an extension of the palette instead of a departure from it. */
+.hero-geo__item--cap {
+  left: 6%;
+  top: 16%;
+  width: 98px;
+  height: 98px;
+  animation-duration: 8s;
+}
+.hero-geo__item--cap .hero-geo__badge {
+  stroke: #6236e8;
+  fill: rgba(167, 139, 250, 0.16);
+}
+.hero-geo__item--cap .hero-geo__mark,
+.hero-geo__item--cap .hero-geo__mark-fill {
+  stroke: #6236e8;
+  fill: #6236e8;
+}
+
+.hero-geo__item--book {
+  right: 6%;
+  top: 20%;
+  width: 114px;
+  height: 114px;
+  animation-duration: 10.5s;
+  animation-delay: -3s;
+}
+.hero-geo__item--book .hero-geo__badge {
+  fill: rgba(147, 197, 253, 0.16);
+}
+
+.hero-geo__item--compass {
+  left: 3%;
+  top: 60%;
+  width: 120px;
+  height: 120px;
+  animation-duration: 9.5s;
+  animation-delay: -1.5s;
+}
+.hero-geo__item--compass .hero-geo__badge {
+  fill: rgba(249, 168, 212, 0.16);
+}
+
+.hero-geo__item--glass {
+  right: 4%;
+  top: 56%;
+  width: 90px;
+  height: 90px;
+  animation-duration: 7.5s;
+  animation-delay: -5s;
+}
+.hero-geo__item--glass .hero-geo__badge {
+  stroke: #6236e8;
+  fill: rgba(255, 207, 134, 0.18);
+}
+.hero-geo__item--glass .hero-geo__mark {
+  stroke: #6236e8;
+}
+
+/* ---- Margin doodles ------------------------------------------------------
+   A second, lighter layer: a scrap of graph paper, a plotted trend line, a loose
+   squiggle — the kind of thing pencilled next to a page of notes. These carry the
+   hero's pastel color; the sealed marks above stay mostly ink. */
+.hero-geo__doodle-svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-geo__item--grid {
+  left: 2%;
+  top: 40%;
+  width: 72px;
+  height: 72px;
+  animation-name: hero-geo-drift-tilt;
+  animation-duration: 11s;
+  animation-delay: -7s;
+}
+.hero-geo__item--grid .hero-geo__doodle-svg {
+  stroke: #93c5fd;
+  stroke-width: 1.3;
+  opacity: 0.55;
+}
+
+/* The squiggle and graph below are generated (see Decor.tsx) rather than drawn as a
+   fixed path — filled, tapered shapes instead of a constant stroke, so both read as
+   noticeably thicker at their high points than at the crossings. */
+.hero-geo__item--squiggle {
+  right: 9%;
+  top: 45%;
+  width: 152px;
+  height: 44px;
+  animation-duration: 8.5s;
+  animation-delay: -2s;
+}
+.hero-geo__item--squiggle .squiggle {
+  opacity: 0.8;
+}
+
+.hero-geo__item--graph {
+  right: 11%;
+  top: 76%;
+  width: 108px;
+  height: 90px;
+  animation-duration: 10s;
+  animation-delay: -4.5s;
+}
+.hero-geo__item--graph .spark line,
+.hero-geo__item--graph .spark circle {
+  opacity: 0.92;
+}
+.hero-geo__item--graph .spark__axis {
+  opacity: 0.28;
+}
+
+@keyframes hero-geo-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(0, -14px) rotate(3deg);
+  }
+}
+
+/* Same drift, tilted — for the graph-paper scrap, which is pencilled in at an angle
+   rather than sitting square to the page. */
+@keyframes hero-geo-drift-tilt {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-6deg);
+  }
+  50% {
+    transform: translate(0, -14px) rotate(-2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-geo__item {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-geo {
+    display: none;
+  }
 }
 
 .hx__inner {
@@ -420,9 +598,31 @@
 .hx__title-accent {
   color: #6236e8;
 }
+/* "you" gets its own treatment: a serif italic against the sans headline, filled with
+   the brand's pink→purple gradient, and underlined with a loose hand-drawn swash rather
+   than a straight rule — the one word in the line that's dressed up rather than typeset. */
+.hx__title-em-wrap {
+  position: relative;
+  display: inline-block;
+}
 .hx__title-em {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   font-style: italic;
-  font-weight: 600;
+  font-weight: 500;
+  background: var(--gradient-fit);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.hx__title-em-swash {
+  position: absolute;
+  left: -6%;
+  bottom: -0.3em;
+  width: 112%;
+  height: 0.4em;
+  overflow: visible;
+  pointer-events: none;
 }
 
 .hx__sub {
@@ -490,7 +690,7 @@
   max-width: 1080px;
   /* Clipped, not scaled: showing the whole screenshot turns it into a picture of the
      product sitting on the page. Cutting it off is what says the product continues. */
-  max-height: 460px;
+  max-height: 620px;
   margin: 64px auto 0;
   border-radius: 18px 18px 0 0;
   border: 1px solid rgba(22, 34, 63, 0.1);
@@ -513,10 +713,6 @@
   }
   .hx__product {
     margin-top: 44px;
-  }
-  /* The objects sit off the sides of a narrow viewport, so they'd only crop badly. */
-  .hx-objects {
-    display: none;
   }
 }
 @media (max-width: 620px) {

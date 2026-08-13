@@ -3,11 +3,14 @@
    loops through colleges in the database.
    ================================================================ */
 
-/* dark-dark-gray section with a grid that fades out toward the edges */
+/* This section already had the page's best idea in it — a ruled grid fading
+   out toward the edges. It just needed inverting: dark ruling on paper rather
+   than white ruling on near-black. It's the same graph paper the hero has a
+   scrap of, at full-section scale. */
 .stats {
   position: relative;
   overflow: hidden;
-  background: #121216;
+  background: var(--lp-paper);
   /* the bottom divider is the section's bottom edge, so the grid can't
      leak past it into empty padding */
   padding-bottom: 0;
@@ -19,11 +22,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.12) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-image: linear-gradient(var(--lp-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lp-grid) 1px, transparent 1px);
   background-size: 46px 46px;
   /* concentrated in the center; fades well before the edges */
   -webkit-mask-image: radial-gradient(
@@ -66,7 +66,8 @@
   padding-inline: clamp(8px, 2vw, 24px);
 }
 
-/* glowing dividers between the columns on wider screens */
+/* Ruled dividers between the columns — no glow, just a line that fades out
+   top and bottom, like a column rule in a printed table. */
 .stat + .stat::before {
   content: "";
   position: absolute;
@@ -77,12 +78,10 @@
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 255, 255, 0.5) 18%,
-    rgba(255, 255, 255, 0.5) 82%,
+    rgba(22, 34, 63, 0.16) 18%,
+    rgba(22, 34, 63, 0.16) 82%,
     transparent 100%
   );
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.55),
-    0 0 4px rgba(255, 255, 255, 0.5);
 }
 
 .stat__value {
@@ -91,14 +90,12 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: #ffffff;
-  text-shadow: 0 0 26px rgba(255, 255, 255, 0.28),
-    0 0 10px rgba(167, 139, 250, 0.28);
+  color: var(--lp-ink);
   font-variant-numeric: tabular-nums;
 }
 
 .stat__label {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--lp-ink-3);
   font-size: clamp(0.85rem, 1.1vw, 1.05rem);
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -112,7 +109,7 @@
 .colleges__caption {
   margin: 0 0 14px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--lp-ink-3);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -126,15 +123,15 @@
   height: clamp(260px, 34vw, 420px);
   overflow: hidden;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  /* gradient placeholder base (shown behind the fading slides) */
+  border: 1px solid var(--lp-line);
+  /* pastel placeholder base (shown behind the fading slides) */
   background: linear-gradient(
     140deg,
-    rgba(124, 58, 237, 0.5),
-    rgba(236, 72, 153, 0.36) 55%,
-    rgba(59, 130, 246, 0.42)
+    rgba(167, 139, 250, 0.35),
+    rgba(249, 168, 212, 0.28) 55%,
+    rgba(147, 197, 253, 0.32)
   );
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: var(--lp-shadow);
 }
 
 .college-slide {
@@ -145,9 +142,9 @@
   /* per-slide placeholder so a missing photo still looks intentional */
   background: linear-gradient(
     140deg,
-    rgba(124, 58, 237, 0.55),
-    rgba(236, 72, 153, 0.4) 55%,
-    rgba(59, 130, 246, 0.45)
+    rgba(167, 139, 250, 0.38),
+    rgba(249, 168, 212, 0.3) 55%,
+    rgba(147, 197, 253, 0.35)
   );
 }
 
@@ -197,8 +194,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
 }
 
-/* glowing separator at the very bottom of the section */
-/* white divider that spans the full screen width */
+/* Full-bleed rule closing the section — an ink hairline rather than a glow. */
 .stats__glow {
   position: relative;
   left: 50%;
@@ -209,24 +205,10 @@
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.72) 5%,
-    rgba(255, 255, 255, 0.72) 95%,
+    rgba(22, 34, 63, 0.14) 5%,
+    rgba(22, 34, 63, 0.14) 95%,
     transparent 100%
   );
-}
-
-.stats__glow::after {
-  content: "";
-  position: absolute;
-  inset: -6px 0;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.35) 5%,
-    rgba(255, 255, 255, 0.35) 95%,
-    transparent 100%
-  );
-  filter: blur(7px);
 }
 
 @media (max-width: 640px) {
@@ -237,7 +219,7 @@
   .stat + .stat {
     padding-top: clamp(26px, 6vw, 40px);
   }
-  /* stacked → glowing horizontal divider along the top */
+  /* stacked → ruled horizontal divider along the top */
   .stat + .stat::before {
     left: 12%;
     right: 12%;
@@ -248,8 +230,8 @@
     background: linear-gradient(
       to right,
       transparent 0%,
-      rgba(255, 255, 255, 0.5) 18%,
-      rgba(255, 255, 255, 0.5) 82%,
+      rgba(22, 34, 63, 0.16) 18%,
+      rgba(22, 34, 63, 0.16) 82%,
       transparent 100%
     );
   }

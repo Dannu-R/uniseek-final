@@ -27,10 +27,12 @@ function Group() {
 export default function LogoBanner() {
   // two identical groups → seamless, gap-free loop
   return (
-    <div className="logo-banner" aria-hidden="true">
-      <div className="logo-banner__viewport">
-        <Group />
-        <Group />
+    <div className="logo-banner-band">
+      <div className="logo-banner" aria-hidden="true">
+        <div className="logo-banner__viewport">
+          <Group />
+          <Group />
+        </div>
       </div>
     </div>
   );

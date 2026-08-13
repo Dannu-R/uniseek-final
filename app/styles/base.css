@@ -14,7 +14,7 @@ body {
   /* `clip`, not `hidden`: hidden turns these into scroll containers, and a sticky
      descendant (the dashboard view header) then has nothing to stick to. */
   overflow-x: clip;
-  background: var(--color-black);
+  background: var(--lp-paper);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   scroll-behavior: smooth;
 }
@@ -32,15 +32,30 @@ body {
   }
 }
 
-/* page background eases from black (hero) into deep blue/purple lower down */
+/* The page is paper. Individual sections paint their own band (white / pale
+   lavender / cool grey) so the scroll has rhythm; this is just the ground they
+   sit on and what shows through at the very bottom. */
 body {
-  background: linear-gradient(
-    180deg,
-    var(--color-black) 0%,
-    var(--color-black) 55%,
-    #0a0a24 82%,
-    #16123f 100%
-  );
+  background: var(--lp-paper);
+  color: var(--lp-ink-2);
+}
+
+/* ---- Graph paper ----
+   The hero has a scrap of it as a drifting doodle; at section scale it becomes
+   the page's texture. Applied via a pseudo-element so a section can carry it
+   without giving up its own background, and always masked so it dissolves
+   rather than ending on a hard edge. */
+.paper-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(var(--lp-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lp-grid) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(92% 92% at 50% 50%, #000 35%, transparent 78%);
+  mask-image: radial-gradient(92% 92% at 50% 50%, #000 35%, transparent 78%);
 }
 
 /* ---- Scroll reveal ----
@@ -71,7 +86,9 @@ body {
   padding-inline: clamp(20px, 5vw, 44px);
 }
 
-/* white glowing divider between sections */
+/* Divider between sections. On the old dark page this was a white rule with a
+   blurred glow behind it; on paper a glow reads as a smudge, so it's now a
+   ruled line that fades at both ends — a pencil rule across a page. */
 .section-break {
   position: relative;
   height: 1px;
@@ -81,22 +98,9 @@ body {
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.6) 50%,
+    rgba(22, 34, 63, 0.16) 50%,
     transparent 100%
   );
-}
-
-.section-break::after {
-  content: "";
-  position: absolute;
-  inset: -6px 0;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.35) 50%,
-    transparent 100%
-  );
-  filter: blur(8px);
 }
 
 .section__inner {
@@ -106,28 +110,44 @@ body {
   margin: 0 auto;
 }
 
+/* The eyebrow is now a small pill rather than bare gradient text — it echoes
+   the hero's "Built for the college search" chip, which is the one element
+   every section can repeat to tie the page together. */
 .section__eyebrow {
-  margin: 0 0 16px;
-  font-size: 0.78rem;
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(98, 54, 232, 0.18);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  /* pink→purple gradient text */
-  background: var(--gradient-fit);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: #5b3ad1;
   width: max-content;
 }
 
 .section__title {
   margin: 0 0 clamp(40px, 6vh, 76px);
   max-width: 20ch;
-  color: var(--color-white);
+  color: var(--lp-ink);
   font-family: var(--font-stack), var(--font-inter), sans-serif;
   font-weight: 600;
   font-size: clamp(2rem, 4vw, 3.25rem);
   line-height: 1.08;
   letter-spacing: -0.02em;
+}
+
+/* The hero sets one word of its headline in gradient serif italic; section
+   titles get the same treatment so the voice carries down the page. */
+.title-accent {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  background: var(--lp-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

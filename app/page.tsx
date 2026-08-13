@@ -10,7 +10,8 @@ import Pricing from "./components/landing/Pricing";
 import Reviews from "./components/landing/Reviews";
 import Footer from "./components/landing/Footer";
 import HeroDuo from "./components/landing/HeroDuo";
-import HeroObjects from "./components/landing/HeroObjects";
+import HeroGeo from "./components/landing/HeroGeo";
+import { Squiggle } from "./components/landing/Decor";
 
 export default function Home() {
   return (
@@ -21,12 +22,13 @@ export default function Home() {
       {/* ---- Hero ------------------------------------------------------------
           Centred: eyebrow, headline, one line of copy, the two actions, and then
           the product itself rising into the frame and cut off by the fold — the
-          point being that there's a real thing behind the promise. Uniseek's own
-          objects drift in the outer thirds, framing that column without crossing
-          it. */}
+          point being that there's a real thing behind the promise. Flat academic
+          marks (cap, book, compass, glass) drift in the outer thirds, framing that
+          column without crossing it. */}
       <section className="hx">
-        <div className="hx__sky" aria-hidden="true" />
-        <HeroObjects />
+        <div className="hx__photo" aria-hidden="true" />
+        <div className="hx__wash" aria-hidden="true" />
+        <HeroGeo />
 
         <div className="hx__inner">
           <p className="hx__eyebrow">Built for the college search</p>
@@ -35,7 +37,20 @@ export default function Home() {
             Discover the college
             <br />
             that <span className="hx__title-accent">fits</span>{" "}
-            <em className="hx__title-em">you</em>.
+            <span className="hx__title-em-wrap">
+              <em className="hx__title-em">you</em>
+              <span className="hx__title-em-swash" aria-hidden="true">
+                <Squiggle
+                  width={112}
+                  height={26}
+                  waves={1.7}
+                  phase={0.9}
+                  baseThickness={2.5}
+                  peakThickness={12}
+                  color="#f9a8d4"
+                />
+              </span>
+            </span>.
           </h1>
 
           <p className="hx__sub">

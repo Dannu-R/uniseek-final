@@ -1,10 +1,12 @@
 /* ================================================================
-   Product tour ("how it works") — step selector + rotating carousel
+   Product tour ("how it works") — step selector + screenshot stage
    ================================================================ */
 
 /* top padding removed so the divider sits at the very top of the section */
 .product {
+  position: relative;
   padding-block-start: 0;
+  background: var(--lp-paper-2);
 }
 
 .product__layout {
@@ -21,28 +23,33 @@
   gap: 6px;
 }
 
+/* The active step is a white card lifted off the band, rather than a faint
+   white film over black — on paper, "selected" has to mean brighter and
+   raised, not less transparent. */
 .product-step {
   display: flex;
   align-items: flex-start;
   gap: 16px;
   padding: 16px 18px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 14px;
   background: none;
   text-align: left;
   cursor: pointer;
-  color: var(--color-white);
-  opacity: 0.5;
-  transition: opacity 0.3s ease, background-color 0.3s ease;
+  opacity: 0.62;
+  transition: opacity 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-step:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .product-step.is-active {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--lp-paper);
+  border-color: var(--lp-line);
+  box-shadow: var(--lp-shadow-sm);
 }
 
 .product-step__num {
@@ -50,15 +57,11 @@
   font-family: var(--font-stack), var(--font-inter), sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--lp-ink-3);
 }
 
 .product-step.is-active .product-step__num {
-  background: var(--gradient-fit);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--lp-violet);
 }
 
 .product-step__text {
@@ -70,69 +73,55 @@
 .product-step__title {
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--color-white);
+  color: var(--lp-ink);
 }
 
 .product-step__body {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--lp-ink-2);
 }
 
 /* ---- Right: horizontally rotating carousel ---- */
 .product__stage {
   position: relative;
-  height: clamp(260px, 36vh, 400px);
+  height: clamp(200px, 27vh, 310px);
   perspective: 1400px;
   transform-style: preserve-3d;
 }
 
+/* 1.75:1 rather than the old 1.42:1 — app screens are wide, and the comparison table in
+   particular is wide and short, so a taller frame left it sitting in dead space. Width
+   and height are both driven off vw so the ratio stays locked at every viewport and the
+   screenshots always fill the slide exactly. */
 .product-slide {
   position: absolute;
   inset: 0;
   margin: auto;
   width: clamp(240px, 32vw, 440px);
-  height: clamp(190px, 30vh, 310px);
+  height: clamp(137px, 18.29vw, 251px);
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
 }
 
-/* frosted placeholder — swap for real screenshots later */
+/* Every screenshot is cut to this slide's ratio, so the image fills it edge to edge.
+   The border and shadow are what separate a dark screenshot (the quiz) from the dark
+   section behind it. */
 .product-slide__media {
+  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 22px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: linear-gradient(
-    150deg,
-    rgba(139, 92, 246, 0.18),
-    rgba(236, 72, 153, 0.12)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--lp-line);
+  box-shadow: var(--lp-shadow-lg);
 }
 
-.product-slide__tag {
-  font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: var(--gradient-fit);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.product-slide__label {
-  color: var(--color-white);
-  font-size: 1.05rem;
-  font-weight: 600;
+.product-slide__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 900px) {

@@ -2,6 +2,14 @@
    What is Uniseek — short plain-language intro: quiz + AI → your fit
    ================================================================ */
 
+/* The pale-lavender band. Sections alternate paper tones down the page so the
+   scroll has rhythm without anyone needing a divider between every one. */
+.whatis {
+  position: relative;
+  overflow: hidden;
+  background: var(--lp-paper-2);
+}
+
 /* centered logo above the heading */
 .whatis__logo {
   display: flex;
@@ -11,20 +19,17 @@
 .whatis__logo svg {
   height: clamp(44px, 5vw, 68px);
   width: auto;
-  color: #ffffff;
-  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.28));
+  color: var(--lp-violet);
 }
 
-/* clip the ribbons to the section */
-.whatis {
-  overflow: hidden;
-}
-
-/* ribbons tilted the OTHER way (vs. pricing's +60°) — a gentle drift */
+/* The ribbons were built to glow on black (screen-blended, saturated). On
+   paper that reads as a smudge, so here they're soft pastel washes instead:
+   heavily blurred, low opacity, multiplied into the page like watercolour. */
 .ribbons--whatis {
   z-index: 0;
-  opacity: 0.32;
-  filter: blur(24px) saturate(1.2);
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  filter: blur(60px) saturate(0.75);
   transform-origin: center;
   transform: rotate(-30deg) scale(2.2);
 }
@@ -38,13 +43,19 @@
   margin-right: auto;
   text-align: center;
 }
+.whatis .section__eyebrow {
+  display: block;
+}
 
 .whatis__title {
   max-width: 22ch;
 }
 
 .whatis__accent {
-  background: var(--gradient-fit);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  background: var(--lp-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -55,54 +66,78 @@
   max-width: 60ch;
   margin: clamp(20px, 3vh, 32px) auto 0;
   text-align: center;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--lp-ink-2);
   font-size: clamp(1.05rem, 1.4vw, 1.3rem);
   line-height: 1.6;
 }
 .whatis__lead strong {
-  color: #ffffff;
+  color: var(--lp-ink);
   font-weight: 600;
 }
 
 .whatis__steps {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(16px, 2vw, 28px);
   margin-top: clamp(40px, 6vh, 72px);
 }
 
+/* Cards as index cards: white, hairline-ruled, softly lifted. */
 .whatis-step {
+  position: relative;
   text-align: left;
-  padding: clamp(20px, 2.2vw, 30px);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 18px;
+  background: var(--lp-paper);
+  border: 1px solid var(--lp-line);
+  box-shadow: var(--lp-shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.whatis-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--lp-shadow);
 }
 
+/* The number sits in a pastel disc — the hero's badge motif at small scale.
+   Each card takes a different pastel so the three read as a set. */
 .whatis-step__num {
-  display: block;
-  margin-bottom: 10px;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(98, 54, 232, 0.18);
+  background: var(--lp-tint-violet);
   font-family: var(--font-stack), var(--font-inter), sans-serif;
-  font-size: 1.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  background: var(--gradient-fit);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--lp-violet);
+}
+.whatis-step:nth-child(2) .whatis-step__num {
+  background: var(--lp-tint-blue);
+  border-color: rgba(59, 130, 246, 0.22);
+  color: #2563eb;
+}
+.whatis-step:nth-child(3) .whatis-step__num {
+  background: var(--lp-tint-pink);
+  border-color: rgba(214, 51, 126, 0.2);
+  color: #d6337e;
 }
 
 .whatis-step__title {
   margin: 0 0 8px;
   font-size: clamp(1.05rem, 1.3vw, 1.25rem);
-  font-weight: 600;
-  color: #ffffff;
+  font-weight: 650;
+  color: var(--lp-ink);
 }
 
 .whatis-step__body {
   margin: 0;
-  color: rgba(255, 255, 255, 0.66);
+  color: var(--lp-ink-2);
   font-size: clamp(0.9rem, 1.05vw, 1rem);
   line-height: 1.55;
 }
@@ -110,5 +145,11 @@
 @media (max-width: 760px) {
   .whatis__steps {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatis-step {
+    transition: none;
   }
 }

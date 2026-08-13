@@ -2,6 +2,7 @@
 import Reveal from "../shared/Reveal";
 import Ribbons from "../shared/Ribbons";
 import UniseekMark from "@/app/components/UniseekMark";
+import { PropNote, PropMark, PropPills, PropStat, propStyle } from "./PageProps";
 
 const STEPS = [
   {
@@ -26,6 +27,17 @@ export default function WhatIsUniseek() {
     <section className="section whatis">
       {/* flowing ribbons in the background, tilted the other way */}
       <Ribbons className="ribbons--whatis" />
+
+      <PropNote tone="yellow" style={propStyle({ left: "4%", top: "120px", "--prop-rot": "-7deg" })}>
+        Answer honestly — the AI reads between the lines.
+      </PropNote>
+      <PropMark icon="target" tone="violet" style={propStyle({ right: "5%", top: "90px", "--prop-rot": "9deg" })} />
+      <PropStat
+        value="3"
+        label="Simple steps"
+        style={propStyle({ left: "3%", bottom: "50px", "--prop-rot": "-4deg", "--prop-delay": "1.4s" })}
+      />
+      <PropPills style={propStyle({ right: "3%", bottom: "40px", "--prop-rot": "5deg", "--prop-delay": "0.6s" })} />
 
       <div className="section__inner">
         <Reveal className="whatis__logo">

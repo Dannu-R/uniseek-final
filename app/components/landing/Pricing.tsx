@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Reveal from "../shared/Reveal";
 import Ribbons from "../shared/Ribbons";
+import { PropNote, propStyle } from "./PageProps";
 
 const PLANS = [
   {
@@ -70,6 +71,10 @@ export default function Pricing() {
     <section className="section pricing" id="pricing">
       {/* diagonal waving ribbons flowing from the top-right */}
       <Ribbons className="ribbons--pricing" />
+
+      <PropNote tone="pink" style={propStyle({ right: "4%", top: "100px", "--prop-rot": "5deg" })}>
+        Most students start on Free.
+      </PropNote>
 
       <div className="section__inner">
         <Reveal as="p" className="section__eyebrow">

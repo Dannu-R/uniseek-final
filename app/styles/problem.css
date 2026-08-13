@@ -4,7 +4,8 @@
 
 .section__problem {
   padding-top: clamp(72px, 11vh, 150px);
-  margin-bottom: 10rem;
+  padding-bottom: 10rem;
+  background: var(--lp-paper);
 }
 
 .problem__inner {
@@ -17,15 +18,16 @@
   flex: 1 1 420px;
 }
 
-.problem .section__title {
+.section__problem .section__title {
   margin-bottom: clamp(20px, 3vh, 30px);
   max-width: 16ch;
+  color: var(--lp-ink);
 }
 
 .problem__body {
   margin: 0 0 18px;
   max-width: 54ch;
-  color: rgba(255, 255, 255, 0.66);
+  color: var(--lp-ink-2);
   font-size: clamp(1rem, 1.15vw, 1.15rem);
   line-height: 1.65;
 }
@@ -47,7 +49,8 @@
   flex: 0 0 auto;
 }
 
-/* colored glow behind the panel so the frosted glass catches Uniseek's hues */
+/* colored glow behind the panel so the frosted glass catches Uniseek's hues — a bit
+   richer than before, since it now has to show up against white instead of black. */
 .problem__visual::before {
   content: "";
   position: absolute;
@@ -56,9 +59,9 @@
   pointer-events: none;
   background: radial-gradient(
     58% 58% at 50% 45%,
-    rgba(139, 92, 246, 0.42),
-    rgba(236, 72, 153, 0.24) 45%,
-    rgba(59, 130, 246, 0.14) 70%,
+    rgba(139, 92, 246, 0.5),
+    rgba(236, 72, 153, 0.32) 45%,
+    rgba(59, 130, 246, 0.2) 70%,
     transparent 80%
   );
   filter: blur(42px);
@@ -69,11 +72,11 @@
   z-index: 1;
   border-radius: 30px;
   padding: clamp(14px, 1.8vw, 28px);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid var(--lp-line);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--lp-shadow);
 }
 
 /* the WebGL canvas holding the 3D magnifying glass */
@@ -81,6 +84,7 @@
   width: clamp(260px, 30vw, 400px);
   height: clamp(260px, 30vw, 400px);
 }
+
 
 @media (max-width: 900px) {
   .problem__inner {

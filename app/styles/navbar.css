@@ -2,8 +2,10 @@
    Top bar & navigation
    ================================================================ */
 
-/* ---- Nav bar ----
-   Full-width solid bar flush to the top, not rounded. */
+/* ---- Nav shell ----
+   Not a bar itself — a positioning grid for three separate floating pieces: the
+   wordmark, the glass nav pill, and the auth actions. Nothing here paints a
+   background; each piece decides its own. */
 .navbar {
   position: fixed;
   top: 0;
@@ -11,93 +13,77 @@
   right: 0;
   z-index: 50;
   height: 64px;
-  background: #000000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 6px 20px -14px rgba(0, 0, 0, 0.8);
-}
-
-/* content stays centered — elements sit toward the middle */
-.navbar__inner {
-  max-width: 1400px;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
   padding-inline: clamp(20px, 4vw, 48px);
 }
 
-/* filler nav links */
-.navbar__links {
+/* ---- Brand, top-left, plain on the page ------------------------------- */
+.navbar__brand {
+  justify-self: start;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.6vw, 28px);
+  gap: 10px;
+  color: #16223f;
+  text-decoration: none;
+}
+.navbar__brand-mark {
+  height: 24px;
+  width: auto;
+  color: #6236e8;
+}
+.navbar__brand-name {
+  font-family: var(--font-stack), var(--font-inter), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ---- The liquid-glass pill, dead centre --------------------------------
+   Frosted and translucent regardless of what's behind it — the hero photo, the
+   headline, a dark section further down the page — so the nav reads the same
+   everywhere. The gradient + inset highlight is the "glass": brighter along the
+   top edge, as if catching light, with a soft shadow underneath for lift. */
+.navbar__glass {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1vw, 14px);
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.32));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 30px -8px rgba(22, 34, 63, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(22, 34, 63, 0.04);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
 }
 
 .navbar__link {
-  padding: 8px 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(22, 34, 63, 0.68);
   font: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .navbar__link:hover {
-  color: var(--color-white);
+  color: #16223f;
+  background: rgba(255, 255, 255, 0.5);
 }
 
+/* ---- Auth actions, top-right, plain on the page ------------------------ */
 .navbar__actions {
+  justify-self: end;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-/* log in — ghost button */
-.navbar__login {
-  padding: 9px 16px;
-  background: none;
-  border: none;
-  border-radius: 999px;
-  color: var(--color-white);
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.navbar__login:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* sign up — solid pill */
-.navbar__signup {
-  padding: 9px 20px;
-  background: var(--color-white);
-  border: none;
-  border-radius: 999px;
-  color: #180f30;
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.navbar__signup:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px -6px rgba(255, 255, 255, 0.5);
-}
-
-/* ---- Refined right-side actions --------------------------------------- */
-.navbar__actions {
   gap: 10px;
 }
 .navbar__actions form {
@@ -122,13 +108,14 @@
     transform 0.18s ease, box-shadow 0.18s ease;
 }
 .nav-pill--ghost {
-  color: rgba(255, 255, 255, 0.82);
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.045);
+  color: #16223f;
+  border-color: rgba(22, 34, 63, 0.14);
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 .nav-pill--ghost:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.8);
 }
 .nav-pill--primary {
   color: #fff;
@@ -144,7 +131,7 @@
 .nav-divider {
   width: 1px;
   height: 26px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(22, 34, 63, 0.14);
   margin: 0 2px;
 }
 
@@ -155,8 +142,10 @@
   gap: 9px;
   padding: 5px 14px 5px 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(22, 34, 63, 0.12);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 .nav-user__avatar {
   width: 30px;
@@ -176,7 +165,7 @@
 .nav-user__name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #fff;
+  color: #16223f;
   max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -190,24 +179,29 @@
   width: 38px;
   height: 38px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.045);
-  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(22, 34, 63, 0.14);
+  background: rgba(255, 255, 255, 0.55);
+  color: rgba(22, 34, 63, 0.68);
   cursor: pointer;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 .nav-iconbtn:hover {
   background: rgba(236, 72, 153, 0.14);
   border-color: rgba(236, 72, 153, 0.4);
-  color: #fff;
+  color: #16223f;
 }
 
 @media (max-width: 720px) {
-  .navbar__links {
+  .navbar__glass {
     display: none;
   }
 }
 @media (max-width: 560px) {
+  .navbar__brand-name {
+    display: none;
+  }
   /* Tighten identity to just the avatar on very small screens. */
   .nav-user__name,
   .nav-divider {

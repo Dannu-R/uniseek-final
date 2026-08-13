@@ -1,10 +1,11 @@
 /* ================================================================
-   Footer — a solid black block, deliberately distinct from the
-   deep blue/purple page background above it
+   Footer — the one dark block on a light page. Set in the theme's own ink
+   navy rather than pure black, so it reads as the bottom of this design
+   rather than a hole cut in it.
    ================================================================ */
 
 .footer {
-  background: #000; /* completely black — does not blend with the page */
+  background: var(--lp-ink);
   color: rgba(255, 255, 255, 0.7);
   padding: clamp(52px, 8vh, 96px) clamp(20px, 5vw, 44px) clamp(28px, 4vh, 44px);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
