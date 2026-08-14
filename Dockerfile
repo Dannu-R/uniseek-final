@@ -12,6 +12,10 @@ RUN apk add --no-cache openssl libc6-compat
 COPY package*.json ./
 RUN npm ci
 COPY . .
+# Real scoring in the deployed app: NEXT_PUBLIC_* is inlined at build time, so this
+# must be set BEFORE `npm run build` (runtime env vars can't change it). Flip to
+# "true" (or remove) to fall back to the canned placeholder list.
+ENV NEXT_PUBLIC_USE_PLACEHOLDER_RESULTS=false
 RUN npx prisma generate && npm run build
 # Bundle the TS seed into a self-contained CJS file so the runtime image can run it
 # with plain `node` (no tsx). @prisma/client stays external — it's shipped separately.

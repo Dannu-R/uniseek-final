@@ -40,6 +40,9 @@ export default {
     // Used by middleware to gate protected routes. Returning false on a protected
     // route redirects the visitor to the sign-in page with a callbackUrl.
     authorized({ auth, request: { nextUrl } }) {
+      // LOCAL-ONLY: skip the sign-in gate on localhost. Guarded by DEV_NO_AUTH, which is
+      // set only in local .env (never in the deploy workflow), so production still gates.
+      if (process.env.DEV_NO_AUTH === "true") return true;
       if (!isProtected(nextUrl.pathname)) return true;
       return !!auth?.user;
     },
