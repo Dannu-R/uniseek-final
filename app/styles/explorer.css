@@ -13,6 +13,85 @@
 
 .explorer--inline {
   display: block;
+  /* The dossier's utility voice: field labels, tabs and stamps are set in monospace, so
+     the page reads like a reviewed applicant file rather than a marketing card grid. */
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+}
+
+/* ---- Dossier: field labels in monospace, headers as filed sections ------- */
+.ex-card__title {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+}
+.ex-kpi__label,
+.ex-stat__label,
+.ex-snapshot__eyebrow,
+.rb__label,
+.rb__bandnote,
+.ex-donut__label {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+}
+/* A hairline under each header, like the rule beneath a form's section heading. */
+.ex-card__head {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ac-line);
+}
+.ex-bento .ex-card--fit .ex-card__head,
+.ex-bento .ex-card--consider .ex-card__head {
+  border-bottom-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ---- The verdict stamp (hero signature) --------------------------------- */
+.ex-hero {
+  position: relative;
+}
+.ex-hero__top {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-bottom: 26px;
+}
+.ex-hero__top .ex-hero__kpis {
+  flex: 1;
+  margin-bottom: 0;
+}
+.ex-stamp {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 11px 22px 9px;
+  border: 3px solid currentColor;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  transform: rotate(-8deg);
+  opacity: 0.9;
+  color: var(--ac-violet);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  text-align: center;
+}
+.ex-stamp--reach {
+  color: var(--ac-pink);
+}
+.ex-stamp--target {
+  color: var(--ac-violet);
+}
+.ex-stamp--safety {
+  color: var(--ac-green);
+}
+.ex-stamp__band {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.ex-stamp__sub {
+  font-size: 0.54rem;
+  letter-spacing: 0.22em;
 }
 
 /* ---- Status line -------------------------------------------------------- */
@@ -56,6 +135,79 @@
   padding-bottom: 28px;
 }
 
+/* ---- Hero (Where you stand) --------------------------------------------- */
+/* The one dominant tile. Band-tinted so reach/match/safety reads at a glance, with the
+   headline KPIs blown up big above the dial — sized by importance, not content volume,
+   so the page opens on a clear focal point instead of a strip of equal tiles. */
+.ex-hero--reach {
+  --band: var(--ac-pink);
+  --band-soft: #fdeef4;
+}
+.ex-hero--target {
+  --band: var(--ac-violet);
+  --band-soft: var(--ac-violet-soft);
+}
+.ex-hero--safety {
+  --band: var(--ac-green);
+  --band-soft: var(--ac-green-soft);
+}
+.ex-hero {
+  margin-bottom: 20px;
+  padding: 28px 28px 30px;
+  background:
+    linear-gradient(rgba(98, 54, 232, 0.05) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(90deg, rgba(98, 54, 232, 0.05) 1px, transparent 1px) 0 0 / 30px 30px,
+    radial-gradient(130% 120% at 0% 0%, var(--ac-violet-soft), transparent 62%),
+    var(--ac-card);
+  border-color: color-mix(in srgb, var(--ac-violet) 24%, var(--ac-line));
+  box-shadow:
+    0 1px 2px rgba(22, 34, 63, 0.05),
+    0 26px 52px -32px color-mix(in srgb, var(--ac-violet) 48%, transparent);
+}
+.ex-hero .ex-card__icon {
+  background: color-mix(in srgb, var(--ac-violet) 15%, #fff);
+  color: var(--ac-violet);
+}
+.ex-hero__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+.ex-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--ac-line);
+  box-shadow: 0 12px 28px -18px rgba(20, 12, 54, 0.42);
+}
+.ex-kpi__label {
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.ex-kpi__value {
+  font-size: 2.6rem;
+  font-weight: 820;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--ac-ink);
+}
+.ex-kpi--reach .ex-kpi__value {
+  color: var(--ac-pink);
+}
+.ex-kpi--target .ex-kpi__value {
+  color: var(--ac-violet);
+}
+.ex-kpi--safety .ex-kpi__value {
+  color: var(--ac-green);
+}
+
 .ex-card__head {
   display: flex;
   align-items: center;
@@ -86,6 +238,38 @@
   text-transform: uppercase;
   color: var(--ac-ink-3);
 }
+
+/* Per-section accent — the same "colour = section" language as the home tab's cards.
+   Each bento section carries a meaningful hue on its top rule, icon badge and label so
+   the parts of the page are identifiable at a glance. The admissions hero above the bento
+   is deliberately left neutral (it's the feature), so this scopes to .ex-bento only. */
+/* Violet stays the anchor (fit + the tall EC panel); the supporting tiles each carry a
+   meaningful accent — green for cost, blue for student life, amber for the caution tile —
+   so there's measured colour variety without returning to a clashing five-hue grid. */
+.ex-card--fit,
+.ex-card--ec {
+  --sec: var(--ac-violet);
+}
+.ex-card--cost {
+  --sec: var(--ac-green);
+}
+.ex-card--life {
+  --sec: var(--ac-blue);
+}
+.ex-card--consider {
+  --sec: var(--ac-amber);
+}
+.ex-bento .ex-card {
+  border-top: 3px solid var(--sec, var(--ac-line));
+}
+.ex-bento .ex-card__icon {
+  background: color-mix(in srgb, var(--sec) 13%, #fff);
+  color: var(--sec);
+}
+.ex-bento .ex-card__title {
+  color: var(--sec);
+}
+
 /* A button, not the whole card. Making the card itself the control meant the only way
    to read a section was to be one stray click from a panel opening over it. */
 .ex-card__src {
@@ -139,23 +323,32 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 .ex-point {
-  position: relative;
-  padding-left: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.5;
 }
-.ex-point::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.58em;
-  width: 6px;
-  height: 6px;
-  background: var(--ac-amber);
-  transform: rotate(45deg);
+.ex-point__ic {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--sec) 13%, #fff);
+  color: var(--sec);
+}
+.ex-point__ic svg {
+  width: 17px;
+  height: 17px;
+}
+.ex-point__text {
+  min-width: 0;
+  padding-top: 3px;
 }
 .ex-point__label {
   font-weight: 600;
@@ -164,18 +357,430 @@
 .ex-point__note {
   color: var(--ac-ink-3);
 }
+/* On the solid tiles the glyph chip goes translucent-white so it reads on the dark fill. */
+.ex-bento .ex-card--fit .ex-point__ic,
+.ex-bento .ex-card--consider .ex-point__ic {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+/* The hero's admissions points span the full (wide) width, so lay them two-across to
+   fill it instead of stranding a column of empty space on the right. */
+.ex-hero .ex-points {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 34px;
+}
+@media (max-width: 760px) {
+  .ex-hero .ex-points {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
 /* ---- Bento -------------------------------------------------------------- */
-/* align-items: start is the whole point of this grid. Stretched to a shared row height,
-   the shorter sections (Cost especially) came out as a third of a screen of white. */
+/* A deliberate two-column composition, not a ragged auto-flow grid. The wider main
+   column holds the two load-bearing sections (why-it-fits, then the activity read); the
+   narrower side column stacks the three supporting ones. Each column is its own flex
+   stack, so cards butt cleanly against each other instead of leaving masonry gaps. */
 .ex-bento {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: 20px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(120px, auto);
+  gap: 18px;
+  /* Extreme proportion contrast: EC is a full-height portrait column, FIT a large square
+     anchor, LIFE a tall panel, COST a compact block and CONSIDER a wide short banner —
+     tiles that interlock across different row-spans rather than tidy equal rows. */
+  grid-template-areas:
+    "fit  fit  fit  fit  fit  life life life ec   ec   ec   ec"
+    "fit  fit  fit  fit  fit  life life life ec   ec   ec   ec"
+    "cost cost cost cost cost cost cons cons cons cons cons cons";
+}
+.ex-card--fit {
+  grid-area: fit;
+}
+.ex-card--cost {
+  grid-area: cost;
+}
+.ex-card--life {
+  grid-area: life;
 }
 .ex-card--ec {
-  grid-column: span 2;
+  grid-area: ec;
+}
+.ex-card--consider {
+  grid-area: cons;
+}
+/* Banners hug their content instead of stretching to the row height, so the shorter one
+   doesn't trail empty colour at its foot. */
+.ex-bento .ex-card--cost,
+.ex-bento .ex-card--consider {
+  align-self: start;
+}
+
+/* ---- Heterogeneous fills: each tile its own character ------------------- */
+/* Fit — the verdict — is a solid violet anchor (white type); Things-to-consider is an
+   ink caution tile; Student life is a soft blue surface; Cost and EC stay light with
+   their own accent + data viz. No two boxes feel the same. */
+.ex-bento .ex-card--fit {
+  border: none;
+  color: #fff;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 30px 30px,
+    radial-gradient(72% 60% at 92% 2%, rgba(255, 255, 255, 0.24), transparent 55%),
+    radial-gradient(95% 85% at 6% 112%, rgba(40, 16, 100, 0.6), transparent 60%),
+    linear-gradient(140deg, #6236e8 0%, #7c4ff0 55%, #8f5bf5 100%);
+  box-shadow:
+    0 1px 2px rgba(22, 34, 63, 0.06),
+    0 30px 56px -26px rgba(98, 54, 232, 0.95);
+}
+.ex-bento .ex-card--consider {
+  border: none;
+  color: #fff;
+  background:
+    radial-gradient(70% 60% at 90% 4%, rgba(255, 255, 255, 0.12), transparent 55%),
+    radial-gradient(95% 85% at 4% 110%, rgba(5, 8, 22, 0.5), transparent 60%),
+    linear-gradient(140deg, #1b2745 0%, #2d3d63 100%);
+  box-shadow:
+    0 1px 2px rgba(22, 34, 63, 0.06),
+    0 30px 56px -28px rgba(27, 39, 69, 0.85);
+}
+/* EC is the tall portrait — a solid violet column in its own tone so its full height reads
+   as a deliberate panel, like the reference's tall dark tile. */
+.ex-bento .ex-card--ec {
+  border: none;
+  color: #fff;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 30px 30px,
+    radial-gradient(60% 44% at 90% 2%, rgba(255, 255, 255, 0.18), transparent 55%),
+    radial-gradient(90% 70% at 0% 108%, rgba(28, 12, 78, 0.55), transparent 60%),
+    linear-gradient(160deg, #4325a0 0%, #5b34d6 100%);
+  box-shadow:
+    0 1px 2px rgba(22, 34, 63, 0.06),
+    0 30px 56px -28px rgba(67, 37, 160, 0.9);
+}
+/* Cost and Life stay soft lavender, set apart by their own content and visuals. */
+.ex-bento .ex-card--cost,
+.ex-bento .ex-card--life {
+  background: linear-gradient(165deg, #f0ecff 0%, #ffffff 74%);
+  border-color: #ddd3fb;
+}
+/* On the two solid tiles, type + chrome invert to light. */
+.ex-bento .ex-card--fit .ex-card__title,
+.ex-bento .ex-card--ec .ex-card__title,
+.ex-bento .ex-card--consider .ex-card__title {
+  color: rgba(255, 255, 255, 0.74);
+}
+.ex-bento .ex-card--fit .ex-card__body,
+.ex-bento .ex-card--fit .ex-section__body,
+.ex-bento .ex-card--fit .ex-point__label,
+.ex-bento .ex-card--ec .ex-card__body,
+.ex-bento .ex-card--ec .ex-section__body,
+.ex-bento .ex-card--ec .ex-act__label,
+.ex-bento .ex-card--consider .ex-card__body,
+.ex-bento .ex-card--consider .ex-section__body,
+.ex-bento .ex-card--consider .ex-point__label {
+  color: #fff;
+}
+.ex-bento .ex-card--fit .ex-point__note,
+.ex-bento .ex-card--ec .ex-act__body,
+.ex-bento .ex-card--ec .ex-act__note,
+.ex-bento .ex-card--consider .ex-point__note {
+  color: rgba(255, 255, 255, 0.74);
+}
+.ex-bento .ex-card--ec .ex-act__num {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+.ex-bento .ex-card--fit .ex-card__icon,
+.ex-bento .ex-card--ec .ex-card__icon,
+.ex-bento .ex-card--consider .ex-card__icon {
+  background: rgba(255, 255, 255, 0.17);
+  color: #fff;
+}
+.ex-bento .ex-card--fit .ex-card__src,
+.ex-bento .ex-card--ec .ex-card__src,
+.ex-bento .ex-card--consider .ex-card__src {
+  color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.ex-bento .ex-card--fit .ex-card__src:hover,
+.ex-bento .ex-card--ec .ex-card__src:hover,
+.ex-bento .ex-card--consider .ex-card__src:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.ex-bento .ex-card--fit .ex-chip {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.17);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+/* ---- File-tabs: a folder-tab nub + a header strip on every filed card ---- */
+.ex-bento .ex-card {
+  position: relative;
+  margin-top: 11px;
+}
+.ex-bento .ex-card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  width: 60px;
+  height: 12px;
+  border-radius: 7px 7px 0 0;
+  background: var(--sec);
+}
+.ex-bento .ex-card--fit::before {
+  background: #6236e8;
+}
+.ex-bento .ex-card--ec::before {
+  background: #4325a0;
+}
+.ex-bento .ex-card__head {
+  margin: -24px -24px 20px;
+  padding: 12px 22px;
+  background: color-mix(in srgb, var(--sec) 8%, transparent);
+  border-bottom: 1px solid var(--ac-line);
+  border-radius: var(--ac-radius) var(--ac-radius) 0 0;
+}
+.ex-bento .ex-card--fit .ex-card__head,
+.ex-bento .ex-card--ec .ex-card__head,
+.ex-bento .ex-card--consider .ex-card__head {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ---- 3D visual slot ----------------------------------------------------- */
+.ex-3d-slot {
+  height: 190px;
+  margin: 2px 0 18px;
+}
+.ex-3d {
+  width: 100%;
+  height: 100%;
+}
+.ex-3d canvas {
+  display: block;
+}
+
+/* Banner tiles (cost, consider) carry the 3D model beside the text instead of above it,
+   so they stay short and wide. */
+.ex-banner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.ex-banner__viz {
+  flex: none;
+  width: 150px;
+  height: 160px;
+}
+.ex-banner__body {
+  flex: 1;
+  min-width: 0;
+}
+.ex-budget-line {
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  color: var(--ac-ink-2);
+}
+.ex-budget-line strong {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--ac-green);
+}
+@media (max-width: 620px) {
+  .ex-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ex-banner__viz {
+    width: 100%;
+    height: 150px;
+  }
+}
+
+/* ---- Priority chips (fit card) ------------------------------------------ */
+.ex-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.ex-chip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--ac-violet);
+  background: color-mix(in srgb, var(--ac-violet) 10%, #fff);
+  border: 1px solid color-mix(in srgb, var(--ac-violet) 22%, transparent);
+}
+
+/* ---- Budget meter (cost card) ------------------------------------------- */
+.ex-budget {
+  margin-bottom: 18px;
+}
+.ex-budget__track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--ac-sunk);
+  border: 1px solid var(--ac-line);
+  overflow: visible;
+}
+.ex-budget__fill {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: 0;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.ex-budget__cap {
+  position: absolute;
+  top: 50%;
+  width: 3px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  background: var(--ac-ink);
+  border-radius: 2px;
+}
+.ex-budget__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--ac-ink-3);
+}
+
+/* ---- Budget donut (cost tile) ------------------------------------------- */
+.ex-donut {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.ex-donut__ring {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex: none;
+}
+.ex-donut__ring svg {
+  width: 100%;
+  height: 100%;
+}
+.ex-donut__pct {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  font-weight: 750;
+  color: var(--ac-ink);
+}
+.ex-donut__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.ex-donut__value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.ex-donut__label {
+  font-size: 0.82rem;
+  color: var(--ac-ink-3);
+}
+
+/* ---- Floating profile card (fit tile) ----------------------------------- */
+/* A white card tilted and deep-shadowed so it reads as a physical object resting on the
+   violet, not a flat panel — pinned to the bottom to fill the solid tile's height. */
+.ex-snapshot {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 15px 22px 17px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 46px -18px rgba(20, 12, 54, 0.6);
+  transform: rotate(-1.5deg);
+}
+.ex-snapshot__eyebrow {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+.ex-snapshot__row {
+  display: flex;
+  gap: 26px;
+  margin-top: 12px;
+}
+.ex-snapshot__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ex-snapshot__stat b {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ac-ink);
+}
+.ex-snapshot__stat span {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ac-ink-3);
+}
+
+/* ---- Numbered activities (extracurricular tile) ------------------------- */
+.ex-acts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ex-act {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.ex-act__num {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ac-violet) 14%, #fff);
+  color: var(--ac-violet);
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+.ex-act__body {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ac-ink-2);
+}
+.ex-act__label {
+  color: var(--ac-ink);
+  font-weight: 600;
+}
+.ex-act__note {
+  color: var(--ac-ink-3);
 }
 
 /* ---- Quick figures strip ------------------------------------------------ */
@@ -349,6 +954,42 @@
   color: var(--ac-ink-3);
 }
 
+/* GPA: no admitted-GPA data exists, so we show the figure with a selectivity-based
+   competitiveness verdict rather than a fabricated range bar. */
+.gpa-verdict__row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.gpa-verdict__value {
+  font-size: 1.5rem;
+  font-weight: 750;
+  line-height: 1;
+}
+.gpa-verdict__scale {
+  font-size: 0.8rem;
+  color: var(--ac-ink-4);
+}
+.gpa-verdict__badge {
+  margin-left: auto;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+.gpa-verdict__badge--good {
+  background: rgba(34, 197, 94, 0.15);
+  color: #15803d;
+}
+.gpa-verdict__badge--mid {
+  background: rgba(234, 179, 8, 0.18);
+  color: #a16207;
+}
+.gpa-verdict__badge--low {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+}
+
 /* ---- Sources panel ------------------------------------------------------ */
 /* Portaled to <body>, so it sits outside .dash and can't inherit its tokens — every
    colour here is spelled out rather than pulled from a variable that isn't in scope. */
@@ -473,15 +1114,7 @@
 }
 
 /* ---- Narrower ----------------------------------------------------------- */
-@media (max-width: 1180px) {
-  .ex-bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .ex-card--ec {
-    grid-column: span 2;
-  }
-}
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   /* The dial and the bars stop fitting side by side long before the cards do. */
   .adm {
     flex-direction: column;
@@ -492,14 +1125,13 @@
     width: 200px;
     margin: 0 auto;
   }
-}
-@media (max-width: 720px) {
+  /* Below this the bento areas crowd; collapse to a single stack in DOM order. */
   .ex-bento {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: none;
   }
-  .ex-card--ec {
-    grid-column: auto;
-  }
+}
+@media (max-width: 720px) {
   .ex-card {
     padding: 20px 18px 22px;
   }

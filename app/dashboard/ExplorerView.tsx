@@ -12,9 +12,18 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
+
+// WebGL scenes — client-only (no SSR window access), lazy so they never block the view.
+const TargetArrow = dynamic(() => import("@/app/components/3d/TargetArrow"), { ssr: false });
+const CoinScene = dynamic(() => import("@/app/components/3d/Coin"), { ssr: false });
+const BuildingScene = dynamic(() => import("@/app/components/3d/Building"), { ssr: false });
+const ExclaimScene = dynamic(() => import("@/app/components/3d/Exclaim"), { ssr: false });
+const TrophyScene = dynamic(() => import("@/app/components/3d/Trophy"), { ssr: false });
 import { toPayload } from "@/app/build/toPayload";
 import { USE_PLACEHOLDER_RESULTS } from "@/app/build/placeholderResult";
-import type { WizardData } from "@/app/build/model";
+import type { WizardData, SettingValue } from "@/app/build/model";
+import { FACTORS } from "@/app/build/model";
 import type { CollegeInsight } from "@/lib/collegeInsight";
 import Reveal from "./Reveal";
 
@@ -201,6 +210,43 @@ const SECTIONS: Record<IconKey, Section> = {
 // bring, and finally what should give me pause.
 const ORDER: IconKey[] = ["fit", "cost", "life", "ec", "consider"];
 
+// Small line icons for each outline point — inline SVG (no external assets) so every card
+// carries a visual glyph beside its rows instead of a bare bullet.
+const svg = (d: string) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {d.split("|").map((p, i) => (
+      <path key={i} d={p} />
+    ))}
+  </svg>
+);
+const MINI_ICON: Record<string, ReactNode> = {
+  // fit
+  "Overall match": svg("M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.4 7.2 18l.9-5.4L4.2 8.7l5.4-.8L12 3Z"),
+  "Admission odds": svg("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z|M8.5 8.5l7 7|M8.6 8.6h.01|M15.4 15.4h.01"),
+  "Academic standing": svg("M2 8l10-4 10 4-10 4L2 8Z|M6 10v5c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6v-5"),
+  "Preference match": svg("M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10Z"),
+  // cost
+  "Net price for your income band": svg("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z|M12 7v10|M14.5 9.3A2.5 2 0 0 0 12.3 8h-.8a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-.8a2.5 2 0 0 1-2.2-1.3"),
+  "Budget fit": svg("M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z|M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z|M12 11.5a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1Z"),
+  "Merit aid": svg("M12 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z|M8.5 13L7.5 21l4.5-2.2L16.5 21l-1-8"),
+  // life
+  "School size": svg("M4 21V5l8-3 8 3v16|M4 21h16|M9 9h.01|M15 9h.01|M9 13h.01|M15 13h.01|M10 21v-4h4v4"),
+  "Class size": svg("M9 4a3.2 3.2 0 1 0 0 6.4A3.2 3.2 0 0 0 9 4Z|M2.5 20a6.5 6.5 0 0 1 13 0|M16.5 5.3a3.2 3.2 0 0 1 0 6.4|M22 20a6.5 6.5 0 0 0-4-6"),
+  Housing: svg("M3 11l9-7 9 7|M5 10v10h14V10|M10 20v-6h4v6"),
+  "Greek life": svg("M3 21h18|M5 21V10m4 11V10m6 11V10m4 11V10|M3.5 10h17L12 3.5 3.5 10Z"),
+  Athletics: svg("M8 3h8v5.5a4 4 0 0 1-8 0V3Z|M8 5H5v1a3 3 0 0 0 3 3|M16 5h3v1a3 3 0 0 1-3 3|M10 15.5v2.5|M14 15.5v2.5|M8 21h8"),
+  Setting: svg("M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z|M12 7.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"),
+  // consider
+  "Data confidence": svg("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z|M12 11v5|M12 8h.01"),
+  "Tight filters": svg("M3 5h18l-7 8.2V20l-4-2v-4.8L3 5Z"),
+  "Trade-offs": svg("M12 3v18|M5 21h14|M12 6l-7 2 3 5.5a3 3 0 0 1-6 0L5 8|M12 6l7 2-3 5.5a3 3 0 0 0 6 0L19 8"),
+  // admissions (hero)
+  "Acceptance rate for your major": svg("M4 20V4|M4 20h16|M8 16v-4|M12 16V9|M16 16v-7"),
+  "In-state vs out-of-state": svg("M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z|M9 4v14|M15 6v14"),
+  "Course rigor": svg("M5 4h13v14H6a2 2 0 0 0-2 2V6a2 2 0 0 1 1-2Z|M5 18a2 2 0 0 0-1 2|M9 8h6M9 12h5"),
+  "Class rank": svg("M9 6h12M9 12h12M9 18h12|M4 6h.01M4 12h.01M4 18h.01"),
+};
+
 // Half-circle acceptance dial: three tier zones (reach / match / safety) with a needle
 // pointing to this college's band, and the acceptance percentage below.
 function AcceptanceGauge({ admitRate, band }: { admitRate: number | null; band: College["band"] }) {
@@ -259,6 +305,7 @@ function RangeBar({
   marker,
   markerLabel,
   band,
+  note,
   color,
   minTick,
   maxTick,
@@ -268,20 +315,27 @@ function RangeBar({
   max: number;
   marker: number | null;
   markerLabel: string | null;
-  band: { lo: number; hi: number };
+  band: { lo: number; hi: number } | null;
+  note: string;
   color?: string;
   minTick: string;
   maxTick: string;
 }) {
-  const span = max - min;
-  const bandLeft = ((clamp(band.lo, min, max) - min) / span) * 100;
-  const bandWidth = ((clamp(band.hi, min, max) - clamp(band.lo, min, max)) / span) * 100;
+  const span = max - min || 1;
   const markLeft = marker != null ? ((clamp(marker, min, max) - min) / span) * 100 : null;
   return (
     <div className="rb">
       <div className="rb__label">{label}</div>
       <div className="rb__track">
-        <div className="rb__band" style={{ left: `${bandLeft}%`, width: `${bandWidth}%` }} />
+        {band && (
+          <div
+            className="rb__band"
+            style={{
+              left: `${((clamp(band.lo, min, max) - min) / span) * 100}%`,
+              width: `${((clamp(band.hi, min, max) - clamp(band.lo, min, max)) / span) * 100}%`,
+            }}
+          />
+        )}
         {markLeft != null && (
           <div className="rb__marker" style={{ left: `${markLeft}%` }}>
             <span className="rb__flag" style={color ? { background: color } : undefined}>{markerLabel}</span>
@@ -290,11 +344,25 @@ function RangeBar({
       </div>
       <div className="rb__scale">
         <span>{minTick}</span>
-        <span className="rb__bandnote">admitted middle 50% · sample</span>
+        <span className="rb__bandnote">{note}</span>
         <span>{maxTick}</span>
       </div>
     </div>
   );
+}
+
+// No admitted-GPA data exists in the catalog, so GPA competitiveness is judged against
+// the college's SELECTIVITY: the more selective (lower admit rate), the higher the bar.
+function gpaVerdict(
+  gpa: number | null,
+  admitRate: number | null,
+): { label: string; tone: "good" | "mid" | "low" } | null {
+  if (gpa == null) return null;
+  const r = admitRate ?? 0.5;
+  const bar = r < 0.2 ? 3.85 : r < 0.5 ? 3.6 : 3.3;
+  if (gpa >= bar) return { label: "Competitive", tone: "good" };
+  if (gpa >= bar - 0.3) return { label: "Borderline", tone: "mid" };
+  return { label: "Below typical", tone: "low" };
 }
 
 function AdmissionsViz({
@@ -303,40 +371,123 @@ function AdmissionsViz({
   gpa,
   sat,
   act,
+  satP25,
+  satP75,
 }: {
   admitRate: number | null;
   band: College["band"];
   gpa: number | null;
   sat: number | null;
   act: number | null;
+  satP25: number | null;
+  satP75: number | null;
 }) {
   const satVal = sat ?? (act != null ? ACT_TO_SAT[clamp(Math.round(act), 9, 36)] ?? null : null);
   const satLabel = satVal != null ? `You ${satVal}${sat == null && act != null ? " (ACT est.)" : ""}` : null;
+
+  // Real admitted middle-50% band when the catalog has it; otherwise no band.
+  const satBand = satP25 != null && satP75 != null ? { lo: satP25, hi: satP75 } : null;
+  // Zoom the axis around the band + the student's marker so content spreads across the
+  // bar instead of cramming into the far right for a strong applicant.
+  const pts = [satVal, satP25, satP75].filter((x): x is number => x != null);
+  const satMin = pts.length ? Math.max(400, Math.floor((Math.min(...pts) - 120) / 20) * 20) : 400;
+  const satMax = pts.length ? Math.min(1600, Math.ceil((Math.max(...pts) + 120) / 20) * 20) : 1600;
+
+  const verdict = gpaVerdict(gpa, admitRate);
   return (
     <div className="adm">
       <AcceptanceGauge admitRate={admitRate} band={band} />
       <div className="adm__ranges">
         <RangeBar
           label="Your SAT vs admitted"
-          min={400}
-          max={1600}
+          min={satMin}
+          max={satMax}
           marker={satVal}
           markerLabel={satLabel}
-          band={{ lo: 1380, hi: 1540 }}
-          minTick="400"
-          maxTick="1600"
+          band={satBand}
+          note={satBand ? "admitted middle 50%" : "no published SAT range"}
+          minTick={String(satMin)}
+          maxTick={String(satMax)}
         />
-        <RangeBar
-          label="Your GPA vs admitted"
-          min={0}
-          max={4}
-          marker={gpa}
-          markerLabel={gpa != null ? `You ${gpa.toFixed(2)}` : null}
-          band={{ lo: 3.6, hi: 4 }}
-          color={gpa != null ? gpaColor(gpa) : undefined}
-          minTick="0"
-          maxTick="4.0"
-        />
+        <div className="gpa-verdict">
+          <div className="rb__label">Your GPA</div>
+          {gpa != null ? (
+            <div className="gpa-verdict__row">
+              <span className="gpa-verdict__value" style={{ color: gpaColor(gpa) }}>{gpa.toFixed(2)}</span>
+              <span className="gpa-verdict__scale">/ 4.0</span>
+              {verdict && (
+                <span className={`gpa-verdict__badge gpa-verdict__badge--${verdict.tone}`}>{verdict.label}</span>
+              )}
+            </div>
+          ) : (
+            <p className="ex-section__body">Add your GPA to see how it reads here.</p>
+          )}
+          <div className="rb__scale">
+            <span className="rb__bandnote">no published GPA range — judged against this college&apos;s selectivity</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const SETTING_LABEL: Record<SettingValue, string> = { URBAN: "Urban", SUBURBAN: "Suburban", RURAL: "Rural" };
+
+// The soft preferences the student actually weighted, as short chips — for directional
+// factors the chip reads the leaning (e.g. "Large" schools), for magnitude ones the
+// factor itself. A compact, honest picture of "what you care about" for the fit card.
+function priorityChips(data: WizardData): string[] {
+  const chips: string[] = [];
+  for (const f of FACTORS) {
+    const p = data.prefs?.[f.key];
+    if (!p || !p.weight) continue;
+    const low = (f as { low?: string }).low;
+    const high = (f as { high?: string }).high;
+    if (f.kind === "directional" && low && high) {
+      const d = p.direction ?? 2;
+      chips.push(d > 2 ? high : d < 2 ? low : f.label);
+    } else {
+      chips.push(f.label);
+    }
+  }
+  if (data.setting?.weight && data.setting.selections?.length) {
+    for (const s of data.setting.selections) chips.push(SETTING_LABEL[s]);
+  }
+  return chips;
+}
+
+// Net price against the budget the student set, as a donut: the arc fills to the share of
+// budget the price consumes. Green when it clears the budget, warning pink when it doesn't.
+function BudgetDonut({ net, budget }: { net: number; budget: number }) {
+  const frac = budget > 0 ? Math.min(net / budget, 1) : 0;
+  const under = net <= budget;
+  const tone = under ? "var(--ac-green)" : "var(--ac-pink)";
+  const R = 30;
+  const C = 2 * Math.PI * R;
+  return (
+    <div className="ex-donut">
+      <div className="ex-donut__ring">
+        <svg viewBox="0 0 72 72" aria-hidden="true">
+          <circle cx="36" cy="36" r={R} fill="none" stroke="var(--ac-sunk)" strokeWidth="8" />
+          <circle
+            cx="36"
+            cy="36"
+            r={R}
+            fill="none"
+            stroke={tone}
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={`${frac * C} ${C}`}
+            transform="rotate(-90 36 36)"
+          />
+        </svg>
+        <span className="ex-donut__pct">{Math.round(frac * 100)}%</span>
+      </div>
+      <div className="ex-donut__meta">
+        <span className="ex-donut__value" style={{ color: tone }}>{money(net)}</span>
+        <span className="ex-donut__label">
+          net price · {under ? "under" : "over"} your {money(budget)} budget
+        </span>
       </div>
     </div>
   );
@@ -348,9 +499,12 @@ type InsightState = "idle" | "loading" | "ready" | "error";
 // place every other view keeps its primary action.
 export default function ExplorerView({ college }: { college: College }) {
   const [activities, setActivities] = useState<string[]>([]);
-  const [stu, setStu] = useState<{ gpa: number | null; sat: number | null; act: number | null }>({ gpa: null, sat: null, act: null });
+  const [stu, setStu] = useState<{ gpa: number | null; sat: number | null; act: number | null; ap: number | null }>({ gpa: null, sat: null, act: null, ap: null });
   const [insight, setInsight] = useState<CollegeInsight | null>(null);
   const [insightState, setInsightState] = useState<InsightState>("idle");
+  const [stats, setStats] = useState<{ satP25: number | null; satP75: number | null } | null>(null);
+  const [priorities, setPriorities] = useState<string[]>([]);
+  const [budget, setBudget] = useState<number | null>(null);
   const [drawer, setDrawer] = useState<{ label: string; sources: Source[] } | null>(null);
   const openSources = (label: string, sources: Source[]) => setDrawer({ label, sources });
 
@@ -382,7 +536,10 @@ export default function ExplorerView({ college }: { college: College }) {
           gpa: num(profileData.gpaUnweighted),
           sat: num(profileData.satSuperscore),
           act: num(profileData.actSuperscore),
+          ap: num(profileData.apCoursesTaken),
         });
+        setPriorities(priorityChips(profileData));
+        setBudget(num(profileData.budgetMaxNetPrice));
       }
     } catch {
       /* ignore */
@@ -394,8 +551,19 @@ export default function ExplorerView({ college }: { college: College }) {
     }
 
     const cacheKey = `uniseek.insight.${college.collegeId}`;
+    const statsKey = `uniseek.stats.${college.collegeId}`;
+    const cachedStats = sessionStorage.getItem(statsKey);
+    if (cachedStats) {
+      try {
+        setStats(JSON.parse(cachedStats));
+      } catch {
+        /* ignore */
+      }
+    }
     const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
+    // Only serve from cache when we also have the college stats for the visual; otherwise
+    // fall through to the fetch so a pre-fix cached insight still picks up the SAT band.
+    if (cached && cachedStats) {
       try {
         setInsight(JSON.parse(cached));
         setInsightState("ready");
@@ -418,6 +586,14 @@ export default function ExplorerView({ college }: { college: College }) {
       .then((r) => r.json())
       .then((d) => {
         if (!active) return;
+        if (d.stats) {
+          setStats(d.stats);
+          try {
+            sessionStorage.setItem(statsKey, JSON.stringify(d.stats));
+          } catch {
+            /* ignore quota */
+          }
+        }
         if (d.insight) {
           setInsight(d.insight);
           try {
@@ -451,8 +627,11 @@ export default function ExplorerView({ college }: { college: College }) {
     <ul className="ex-points">
       {points.map((p) => (
         <li key={p.label} className="ex-point">
-          <span className="ex-point__label">{p.label}</span>
-          <span className="ex-point__note"> — {p.note}</span>
+          {MINI_ICON[p.label] && <span className="ex-point__ic" aria-hidden="true">{MINI_ICON[p.label]}</span>}
+          <span className="ex-point__text">
+            <span className="ex-point__label">{p.label}</span>
+            <span className="ex-point__note"> — {p.note}</span>
+          </span>
         </li>
       ))}
     </ul>
@@ -460,26 +639,31 @@ export default function ExplorerView({ college }: { college: College }) {
 
   const sectionBody = (s: Section) => {
     if (s.dynamic === "ec") {
-      // Once insights exist each activity carries its own read. Until then, listing the
-      // activities back with an identical "how this could help" line against every one
-      // of them just repeats the same sentence four times — so the promise is made once,
-      // above the list, and the activities are left to stand as themselves.
+      // Numbered badges give each activity a distinct visual anchor (a ranked-list feel).
+      // Once insights exist each activity carries its own read; until then they stand alone.
+      const actList = (items: { label: string; note?: string }[]) => (
+        <ol className="ex-acts">
+          {items.map((it, i) => (
+            <li key={it.label} className="ex-act">
+              <span className="ex-act__num">{i + 1}</span>
+              <span className="ex-act__body">
+                <span className="ex-act__label">{it.label}</span>
+                {it.note && <span className="ex-act__note"> — {it.note}</span>}
+              </span>
+            </li>
+          ))}
+        </ol>
+      );
       if (insight) {
         const items = insight.extracurriculars.map((e) => ({ label: e.activity, note: e.note }));
-        return items.length ? outline(items) : <p className="ex-section__body">Nothing to add here yet.</p>;
+        return items.length ? actList(items) : <p className="ex-section__body">Nothing to add here yet.</p>;
       }
       if (!activities.length)
         return <p className="ex-section__body">Add activities to your profile and we'll cover how each one might help you here.</p>;
       return (
         <>
           <p className="ex-section__body">We'll read each of these against what this college looks for.</p>
-          <ul className="ex-points">
-            {activities.map((a) => (
-              <li key={a} className="ex-point">
-                <span className="ex-point__label">{a}</span>
-              </li>
-            ))}
-          </ul>
+          {actList(activities.map((a) => ({ label: a })))}
         </>
       );
     }
@@ -493,9 +677,9 @@ export default function ExplorerView({ college }: { college: College }) {
   // The band colour goes on the category tile alone. Tinting all three made the price
   // and the acceptance rate look like verdicts too — a reach college's net price came
   // out in warning pink whatever the number was.
-  const facts: { label: string; value: string; band?: boolean }[] = [
+  // The band verdict is carried by the stamp, so it's dropped from the figures here.
+  const facts: { label: string; value: string }[] = [
     { label: "Acceptance rate", value: pct(college.overallAdmitRate) },
-    { label: "Your category", value: BAND_LABEL[college.band], band: true },
     ...(college.netPrice != null
       ? [{ label: "Net price for you", value: money(college.netPrice) }]
       : []),
@@ -516,29 +700,127 @@ export default function ExplorerView({ college }: { college: College }) {
     </button>
   );
 
+  // Each section's still 3D model. Tall tiles get it as a top slot; the wide banners
+  // (cost, consider) get it beside the text.
+  const VIZ: Partial<Record<IconKey, typeof TargetArrow>> = {
+    fit: TargetArrow,
+    life: BuildingScene,
+    ec: TrophyScene,
+    cost: CoinScene,
+    consider: ExclaimScene,
+  };
+
+  const renderSection = (key: IconKey) => {
+    const s = SECTIONS[key];
+    const Viz = VIZ[key];
+    const isBanner = key === "cost" || key === "consider";
+
+    const content = (
+      <>
+        {key === "fit" && priorities.length > 0 && (
+          <div className="ex-chips" aria-label="What you care about">
+            {priorities.map((p) => (
+              <span key={p} className="ex-chip">{p}</span>
+            ))}
+          </div>
+        )}
+        {key === "cost" && budget != null && college.netPrice != null && (
+          <p className="ex-budget-line">
+            <strong>{money(college.netPrice)}</strong> net price ·{" "}
+            {college.netPrice <= budget ? "under" : "over"} your {money(budget)} budget
+          </p>
+        )}
+        <div className="ex-card__body">{sectionBody(s)}</div>
+        {key === "fit" && (stu.gpa != null || stu.sat != null || stu.ap != null) && (
+          <div className="ex-snapshot" aria-label="Your profile at a glance">
+            <span className="ex-snapshot__eyebrow">Your profile</span>
+            <div className="ex-snapshot__row">
+              {stu.gpa != null && (
+                <div className="ex-snapshot__stat">
+                  <b>{stu.gpa.toFixed(2)}</b>
+                  <span>GPA</span>
+                </div>
+              )}
+              {stu.sat != null && (
+                <div className="ex-snapshot__stat">
+                  <b>{stu.sat}</b>
+                  <span>SAT</span>
+                </div>
+              )}
+              {stu.ap != null && (
+                <div className="ex-snapshot__stat">
+                  <b>{stu.ap}</b>
+                  <span>APs</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </>
+    );
+
+    return (
+      <Reveal key={key}>
+        <section className={`ex-card ex-card--${key}`}>
+          <div className="ex-card__head">
+            <span className="ex-card__icon" aria-hidden="true">{ICON[key]}</span>
+            <h2 className="ex-card__title">{s.title}</h2>
+            {sourcesButton(s.title, SECTION_SOURCES[key])}
+          </div>
+          {isBanner ? (
+            <div className="ex-banner">
+              {Viz && (
+                <div className="ex-banner__viz">
+                  <Viz className="ex-3d" animate={false} />
+                </div>
+              )}
+              <div className="ex-banner__body">{content}</div>
+            </div>
+          ) : (
+            <>
+              {Viz && (
+                <div className="ex-3d-slot">
+                  <Viz className="ex-3d" animate={false} />
+                </div>
+              )}
+              {content}
+            </>
+          )}
+        </section>
+      </Reveal>
+    );
+  };
+
   return (
     <div className="explorer explorer--inline">
       <section className="dash__view ex">
         <p className={`ex__status ${insightState === "loading" ? "is-loading" : ""}`}>{banner}</p>
 
-        {/* The quick figures, at the top where they were — the headline numbers for this
-            college before any of the reading below. */}
-        <dl className="ex-stats">
-          {facts.map((f) => (
-            <div key={f.label} className={`ex-stat ${f.band ? `ex-stat--${college.band}` : ""}`}>
-              <dt className="ex-stat__label">{f.label}</dt>
-              <dd className="ex-stat__value">{f.value}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {/* The feature. Everything else on this page is context for it. */}
+        {/* The hero. One dominant, band-tinted tile carries everything quantitative — the
+            headline KPIs, the acceptance dial, and the score bars — so the page opens on a
+            clear focal point rather than a strip of equal tiles. Everything below is reading. */}
         <Reveal>
-          <section className="ex-card ex-card--feature">
+          <section className={`ex-card ex-hero ex-hero--${college.band}`}>
             <div className="ex-card__head">
               <span className="ex-card__icon" aria-hidden="true">{ICON.admissions}</span>
               <h2 className="ex-card__title">Where you stand</h2>
               {sourcesButton("Admissions", SECTION_SOURCES.admissions)}
+            </div>
+
+            <div className="ex-hero__top">
+              <div className="ex-hero__kpis">
+                {facts.map((f) => (
+                  <div key={f.label} className="ex-kpi">
+                    <span className="ex-kpi__label">{f.label}</span>
+                    <span className="ex-kpi__value">{f.value}</span>
+                  </div>
+                ))}
+              </div>
+              {/* The signature: an inked verdict stamp — the dramatic, eye-grabbing accent. */}
+              <div className={`ex-stamp ex-stamp--${college.band}`} aria-hidden="true">
+                <span className="ex-stamp__band">{BAND_LABEL[college.band]}</span>
+                <span className="ex-stamp__sub">Admissions review</span>
+              </div>
             </div>
 
             <AdmissionsViz
@@ -547,30 +829,19 @@ export default function ExplorerView({ college }: { college: College }) {
               gpa={stu.gpa}
               sat={stu.sat}
               act={stu.act}
+              satP25={stats?.satP25 ?? null}
+              satP75={stats?.satP75 ?? null}
             />
 
             <div className="ex-card__body ex-card__body--spaced">{sectionBody(SECTIONS.admissions)}</div>
           </section>
         </Reveal>
 
+        {/* A true heterogeneous bento: explicit grid areas give each section its own size,
+            and each carries its own fill (solid violet anchor, ink caution tile, tinted and
+            plain surfaces) so no two boxes feel the same. Order here is the mobile stack. */}
         <div className="ex-bento">
-          {ORDER.map((key) => {
-            const s = SECTIONS[key];
-            return (
-              <Reveal key={key}>
-                <section className={`ex-card ex-card--${key}`}>
-                  <div className="ex-card__head">
-                    <span className="ex-card__icon" aria-hidden="true">
-                      {ICON[key]}
-                    </span>
-                    <h2 className="ex-card__title">{s.title}</h2>
-                    {sourcesButton(s.title, SECTION_SOURCES[key])}
-                  </div>
-                  <div className="ex-card__body">{sectionBody(s)}</div>
-                </section>
-              </Reveal>
-            );
-          })}
+          {(["fit", "cost", "life", "ec", "consider"] as IconKey[]).map(renderSection)}
         </div>
       </section>
 

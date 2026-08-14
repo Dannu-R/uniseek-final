@@ -301,7 +301,10 @@
   border-bottom: 1px solid var(--ac-line);
 }
 .dash__bar-inner {
-  max-width: 1320px;
+  /* No fixed cap: the content fills the area right of the rail (bounded only by
+     .dash__main's padding) so it keeps growing with the viewport instead of pooling
+     dead space on wide screens. Kept aligned to the view below via the same padding. */
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -349,7 +352,9 @@
   to   { opacity: 0; transform: translateY(8px) scale(0.99); }
 }
 .dash__view {
-  max-width: 1320px;
+  /* Fill the content area (see .dash__bar-inner) rather than capping at a fixed width,
+     so the dashboard grows with wider screens instead of stopping and centering. */
+  width: 100%;
   margin: 0 auto;
 }
 .dash__view-head {

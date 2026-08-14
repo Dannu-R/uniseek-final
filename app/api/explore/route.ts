@@ -42,17 +42,20 @@ export async function POST(request: Request) {
 
   const userId = session.user.id;
 
-  // Serve a previously stored insight instead of regenerating it.
-  const stored = await prisma.collegeInsight.findUnique({
-    where: { userId_collegeId: { userId, collegeId } },
-  });
-  if (stored) return NextResponse.json({ insight: stored.data, cached: true });
-
+  // College is fetched first so the admissions stats (real SAT middle-50%) ride along
+  // on every response path — including a cache hit — for the "Where you stand" visual.
   const college = await prisma.college.findUnique({
     where: { id: collegeId },
     include: { programs: true },
   });
   if (!college) return NextResponse.json({ error: "college not found" }, { status: 404 });
+  const stats = { satP25: college.satP25, satP75: college.satP75 };
+
+  // Serve a previously stored insight instead of regenerating it.
+  const stored = await prisma.collegeInsight.findUnique({
+    where: { userId_collegeId: { userId, collegeId } },
+  });
+  if (stored) return NextResponse.json({ insight: stored.data, cached: true, stats });
 
   const majorCip = typeof profile.majorCip === "string" ? profile.majorCip : null;
   const major = majorCip ? await prisma.major.findUnique({ where: { cipCode: majorCip } }) : null;
@@ -115,7 +118,7 @@ export async function POST(request: Request) {
     });
   }
 
-  return NextResponse.json({ insight, cached: false });
+  return NextResponse.json({ insight, cached: false, stats });
 }
 
 // Remove a stored insight (used when the student unsaves a college).

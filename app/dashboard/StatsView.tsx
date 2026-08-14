@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useWizard } from "@/app/build/WizardProvider";
 import { requiredState } from "@/app/build/toPayload";
+import { rigorVolume } from "@/lib/scoring/rigor";
 import UsMap from "./UsMap";
 import Reveal, { useInView } from "./Reveal";
 
@@ -102,13 +103,16 @@ function gpaTier(gpa: number): { label: string; color: string; desc: string } {
   };
 }
 
-// How demanding the schedule is, as a share of what the school actually offers —
-// the only honest denominator we have. Absent a course list, we don't guess.
+// Label the schedule from the SAME volume the scoring engine computes (rigor.ts), not a
+// naive taken/offered ratio. The engine caps the meaningful ceiling at ~14 AP courses and
+// blends an absolute count, so a heavy load (e.g. 16 APs) reads as very demanding even when
+// the school lists many more. A raw ratio disagreed with the model — 16/33 = 48% showed as
+// "Moderate" while the engine scored it ~max — so the home tab now mirrors the engine.
 function rigorRead(taken: number, offered: number): { label: string; color: string } {
-  const share = taken / offered;
-  if (share >= 0.75) return { label: "Very demanding", color: "#0f9d76" };
-  if (share >= 0.5) return { label: "Demanding", color: "#5b2ee5" };
-  if (share >= 0.25) return { label: "Moderate", color: "#c47b0d" };
+  const vol = rigorVolume(taken, offered) ?? 0;
+  if (vol >= 0.85) return { label: "Very demanding", color: "#0f9d76" };
+  if (vol >= 0.6) return { label: "Demanding", color: "#5b2ee5" };
+  if (vol >= 0.35) return { label: "Moderate", color: "#c47b0d" };
   return { label: "Light", color: "#c72f65" };
 }
 
