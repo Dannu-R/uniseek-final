@@ -490,6 +490,17 @@
   color: var(--ac-ink);
   transform: translateY(-1px);
 }
+/* A ghost button that reads as destructive on the light content — muted brick red,
+   quiet until hovered. The confirmation modal carries the real warning. */
+.dash .btn--danger-ghost {
+  color: #c0342b;
+  border-color: color-mix(in srgb, #c0342b 26%, var(--ac-line));
+}
+.dash .btn--danger-ghost:hover {
+  background: #fdf1ef;
+  color: #9f2a22;
+  border-color: color-mix(in srgb, #c0342b 48%, var(--ac-line));
+}
 .dash .btn--lg {
   padding: 14px 30px;
   font-size: 1rem;

@@ -141,6 +141,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   const [loaded, setLoaded] = useState(false);
   const [exploring, setExploring] = useState<CollegeScore | null>(null);
   const [unsaveTarget, setUnsaveTarget] = useState<CollegeScore | null>(null);
+  const [confirmClearAll, setConfirmClearAll] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Dev-only: /dashboard?demo scores the sample profile through the real API and
@@ -264,6 +265,27 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     removeSaved(unsaveTarget.collegeId);
     deleteInsight(unsaveTarget.collegeId);
     setUnsaveTarget(null);
+  };
+
+  // Full reset from the Home tab: the quiz answers behind the stats, the recommended
+  // run, and the saved list (with their stored insights). Clearing storage and reloading
+  // is the reliable way to also reset the wizard's in-memory answers, which otherwise
+  // get re-persisted on the next tick.
+  const clearAll = () => {
+    saved.forEach((c) => deleteInsight(c.collegeId));
+    try {
+      sessionStorage.removeItem(RESULT_KEY);
+      sessionStorage.removeItem(UI_KEY);
+      localStorage.removeItem(SAVED_KEY);
+      localStorage.removeItem("uniseek.profile.v1");
+      localStorage.removeItem("uniseek.step.v1");
+      Object.keys(sessionStorage)
+        .filter((k) => k.startsWith("uniseek.insight.") || k.startsWith("uniseek.stats."))
+        .forEach((k) => sessionStorage.removeItem(k));
+    } catch {
+      /* ignore */
+    }
+    window.location.reload();
   };
 
   const focused = phase !== "idle"; // rail slid away, content full width
@@ -474,9 +496,18 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 title="Home"
                 subtitle="Where your list stands, and how your profile looks."
                 action={
-                  <button type="button" className="btn btn--ghost" onClick={openQuiz}>
-                    Edit answers
-                  </button>
+                  <>
+                    <button type="button" className="btn btn--ghost" onClick={openQuiz}>
+                      Edit answers
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn--ghost btn--danger-ghost"
+                      onClick={() => setConfirmClearAll(true)}
+                    >
+                      Clear all
+                    </button>
+                  </>
                 }
               />
               <StatsView
@@ -661,6 +692,27 @@ export default function DashboardClient({ user }: { user: DashUser }) {
               </button>
               <button type="button" className="btn btn--danger" onClick={confirmUnsave}>
                 Remove &amp; delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmClearAll && (
+        <div className="rs-modal" role="dialog" aria-modal="true" onClick={() => setConfirmClearAll(false)}>
+          <div className="rs-modal__card" onClick={(e) => e.stopPropagation()}>
+            <h3 className="rs-modal__title">Clear everything?</h3>
+            <p className="rs-modal__body">
+              This erases your quiz answers and the stats on this page, your recommended list, and every
+              saved college (with their personalized insights). This can&apos;t be undone — you&apos;ll start
+              from a blank slate.
+            </p>
+            <div className="rs-modal__actions">
+              <button type="button" className="btn btn--ghost" onClick={() => setConfirmClearAll(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn btn--danger" onClick={clearAll}>
+                Clear everything
               </button>
             </div>
           </div>
