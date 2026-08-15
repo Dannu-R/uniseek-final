@@ -267,7 +267,7 @@ function RigorDial({ taken, offered, color, active }: {
 
 // Line chart of 10th → 11th → 12th unweighted GPA. Draws the empty grid when there
 // aren't at least two years of data (the caller overlays a caption in that case).
-function TrendChart({ values }: { values: (number | null)[] }) {
+function TrendChart({ values, sample }: { values: (number | null)[]; sample?: number[] }) {
   // The viewBox is sized to how the card actually renders, so the type inside stays
   // at its true pixel size instead of being scaled up with the drawing.
   const W = 560;
@@ -311,6 +311,19 @@ function TrendChart({ values }: { values: (number | null)[] }) {
       {labels.map((l, i) => (
         <text key={l} x={xs[i]} y={H - padB + 28} textAnchor="middle" className="trend__xlabel">{l}</text>
       ))}
+      {/* When there's no record yet, trace an illustrative climb so the card shows what it
+          becomes rather than sitting empty. Muted and dashed so it never reads as real data. */}
+      {!has && sample && sample.length >= 2 && (
+        <g className="trend__ghost">
+          <path
+            d={sample.map((v, i) => `${i === 0 ? "M" : "L"} ${xs[i]} ${yFor(v)}`).join(" ")}
+            className="trend__ghost-line"
+          />
+          {sample.map((v, i) => (
+            <circle key={i} cx={xs[i]} cy={yFor(v)} r="5" className="trend__ghost-dot" />
+          ))}
+        </g>
+      )}
       {has && (
         <>
           <path d={line} className="trend__line" pathLength={1} />
@@ -568,6 +581,13 @@ export default function StatsView({
         </div>
       </Reveal>
 
+      <Reveal>
+        <div className="stat-section">
+          <span className="stat-section__label">Your academic record</span>
+          <span className="stat-section__rule" aria-hidden="true" />
+        </div>
+      </Reveal>
+
       {/* ---- The feature: the shape of the whole record. ---------------- */}
       <Reveal>
         <div className="stat-card tile--feature">
@@ -583,10 +603,13 @@ export default function StatsView({
             )}
           </div>
           <div className={`trend ${hasTrend ? "" : "is-empty"}`}>
-            <TrendChart values={gradeValues} />
+            <TrendChart values={gradeValues} sample={[3.4, 3.68, 3.9]} />
             {!hasTrend && (
               <div className="trend__empty">
-                <p className="trend__empty-text">Add your year-by-year GPAs in the quiz to see the shape of your record.</p>
+                <p className="trend__empty-text">
+                  <span className="trend__empty-tag">Sample</span>
+                  Add your year-by-year GPAs in the quiz to draw your own trend here.
+                </p>
               </div>
             )}
           </div>
@@ -715,6 +738,13 @@ export default function StatsView({
         </div>
       </Reveal>
 
+      <Reveal>
+        <div className="stat-section">
+          <span className="stat-section__label">Affordability</span>
+          <span className="stat-section__rule" aria-hidden="true" />
+        </div>
+      </Reveal>
+
       {/* ---- Cost: the budget, and where the list actually sits under it. -- */}
       <Reveal>
         <div className="stat-card tile--full cost">
@@ -803,13 +833,54 @@ export default function StatsView({
       </Reveal>
 
       <Reveal>
-        <div className="stat-card tile--full">
-          <h2 className="stat-card__title">Outside the classroom</h2>
-          <p className="stat-ec__lead">
-            A personalized read on your activities — the throughline across them and how it strengthens your
-            applications — will appear here.
-          </p>
-          <span className="stat-ec__tag">Summary coming soon</span>
+        <div className="stat-section">
+          <span className="stat-section__label">Activities &amp; location</span>
+          <span className="stat-section__rule" aria-hidden="true" />
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div className="stat-card tile--full stat-ec">
+          <div className="stat-card__head">
+            <h2 className="stat-card__title">Outside the classroom</h2>
+            <span className="stat-ec__tag">Sample summary</span>
+          </div>
+          <div className="stat-ec__grid">
+            <div className="stat-ec__read">
+              <p className="stat-ec__lead">
+                A personalized read on your activities — the throughline across them, and how it
+                strengthens your applications.
+              </p>
+              <p className="stat-ec__sample">
+                <span className="stat-ec__sample-mark">Sample</span>
+                Your activities point one way: you build things, then bring people with you. Founding a
+                club and carrying it to a national final reads as initiative rather than attendance — and
+                your research and tutoring show the same instinct, to make an opportunity and then open it
+                up to others. On an application, that throughline is worth more than any single line on the
+                list.
+              </p>
+              <p className="stat-ec__note">
+                Your real summary will be written from the activities in your profile.
+              </p>
+            </div>
+            <aside className="stat-ec__aside">
+              <h3 className="stat-ec__aside-title">
+                {activities.length ? `In your profile · ${activities.length}` : "In your profile"}
+              </h3>
+              {activities.length ? (
+                <ul className="stat-ec__list">
+                  {activities.slice(0, 5).map((a, i) => (
+                    <li key={i} className="stat-ec__item">
+                      <span className="stat-ec__bullet" aria-hidden="true" />
+                      <span className="stat-ec__item-text">{a.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="stat-ec__empty">Add activities in the quiz and they'll appear here.</p>
+              )}
+            </aside>
+          </div>
         </div>
       </Reveal>
 

@@ -8,13 +8,23 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const MODEL = process.env.UNISEEK_INSIGHT_MODEL ?? "claude-opus-5";
 
+// Each supporting card is a short list of labelled points rather than one paragraph,
+// so the reader can scan it. `label` must be one of the fixed set the card expects
+// (the UI keys its icons off it); `detail` is the substance; `source` names the dataset
+// a cited figure comes from, or is omitted when the point rests on no published number.
+export interface InsightPoint {
+  label: string;
+  detail: string;
+  source?: string;
+}
+
 export interface CollegeInsight {
-  whyFits: string;
-  admissions: string;
-  cost: string;
-  studentLife: string;
+  admissions: string; // the hero narrative — kept as prose
+  whyFits: InsightPoint[];
+  cost: InsightPoint[];
+  studentLife: InsightPoint[];
   extracurriculars: { activity: string; note: string }[];
-  thingsToConsider: string;
+  thingsToConsider: InsightPoint[];
 }
 
 export interface InsightCollege {
@@ -55,16 +65,27 @@ export interface InsightStudent {
   activities: string[];
 }
 
+const POINT = {
+  type: "object",
+  additionalProperties: false,
+  required: ["label", "detail"],
+  properties: {
+    label: { type: "string" },
+    detail: { type: "string" },
+    source: { type: "string" },
+  },
+} as const;
+
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["whyFits", "admissions", "cost", "studentLife", "extracurriculars", "thingsToConsider"],
+  required: ["admissions", "whyFits", "cost", "studentLife", "extracurriculars", "thingsToConsider"],
   properties: {
-    whyFits: { type: "string" },
     admissions: { type: "string" },
-    cost: { type: "string" },
-    studentLife: { type: "string" },
-    thingsToConsider: { type: "string" },
+    whyFits: { type: "array", items: POINT },
+    cost: { type: "array", items: POINT },
+    studentLife: { type: "array", items: POINT },
+    thingsToConsider: { type: "array", items: POINT },
     extracurriculars: {
       type: "array",
       items: {
@@ -77,15 +98,53 @@ const SCHEMA = {
   },
 } as const;
 
-const SYSTEM = `You are an honest, grounded college advisor writing a short personalized briefing
-for ONE student about ONE college. Rules:
-- Use only the facts provided. Never invent numbers or claims.
-- Be direct and concise: 2-4 sentences per section, plain language.
-- Connect the student's own profile to THIS college specifically.
-- Be honest about weaknesses and trade-offs; never guarantee or imply admission, and
-  never say strong extracurriculars or good fit ensure getting in.
-- For extracurriculars, return one entry per activity the student listed, noting how it
-  might (or might not) strengthen their case at this college.`;
+// The exact point labels each card expects — the UI keys its icon and ordering off
+// these, so the model must reuse them verbatim (one point per label, in this order).
+const SECTION_LABELS = {
+  whyFits: ["Overall match", "Admission odds", "Academic standing", "Preference match"],
+  cost: ["Net price for your income band", "Budget fit", "Merit aid"],
+  studentLife: ["School size", "Class size", "Housing", "Greek life", "Athletics", "Setting"],
+  thingsToConsider: ["Data confidence", "Tight filters", "Trade-offs"],
+} as const;
+
+// The only source names a point may carry — each maps to a real dataset the app's
+// figures come from. Keeps citations honest and consistent rather than invented.
+const SOURCES = [
+  "College Scorecard", // admit rates, net price, enrollment, merit-aid %
+  "Common Data Set", // SAT middle-50%, class-size mix, housing %, class rank
+  "IPEDS", // setting, enrollment, Greek life
+  "U.S. News", // program rankings
+  "Your profile", // the student's own GPA, scores, rank, budget, activities
+] as const;
+
+const SYSTEM = `You are a college advisor writing a personalized briefing for ONE student about ONE
+college. An admissions counselor should find it accurate, specific, and useful.
+
+TONE: professional and plain. Write clear, complete sentences. No hype, no slang, no
+second-guessing ("maybe", "possibly"); state what the data supports and move on.
+
+GROUNDING:
+- Use only the facts provided. Never invent numbers, rankings, or claims.
+- Cite the specific figures you were given (rates, prices, ranges, counts) and tie each
+  back to this student's own numbers.
+- Be honest about weaknesses and trade-offs. Never guarantee or imply admission, and
+  never say good fit or strong activities ensure getting in.
+
+STRUCTURE — most sections are a list of labelled points, NOT a paragraph:
+- Return ONE point per label given for that section, using the labels VERBATIM and in the
+  order given. Each point's "detail" is 2-3 full sentences with real substance and the
+  relevant figures — go deeper than a one-line summary.
+- If a figure for a point genuinely wasn't provided, say so plainly in the detail (e.g.
+  "This college's figure isn't published, so this is read from selectivity") rather than
+  guessing a number.
+- "admissions" is the exception: return it as a single 3-4 sentence prose paragraph that
+  synthesizes the student's odds at this college.
+- For "extracurriculars", return one entry per activity the student listed (in order),
+  each note 2-3 sentences on how it does or doesn't strengthen their case here.
+
+SOURCES: give each point a "source" naming where its cited figure comes from, chosen ONLY
+from this list: ${SOURCES.join(", ")}. Use "Your profile" for the student's own stats.
+Omit "source" entirely for a point that rests on no specific published figure.`;
 
 function pct(x: number | null): string | null {
   return x == null ? null : `${Math.round(x * 100)}%`;
@@ -146,15 +205,25 @@ export async function generateCollegeInsight(
       ? student.activities.map((a, i) => `${i + 1}. ${a}`).join("\n")
       : "(none listed)";
 
+  const labelSpec = (Object.entries(SECTION_LABELS) as [string, readonly string[]][])
+    .map(([section, labels]) => `- ${section}: one point per label, in order — ${labels.map((l) => `"${l}"`).join(", ")}`)
+    .join("\n");
+
   const user = `STUDENT\n${studentBlock(student)}\n\nStudent's activities:\n${activities}\n\nCOLLEGE\n${collegeBlock(
     college,
-  )}\n\nWrite the personalized briefing as JSON. Include one extracurriculars entry per listed activity (empty array if none).`;
+  )}\n\nWrite the personalized briefing as JSON.
+
+Point labels to use VERBATIM (one point each, in this order):
+${labelSpec}
+
+"admissions" is a single prose paragraph. Include one extracurriculars entry per listed
+activity, in order (empty array if none).`;
 
   try {
     const client = new Anthropic();
     const res = await client.messages.create({
       model: MODEL,
-      max_tokens: 3000,
+      max_tokens: 6000,
       output_config: { format: { type: "json_schema", schema: SCHEMA }, effort: "medium" },
       system: SYSTEM,
       messages: [{ role: "user", content: user }],

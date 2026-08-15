@@ -637,7 +637,57 @@ export default function ExplorerView({ college }: { college: College }) {
     </ul>
   );
 
+  // The filled version of `outline`: same labelled rows, but each carries the real,
+  // in-depth read and the source its figure came from.
+  const realPoints = (points: { label: string; detail: string; source?: string }[]) => (
+    <ul className="ex-points ex-points--filled">
+      {points.map((p) => (
+        <li key={p.label} className="ex-point">
+          {MINI_ICON[p.label] && <span className="ex-point__ic" aria-hidden="true">{MINI_ICON[p.label]}</span>}
+          <span className="ex-point__text">
+            <span className="ex-point__label">{p.label}</span>
+            <span className="ex-point__detail">{p.detail}</span>
+            {p.source && <span className="ex-point__src">{p.source}</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Shimmer placeholders shown while the model writes (~half a minute). They mirror the
+  // shape of what's coming — labelled rows with a couple of lines and a source pill — so
+  // the card doesn't reflow much when the real content lands.
+  const skelPoints = (n: number) => (
+    <ul className="ex-points ex-points--skel" aria-hidden="true">
+      {Array.from({ length: n }).map((_, i) => (
+        <li key={i} className="ex-point">
+          <span className="ex-skel ex-skel--ic" />
+          <span className="ex-point__text">
+            <span className="ex-skel ex-skel--label" />
+            <span className="ex-skel ex-skel--line" />
+            <span className="ex-skel ex-skel--line ex-skel--short" />
+            <span className="ex-skel ex-skel--pill" />
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+  const skelProse = () => (
+    <div className="ex-skel-prose" aria-hidden="true">
+      <span className="ex-skel ex-skel--line" />
+      <span className="ex-skel ex-skel--line" />
+      <span className="ex-skel ex-skel--line" />
+      <span className="ex-skel ex-skel--line ex-skel--short" />
+    </div>
+  );
+
   const sectionBody = (s: Section) => {
+    // While the insight is generating, show skeletons rather than the static outline.
+    if (insightState === "loading") {
+      if (s.field === "admissions") return skelProse();
+      if (s.dynamic === "ec") return skelPoints(Math.max(activities.length || 0, 3));
+      return skelPoints(s.points?.length ?? 3);
+    }
     if (s.dynamic === "ec") {
       // Numbered badges give each activity a distinct visual anchor (a ranked-list feel).
       // Once insights exist each activity carries its own read; until then they stand alone.
@@ -667,7 +717,12 @@ export default function ExplorerView({ college }: { college: College }) {
         </>
       );
     }
-    if (s.field && insightState === "ready" && insight) return <p className="ex-section__body">{insight[s.field]}</p>;
+    if (s.field && insightState === "ready" && insight) {
+      const val = insight[s.field];
+      // Admissions stays a prose paragraph; the other cards come back as labelled points.
+      if (typeof val === "string") return <p className="ex-section__body">{val}</p>;
+      return realPoints(val);
+    }
     return outline(s.points ?? []);
   };
 
