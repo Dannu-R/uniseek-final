@@ -82,6 +82,12 @@ Per college, in this order:
    wrong C7 vector changes every student's academic score at that school. (Don't point Read at the
    PDF itself, because PDF page rendering isn't available on every machine. Use the PNGs. If a
    section spills onto a page that wasn't rendered, re-run with `--render N`.)
+   - Fillable-form CDSs (common) render with their checkmarks drawn. If a grid still looks empty,
+     read the form-field values with pypdf (`PdfReader(path).get_fields()`) as a cross-check.
+   - Don't trust the year in a CDS page header or footer. Several schools reuse last year's template
+     footer ("2024-2025") on a 2025-26 CDS. Go by the content (e.g. "Fall 2025" in C1/C9).
+   - WebFetch's summary of College Navigator can be wrong on details (majors lists, ACT bands).
+     For majors and test scores, prefer the CDS or the raw page HTML (`curl` + grep) over the summary.
 4. **Deadlines for the current cycle** from the admissions website's first-year deadlines page.
    The CDS dates are a cross-check only (they belong to the CDS's own cycle).
 5. **Coordinates + conference** from the college's Wikipedia infobox (College Navigator has no

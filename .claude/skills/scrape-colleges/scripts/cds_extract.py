@@ -70,9 +70,18 @@ def fetch(src: str) -> tuple[str, str]:
     for k in ("pdf", "xlsx"):
         if os.path.exists(f"{stem}.{k}"):
             return f"{stem}.{k}", k
-    req = urllib.request.Request(src, headers={"User-Agent": "Mozilla/5.0 (uniseek CDS reader)"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = r.read()
+    ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
+    try:
+        req = urllib.request.Request(src, headers={"User-Agent": ua})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data = r.read()
+    except Exception as e:  # SSL-chain or 403 quirks: curl often succeeds where urllib doesn't
+        if not shutil.which("curl"):
+            raise
+        r = subprocess.run(["curl", "-sSL", "--max-time", "90", "-A", ua, src], capture_output=True)
+        data = r.stdout
+        if r.returncode != 0 or not data:
+            sys.exit(f"Download failed ({e}); curl also failed: {r.stderr.decode(errors='replace')[:200]}")
     k = kind(data)
     if not k:
         sys.exit(f"Not a PDF or xlsx: {src}\n(If it's an HTML CDS page, read it with WebFetch.)")
@@ -130,6 +139,7 @@ def render(pdf: str, page_nos: list[int]) -> list[str]:
     try:
         import pypdfium2
         doc = pypdfium2.PdfDocument(pdf)
+        doc.init_forms()  # draw fillable-form values (checkbox marks) — some CDSs are fillable PDFs
         for n in page_nos:
             path = os.path.join(outdir, f"p{n}.png")
             if not os.path.exists(path):

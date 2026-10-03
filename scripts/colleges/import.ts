@@ -1,6 +1,6 @@
 // Upsert reviewed batch files into Postgres.
 //
-//   npm run colleges:import -- <batch> [<batch> ...] [--dry-run] [--overwrite-protected]
+//   npm run colleges:import -- <batch> [<batch> ...] [--dry-run] [--overwrite-protected] [--only-done]
 //
 // - Keyed on ipedsUnitId, so re-running is safe.
 // - Only non-null values are written: a null in the batch never erases DB data.
@@ -9,6 +9,7 @@
 // - Programs: each controlled Major in the college's majorsOffered gets a CollegeProgram
 //   row. Existing rows are left untouched, so researched per-major admit rates / ranks survive.
 // - --dry-run validates and prints the plan; it works even with the DB down.
+// - --only-done skips colleges whose status is "partial" (they stay in the batch file for review).
 
 import { Prisma, PrismaClient } from "@prisma/client";
 import { CollegeRecord, FIELD_NAMES, type FieldName, batchPath, loadEnv, parseArgs, readBatch } from "./batch";
@@ -33,7 +34,12 @@ async function main() {
   const overwriteProtected = args.has("overwrite-protected");
   if (!args.positional.length) throw new Error("usage: npm run colleges:import -- <batch> [...] [--dry-run]");
 
-  const colleges: CollegeRecord[] = args.positional.flatMap((b) => readBatch(batchPath(b)).colleges);
+  const all: CollegeRecord[] = args.positional.flatMap((b) => readBatch(batchPath(b)).colleges);
+  const colleges = args.has("only-done") ? all.filter((c) => c.status === "done") : all;
+  if (colleges.length !== all.length) {
+    console.log(`Skipping ${all.length - colleges.length} partial college(s) (--only-done): ` +
+      all.filter((c) => c.status !== "done").map((c) => c.name).join("; "));
+  }
   console.log(`Validated ${colleges.length} colleges from ${args.positional.join(", ")}.`);
 
   const prisma = new PrismaClient();
