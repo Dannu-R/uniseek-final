@@ -11,6 +11,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
+    "colleges:build": "tsx scripts/colleges/build.ts",
+    "colleges:import": "tsx scripts/colleges/import.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

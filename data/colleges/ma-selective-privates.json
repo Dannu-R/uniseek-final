@@ -1,0 +1,1554 @@
+{
+  "batch": "ma-selective-privates",
+  "description": "from skill eval iteration 1",
+  "updatedAt": "2026-10-03T07:23:41.533Z",
+  "colleges": [
+    {
+      "name": "Boston University",
+      "city": "Boston",
+      "state": "MA",
+      "latitude": 42.351118,
+      "longitude": -71.107942,
+      "admitRate": 0.1111,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 34,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1430,
+      "satP75": 1510,
+      "actP25": 32,
+      "actP75": 34,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 1,
+      "c7Rank": 2,
+      "c7Ec": 2,
+      "c7Service": 1,
+      "netPriceAvg": 24420,
+      "netPriceLt30k": 9500,
+      "netPrice30to48k": 9342,
+      "netPrice48to75k": 11778,
+      "netPrice75to110k": 22517,
+      "netPriceGt110k": 47504,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 18805,
+      "setting": "URBAN",
+      "athleticsTier": "D1_NO_FOOTBALL",
+      "ncaaDivision": "NCAA D1 (no football)",
+      "conference": "Patriot League",
+      "greekLife": true,
+      "coOp": true,
+      "classSizeUnder20Pct": 0.593,
+      "housingOnCampusPct": 0.66,
+      "meritAidPct": 0.032,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.95,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-02",
+      "ed2Deadline": "2027-01-05",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": "2026-12-01",
+      "rdDeadline": "2027-01-05",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://www.bu.edu/admissions/apply/deadlines/",
+      "ipedsUnitId": 164988,
+      "website": "https://www.bu.edu/",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "52.0201"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=164988",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=164988",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "latitude": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=164988",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "longitude": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=164988",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C1 Fall 2024: 8,749 admitted / 78,769 applied = 11.11%"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C1 Fall 2024: 8,749 admitted / 78,769 applied = 11.11%"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1430/1510, ACT composite 32/34"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1430/1510, ACT composite 32/34"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1430/1510, ACT composite 32/34"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1430/1510, ACT composite 32/34"
+        },
+        "testBlind": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/first-year/",
+          "note": "Test optional through fall 2028/spring 2029; 'BU superscores both the SAT and ACT'"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/first-year/",
+          "note": "Test optional through fall 2028/spring 2029; 'BU superscores both the SAT and ACT'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Important, GPA VI, test Considered, EC Important, volunteer Considered"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "religiousAffiliation": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "ncaaDivision": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 95%; NCAA Division I without football"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "note": "NCAA D1 without football + Patriot League -> D1_NO_FOOTBALL"
+        },
+        "conference": {
+          "source": "derived",
+          "url": "https://nces.ed.gov/collegenavigator/?id=164988",
+          "note": "NCAA D1 without football + Patriot League -> D1_NO_FOOTBALL"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "F1 undergrads: 11% of women in sororities (fraternity share reported as '-'); 66% in college housing (99% of first-years)"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "F1 undergrads: 11% of women in sororities (fraternity share reported as '-'); 66% in college housing (99% of first-years)"
+        },
+        "coOp": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "E1 'Cooperative (Work-Study) Program: Yes - College of Engineering only'"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "I-3 sections: (542+1168)/2886 = 59.3% (the table header inside the 2024-25 CDS says 'Fall 2023')"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://www.bu.edu/asir/files/2026/05/2024-2025-Common-Data-Set.pdf",
+          "year": "2024-25",
+          "note": "H2A line N full-time freshmen: 103 / 3,268 enrolled first-years (C1) = 3.2%"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "eaDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "reaDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "priorityDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://www.bu.edu/admissions/apply/deadlines/",
+          "year": "2026-27",
+          "note": "ED1 Nov 2, ED2 Jan 5, RD Jan 5; priorityDeadline = Dec 1 merit-scholarship deadline. The page gives month/day only; years inferred for the fall-2027-entry cycle (page references the Class of 2030 as admitted, so this is the next cycle)."
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/boston-university-2130",
+          "year": "2027",
+          "note": "2027 National Universities #34 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/boston-university-2130",
+          "year": "2027",
+          "note": "2027 National Universities #34 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "Admit rate ~11% (CDS 2024-25). Large urban research university; complements Tufts (suburban) and Northeastern (co-op).",
+        "Majors from College Navigator 2024-25 completions (bachelor's > 0). No Nursing at BU. Communication = 'Communication, General'.",
+        "Finance (52.0801) NOT included: 'Finance, General' has no bachelor's row in IPEDS; finance is a Questrom BSBA concentration. Add it by hand if concentrations should count.",
+        "coOp=true is narrow (Engineering only per CDS E1). Decide whether the scorer should treat it like Northeastern's university-wide co-op.",
+        "studyAbroadRate left null: no participation rate in CDS."
+      ]
+    },
+    {
+      "name": "Northeastern University",
+      "city": "Boston",
+      "state": "MA",
+      "latitude": 42.339992,
+      "longitude": -71.088782,
+      "admitRate": 0.0522,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 42,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1450,
+      "satP75": 1520,
+      "actP25": 33,
+      "actP75": 35,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 3,
+      "c7Rank": 1,
+      "c7Ec": 2,
+      "c7Service": 2,
+      "netPriceAvg": 34207,
+      "netPriceLt30k": 2264,
+      "netPrice30to48k": 2436,
+      "netPrice48to75k": 5301,
+      "netPrice75to110k": 16241,
+      "netPriceGt110k": 47696,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 17432,
+      "setting": "URBAN",
+      "athleticsTier": "D1_NO_FOOTBALL",
+      "ncaaDivision": "NCAA D1 (no football)",
+      "conference": "Coastal Athletic Association",
+      "greekLife": true,
+      "coOp": true,
+      "classSizeUnder20Pct": 0.507,
+      "housingOnCampusPct": 0.57,
+      "meritAidPct": 0.13,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.97,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-01",
+      "ed2Deadline": "2027-01-01",
+      "eaDeadline": "2026-11-01",
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-01",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+      "ipedsUnitId": 167358,
+      "website": "https://www.northeastern.edu/",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "51.3801",
+        "52.0201"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=167358",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=167358",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "latitude": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=167358",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "longitude": {
+          "source": "college-navigator",
+          "url": "https://educationdata.urban.org/api/v1/college-university/ipeds/directory/2023/?unitid=167358",
+          "note": "IPEDS HD directory 2023 via Urban Institute Education Data API"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C1 Fall 2024: 5,133 admitted / 98,425 applied = 5.22%. A 2025-26 CDS was not yet published when checked."
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C1 Fall 2024: 5,133 admitted / 98,425 applied = 5.22%. A 2025-26 CDS was not yet published when checked."
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1450/1520, ACT composite 33/35"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1450/1520, ACT composite 33/35"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1450/1520, ACT composite 33/35"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C9 Fall 2024: SAT composite 1450/1520, ACT composite 33/35"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C8A: SAT/ACT not required, considered if submitted"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/wp-content/uploads/2022/02/Test-Optional-and-Standardized-Testing-FAQ.pdf",
+          "note": "Test-Optional FAQ (May 2024): superscores both SAT and ACT"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "C7: rigor VI, class rank Considered, GPA VI, test VI, EC Important, volunteer Important"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "religiousAffiliation": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "ncaaDivision": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "year": "2023-24 net price; Fall 2024 enrollment/retention",
+          "note": "Setting 'City: Large'; religious affiliation 'Not applicable'; FT retention 97%; NCAA Division I without football"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "note": "NCAA D1 without football + Coastal Athletic Association -> D1_NO_FOOTBALL"
+        },
+        "conference": {
+          "source": "derived",
+          "url": "https://nces.ed.gov/collegenavigator/?id=167358",
+          "note": "NCAA D1 without football + Coastal Athletic Association -> D1_NO_FOOTBALL"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "F1 undergrads: 5% of men in fraternities, 9% of women in sororities; 57% in college housing (99% of first-years)"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "F1 undergrads: 5% of men in fraternities, 9% of women in sororities; 57% in college housing (99% of first-years)"
+        },
+        "coOp": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "E1 'Other: Cooperative education program' checked"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "I-3 Fall 2024 sections: (323+1262)/3127 = 50.7%"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://uds.northeastern.edu/wp-content/uploads/2026/03/CDS-2024-25.pdf",
+          "year": "2024-25",
+          "note": "H2A line N first-years: 358 / 2,759 first-years (H2 line A) = 13.0%"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "eaDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "reaDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "priorityDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.northeastern.edu/application-information/admissions-deadlines-decisions/",
+          "year": "2026-27",
+          "note": "ED I + EA Nov 1, ED II + RD Jan 1. The page gives month/day only; years inferred for the fall-2027-entry cycle."
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/northeastern-university-2199",
+          "year": "2027",
+          "note": "2027 National Universities #42 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/northeastern-university-2199",
+          "year": "2027",
+          "note": "2027 National Universities #42 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "Admit rate ~5% (most selective of the three). University-wide co-op makes it a useful real test case for the coOp soft factor.",
+        "Majors from College Navigator 2024-25 completions (bachelor's > 0). Business = 'Business/Commerce, General' (1,106); CS = 'Computer and Information Sciences, General'; Psychology = 'Research and Experimental Psychology, Other'; Economics = 'Econometrics and Quantitative Economics'; Communication = 'Communication and Media Studies, Other' + 'Speech Communication and Rhetoric'.",
+        "Finance (52.0801) NOT included: IPEDS shows 'Finance, General' with 0 bachelor's completions; finance is a concentration inside the BS in Business Administration. Add it by hand if concentrations should count as majors.",
+        "Deadline years inferred (page shows 'November 1' / 'January 1' with no year). Nov 1 2026 is a Sunday; Northeastern has historically kept Nov 1 anyway. Recheck before showing deadlines to users.",
+        "studyAbroadRate left null: no participation rate in CDS."
+      ]
+    },
+    {
+      "name": "Tufts University",
+      "city": "Medford",
+      "state": "MA",
+      "latitude": 42.406,
+      "longitude": -71.12,
+      "admitRate": 0.1082,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 31,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1460,
+      "satP75": 1520,
+      "actP25": 33,
+      "actP75": 35,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 1,
+      "c7Rank": 3,
+      "c7Ec": 2,
+      "c7Service": 1,
+      "netPriceAvg": 32367,
+      "netPriceLt30k": 11284,
+      "netPrice30to48k": 9811,
+      "netPrice48to75k": 14923,
+      "netPrice75to110k": 23311,
+      "netPriceGt110k": 58570,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 7126,
+      "setting": "SUBURBAN",
+      "athleticsTier": "D3",
+      "ncaaDivision": "NCAA D3",
+      "conference": "NESCAC",
+      "greekLife": true,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.5979,
+      "housingOnCampusPct": 0.6,
+      "meritAidPct": 0.0295,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.95,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-02",
+      "ed2Deadline": "2027-01-04",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-04",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/",
+      "ipedsUnitId": 168148,
+      "website": "https://www.tufts.edu",
+      "majorsOffered": [
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168148"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C1: 3,612 admitted / 33,395 applied"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P25"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P75"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C8A: Yes, uses scores; SAT or ACT not required but considered if submitted"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates: men 12% fraternities, women 15% sororities"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "I3 class sections: (165 + 626) / 1,323"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates 60%"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://provost.tufts.edu/institutionalresearch/wp-content/uploads/sites/5/CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "H2A row N first-year 52 / H2 row A first-year 1,762"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tufts_University",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tufts_University",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tufts_University",
+          "note": "Wikipedia infobox: NCAA Division III, NESCAC"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tufts_University",
+          "note": "Wikipedia infobox: NCAA Division III, NESCAC"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "url": "https://en.wikipedia.org/wiki/Tufts_University",
+          "note": "NCAA Division III -> D3"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/checklist-and-deadlines/"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admissions.tufts.edu/apply/applying-to-tufts/sat-and-act-tests/",
+          "note": "'We review the highest individual Evidence-Based Reading and Writing and Math scores from all test sittings.'"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/tufts-university-2219",
+          "year": "2027",
+          "note": "2027 National Universities #31 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/tufts-university-2219",
+          "year": "2027",
+          "note": "2027 National Universities #31 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "CDS C1 (p.11 image): applied 14,444 men + 18,947 women + 4 unknown = 33,395; admitted 1,568 + 2,044 + 0 = 3,612. Third-party summaries quote 33,415 / 3,613; the PDF page values were used.",
+        "C7 read from PDF page 14 image (radio-button grid).",
+        "C8A: test-optional ('Not required for admission, but considered if submitted') -> testBlind false.",
+        "E1 (p.25): the 2025-26 CDS template has no 'Cooperative education programs' checkbox, so coOp left null. Study abroad offered (E1); no published participation rate found, so studyAbroadRate left null.",
+        "I3 page header reads 'Common Data Set 2024-2025' but the body says Fall 2025 term; it is in the 2025-26 PDF and the totals reconcile (sum 1,323).",
+        "CDS C21 (2025-26 cycle cross-check): ED I 11/4, ED II 1/6. Admissions site (current) lists ED I Nov 2, 2026; ED II Jan 4, 2027; RD Jan 4, 2027. The deadlines page header still says 'Class of 2029' but the dates are explicitly 2026/2027, so cycle = 2026-27.",
+        "rollingAdmission false: admissions site gives fixed notification dates (mid-Dec, early Feb, by April 1).",
+        "Retention: College Navigator 95% (CDS B22 also 95%: 1,710/1,796).",
+        "College Navigator does not list a bachelor's in Business Administration, Nursing, Communication or Finance at Tufts."
+      ]
+    },
+    {
+      "name": "Wellesley College",
+      "city": "Wellesley",
+      "state": "MA",
+      "latitude": 42.2925,
+      "longitude": -71.3075,
+      "admitRate": 0.1479,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 10,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.2163,
+      "outOfStateAdmitRate": 0.2139,
+      "satP25": 1460,
+      "satP75": 1540,
+      "actP25": 33,
+      "actP75": 35,
+      "testBlind": false,
+      "superscores": null,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 1,
+      "c7Rank": 2,
+      "c7Ec": 2,
+      "c7Service": 1,
+      "netPriceAvg": 22174,
+      "netPriceLt30k": 2546,
+      "netPrice30to48k": 2836,
+      "netPrice48to75k": 6587,
+      "netPrice75to110k": 11551,
+      "netPriceGt110k": 54188,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 2407,
+      "setting": "SUBURBAN",
+      "athleticsTier": "D3",
+      "ncaaDivision": "NCAA D3",
+      "conference": "NEWMAC",
+      "greekLife": false,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.6673,
+      "housingOnCampusPct": 0.92,
+      "meritAidPct": 0.0069,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.96,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-01",
+      "ed2Deadline": "2027-01-05",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-08",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants",
+      "ipedsUnitId": 168218,
+      "website": "https://www.wellesley.edu",
+      "majorsOffered": [
+        "11.0701",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168218"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C1: 1,258 admitted / 8,506 applied"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C1 residency: 151 / 698"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C1 residency: 1,000 / 4,676"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P25"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P75"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "C8A: Yes; SAT/ACT not required but considered if submitted"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "F1: 0% fraternities, 0% sororities"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "I3 class sections: (71 + 260) / 496"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "F1 undergraduates 92%"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://wellesley-college.files.svdcdn.com/production/administrative-departments/OIR/CDS_2025-2026-FINAL.pdf?dm=1773253066",
+          "year": "2025-26",
+          "note": "H2A row N first-year 4 / H2 row A first-year 576"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wellesley_College",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wellesley_College",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wellesley_College",
+          "note": "Wikipedia infobox: NCAA Division III, NEWMAC (primary)"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wellesley_College",
+          "note": "Wikipedia infobox: NCAA Division III, NEWMAC (primary)"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "url": "https://en.wikipedia.org/wiki/Wellesley_College",
+          "note": "NCAA Division III -> D3"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://www.wellesley.edu/admission-aid/apply/first-year-applicants"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/wellesley-college-2224",
+          "year": "2027",
+          "note": "2027 National Liberal Arts Colleges #10; via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/wellesley-college-2224",
+          "year": "2027",
+          "note": "2027 National Liberal Arts Colleges #10; via Chrome"
+        }
+      },
+      "notes": [
+        "Picked in place of Amherst College (164465, ~9% admit): amherst.edu returns HTTP 405 to all automated fetches (CDS PDFs and the CDS index), so its CDS could not be read this session.",
+        "Wellesley is a women's college (C1: 0 male applicants), which matters for who it can be recommended to.",
+        "CDS C1 (p.7 image): 8,506 applied / 1,258 admitted. Residency table: in-state 151/698, out-of-state 1,000/4,676 (international 107/3,132 excluded).",
+        "C7 read from PDF page 8 image (X grid): Class rank = Important (2), unlike Tufts/Williams.",
+        "C8A: test-optional for fall 2027 entry ('Not required for admission, but considered if submitted') -> testBlind false. superscores left null: admissions FAQ and first-year page do not say.",
+        "H2A row N first-year = 4 / H2 row A first-year = 576 -> 0.0069.",
+        "E1: 2025-26 template has no co-op checkbox -> coOp null. Study abroad offered; no participation rate found -> studyAbroadRate null.",
+        "Deadlines: admissions page states fall 2027 entry: ED I Nov 1, ED II Jan 5, RD Jan 8 (CDS 2025-26 C21 cross-check: ED 11/1, ED II 1/5).",
+        "Majors: College Navigator lists psychology as 'Cognitive Psychology and Psycholinguistics' / 'Research and Experimental Psychology, Other' and economics as 'Econometrics and Quantitative Economics', mapped by meaning to Psychology and Economics. No Business, Engineering, Nursing, Communication or Finance bachelor's listed."
+      ]
+    },
+    {
+      "name": "Williams College",
+      "city": "Williamstown",
+      "state": "MA",
+      "latitude": 42.7125,
+      "longitude": -73.205,
+      "admitRate": 0.0861,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 1,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1490,
+      "satP75": 1550,
+      "actP25": 33,
+      "actP75": 35,
+      "testBlind": false,
+      "superscores": null,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 1,
+      "c7Rank": 3,
+      "c7Ec": 2,
+      "c7Service": 2,
+      "netPriceAvg": 15894,
+      "netPriceLt30k": null,
+      "netPrice30to48k": null,
+      "netPrice48to75k": null,
+      "netPrice75to110k": 3030,
+      "netPriceGt110k": 49594,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 2115,
+      "setting": "SUBURBAN",
+      "athleticsTier": "D3",
+      "ncaaDivision": "NCAA D3",
+      "conference": "NESCAC",
+      "greekLife": false,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.7538,
+      "housingOnCampusPct": 0.93,
+      "meritAidPct": 0,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.97,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-15",
+      "ed2Deadline": null,
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-04",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://www.williams.edu/admission-aid/how-to-apply/first-year/",
+      "ipedsUnitId": 168342,
+      "website": "https://www.williams.edu",
+      "majorsOffered": [
+        "11.0701",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=168342"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "C1: 1,336 admitted / 15,520 applied"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P25"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite P75"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "C8A: Y; SAT or ACT not required but considered if submitted"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "F1: 0% fraternities, 0% sororities"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "I3 class sections: (198 + 200) / 528"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates 93%"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://api.collegedata.fyi/storage/v1/object/public/sources/williams-college/2025-26/f0616d7cb427899a3963498bceb30af50ebbff454f92bd1dd84276b3e430c996.pdf",
+          "year": "2025-26",
+          "note": "H2A row N first-year 0 / H2 row A first-year 584"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Williams_College",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Williams_College",
+          "note": "Wikipedia infobox coordinates"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Williams_College",
+          "note": "Wikipedia infobox: NCAA Division III, NESCAC (skiing/squash compete at D1 level)"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Williams_College",
+          "note": "Wikipedia infobox: NCAA Division III, NESCAC (skiing/squash compete at D1 level)"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "url": "https://en.wikipedia.org/wiki/Williams_College",
+          "note": "NCAA Division III -> D3"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/"
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/williams-college-2229",
+          "year": "2027",
+          "note": "2027 National Liberal Arts Colleges #1; via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/williams-college-2229",
+          "year": "2027",
+          "note": "2027 National Liberal Arts Colleges #1; via Chrome"
+        }
+      },
+      "notes": [
+        "CDS source: the official williams.edu PDF (hub.williams.edu/institutional-research/files/2026/04/Williams-CDS-2025-2026-V2.pdf) returns 403/Cloudflare to scripts, so the archived copy of that official 2025-26 PDF on collegedata.fyi was used; every page is headed 'Common Data Set 2025-2026 / Williams College'.",
+        "CDS C1 (p.8 image): applied 7,368 + 7,248 + 904 unknown = 15,520; admitted 628 + 661 + 47 = 1,336.",
+        "C7 read from PDF page 9 image (X grid). Standardized test scores 'Considered' with a 'See C8 note' (truly test-optional).",
+        "C8A: 'Not required for admission, but considered if submitted' -> testBlind false.",
+        "H2A row N first-year = 0 (no non-need institutional aid) -> meritAidPct 0 (real data).",
+        "E1: 2025-26 template has no co-op checkbox -> coOp null. Study abroad offered; no participation rate found -> studyAbroadRate null.",
+        "College Navigator net price by income: the $0-30k, $30-48k and $48-75k rows show no data, so those fields are null (75-110k = $3,030, 110k+ = $49,594).",
+        "College Navigator campus setting is 'Town: Fringe', which the field guide maps to SUBURBAN, although Williamstown reads as a small rural town.",
+        "Deadlines: williams.edu admissions pages are behind Cloudflare; read via a browser. The current first-year page lists ED 'Nov. 15' (decision by Dec. 14) and RD 'Jan. 4' (answer April 1) with no year printed. Read during the 2026-27 cycle (Oct 2026), so recorded as 2026-11-15 / 2027-01-04. CDS 2025-26 C21 cross-check: ED 11/15, no ED II, no EA. Re-check if Williams posts year-specific dates.",
+        "superscores left null: only third-party sites (PrepScholar etc.) say Williams superscores; the official testing section could not be read.",
+        "College Navigator lists no bachelor's in Business, Engineering, Nursing, Communication or Finance at Williams."
+      ]
+    }
+  ]
+}

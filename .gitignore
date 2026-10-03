@@ -37,3 +37,9 @@ tsconfig.tsbuildinfo
 
 # Misc
 *.tmp
+
+# College scraping: downloaded CDS PDFs + per-college scratch files (built batch files ARE committed)
+data/colleges/.cache/
+data/colleges/work/
+# Skill eval runs (scrape-colleges-workspace etc.) — large, regenerable
+.claude/skills/*-workspace/

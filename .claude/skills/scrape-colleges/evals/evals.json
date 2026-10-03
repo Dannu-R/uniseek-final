@@ -1,0 +1,56 @@
+{
+  "skill_name": "scrape-colleges",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "add the 3 biggest public universities in Georgia to the uniseek db, with CDS stuff and deadlines",
+      "expected_output": "Picks the 3 largest bachelor's-granting public universities in Georgia by undergrad enrollment (verified, not from memory), researches College Navigator + CDS + deadlines for each, produces a validated batch file ready to import; does not touch the DB.",
+      "files": [],
+      "assertions": [
+        "Produces a machine-readable data file with exactly 3 colleges",
+        "Every college has the correct IPEDS unit ID",
+        "Every filled value cites a source (URL or document + item)",
+        "Percentages are stored as 0-1 fractions and field names match the Prisma College model",
+        "Application deadlines are dated for the current 2026-27 cycle (or explicitly labeled with the cycle they belong to)",
+        "No writes to the database and no repo files edited outside the outputs dir",
+        "Chosen colleges are the 3 largest bachelor's-granting Georgia publics by undergrad enrollment, backed by cited enrollment figures",
+        "Explicitly handles any chosen college that is already in prisma/seed.ts (UGA / Georgia Tech) instead of silently duplicating it",
+        "Each college has a complete six-factor C7 vector or an explicit note why not"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "scrape Tulane, Rice and Wake Forest, mainly need ED/EA/RD deadlines + C7 weights",
+      "expected_output": "Batch for Tulane, Rice, Wake Forest with correct IPEDS ids, current-cycle (2026-27) deadlines with the right ED/ED2/EA/REA distinctions, and complete C7 vectors read from the CDS page images, each sourced.",
+      "files": [],
+      "assertions": [
+        "Produces a machine-readable data file with exactly 3 colleges",
+        "Every college has the correct IPEDS unit ID",
+        "Every filled value cites a source (URL or document + item)",
+        "Percentages are stored as 0-1 fractions and field names match the Prisma College model",
+        "Application deadlines are dated for the current 2026-27 cycle (or explicitly labeled with the cycle they belong to)",
+        "No writes to the database and no repo files edited outside the outputs dir",
+        "Each college has a complete six-factor C7 vector (rigor, GPA, test, rank, EC, volunteer) on the 0-3 scale",
+        "C7 ratings match the colleges' published CDS",
+        "ED / ED2 / EA / REA / RD deadlines match each college's admissions site, with plans not offered left null"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "grab 3 selective (<20% admit) private colleges in Massachusetts that aren't already in our seed and get them ready to import",
+      "expected_output": "Excludes Harvard, MIT, Boston College (already seeded), picks 3 MA privates with verified <20% admit rates, researches them fully, and produces a validated, import-ready batch file without importing.",
+      "files": [],
+      "assertions": [
+        "Produces a machine-readable data file with exactly 3 colleges",
+        "Every college has the correct IPEDS unit ID",
+        "Every filled value cites a source (URL or document + item)",
+        "Percentages are stored as 0-1 fractions and field names match the Prisma College model",
+        "Application deadlines are dated for the current 2026-27 cycle (or explicitly labeled with the cycle they belong to)",
+        "No writes to the database and no repo files edited outside the outputs dir",
+        "Excludes Harvard, MIT and Boston College (already in the seed)",
+        "Each chosen college is a Massachusetts private with a cited admit rate under 20%",
+        "Output is import-ready: a validated file plus a clear import path, without importing"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,916 @@
+{
+  "batch": "georgia-large-publics",
+  "description": "from skill eval iteration 1",
+  "updatedAt": "2026-10-03T07:23:02.156Z",
+  "colleges": [
+    {
+      "name": "Georgia State University",
+      "city": "Atlanta",
+      "state": "GA",
+      "latitude": 33.7537,
+      "longitude": -84.386,
+      "admitRate": 0.5722,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 191,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.6687,
+      "outOfStateAdmitRate": 0.4782,
+      "satP25": 1030,
+      "satP75": 1240,
+      "actP25": 18,
+      "actP75": 27,
+      "testBlind": false,
+      "superscores": null,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 3,
+      "c7Rank": 0,
+      "c7Ec": 0,
+      "c7Service": 0,
+      "netPriceAvg": 16854,
+      "netPriceLt30k": 13787,
+      "netPrice30to48k": 14430,
+      "netPrice48to75k": 16656,
+      "netPrice75to110k": 19390,
+      "netPriceGt110k": 20305,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 27415,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_OTHER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "Sun Belt",
+      "greekLife": null,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.2438,
+      "housingOnCampusPct": 0.19,
+      "meritAidPct": null,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.8,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": null,
+      "ed2Deadline": null,
+      "eaDeadline": "2026-11-15",
+      "reaDeadline": null,
+      "priorityDeadline": "2026-11-15",
+      "rdDeadline": "2027-05-01",
+      "rollingAdmission": true,
+      "deadlinesSourceUrl": "https://admissions.gsu.edu/timeline/",
+      "ipedsUnitId": 139940,
+      "website": "https://www.gsu.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "51.3801",
+        "52.0201",
+        "52.0801"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Georgia_State_University",
+          "note": "Infobox 33.753694N 84.385972W"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Georgia_State_University",
+          "note": "Infobox 33.753694N 84.385972W"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "note": "Campus setting: City: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "note": "Atlanta campus unit; Perimeter College is a separate IPEDS unit (244437). CDS 2025-26 B1 gives 26,784."
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "note": "Full-time first-to-second year retention 80%"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139940",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://www.dropbox.com/scl/fi/wzzswsxb26ml907zmuvip/CDS-2025-26-for-Georgia-State-University.xlsx?rlkey=50qwjhqh9l6nezm62uqg016cz&dl=0",
+          "year": "2025-26",
+          "note": "C1: 24,217 admitted / 42,323 applied (xlsx C.116/C.117; sex rows sum to totals)"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C1 residency: 13,381 / 20,010"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C1 residency: 9,267 / 19,378 (international 1,569 / 2,935 excluded)"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1030/1140/1240"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C9 SAT Composite"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 18/23/27"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C9 ACT Composite"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C8A: Yes; SAT or ACT required to be considered for admission"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Very Important (xlsx grid cell 'x' and answer key C.701 agree)"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Very Important (C.703)"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Very Important (C.704)"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Not Considered (C.702)"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Not Considered (C.708)"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C7 Volunteer work: Not Considered (C.716)"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "F1 undergraduates 19% (first-year column n/a)"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "I3 class sections: (220 + 463) / 2,802 (row sums to total)"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Georgia_State_University",
+          "note": "NCAA Division I, FBS football"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Georgia_State_University"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in the Sun Belt (not a power conference)"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admissions.gsu.edu/timeline/",
+          "note": "Page is the '2026-27 First-Year Admission Timeline' for Fall 2027 entry"
+        },
+        "eaDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.gsu.edu/timeline/",
+          "note": "Nov 15: Early Action admission (non-restrictive per CDS C22)"
+        },
+        "priorityDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.gsu.edu/timeline/",
+          "note": "Same Nov 15 date is the priority deadline for Honors College, Centennial Merit, Stamps and Presidential scholarships"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.gsu.edu/timeline/",
+          "note": "May 1: final admission application deadline (CDS C14 closing 5/1 agrees)"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://oie.gsu.edu/data-reporting-systems/common-data-set/",
+          "year": "2025-26",
+          "note": "C16: notification on a rolling basis beginning 12/15 (admissions site silent)"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.gsu.edu/timeline/"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/georgia-state-university-1574",
+          "year": "2027",
+          "note": "2027 National Universities #191 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/georgia-state-university-1574",
+          "year": "2027",
+          "note": "2027 National Universities #191 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "CDS 2025-26 is published as an .xlsx (Dropbox link from https://oie.gsu.edu/data-reporting-systems/common-data-set/); values read from cells, with the sheet's own answer-key columns cross-checked against the visible grid.",
+        "CDS covers the Atlanta campus (B1 total undergrads 26,784, matching IPEDS unit 139940); Perimeter College (2-year, unit 244437) excluded per skill rules.",
+        "meritAidPct left null: H2A row N is 'N/A' in every column, and the H section is internally inconsistent (header says 'Fall 2024 cohort', row C is a #REF! error, less-than-full-time count 13,974 looks like it includes Perimeter). Treated as not reported rather than 0, since GSU advertises merit scholarships (Presidential, Stamps, Centennial).",
+        "greekLife left null: F1 fraternity/sorority percentages 'n/a'.",
+        "coOp left null: this CDS E1 template has no 'Cooperative education' item. E1: study abroad offered (no participation rate found).",
+        "superscores left null: admissions pages read do not state a superscoring policy.",
+        "No ED (CDS C21 = No). Nov 15 is both EA and the scholarship-priority deadline; recorded in both eaDeadline and priorityDeadline.",
+        "No engineering bachelor's on College Navigator (14.x omitted). Communication (09.0101) from 'Speech Communication and Rhetoric' and 'Journalism' bachelor's programs."
+      ]
+    },
+    {
+      "name": "Kennesaw State University",
+      "city": "Kennesaw",
+      "state": "GA",
+      "latitude": 34.038,
+      "longitude": -84.583,
+      "admitRate": 0.7944,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 342,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1010,
+      "satP75": 1210,
+      "actP25": 19,
+      "actP75": 26,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 0,
+      "c7Gpa": 3,
+      "c7Test": 3,
+      "c7Rank": 0,
+      "c7Ec": 0,
+      "c7Service": 0,
+      "netPriceAvg": 15636,
+      "netPriceLt30k": 12235,
+      "netPrice30to48k": 12661,
+      "netPrice48to75k": 15185,
+      "netPrice75to110k": 18263,
+      "netPriceGt110k": 19309,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 42760,
+      "setting": "SUBURBAN",
+      "athleticsTier": "D1_FBS_OTHER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "Conference USA",
+      "greekLife": null,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.2894,
+      "housingOnCampusPct": 0.13,
+      "meritAidPct": 0.0068,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.77,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": null,
+      "ed2Deadline": null,
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": "2026-11-02",
+      "rdDeadline": "2027-07-01",
+      "rollingAdmission": true,
+      "deadlinesSourceUrl": "https://www.kennesaw.edu/admissions/undergraduate/deadlines.php",
+      "ipedsUnitId": 486840,
+      "website": "https://www.kennesaw.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "51.3801",
+        "52.0201",
+        "52.0801"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Kennesaw_State_University",
+          "note": "Infobox 34.038N 84.583W"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Kennesaw_State_University",
+          "note": "Infobox 34.038N 84.583W"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "note": "Campus setting: Suburb: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "note": "Full-time first-to-second year retention 77%"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=486840",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C1: 26,622 admitted / 33,513 applied (sex rows sum to totals)"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1010/1100/1210"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C9 SAT Composite"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 19/22/26"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C9 ACT Composite"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C8A: Yes; SAT or ACT required to be considered for Fall 2027"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://www.kennesaw.edu/admissions/undergraduate/admission-requirements/freshman.php",
+          "note": "'For the SAT, we will take the highest Evidence-based Reading & Writing section and Mathematics section if there is more than one set of scores.'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Not Considered (HTML table: 'Applies' in Not Considered cell)"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Very Important"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Very Important"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Not Considered"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Not Considered"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C7 Volunteer work: Not Considered"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "F1 undergraduates 13.0% (first-years 33.0%)"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "I3 class sections: (676 + 739) / 4,890 (row sums to total)"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "H2A row N first-year 61 / H2 row A first-year 9,026"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Kennesaw_State_University",
+          "note": "Infobox: NCAA Division I FBS - CUSA"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Kennesaw_State_University",
+          "note": "Joined Conference USA in all sports from 2024-25"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in Conference USA (not a power conference)"
+        },
+        "deadlinesCycle": {
+          "source": "derived",
+          "note": "Admissions page lists Fall 2027 deadlines; today 2026-10-03 -> cycle 2026-27"
+        },
+        "priorityDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.kennesaw.edu/admissions/undergraduate/deadlines.php",
+          "note": "Fall 2027 Priority Deadline: application Nov 2, 2026 (documents Nov 16, 2026); for scholarships, housing, aid. CDS C14 also lists a Nov 1 priority date (2025-26 cycle)"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://www.kennesaw.edu/admissions/undergraduate/deadlines.php",
+          "note": "Fall 2027 Regular Deadline: July 1, 2027 (final first-year deadline; CDS C14 closing date July 1)"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://campus.kennesaw.edu/offices-services/data-strategy/institutional-research/publications/common-data-set/cds-2025-2026.php",
+          "year": "2025-26",
+          "note": "C16: notification on a rolling basis beginning August 1 (admissions page silent)"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://www.kennesaw.edu/admissions/undergraduate/deadlines.php"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/kennesaw-state-university-1577",
+          "year": "2027",
+          "note": "2027 National Universities #342 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/kennesaw-state-university-1577",
+          "year": "2027",
+          "note": "2027 National Universities #342 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "CDS 2025-26 is published as an HTML page (no PDF); C7/E1/F1 grids are explicit 'Applies'/'Yes' table cells, so no visual check was needed.",
+        "C1 residency breakdown table is blank in the CDS, so in-/out-of-state admit rates left null.",
+        "No ED, EA or REA (CDS C21 = No, C22 = No).",
+        "greekLife left null: F1 fraternity/sorority percentages are 'N/A'.",
+        "coOp left null: this CDS E1 template has no 'Cooperative education' item. E1: study abroad offered (no participation rate found).",
+        "College Navigator still lists athletics as Division I-FCS (IPEDS lag); Wikipedia shows FBS / Conference USA since the 2024-25 move, which is used here.",
+        "Economics (45.0601) included on the basis of College Navigator's bachelor's in 'Business/Managerial Economics' (no separate 'Economics, General'). Communication (09.0101) from 'Digital Communication and Media/Multimedia', 'Journalism' and 'Organizational Communication, General' bachelor's programs.",
+        "Admit rate from CDS 2025-26 (79.4%) differs from College Navigator's 69% (older IPEDS year)."
+      ]
+    },
+    {
+      "name": "University of Georgia",
+      "city": "Athens",
+      "state": "GA",
+      "latitude": 33.9558,
+      "longitude": -83.3745,
+      "admitRate": 0.3425,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 52,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.4213,
+      "outOfStateAdmitRate": 0.2788,
+      "satP25": 1250,
+      "satP75": 1420,
+      "actP25": 27,
+      "actP75": 33,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 2,
+      "c7Rank": 0,
+      "c7Ec": 1,
+      "c7Service": 1,
+      "netPriceAvg": 16662,
+      "netPriceLt30k": 8085,
+      "netPrice30to48k": 8686,
+      "netPrice48to75k": 13096,
+      "netPrice75to110k": 16942,
+      "netPriceGt110k": 18079,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 32399,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_POWER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "SEC",
+      "greekLife": true,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.4401,
+      "housingOnCampusPct": 0.66,
+      "meritAidPct": 0.0676,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.94,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": null,
+      "ed2Deadline": null,
+      "eaDeadline": "2026-10-15",
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-01",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admissions.uga.edu/apply/deadlines/",
+      "ipedsUnitId": 139959,
+      "website": "https://www.uga.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "52.0201",
+        "52.0801"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/University_of_Georgia",
+          "note": "Infobox 33.9558N 83.3745W"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/University_of_Georgia",
+          "note": "Infobox 33.9558N 83.3745W"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "note": "Campus setting: City: Midsize"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "note": "Full-time first-to-second year retention 94%"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=139959",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C1: 16,257 admitted / 47,464 applied (residency table total; sex rows 19,946+27,511+7 applied, 6,443+9,814 admitted)"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C1 residency: 8,893 / 21,110 (PDF p14 image)"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C1 residency: 7,044 / 25,261, international excluded (PDF p14 image)"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1250/1330/1420 (PDF p19 image)"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite (PDF p19 image)"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 27/31/33 (PDF p19 image; text dump mislabels the SAT Math row as ACT Composite)"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C9 ACT Composite (PDF p19 image)"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C8A: Yes, SAT or ACT required to be considered (PDF p17 image)"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admissions.uga.edu/apply/first-year-applicants/first-year-criteria/",
+          "note": "'superscores both exams, selecting the highest individual section scores across all attempts'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Very Important (PDF p16 image)"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Very Important (PDF p16 image)"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Important (PDF p16 image)"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Not Considered (PDF p16 image)"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Considered (PDF p16 image)"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "C7 Volunteer work: Considered (PDF p16 image)"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates 66% (first-years 98%) (PDF p28 image; text dump shifted columns)"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "F1 undergrads: men in fraternities 37%, women in sororities 25%"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "I3 class sections: (580 + 1590) / 4931 (PDF p40 image)"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://oir.uga.edu/wp-content/uploads/UGA_CDS_2025-2026.pdf",
+          "year": "2025-26",
+          "note": "H2A row N first-year 419 / H2 row A first-year 6194 (PDF p33-34 images)"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/University_of_Georgia",
+          "note": "NCAA Division I FBS - SEC"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/University_of_Georgia"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in the SEC"
+        },
+        "deadlinesCycle": {
+          "source": "derived",
+          "note": "Today 2026-10-03 -> cycle 2026-27 (fall 2027 entry); UGA blog (2026-07-14) says the 2027 first-year application opened Aug 1"
+        },
+        "eaDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.uga.edu/apply/deadlines/",
+          "note": "Early Action Oct 15 (non-restrictive per CDS C22); materials due Oct 29"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.uga.edu/apply/deadlines/",
+          "note": "Regular Decision Jan 1; materials due Jan 15"
+        },
+        "rollingAdmission": {
+          "source": "admissions-site",
+          "url": "https://admissions.uga.edu/apply/deadlines/",
+          "note": "Fixed release windows (EA mid-late Nov/mid Dec, RD mid March); CDS C16 'Other: 4/1 (Reg) & 12/1 (Early)'"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.uga.edu/apply/deadlines/"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/university-of-georgia-1598",
+          "year": "2027",
+          "note": "2027 National Universities #52 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/university-of-georgia-1598",
+          "year": "2027",
+          "note": "2027 National Universities #52 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "Already in the seed (prisma/seed.ts) — this is a refresh. Seed has admitRate 0.33 (protected; import keeps the seeded value unless --overwrite-protected). CDS 2025-26 C1 gives 0.3425.",
+        "No ED / ED2 / REA offered (CDS C21 = No; C22 EA non-restrictive).",
+        "Foundation Fellowship application deadline Nov 1 is a single-program honors scholarship deadline, not a general scholarship/priority deadline, so priorityDeadline left null. CDS C14 'Priority Date' 1/1 is the RD date.",
+        "Deadlines page does not print the year; treated as the current (fall 2027) cycle because the 2027 application opened Aug 1, 2026 and the dates match CDS 2025-26 C22 (EA 10/15).",
+        "coOp left null: this CDS E1 template has no 'Cooperative education' checkbox. E1: study abroad offered (no participation rate found, studyAbroadRate left null).",
+        "No bachelor's in Registered Nursing on College Navigator (51.3801 omitted).",
+        "College Navigator lists athletics as Division I-FBS; conference taken from Wikipedia."
+      ]
+    }
+  ]
+}

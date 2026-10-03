@@ -164,6 +164,19 @@ model College {
   firstYearRetentionRate Float? // IPEDS   (academic_support)
   // party_scene is CONSTRUCTED from greek/housing/athletics (§4.7) — never stored.
 
+  // --- Application deadlines (admissions site; CDS C21/C22 as a cross-check) --
+  // Full dates for ONE admissions cycle; `deadlinesCycle` names it (e.g. "2026-27"
+  // = applying fall 2026 for fall 2027 entry). Null = plan not offered or unknown.
+  deadlinesCycle     String?
+  edDeadline         DateTime? @db.Date // Early Decision (binding)
+  ed2Deadline        DateTime? @db.Date // Early Decision II
+  eaDeadline         DateTime? @db.Date // Early Action (non-restrictive)
+  reaDeadline        DateTime? @db.Date // Restrictive / Single-Choice Early Action
+  priorityDeadline   DateTime? @db.Date // priority / scholarship deadline (common at publics)
+  rdDeadline         DateTime? @db.Date // Regular Decision
+  rollingAdmission   Boolean?
+  deadlinesSourceUrl String?
+
   programs  CollegeProgram[]
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt

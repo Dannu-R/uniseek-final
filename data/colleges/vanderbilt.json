@@ -1,0 +1,330 @@
+{
+  "batch": "vanderbilt",
+  "description": "Vanderbilt (skill check after fixes)",
+  "updatedAt": "2026-10-03T07:23:04.629Z",
+  "colleges": [
+    {
+      "name": "Vanderbilt University",
+      "city": "Nashville",
+      "state": "TN",
+      "latitude": 36.1475,
+      "longitude": -86.8025,
+      "admitRate": 0.0538,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 16,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.1043,
+      "outOfStateAdmitRate": 0.0533,
+      "satP25": 1510,
+      "satP75": 1560,
+      "actP25": 34,
+      "actP75": 35,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 2,
+      "c7Rank": 3,
+      "c7Ec": 3,
+      "c7Service": 1,
+      "netPriceAvg": 25186,
+      "netPriceLt30k": 3414,
+      "netPrice30to48k": 1876,
+      "netPrice48to75k": 4498,
+      "netPrice75to110k": 12153,
+      "netPriceGt110k": 45145,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 7221,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_POWER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "SEC",
+      "greekLife": true,
+      "coOp": false,
+      "classSizeUnder20Pct": 0.5744,
+      "housingOnCampusPct": 0.745,
+      "meritAidPct": 0.082,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.96,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-01",
+      "ed2Deadline": "2027-01-01",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-01",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admissions.vanderbilt.edu/apply/",
+      "ipedsUnitId": 221999,
+      "website": "https://www.vanderbilt.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "14.0901",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "note": "2101 West End Avenue, Nashville, Tennessee 37240"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Vanderbilt_University",
+          "note": "Wikipedia primary coordinates (via prop=coordinates API): 36.1475, -86.8025"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Vanderbilt_University"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "note": "Campus setting: City: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "Fall 2024",
+          "note": "CDS 2025-26 B1 would be newer (~7,366 per third-party summaries) but guide names College Navigator for this field"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "note": "Full-time students, Fall 2023 cohort returning Fall 2024: 96%"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=221999",
+          "year": "2023-2024"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C1: 2,593 admitted / 48,196 applied (men 1,232/21,595 + women 1,361/26,601)"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C1 residency table: in-state 301 / 2,885"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C1 residency table: out-of-state 1,926 / 36,130 (international 366 / 9,181 excluded); 2,885+36,130+9,181 = 48,196"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 25th; 24% submitted SAT"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 75th"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 25th; 28% submitted ACT"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 75th"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C8A uses SAT/ACT: Yes; SAT or ACT 'Not required for admission, but considered if submitted' (test-optional)"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/testing-policies/",
+          "note": "'Vanderbilt will superscore both the ACT and the SAT.'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C7 grid, sheet CDS-C row 101: X under Very Important (cell C101); matches answer-key cell C.701"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "CDS-C row 103: Very Important; key C.703"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "CDS-C row 104: Important; key C.704"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "CDS-C row 102: Very Important; key C.702"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "CDS-C row 109: Very Important; key C.708"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "CDS-C row 117: Considered; key C.716"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "F1 undergraduates column: 74.5% (first-years 100%)"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "F1 undergrads: 27.4% of men in fraternities, 31.6% of women in sororities"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "I3 CLASS SECTIONS: (418 + 621) / 1,809; row sums to total"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "H2A row N first-time full-time first-year 134 / H2 row A first-time full-time first-year 1,634"
+        },
+        "coOp": {
+          "source": "web",
+          "url": "https://web.archive.org/web/2024/https://engineering.vanderbilt.edu/bme/UndergraduateProgram/FrequentlyAskedQuestions.php",
+          "note": "FAQ 'Does Vanderbilt BME offer an intern or co-op program?' answers only with internship/career-center resources; engineering Academic Services page (https://engineering.vanderbilt.edu/academics/undergraduate/academic-services/) has no co-op mention; CDS 2025-26 and 2024-25 E1 have no co-op line"
+        },
+        "ncaaDivision": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Vanderbilt_Commodores",
+          "note": "Division I (FBS); College Navigator also lists 'NCAA Division I-FBS'"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Vanderbilt_Commodores",
+          "note": "SEC (primary); American (women's lacrosse), CUSA (bowling)"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in the SEC → D1_FBS_POWER"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/",
+          "note": "Page states dates for fall 2027 entry"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/",
+          "note": "Early Decision I: November 1, 2026 (CDS 2025-26 C21: Nov 1)"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/",
+          "note": "Early Decision II: January 1, 2027 (CDS 2025-26 C21 other ED: Jan 1)"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/",
+          "note": "Regular Decision: January 1, 2027 (CDS 2025-26 C14: Jan 1)"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://cdn.vanderbilt.edu/vu-wpfsx/wp-content/uploads/sites/70/2026/07/CDS_2025-2026.xlsx",
+          "year": "2025-26",
+          "note": "C16: notification by April 1 (not rolling); admissions site: RD notification late March"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.vanderbilt.edu/apply/"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/vanderbilt-3535",
+          "year": "2027",
+          "note": "2027 National Universities #16 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/vanderbilt-3535",
+          "year": "2027",
+          "note": "2027 National Universities #16 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "CDS is published only as .xlsx (https://www.vanderbilt.edu/data/public-data/common-data-sets/); cds_extract.py refuses non-PDFs, so no PNG pages exist. All CDS values were read from worksheet cells with openpyxl (visible grid cells cross-checked against the workbook's hidden answer-key columns AA-AC).",
+        "No Early Action plan (CDS C22: No). ED II and RD share the Jan 1 deadline. Test-optional for fall 2027 and 2028 entry; tests required again for fall 2029 entry (admissions site).",
+        "Not filled: religiousAffiliation (College Navigator: 'Not applicable' → secular/null); studyAbroadRate (E1: study abroad offered; no published participation rate looked up).",
+        "Majors: Business Administration (52.0201), Finance (52.0801) and Registered Nursing BSN (51.3801) omitted — College Navigator shows master's/doctoral awards only, no bachelor's. Computer Engineering (14.0901) included: College Navigator lists 'Computer Engineering, General' with 0 bachelor's completions (program reported, '0' rather than '-'); Electrical and Computer Engineering also awards 24 bachelor's. Economics (45.0601) reported under 'Econometrics and Quantitative Economics' (203 bachelor's). Communication (09.0101) mapped from 'Speech Communication and Rhetoric' (19 bachelor's).",
+        "College Navigator Fall 2024 admissions (45,409 applicants, 6% admitted) is a year older than CDS 2025-26 C1 used for admitRate.",
+        "CDS 2025-26 date cells in the answer-key columns (C.1402, C.2102, etc.) show #VALUE! spreadsheet errors; dates were read from the visible cells (C14 'Jan 1st', C21 'Nov 1st'/'Jan 1st')."
+      ]
+    }
+  ]
+}

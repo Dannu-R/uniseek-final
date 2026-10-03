@@ -1,0 +1,941 @@
+{
+  "batch": "tulane-rice-wake-forest",
+  "description": "from skill eval iteration 1",
+  "updatedAt": "2026-10-03T07:23:02.972Z",
+  "colleges": [
+    {
+      "name": "Rice University",
+      "city": "Houston",
+      "state": "TX",
+      "latitude": 29.7169,
+      "longitude": -95.4028,
+      "admitRate": 0.0801,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 16,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.0798,
+      "outOfStateAdmitRate": 0.1016,
+      "satP25": 1510,
+      "satP75": 1560,
+      "actP25": 34,
+      "actP75": 36,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 3,
+      "c7Rank": 3,
+      "c7Ec": 3,
+      "c7Service": 1,
+      "netPriceAvg": 23589,
+      "netPriceLt30k": 5827,
+      "netPrice30to48k": 563,
+      "netPrice48to75k": 3217,
+      "netPrice75to110k": 17755,
+      "netPriceGt110k": 48466,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 4789,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_OTHER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "American (AAC)",
+      "greekLife": false,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.6157,
+      "housingOnCampusPct": 0.59,
+      "meritAidPct": 0.0586,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.97,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-01",
+      "ed2Deadline": "2027-01-04",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-04",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+      "ipedsUnitId": 227757,
+      "website": "https://www.rice.edu",
+      "majorsOffered": [
+        "11.0701",
+        "14.1001",
+        "14.1901",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "52.0201"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Rice_University",
+          "note": "29.71694, -95.40278"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Rice_University"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "note": "Campus setting: City: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "note": "8,961 total (4,789 undergraduate)"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "note": "Full-time students: 97%"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24",
+          "note": "$563 as reported (lower than the $0-30k band; IPEDS value, kept as-is)"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C1: 2,948 / 36,791; page 8 image"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C1 residency: 847 / 10,610"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C1 residency: 1,767 / 17,388 (international excluded)"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1510/1540/1560"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 34/35/36"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C8: uses SAT/ACT = Yes; C8A SAT or ACT 'Recommended' (page 10 image)"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+          "note": "'we use the highest score from each section across all administrations'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Rigor VI"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Academic GPA VI"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Standardized test scores VI"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Class rank VI"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Extracurricular activities VI"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C7 page 10 image: Volunteer work Considered"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates 59% (first-years 99%)"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "F1: fraternities 0%, sororities 0%"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "I3 class sections (281 + 416) / 1,132; all 7 buckets sum to 1,132"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "H2A N first-year 74 / H2 A first-year 1,263 (pages 27-28 images; H data marked 2025-26 estimated)"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+          "note": "Page references the 2026-2027 application cycle"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+          "note": "ED I Nov. 1, decisions by mid-December; CDS C21 1-Nov"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+          "note": "ED II Jan. 4, decisions by late January; CDS C21 other ED 4-Jan"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+          "note": "RD Jan. 4, decisions by April 1; CDS C14 4-Jan"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://ideas.rice.edu/wp-content/uploads/2026/07/CDS_2025-26_WEBSITE.pdf",
+          "year": "2025-26",
+          "note": "C16: 'By (date) 1-Apr', not rolling"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admission.rice.edu/apply/first-year-domestic-applicants"
+        },
+        "ncaaDivision": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=227757",
+          "note": "Sanction body NCAA Division I-FBS; football roster listed"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Rice_University",
+          "note": "American Conference since 2023; seed string format 'American (AAC)'"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in The American -> D1_FBS_OTHER"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/rice-3604",
+          "year": "2027",
+          "note": "2027 National Universities #16 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/rice-3604",
+          "year": "2027",
+          "note": "2027 National Universities #16 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "No Early Action plan (CDS C22 = No; admissions site lists only ED I, ED II, RD). eaDeadline/reaDeadline intentionally null.",
+        "C14 'Priority Date 4-Jan' is the RD deadline, so priorityDeadline left null.",
+        "coOp left null: the 2025-26 CDS E1 list has no 'Cooperative education programs' line. Study abroad participation rate not looked up; studyAbroadRate null.",
+        "Majors: 'Computer and Information Sciences, General' (197 bachelor's) mapped to 11.0701; 'Electrical and Computer Engineering' (39) + 'Electrical and Electronics Engineering' (4) mapped to 14.1001 only (no separate computer-engineering bachelor's CIP, so 14.0901 left out); Business Administration shows 0 bachelor's completions in 2024-25 but is offered. No Finance, Communication or Nursing bachelor's.",
+        "Religious affiliation: 'Not applicable' (secular).",
+        "CDS pages read as images (rendered with pymupdf; poppler's pdftoppm not installed)."
+      ]
+    },
+    {
+      "name": "Tulane University",
+      "city": "New Orleans",
+      "state": "LA",
+      "latitude": 29.94,
+      "longitude": -90.12,
+      "admitRate": 0.1446,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 59,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": 0.2223,
+      "outOfStateAdmitRate": 0.1408,
+      "satP25": 1430,
+      "satP75": 1500,
+      "actP25": 32,
+      "actP75": 34,
+      "testBlind": false,
+      "superscores": null,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 2,
+      "c7Rank": 3,
+      "c7Ec": 3,
+      "c7Service": 3,
+      "netPriceAvg": 47427,
+      "netPriceLt30k": 16126,
+      "netPrice30to48k": 18041,
+      "netPrice48to75k": 20149,
+      "netPrice75to110k": 28207,
+      "netPriceGt110k": 56667,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 8192,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_OTHER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "American (AAC)",
+      "greekLife": true,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.6202,
+      "housingOnCampusPct": 0.57,
+      "meritAidPct": 0.2788,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.93,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-01",
+      "ed2Deadline": "2027-01-15",
+      "eaDeadline": "2026-11-10",
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-15",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admission.tulane.edu/apply/deadlines-forms",
+      "ipedsUnitId": 160755,
+      "website": "https://tulane.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "52.0201",
+        "52.0801"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "note": "6823 St. Charles Avenue, New Orleans, LA"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tulane_University",
+          "note": "Wikipedia primary coordinates 29.94, -90.12 (2-decimal precision only)"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tulane_University"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "note": "Campus setting: City: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "note": "13,310 total (8,192 undergraduate)"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "note": "Full-time students: 93% (began Fall 2023, returned Fall 2024)"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C1: 4,763 admitted / 32,942 applied (sex rows 2,000+2,761+2 / 12,345+20,589+8 match totals); read from page 8 image"
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26"
+        },
+        "inStateAdmitRate": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C1 residency: 595 / 2,676"
+        },
+        "outOfStateAdmitRate": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C1 residency: 3,593 / 25,512 (international excluded)"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1430/1460/1500 (11% submitted SAT)"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 32/33/34 (27% submitted ACT)"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C8A: uses SAT/ACT = Yes; 'not required, but considered if submitted' (test-optional)"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 read from PDF page 9 image: Rigor VI"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 page 9 image: Academic GPA VI"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 page 9 image: Standardized test scores Important"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 page 9 image: Class rank VI"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 page 9 image: Extracurricular activities VI"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C7 page 9 image: Volunteer work VI"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "F1 undergraduates 57% (first-years 97%)"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "F1 undergrads: fraternities 27%, sororities 56%"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "I3 class sections (358 + 599) / 1,543; page 30 image"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "H2A N first-year 518 / H2 A first-year 1,858; page 25 image"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/",
+          "note": "Live homepage (Oct 2026): 'Our first-year application opens on August 1. Our Early Decision deadline is November 1 and our Early Action deadline is November 10.'"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/apply/deadlines-forms",
+          "note": "Nov 1; CDS 2025-26 C21 also 11/1"
+        },
+        "eaDeadline": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/apply/deadlines-forms",
+          "note": "Nov 10, non-restrictive (CDS C22 restrictive = No)"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/apply/deadlines-forms",
+          "note": "Jan 15; CDS C21 other ED closing 1/15"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/apply/deadlines-forms",
+          "note": "Jan 15; CDS C14 closing 1/15"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://tulane.box.com/s/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5",
+          "year": "2025-26",
+          "note": "C16: notification 'By (date) 1-Apr', not rolling; site lists fixed notification dates"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admission.tulane.edu/apply/deadlines-forms"
+        },
+        "ncaaDivision": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=160755",
+          "note": "Sanction body NCAA Division I-FBS; football roster listed"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Tulane_University",
+          "note": "American Athletic Conference (The American); string format matches seed's 'American (AAC)'"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in The American -> D1_FBS_OTHER"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/tulane-university-of-louisiana-2029",
+          "year": "2027",
+          "note": "2027 National Universities #59 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/tulane-university-of-louisiana-2029",
+          "year": "2027",
+          "note": "2027 National Universities #59 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "Deadlines page (admission.tulane.edu/apply/deadlines-forms) shows no year (dateModified 2026-03-17); cycle 2026-27 inferred from the live homepage (Sept 2026 content) stating the first-year application opened Aug 1 with ED Nov 1 / EA Nov 10. Dates are identical to CDS 2025-26 C21/C22.",
+        "C14 Priority Date 11/1 is the ED date, not a separate scholarship deadline, so priorityDeadline left null.",
+        "coOp left null: the 2025-26 CDS E1 list has no 'Cooperative education programs' line. E1: study abroad offered; no participation rate found, studyAbroadRate left null.",
+        "superscores not checked/found on an official page; left null.",
+        "Religious affiliation: 'Not applicable' on College Navigator (secular), left out of fields.",
+        "Majors: College Navigator bachelor's column shows Computer Science, Psychology and Economics, General with 0 completions in 2024-25 (offered; Economics completions are under Econometrics 64). Mechanical/Electrical/Computer Engineering appear only as undergraduate certificates, not bachelor's, so excluded. Speech Communication and Rhetoric (146) mapped to 09.0101.",
+        "Nursing excluded: Tulane's BSN (CCNE-accredited 2025) is an accelerated 60-credit program for students transferring in 60 credits (catalog.tulane.edu/medicine/program-of-nursing/nursing-bsn/), not a first-year entry major.",
+        "CDS downloaded via Box shared-static link (https://tulane.box.com/shared/static/1dgaxpa2x2ie24zgglrg0puwm1h7xrt5); listed on https://oair.tulane.edu/common-data-set. Grids read from rendered page images (pymupdf) because pdftotext scrambled C1/C7/F1/H2/I3.",
+        "Wikipedia infobox also lists Conference USA (a secondary/single-sport affiliation); primary all-sports conference is The American."
+      ]
+    },
+    {
+      "name": "Wake Forest University",
+      "city": "Winston-Salem",
+      "state": "NC",
+      "latitude": 36.134,
+      "longitude": -80.276,
+      "admitRate": 0.2076,
+      "admitRateProvenance": "VERIFIED",
+      "usNewsRank": 34,
+      "usNewsRankProvenance": "VERIFIED",
+      "inStateAdmitRate": null,
+      "outOfStateAdmitRate": null,
+      "satP25": 1420,
+      "satP75": 1490,
+      "actP25": 32,
+      "actP75": 34,
+      "testBlind": false,
+      "superscores": true,
+      "c7Rigor": 3,
+      "c7Gpa": 3,
+      "c7Test": 1,
+      "c7Rank": 3,
+      "c7Ec": 2,
+      "c7Service": 1,
+      "netPriceAvg": 24401,
+      "netPriceLt30k": 6525,
+      "netPrice30to48k": 6331,
+      "netPrice48to75k": 7647,
+      "netPrice75to110k": 12771,
+      "netPriceGt110k": 58081,
+      "religiousAffiliation": null,
+      "enrollmentUndergrad": 5490,
+      "setting": "URBAN",
+      "athleticsTier": "D1_FBS_POWER",
+      "ncaaDivision": "NCAA D1 FBS",
+      "conference": "ACC",
+      "greekLife": true,
+      "coOp": null,
+      "classSizeUnder20Pct": 0.5743,
+      "housingOnCampusPct": 0.78,
+      "meritAidPct": 0.0367,
+      "studyAbroadRate": null,
+      "firstYearRetentionRate": 0.93,
+      "deadlinesCycle": "2026-27",
+      "edDeadline": "2026-11-15",
+      "ed2Deadline": "2027-01-01",
+      "eaDeadline": null,
+      "reaDeadline": null,
+      "priorityDeadline": null,
+      "rdDeadline": "2027-01-01",
+      "rollingAdmission": false,
+      "deadlinesSourceUrl": "https://admissions.wfu.edu/apply/",
+      "ipedsUnitId": 199847,
+      "website": "https://www.wfu.edu",
+      "majorsOffered": [
+        "09.0101",
+        "11.0701",
+        "23.0101",
+        "26.0101",
+        "27.0101",
+        "40.0501",
+        "42.0101",
+        "45.0601",
+        "45.1001",
+        "52.0201",
+        "52.0801"
+      ],
+      "status": "done",
+      "sources": {
+        "city": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "note": "1834 Wake Forest Road, Winston-Salem, NC 27106"
+        },
+        "state": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847"
+        },
+        "latitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wake_Forest_University",
+          "note": "Reynolda campus 36.134, -80.276"
+        },
+        "longitude": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wake_Forest_University"
+        },
+        "setting": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "note": "Campus setting: City: Large"
+        },
+        "enrollmentUndergrad": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "note": "9,322 total (5,490 undergraduate)"
+        },
+        "firstYearRetentionRate": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "note": "Full-time students: 93% (CDS B22 reports 92.3%)"
+        },
+        "netPriceAvg": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "netPriceLt30k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "netPrice30to48k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "netPrice48to75k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "netPrice75to110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "netPriceGt110k": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "year": "2023-24"
+        },
+        "admitRate": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C1 (page 13 form fields): admitted 1,965 men + 2,103 women + 0 unknown = 4,068 / applied 8,235 + 11,360 + 5 = 19,600. The CDS 'total' boxes were left 0, so totals are the sums of the sex rows."
+        },
+        "admitRateProvenance": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26"
+        },
+        "satP25": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C9 SAT Composite 1420/1450/1490 (24% submitted)"
+        },
+        "satP75": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26"
+        },
+        "actP25": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C9 ACT Composite 32/33/34 (22% submitted)"
+        },
+        "actP75": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26"
+        },
+        "testBlind": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C8: uses SAT/ACT = Yes; C8A 'considered if submitted' (test-optional)"
+        },
+        "superscores": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/",
+          "note": "'If you take a test multiple times, please simply be sure to report all test scores to us; we will superscore them.'"
+        },
+        "c7Rigor": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + form field Q111_1 = VI"
+        },
+        "c7Gpa": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + Q111_3 = VI"
+        },
+        "c7Test": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + Q111_4 = Considered"
+        },
+        "c7Rank": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + Q111_2 = VI"
+        },
+        "c7Ec": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + Q112_2 = Important"
+        },
+        "c7Service": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C7 page 16 image + Q112_11 (Volunteer work row; form numbering skips _10) = Considered"
+        },
+        "housingOnCampusPct": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "F1 undergraduates 78% (first-years 99.3%)"
+        },
+        "greekLife": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "F1: fraternities 28%, sororities 65%"
+        },
+        "classSizeUnder20Pct": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "I3 class sections (174 + 541) / 1,245; buckets sum to total"
+        },
+        "meritAidPct": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "H2A N first-year 54 / H2 A first-year 1,472 (form fields pages 33-34; H section reports the 2024-25 aid year)"
+        },
+        "deadlinesCycle": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/",
+          "note": "Page modified 2026-09-28, links 'Info for the Class of 2031' (fall 2027 entry)"
+        },
+        "edDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/",
+          "note": "ED I November 15, decisions on a rolling basis; CDS C21 11/15"
+        },
+        "ed2Deadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/",
+          "note": "ED II January 1, decision by Feb 15; CDS C21 other ED 1/1"
+        },
+        "rdDeadline": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/",
+          "note": "RD January 1, decision around April 1; CDS C14 1/1"
+        },
+        "rollingAdmission": {
+          "source": "cds",
+          "url": "https://prod.wp.cdn.aws.wfu.edu/sites/202/2026/06/CDS_2025-2026-PDF_Template_WFU.pdf",
+          "year": "2025-26",
+          "note": "C16 'By (date) 4/1' checked, not rolling (only ED I notifications are rolling)"
+        },
+        "deadlinesSourceUrl": {
+          "source": "admissions-site",
+          "url": "https://admissions.wfu.edu/apply/"
+        },
+        "ncaaDivision": {
+          "source": "college-navigator",
+          "url": "https://nces.ed.gov/collegenavigator/?id=199847",
+          "note": "Sanction body NCAA Division I-FBS; football roster listed"
+        },
+        "conference": {
+          "source": "web",
+          "url": "https://en.wikipedia.org/wiki/Wake_Forest_University",
+          "note": "Atlantic Coast Conference (founding member)"
+        },
+        "athleticsTier": {
+          "source": "derived",
+          "note": "FBS football in the ACC -> D1_FBS_POWER"
+        },
+        "usNewsRank": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/wake-forest-2978",
+          "year": "2027",
+          "note": "2027 National Universities #34 (tie); via Chrome"
+        },
+        "usNewsRankProvenance": {
+          "source": "web",
+          "url": "https://www.usnews.com/best-colleges/wake-forest-2978",
+          "year": "2027",
+          "note": "2027 National Universities #34 (tie); via Chrome"
+        }
+      },
+      "notes": [
+        "JUDGMENT: eaDeadline left null. Wake Forest's Early Action (Nov 15, non-binding, non-restrictive; decision by Jan 15) is ONLY for first-generation college students (admissions.wfu.edu/apply/ and CDS C22 note 'WFU has an early action plan for first-generation college students'). Storing it in eaDeadline would show it to every student. If the app gains an eligibility note, the date is 2026-11-15.",
+        "No residency breakdown in C1 (fields blank), so inStateAdmitRate/outOfStateAdmitRate left null.",
+        "CDS is a fillable PDF: values read from form fields with pymupdf and C7 / C16 / C21-C22 confirmed against rendered page images (pages 16, 22, 23).",
+        "C14 closing date 1/1 equals RD; no separate priority deadline.",
+        "coOp left null: 2025-26 CDS E1 has no co-op line. E1: study abroad offered; no participation rate found.",
+        "Majors: 'Business/Commerce, General' (98 bachelor's) mapped to 52.0201 (Business Administration and Management, General is master's-only on College Navigator); 'Communication, General' (127) mapped to 09.0101. 'Engineering, General' (46) is not ME/EE/CompE, so no engineering majors. Nursing is doctorate-only.",
+        "Religious affiliation: 'Not applicable' on College Navigator, left out."
+      ]
+    }
+  ]
+}
