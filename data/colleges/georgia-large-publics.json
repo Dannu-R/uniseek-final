@@ -13,6 +13,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 191,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6687,
       "outOfStateAdmitRate": 0.4782,
       "satP25": 1030,
@@ -291,6 +292,10 @@
           "url": "https://www.usnews.com/best-colleges/georgia-state-university-1574",
           "year": "2027",
           "note": "2027 National Universities #191 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -314,6 +319,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 342,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1010,
@@ -588,6 +594,10 @@
           "url": "https://www.usnews.com/best-colleges/kennesaw-state-university-1577",
           "year": "2027",
           "note": "2027 National Universities #342 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -611,6 +621,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 52,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4213,
       "outOfStateAdmitRate": 0.2788,
       "satP25": 1250,
@@ -900,6 +911,10 @@
           "url": "https://www.usnews.com/best-colleges/university-of-georgia-1598",
           "year": "2027",
           "note": "2027 National Universities #52 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [

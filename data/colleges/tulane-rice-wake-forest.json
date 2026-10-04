@@ -13,6 +13,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.0798,
       "outOfStateAdmitRate": 0.1016,
       "satP25": 1510,
@@ -306,6 +307,10 @@
           "url": "https://www.usnews.com/best-colleges/rice-3604",
           "year": "2027",
           "note": "2027 National Universities #16 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -327,6 +332,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.2223,
       "outOfStateAdmitRate": 0.1408,
       "satP25": 1430,
@@ -620,6 +626,10 @@
           "url": "https://www.usnews.com/best-colleges/tulane-university-of-louisiana-2029",
           "year": "2027",
           "note": "2027 National Universities #59 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -644,6 +654,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 34,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1420,
@@ -925,6 +936,10 @@
           "url": "https://www.usnews.com/best-colleges/wake-forest-2978",
           "year": "2027",
           "note": "2027 National Universities #34 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [

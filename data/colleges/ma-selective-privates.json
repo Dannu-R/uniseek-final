@@ -13,6 +13,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 34,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1430,
@@ -347,6 +348,10 @@
           "url": "https://www.usnews.com/best-colleges/boston-university-2130",
           "year": "2027",
           "note": "2027 National Universities #34 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -367,6 +372,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 42,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1450,
@@ -703,6 +709,10 @@
           "url": "https://www.usnews.com/best-colleges/northeastern-university-2199",
           "year": "2027",
           "note": "2027 National Universities #42 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -723,6 +733,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 31,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1460,
@@ -984,6 +995,10 @@
           "url": "https://www.usnews.com/best-colleges/tufts-university-2219",
           "year": "2027",
           "note": "2027 National Universities #31 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -1008,6 +1023,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 10,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2163,
       "outOfStateAdmitRate": 0.2139,
       "satP25": 1460,
@@ -1273,6 +1289,10 @@
           "url": "https://www.usnews.com/best-colleges/wellesley-college-2224",
           "year": "2027",
           "note": "2027 National Liberal Arts Colleges #10; via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -1297,6 +1317,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 1,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1490,
@@ -1534,6 +1555,10 @@
           "url": "https://www.usnews.com/best-colleges/williams-college-2229",
           "year": "2027",
           "note": "2027 National Liberal Arts Colleges #1; via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [

@@ -34,6 +34,7 @@ export const CollegeFields = z.object({
   admitRateProvenance: z.enum(["VERIFIED", "CARRIED", "APPROX"]).nullable(),
   usNewsRank: z.number().int().positive().nullable(),
   usNewsRankProvenance: z.enum(["VERIFIED", "CARRIED", "APPROX"]).nullable(),
+  usNewsRankList: z.enum(["NATIONAL_UNIVERSITIES", "NATIONAL_LIBERAL_ARTS"]).nullable().default(null),
   inStateAdmitRate: frac.nullable(),
   outOfStateAdmitRate: frac.nullable(),
 

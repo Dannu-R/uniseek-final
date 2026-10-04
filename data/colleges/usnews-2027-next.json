@@ -13,6 +13,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 95,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4314,
       "outOfStateAdmitRate": 0.6381,
       "satP25": 1300,
@@ -308,6 +309,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA D1, Patriot League"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -329,6 +334,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 2,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.1159,
       "outOfStateAdmitRate": 0.1197,
       "satP25": 1470,
@@ -619,6 +625,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.amherst.edu/admission/apply/firstyear"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -639,6 +649,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 19,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1480,
@@ -914,6 +925,10 @@
           "source": "web",
           "url": "https://en.wikipedia.org/wiki/Barnard_College",
           "note": "Wikipedia infobox: NCAA Division I, Ivy League (consortium with Columbia University)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -935,6 +950,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 90,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5151,
       "outOfStateAdmitRate": 0.545,
       "satP25": 1190,
@@ -1233,6 +1249,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "FBS football in the Big 12"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -1253,6 +1273,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.291,
       "outOfStateAdmitRate": 0.7373,
       "satP25": 1320,
@@ -1545,6 +1566,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.binghamton.edu/admissions/undergraduate/apply/freshman/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -1566,6 +1591,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 3,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.137,
       "outOfStateAdmitRate": 0.1081,
       "satP25": 1470,
@@ -1857,6 +1883,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.bowdoin.edu/admissions/apply/dates-deadlines/index.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -1877,6 +1907,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5576,
       "outOfStateAdmitRate": 0.6367,
       "satP25": 1370,
@@ -2171,6 +2202,10 @@
           "source": "admissions-site",
           "url": "https://www.brandeis.edu/admissions/apply/application-process/index.html",
           "note": "Fixed notification dates per plan for fall first-years (rolling only for spring admission)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -2192,6 +2227,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 116,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.7168,
       "outOfStateAdmitRate": 0.6704,
       "satP25": 1290,
@@ -2481,6 +2517,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "FBS football in the Big 12"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -2504,6 +2544,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1127,
       "outOfStateAdmitRate": 0.0693,
       "satP25": 1470,
@@ -2795,6 +2836,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admission.brown.edu/first-year/application-checklist"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -2815,6 +2860,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 5,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1550,
@@ -3082,6 +3128,10 @@
           "source": "web",
           "url": "http://www.cco.caltech.edu/~career/ws/students.html",
           "note": "Caltech career pages (via site search): 'Caltech does not have a formal CO-OP program' (offers ASPIRE summer positions and internships instead)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -3104,6 +3154,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1460,
@@ -3383,6 +3434,10 @@
           "source": "web",
           "url": "https://en.wikipedia.org/wiki/Carleton_College",
           "note": "Wikipedia infobox: NCAA Division III, MIAC; College Navigator: NCAA Division III with football"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -3403,6 +3458,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 44,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1440,
@@ -3694,6 +3750,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://case.edu/admission/apply/dates-deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -3716,6 +3776,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1255,
@@ -4004,6 +4065,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.chapman.edu/admission/undergraduate/how-to-apply/first-year/index.aspx"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -4024,6 +4089,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 3,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.1027,
       "outOfStateAdmitRate": 0.1368,
       "satP25": 1480,
@@ -4314,6 +4380,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.cmc.edu/admission/first-year-application-instructions"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -4336,6 +4406,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 80,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5595,
       "outOfStateAdmitRate": 0.3494,
       "satP25": 1250,
@@ -4635,6 +4706,10 @@
           "source": "web",
           "url": "https://career.sites.clemson.edu/cooperative_education/",
           "note": "Center for Career and Professional Development runs the Cooperative Education Program (Co-op), 'a dynamic academic program'; university-wide"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -4655,6 +4730,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 22,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1430,
@@ -4869,6 +4945,10 @@
           "source": "admissions-site",
           "url": "https://afa.colby.edu/apply/dates-and-deadlines/",
           "note": "Decisions released by round (on or before Dec. 15 / Feb. 15 / April 1); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -4892,6 +4972,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 22,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1450,
@@ -5162,6 +5243,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.colgate.edu/admission-aid/apply"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -5185,6 +5270,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 22,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2224,
       "outOfStateAdmitRate": 0.2244,
       "satP25": 1270,
@@ -5484,6 +5570,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.holycross.edu/admissions-aid/how-to-apply"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -5506,6 +5596,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 80,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1320,
@@ -5779,6 +5870,10 @@
           "source": "web",
           "url": "https://careers.mines.edu/mines-cooperative-education/",
           "note": "Career Center runs a Cooperative Education program (co-ops typically ~6 months, Mines co-op policies, application form and Co-op Coordinator); open to Mines students generally"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -5801,6 +5896,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 12,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.0503,
       "outOfStateAdmitRate": 0.0592,
       "satP25": 1510,
@@ -6082,6 +6178,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://undergrad.admissions.columbia.edu/apply/firstyear"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -6103,6 +6203,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 14,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1325,
       "outOfStateAdmitRate": 0.0901,
       "satP25": 1490,
@@ -6392,6 +6493,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.cornell.edu/how-to-apply/first-year-applicants"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -6412,6 +6517,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.9104,
       "outOfStateAdmitRate": 0.9252,
       "satP25": 1280,
@@ -6708,6 +6814,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.creighton.edu/admissions/dates-deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -6729,6 +6839,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 12,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1440,
@@ -7003,6 +7114,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.dartmouth.edu/apply-dartmouth"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -7025,6 +7140,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1410,
@@ -7316,6 +7432,10 @@
           "source": "web",
           "url": "https://en.wikipedia.org/wiki/Davidson_College",
           "note": "Wikipedia infobox: NCAA Division I, A-10 (football: Pioneer Football League); College Navigator: NCAA Division I-FCS"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -7336,6 +7456,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 80,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6896,
       "outOfStateAdmitRate": 0.7615,
       "satP25": 1260,
@@ -7635,6 +7756,10 @@
           "source": "web",
           "url": "https://drexel.edu/scdc/co-op/undergraduate",
           "note": "Students alternate classes with full-time employment (generally six months); co-op is a degree requirement for most majors; run by Steinbright Career Development Center"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -7656,6 +7781,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6474,
       "outOfStateAdmitRate": 0.6718,
       "satP25": 1130,
@@ -7959,6 +8085,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.elon.edu/u/admissions/undergraduate/apply/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -7980,6 +8110,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 109,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.238,
       "outOfStateAdmitRate": 0.3659,
       "satP25": 1270,
@@ -8286,6 +8417,10 @@
           "source": "admissions-site",
           "url": "https://www.fairfield.edu/admission-and-aid/apply/first-year-applicants/index.html",
           "note": "Important Application Dates table"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -8305,6 +8440,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8022,
       "outOfStateAdmitRate": 0.3552,
       "satP25": 1070,
@@ -8594,6 +8730,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.fiu.edu/how-to-apply/freshman-applicant/index.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -8616,6 +8756,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3405,
       "outOfStateAdmitRate": 0.1353,
       "satP25": 1300,
@@ -8906,6 +9047,10 @@
           "source": "admissions-site",
           "url": "https://admissions.fsu.edu/deadlines",
           "note": "Rolling Admissions round: apply by March 1, decisions on a rolling basis in April (CDS C16 also marks rolling)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -8930,6 +9075,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 85,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1320,
@@ -9163,6 +9309,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "Division I with FCS football"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -9184,6 +9334,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3195,
       "outOfStateAdmitRate": 0.4917,
       "satP25": 1310,
@@ -9484,6 +9635,10 @@
           "source": "admissions-site",
           "url": "https://undergraduate.admissions.gwu.edu/apply/first-year-applicants",
           "note": "Fixed notification windows per plan; no Early Action"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -9506,6 +9661,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 23,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1975,
       "outOfStateAdmitRate": 0.1432,
       "satP25": 1405,
@@ -9795,6 +9951,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://uadmissions.georgetown.edu/apply/first-year-applicants/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -9818,6 +9978,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 90,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8063,
       "outOfStateAdmitRate": 0.8394,
       "satP25": 1200,
@@ -10112,6 +10273,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA Division I without football (College Navigator: 'NCAA Division I without football')"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -10135,6 +10300,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1430,
@@ -10414,6 +10580,10 @@
           "source": "web",
           "url": "https://en.wikipedia.org/wiki/Grinnell_College",
           "note": "Wikipedia infobox: NCAA Division III, Midwest Conference; College Navigator: NCAA Division III with football"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -10434,6 +10604,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 14,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2073,
       "outOfStateAdmitRate": 0.2104,
       "satP25": 1440,
@@ -10728,6 +10899,10 @@
           "source": "admissions-site",
           "url": "https://www.hamilton.edu/admission/apply",
           "note": "first-year deadlines page"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -10748,6 +10923,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 8,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.1235,
       "outOfStateAdmitRate": 0.1784,
       "satP25": 1500,
@@ -11034,6 +11210,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.hmc.edu/admission/apply/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -11056,6 +11236,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3862,
       "outOfStateAdmitRate": 0.4121,
       "satP25": 1050,
@@ -11342,6 +11523,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admission.howard.edu/undergraduate/first-year"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -11362,6 +11547,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 9,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1530,
@@ -11631,6 +11817,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://apply.jhu.edu/how-to-apply/application-deadlines-requirements/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -11653,6 +11843,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 44,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3269,
       "outOfStateAdmitRate": 0.3658,
       "satP25": 1380,
@@ -11957,6 +12148,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.lehigh.edu/apply"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -11977,6 +12172,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 109,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5094,
       "outOfStateAdmitRate": 0.4816,
       "satP25": 1280,
@@ -12269,6 +12465,10 @@
           "source": "admissions-site",
           "url": "https://admission.lmu.edu/learnmore/prospectivestudents/first-yearapplicants/",
           "note": "Important Deadlines for Your LMU Application table"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -12289,6 +12489,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 90,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.7711,
       "outOfStateAdmitRate": 0.7969,
       "satP25": 1230,
@@ -12583,6 +12784,10 @@
           "source": "web",
           "url": "https://www.marquette.edu/engineering/industry-relations/about-co-op-and-internships.php",
           "note": "Opus College of Engineering co-op: full-time paid work terms, students work 3-4 terms and take no classes while on co-op (engineering only)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -12604,6 +12809,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 19,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1460,
@@ -12874,6 +13080,10 @@
           "source": "admissions-site",
           "url": "https://www.middlebury.edu/college/admissions/application-instructions-and-deadlines",
           "note": "Notifications in rounds: mid-December, mid-February, late March"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -12897,6 +13107,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 85,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6994,
       "outOfStateAdmitRate": 0.6272,
       "satP25": 1220,
@@ -13186,6 +13397,10 @@
           "source": "web",
           "url": "https://www.njit.edu/careerservices/cooperative-education-and-internships",
           "note": "Cooperative Education Program: 'Co-op is an academic program that gives students the opportunity to gain paid professional work experience before graduation', aligned with the student's major; run by Career Development Services, university-wide"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -13207,6 +13422,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 31,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1480,
@@ -13492,6 +13708,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.nyu.edu/admissions/undergraduate-admissions/how-to-apply/all-freshmen-applicants.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -13512,6 +13732,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4622,
       "outOfStateAdmitRate": null,
       "satP25": 1310,
@@ -13796,6 +14017,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.ncsu.edu/apply/deadlines/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -13817,6 +14042,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 9,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1520,
@@ -14087,6 +14313,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.northwestern.edu/apply/application-deadlines.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -14108,6 +14338,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 80,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1240,
@@ -14395,6 +14626,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA D1, no football"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -14417,6 +14652,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 3,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1490,
@@ -14687,6 +14923,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.pomona.edu/admissions/paths-apply"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -14710,6 +14950,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 2,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.0498,
       "outOfStateAdmitRate": 0.0515,
       "satP25": 1490,
@@ -14989,6 +15230,10 @@
           "source": "web",
           "url": "https://odus.princeton.edu/odus-programs/dining-eating-clubs-and-co-ops",
           "note": "princeton.edu search for a co-op program returned only dining/housing co-ops; no formal cooperative-education program found"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -15013,6 +15258,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 69,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6754,
       "outOfStateAdmitRate": 0.6846,
       "satP25": 1380,
@@ -15319,6 +15565,10 @@
           "source": "web",
           "url": "https://ccpd.rpi.edu/experiential-learning/co-opinternship-non-discovery-semester",
           "note": "RPI Co-op Program: full-time, paid, 6-8 months, related to major, open to all class years except freshmen (university-wide)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -15339,6 +15589,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 95,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6318,
       "outOfStateAdmitRate": 0.7668,
       "satP25": 1310,
@@ -15654,6 +15905,10 @@
           "source": "web",
           "url": "https://www.rit.edu/cooperative-education",
           "note": "'At RIT, co-op is built into most programs. You'll alternate blocks of co-op with semesters of on-campus study... all co-op positions are paid.' (university-wide)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -15673,6 +15928,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 95,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.847,
       "outOfStateAdmitRate": 0.7591,
       "satP25": 1010,
@@ -15952,6 +16208,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.rutgers.edu/apply/dates-deadlines/camden"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -15974,6 +16234,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 44,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6227,
       "outOfStateAdmitRate": 0.7198,
       "satP25": 1310,
@@ -16261,6 +16522,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.rutgers.edu/apply/dates-deadlines/new-brunswick"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -16285,6 +16550,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8069,
       "outOfStateAdmitRate": 0.7757,
       "satP25": null,
@@ -16546,6 +16812,10 @@
           "source": "web",
           "url": "https://careers.newark.rutgers.edu/",
           "note": "RU-Newark career center lists jobs/internships; no formal co-op program found. CDS E1 'cooperative baccalaureate program with School of Engineering' is a joint-degree arrangement, not co-op"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -16568,6 +16838,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1200,
@@ -16802,6 +17073,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.slu.edu/admission/freshman/deadlines.php"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -16823,6 +17098,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 55,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4824,
       "outOfStateAdmitRate": 0.5436,
       "satP25": 1330,
@@ -17131,6 +17407,10 @@
           "source": "web",
           "url": "https://www.scu.edu/careercenter/",
           "note": "Career Center page has no co-op/cooperative education program; WebSearch budget exhausted so no wider search"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -17151,6 +17431,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 22,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2751,
       "outOfStateAdmitRate": 0.3346,
       "satP25": 1420,
@@ -17440,6 +17721,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.smith.edu/admission-aid/apply-smith/first-year-applicants"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -17462,6 +17747,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 85,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4138,
       "outOfStateAdmitRate": 0.5976,
       "satP25": 1360,
@@ -17778,6 +18064,10 @@
           "source": "web",
           "url": "https://catalog.smu.edu/schools/lyle",
           "note": "Lyle School of Engineering: 'one of the first cooperative education programs in the U.S.' that 'still empowers students today'; engineering only (program structure details not read on this page)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -17797,6 +18087,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 5,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1520,
@@ -18072,6 +18363,10 @@
           "source": "web",
           "url": "https://rde.stanford.edu/studenthousing/cooperative-houses",
           "note": "stanford.edu search for a co-op program returned only cooperative housing; no formal cooperative-education program found"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -18093,6 +18388,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5302,
       "outOfStateAdmitRate": 0.5233,
       "satP25": 1370,
@@ -18391,6 +18687,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.stevens.edu/admission-aid/undergraduate-admissions/admissions-timeline"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -18411,6 +18711,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3995,
       "outOfStateAdmitRate": 0.6291,
       "satP25": 1350,
@@ -18705,6 +19006,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.stonybrook.edu/undergraduate-admissions/apply/first-year.php"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -18725,6 +19030,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 3,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1480,
@@ -18999,6 +19305,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.swarthmore.edu/admissions-aid/application-materials-deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -19021,6 +19331,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 72,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4583,
       "outOfStateAdmitRate": 0.524,
       "satP25": 1300,
@@ -19317,6 +19628,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.syracuse.edu/admissions-aid/application-process/apply/dates-deadlines/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -19337,6 +19652,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5415,
       "outOfStateAdmitRate": 0.4125,
       "satP25": 1160,
@@ -19585,6 +19901,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.tamu.edu/admissions/how-to-apply/apply-as-freshman.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -19607,6 +19927,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 90,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4335,
       "outOfStateAdmitRate": 0.555,
       "satP25": 1110,
@@ -19920,6 +20241,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA D1 FBS, Big 12"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -19940,6 +20265,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 85,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8009,
       "outOfStateAdmitRate": 0.7048,
       "satP25": 1220,
@@ -20236,6 +20562,10 @@
           "source": "web",
           "url": "https://engineering.buffalo.edu/home/academics/beyond/elp/internships/co-op.html",
           "note": "School of Engineering and Applied Sciences co-op: full-time paid work terms (1-2 terms) alternating with study, EAS 496 credit; engineering only"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -20257,6 +20587,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 34,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3714,
       "outOfStateAdmitRate": 0.6324,
       "satP25": null,
@@ -20512,6 +20843,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.ucdavis.edu/admissions/undergraduate/first-year/timeline"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -20533,6 +20868,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 69,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.9326,
       "outOfStateAdmitRate": 0.8502,
       "satP25": null,
@@ -20783,6 +21119,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA Division II (no football)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -20806,6 +21146,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 20,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": null,
@@ -21045,6 +21386,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-freshman/dates-and-deadlines.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -21069,6 +21414,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 20,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": null,
@@ -21321,6 +21667,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-freshman/dates-and-deadlines.html"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -21344,6 +21694,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 80,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8622,
       "outOfStateAdmitRate": 0.8958,
       "satP25": null,
@@ -21606,6 +21957,10 @@
           "source": "web",
           "url": "https://engr.ucr.edu/co-op-program",
           "note": "BCOE Cooperative Education (Co-Op) Program: paid, full-time engineering work for academic credit, coordinated by the Bourns College of Engineering. Engineering only."
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -21627,6 +21982,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 44,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.3212,
       "outOfStateAdmitRate": 0.545,
       "satP25": null,
@@ -21889,6 +22245,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.sa.ucsb.edu/deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -21911,6 +22271,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 109,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.712,
       "outOfStateAdmitRate": 0.8412,
       "satP25": null,
@@ -22167,6 +22528,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA Division III, C2C, no football"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -22191,6 +22556,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 9,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1500,
@@ -22463,6 +22829,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://collegeadmissions.uchicago.edu/apply/application/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -22485,6 +22855,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 109,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8125,
       "outOfStateAdmitRate": 0.6743,
       "satP25": 1130,
@@ -22778,6 +23149,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "FBS football in the Big 12"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -22800,6 +23175,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4054,
       "outOfStateAdmitRate": 0.5854,
       "satP25": 1260,
@@ -23101,6 +23477,10 @@
           "source": "web",
           "url": "https://career.uconn.edu/channels/find-an-internship-op-co-op/",
           "note": "Career center describes co-ops only as a kind of experience students find (paid, 4-8 months, no credit); no formal college-run co-op program described"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -23123,6 +23503,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 85,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.7072,
       "outOfStateAdmitRate": 0.7004,
       "satP25": 1220,
@@ -23418,6 +23799,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "FBS football in Conference USA (not a power conference)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -23440,6 +23825,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 95,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1030,
@@ -23717,6 +24103,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.uic.edu/undergraduate/requirements-deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -23738,6 +24128,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5779,
       "outOfStateAdmitRate": 0.6352,
       "satP25": 1330,
@@ -24027,6 +24418,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://www.umass.edu/admissions/important-dates-deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -24048,6 +24443,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 55,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.2318,
       "outOfStateAdmitRate": 0.1745,
       "satP25": 1350,
@@ -24348,6 +24744,10 @@
           "source": "admissions-site",
           "url": "https://admissions.miami.edu/undergraduate/application-process/options-and-deadlines/index.html",
           "note": "Fixed notification dates per plan (mid-Dec, late Jan, late Feb, Apr 1)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -24370,6 +24770,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6362,
       "outOfStateAdmitRate": 0.8529,
       "satP25": 1310,
@@ -24665,6 +25066,10 @@
           "source": "web",
           "url": "https://cse.umn.edu/college/career/jobs-and-internships",
           "note": "'CSE has a formal co-op program where you will obtain academic credit'; two or three semesters of full-time work interspersed with academic semesters (College of Science and Engineering only)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -24688,6 +25093,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 95,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8192,
       "outOfStateAdmitRate": null,
       "satP25": 1150,
@@ -24974,6 +25380,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.missouri.edu/apply/dates-deadlines/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -24995,6 +25405,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 109,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.8661,
       "outOfStateAdmitRate": 0.8995,
       "satP25": 1120,
@@ -25291,6 +25702,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "Division I with FCS football (CAA Football)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -25312,6 +25727,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 20,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1058,
       "outOfStateAdmitRate": 0.106,
       "satP25": 1460,
@@ -25620,6 +26036,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.nd.edu/apply/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -25640,6 +26060,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 7,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.0833,
       "outOfStateAdmitRate": 0.0544,
       "satP25": 1510,
@@ -25929,6 +26350,10 @@
           "source": "web",
           "url": "https://be.engineering.upenn.edu/undergraduate/internships/",
           "note": "upenn.edu search found engineering internship/experiential-learning pages but no formal cooperative-education program"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -25951,6 +26376,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 59,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1280,
@@ -26240,6 +26666,10 @@
           "source": "web",
           "url": "https://engineering.pitt.edu/student/programs/coop/coop/",
           "note": "Swanson School of Engineering Cooperative Engineering Education Program: three alternating four-month paid work rotations (engineering only)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -26261,6 +26691,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 21,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1420,
@@ -26537,6 +26968,10 @@
           "source": "admissions-site",
           "url": "https://admission.richmond.edu/process/regular-decision.html",
           "note": "Decisions released by round (approx. Dec 12, Jan 23, Feb 13, Mar 13)"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -26560,6 +26995,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5485,
       "outOfStateAdmitRate": 0.5249,
       "satP25": null,
@@ -26840,6 +27276,10 @@
           "source": "admissions-site",
           "url": "https://www.sandiego.edu/admission-and-aid/undergraduate/",
           "note": "Undergraduate admission page banner"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -26860,6 +27300,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 100,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1160,
@@ -27145,6 +27586,10 @@
           "source": "admissions-site",
           "url": "https://www.usf.edu/admissions/freshmen/admission-information/dates-deadlines.aspx",
           "note": "Freshman Admission Dates and Deadlines"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -27166,6 +27611,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 27,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1136,
       "outOfStateAdmitRate": 0.0983,
       "satP25": 1470,
@@ -27472,6 +27918,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admission.usc.edu/apply/first-year-students/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -27492,6 +27942,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 49,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4574,
       "outOfStateAdmitRate": 0.4216,
       "satP25": 1320,
@@ -27791,6 +28242,10 @@
           "source": "web",
           "url": "https://careers.uw.edu/",
           "note": "No co-op/cooperative education program mentioned on careers.uw.edu or engr.washington.edu home pages; WebSearch budget exhausted so no wider search"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -27812,6 +28267,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 34,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.5639,
       "outOfStateAdmitRate": 0.4033,
       "satP25": 1400,
@@ -28110,6 +28566,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.wisc.edu/deadlines/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -28130,6 +28590,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 12,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2808,
       "outOfStateAdmitRate": 0.2924,
       "satP25": 1460,
@@ -28426,6 +28887,10 @@
           "source": "admissions-site",
           "url": "https://www.vassar.edu/admission/apply/requirements",
           "note": "first-year deadlines page"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -28447,6 +28912,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 52,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.4733,
       "outOfStateAdmitRate": 0.5887,
       "satP25": 1280,
@@ -28744,6 +29210,10 @@
           "source": "web",
           "url": "https://career.vt.edu/channels/ceip/",
           "note": "Cooperative Education and Internship Program (CEIP), Career and Professional Development: university-wide co-op with multi-term full-time work rotations (semester/summer off from classes), noted on transcript"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -28766,6 +29236,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 12,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.2264,
       "outOfStateAdmitRate": 0.2592,
       "satP25": 1430,
@@ -29063,6 +29534,10 @@
           "source": "admissions-site",
           "url": "https://www.wlu.edu/admissions/apply",
           "note": "first-year deadlines page"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -29084,6 +29559,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1934,
       "outOfStateAdmitRate": 0.1281,
       "satP25": 1500,
@@ -29391,6 +29867,10 @@
         "deadlinesSourceUrl": {
           "source": "admissions-site",
           "url": "https://admissions.washu.edu/how-to-apply/application-dates-deadlines/"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -29411,6 +29891,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 14,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_LIBERAL_ARTS",
       "inStateAdmitRate": 0.1294,
       "outOfStateAdmitRate": 0.2387,
       "satP25": 1350,
@@ -29707,6 +30188,10 @@
           "source": "admissions-site",
           "url": "https://www.wesleyan.edu/admission/undergraduate-admission/first-year.html",
           "note": "first-year deadlines page"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -29728,6 +30213,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 52,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1390,
@@ -30018,6 +30504,10 @@
           "source": "web",
           "url": "https://www.wm.edu/offices/career/",
           "note": "Career office page has no co-op/cooperative education program; WebSearch budget exhausted so no wider search"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -30039,6 +30529,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 73,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.6559,
       "outOfStateAdmitRate": 0.6554,
       "satP25": null,
@@ -30321,6 +30812,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA Division III"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
@@ -30343,6 +30838,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 90,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": null,
       "outOfStateAdmitRate": null,
       "satP25": 1330,
@@ -30610,6 +31106,10 @@
         "athleticsTier": {
           "source": "derived",
           "note": "NCAA D3, Skyline Conference"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [

@@ -13,6 +13,7 @@
       "admitRateProvenance": "VERIFIED",
       "usNewsRank": 16,
       "usNewsRankProvenance": "VERIFIED",
+      "usNewsRankList": "NATIONAL_UNIVERSITIES",
       "inStateAdmitRate": 0.1043,
       "outOfStateAdmitRate": 0.0533,
       "satP25": 1510,
@@ -315,6 +316,10 @@
           "url": "https://www.usnews.com/best-colleges/vanderbilt-3535",
           "year": "2027",
           "note": "2027 National Universities #16 (tie); via Chrome"
+        },
+        "usNewsRankList": {
+          "source": "derived",
+          "note": "from the usNewsRank source note"
         }
       },
       "notes": [
