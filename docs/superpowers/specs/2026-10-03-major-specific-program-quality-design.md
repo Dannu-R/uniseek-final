@@ -178,3 +178,49 @@ LACs no longer take CS reaches on quality alone.
 
 Residency-specific admit rates (§15) and per-major admit rates for capped programs
 (§6a). Both affect odds, not quality, and get their own designs.
+
+## Niche spike result
+
+Run on: 2026-10-03
+
+**Decision: GO for 7 majors; the 3 engineering majors are not available on Niche.**
+Task 8 collects Niche lists for biology, political science, English, mathematics, chemistry,
+communications and psychology. Mechanical, electrical and computer engineering stay out of
+`PROGRAM_LISTS` (rule R2 applies) unless another source is chosen; Niche only offers one combined
+engineering list.
+
+| Major | URL (under `https://www.niche.com/colleges/search/`) | Total count | Notes |
+|---|---|---|---|
+| biology | `best-colleges-for-biology/` | 1,852 | probed pages 1 and 2 |
+| political science | `best-colleges-for-political-science/` | 1,335 | |
+| English | `best-colleges-for-english/` | 1,669 | |
+| mathematics | `best-colleges-for-math/` | 1,650 | `...-for-mathematics/` is a 404; the slug is `math` |
+| chemistry | `best-colleges-for-chemistry/` | 1,376 | |
+| communications | `best-colleges-for-communications/` | 1,833 | page title is "Communications & Journalism" |
+| psychology | `best-colleges-for-psychology/` | 1,851 | |
+| mechanical engineering | not found | n/a | `...-for-mechanical-engineering/` 404 |
+| electrical engineering | not found | n/a | `...-for-electrical-engineering/` 404 |
+| computer engineering | not found | n/a | `...-for-computer-engineering/` 404 |
+
+Related: `best-colleges-for-engineering/` exists (combined list, 1,279 colleges), as does an
+engineering-technicians list. No variant slugs were tried beyond one per major (page-load budget).
+
+- **Bot wall:** none. No CAPTCHA or "verify you are human" text on any of the 14 page loads, in a normal
+  Chrome session, no sign-in. A sign-up modal was not an obstacle to reading text.
+- **Paging:** `?page=N`, 25 colleges per page (page 2 showed "26 - 50 of 1,852"). Total is in
+  `.map__pagination__viewing` as "1 - 25 of 1,852" (text of the pagination element).
+- **Reading ranks:** `document.body.innerText` carries, per card, a line `#<rank> Best Colleges for
+  <Major> in America`, then the college name, then `City, ST` (followed by "4 Year" with no separator).
+  Regex `^#(\d+) Best Colleges for [^\n]+ in America\n([^\n]+)\n([^\n]*?, [A-Z]{2})(4 Year|2 Year|Online)?$`
+  (flags `gm`) returned exactly 25 rows on pages for political science, psychology, communications, math, English
+  and biology page 2. Ranks run consecutively across pages.
+- **Gotcha:** the page also holds a "Top-Ranked Colleges" block and per-college "#N Colleges with the Best
+  Academics/Professors" lines with a different layout. On biology page 1 and chemistry page 1 a looser
+  regex picked these up, so the collector must require the `, ST` city line (as above) and check that it
+  gets 25 rows with consecutive ranks.
+- **Time per page:** about 1 to 2 s to load (browser load event 0.9 to 2.1 s). Pacing was a few seconds
+  between loads.
+- **Not tested:** 10+ consecutive pages without a challenge. The probe was capped at about 15 page loads
+  (14 used), so only page 1 (and page 2 for biology) was sampled. Mitigation for Task 8: only the top
+  ~100 to 300 are needed (4 to 12 pages per major), pace requests by a few seconds, and stop and record on
+  any challenge.
