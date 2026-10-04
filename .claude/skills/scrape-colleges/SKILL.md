@@ -94,6 +94,9 @@ Per college, in this order:
    lat/long). Use the coordinates of the main campus.
 6. **US News rank** from the college's usnews.com profile (current edition). The field guide covers
    which list, ties, ranges and provenance.
+   Also set `usNewsRankList` (`"NATIONAL_UNIVERSITIES"` or `"NATIONAL_LIBERAL_ARTS"`)
+   to the list the rank comes from. Scoring converts Liberal Arts ranks to the
+   national scale, so this matters.
 7. **Write the college file** (shape below).
 
 **When a site blocks automated requests** (403/405, Cloudflare, or a page that only renders with
@@ -184,11 +187,24 @@ npm run colleges:import -- <batch>
 - Each entry in `majorsOffered` becomes a `CollegeProgram` row. Existing per-major research rows
   aren't touched.
 
+## After importing new colleges: program rankings
+
+Per-major quality comes from collected ranking lists, not from this research pass.
+After importing new colleges, add them to the ranking files and run
+`npm run rankings:import` (see `references/program-rankings.md`). Until then, a
+new college counts as unranked for every collected major (lowest quality), so
+don't skip this step. A `⚠ ranked but no … program row` warning from
+rankings:import usually means `majorsOffered` is missing a major the college really
+offers, which also hides the college from every student choosing that major. Fix
+the college's `majorsOffered` (re-check its majors list) rather than ignoring the
+warning.
+
 ## Out of scope (leave null)
 
-Per-major admit rates / program ranks, and `archetype`. These are hand-researched under the
+Per-major admit rates and `archetype`. These are hand-researched under the
 procedures doc's §16/§18 rules. Don't go hunting for them; if you happen to see one in an official
-source, put it in `notes` rather than `fields`.
+source, put it in `notes` rather than `fields`. Program ranks are collected separately; see
+`references/program-rankings.md`.
 
 (`usNewsRank` *is* in scope; see the field guide. The scorer skips any college without both
 `admitRate` and `usNewsRank` (`lib/scoring/mapCollege.ts`), so a college missing either one never

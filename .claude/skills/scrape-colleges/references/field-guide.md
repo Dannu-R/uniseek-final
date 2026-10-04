@@ -44,6 +44,10 @@ the college's official majors list. Matches by meaning are fine; e.g. "Computer 
 | `42.0101` | Psychology | `45.0601` | Economics |
 | `45.1001` | Political Science | | |
 
+An incomplete `majorsOffered` hides the college from every student who picks the missing
+major, so check the college's full undergraduate majors list (CDS section J or the official
+majors page), not just College Navigator's summary.
+
 Only list majors you confirmed. A minor, concentration or track inside another degree doesn't count
 (e.g. Finance as a concentration within a business BS → leave `52.0801` out and note it), and neither
 does a graduate-only, certificate-only or transfer-only program (e.g. an accelerated BSN that only
@@ -204,6 +208,10 @@ National Universities, National Liberal Arts Colleges, and the Regional lists. W
 National Liberal Arts is not "better than" Harvard at #3 on National Universities. Put the list and
 edition in the source `note`, e.g. `"2027 National Liberal Arts Colleges #1"`, so the app can tell
 them apart later. Use the list on the college's own US News profile.
+
+Record the list in `usNewsRankList` as well as in the source note:
+`"NATIONAL_UNIVERSITIES"` or `"NATIONAL_LIBERAL_ARTS"`. Regional lists aren't
+supported; leave `usNewsRank` out for regionally ranked colleges and note it.
 
 **Ranges and unranked.** Some colleges are shown with a rank range (e.g. "#300-391") or as
 "Unranked". Leave `usNewsRank` out, record what the page shows in `notes`, and call it out in the
