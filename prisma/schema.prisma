@@ -49,6 +49,13 @@ enum ProgramRankSourceClass {
   ESTIMATE // E — estimate with a stated basis
 }
 
+// Which US News institutional list `usNewsRank` comes from. The lists aren't
+// comparable; scoring converts Liberal Arts ranks to the national scale (§10b).
+enum UsNewsRankList {
+  NATIONAL_UNIVERSITIES
+  NATIONAL_LIBERAL_ARTS
+}
+
 // §9 weight profiles. Stopgap until real per-college C7 vectors exist (open #9).
 enum Archetype {
   HOLISTIC
@@ -115,6 +122,7 @@ model College {
   admitRateProvenance  AdmitDataProvenance?
   usNewsRank           Int?
   usNewsRankProvenance AdmitDataProvenance?
+  usNewsRankList       UsNewsRankList? // null = treat as National Universities
 
   // Residency splits (§15) — present only where the college publishes them.
   inStateAdmitRate    Float?

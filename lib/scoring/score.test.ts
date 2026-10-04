@@ -100,3 +100,19 @@ describe("rankColleges + build_list (§10c, §2.4)", () => {
     expect(list[0].finalScore).toBe(5);
   });
 });
+
+describe("program quality basis (§10b)", () => {
+  it("converts a Liberal Arts rank onto the national scale in a general run", () => {
+    const lac = scoreCollege(student(), college({ usNewsRank: 3, usNewsRankList: "NATIONAL_LIBERAL_ARTS" }));
+    const nat = scoreCollege(student(), college({ usNewsRank: 3, usNewsRankList: "NATIONAL_UNIVERSITIES" }));
+    expect(lac.quality).toBeLessThan(nat.quality); // LAC #3 ≈ national #6
+    expect(lac.flags).toContain("quality rank 6 (institutional-lac-converted)");
+    expect(nat.flags).toContain("quality rank 3 (institutional)");
+  });
+
+  it("keeps an individually researched program rank when the list isn't collected", () => {
+    const c = college({ majorProgram: { cipCode: "11.0701", admitRate: null, programRank: 5 } });
+    const s = scoreCollege(student({ majorCip: "11.0701" }), c);
+    expect(s.flags).toContain("quality rank 5 (program)");
+  });
+});

@@ -2,6 +2,7 @@
 // rows onto these. Rates are fractions 0..1.
 
 import type { Archetype } from "./weights";
+import type { InstitutionalList } from "./rankingLists";
 import type { EcTier } from "./ec";
 import type { CollegeFacts, StudentPreferences } from "./preferences";
 import type { IncomeBand, ReligiousPreference } from "./filters";
@@ -59,6 +60,7 @@ export interface CollegeInput {
   // Admissions
   admitRate: number; // overall (fraction)
   usNewsRank: number;
+  usNewsRankList?: InstitutionalList | null; // which US News list usNewsRank is on
   archetype?: Archetype | null;
   c7?: Partial<Record<"rigor" | "gpa" | "test" | "rank" | "ec" | "service", number | null>> | null;
   satP25?: number | null;
@@ -75,6 +77,7 @@ export interface CollegeInput {
   // Major layer
   offeredCips: string[];
   majorProgram?: CollegeMajorProgram | null; // the program for the student's chosen major
+  fallbackProgramRank?: number | null; // rank on the fallback list (Finance → Business), §10b
 
   // Preference/filter facts
   facts: CollegeFacts;
