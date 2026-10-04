@@ -43,24 +43,7 @@ function institutionalQualityRank(rank: number, list: InstitutionalList | null |
 }
 
 // §10b rank selection (spec rules R1, R1-finance, R2, R3).
-export function qualityRank(input: QualityRankInput, lists?: RankingLists): QualityRankResult;
-export function qualityRank(institutionalRank: number, programRank: number | null | undefined, majorNamed: boolean): number;
-export function qualityRank(
-  inputOrInstitutionalRank: QualityRankInput | number,
-  listsOrProgramRank?: RankingLists | number | null | undefined,
-  majorNamed?: boolean,
-): QualityRankResult | number {
-  // Backward compatibility: old 3-argument form
-  if (typeof inputOrInstitutionalRank === "number") {
-    const institutionalRank = inputOrInstitutionalRank;
-    const programRank = listsOrProgramRank as number | null | undefined;
-    if (majorNamed && programRank != null) return programRank;
-    return institutionalRank;
-  }
-
-  // New object form
-  const input = inputOrInstitutionalRank as QualityRankInput;
-  const lists = (listsOrProgramRank as RankingLists) ?? RANKING_LISTS;
+export function qualityRank(input: QualityRankInput, lists: RankingLists = RANKING_LISTS): QualityRankResult {
   const list = input.majorCip ? lists.programs[input.majorCip] : undefined;
 
   if (!list) {

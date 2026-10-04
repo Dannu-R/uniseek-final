@@ -72,7 +72,6 @@ describe("program_quality (§10b)", () => {
     expect(programQuality(1)).toBe(1.0);
     expect(programQuality(1000)).toBe(0.45);
   });
-
 });
 
 describe("qualityRank (§10b, major-specific with collected lists)", () => {

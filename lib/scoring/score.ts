@@ -96,8 +96,14 @@ export function scoreCollege(student: StudentInput, college: CollegeInput): Coll
   // Recommendation layer (§10).
   const odds = admissionOdds(strength, rate);
   const band = labelOf(odds);
-  const rankForQuality = qualityRank(college.usNewsRank, college.majorProgram?.programRank, majorNamed);
-  const quality = programQuality(rankForQuality);
+  const qualityRankResult = qualityRank({
+    majorCip: student.majorCip ?? null,
+    institutionalRank: college.usNewsRank,
+    institutionalList: null, // TODO: map from batch-import usNewsRankList (Task 2)
+    programRank: college.majorProgram?.programRank ?? null,
+    fallbackProgramRank: null, // TODO: find fallback program (Task 2)
+  });
+  const quality = programQuality(qualityRankResult.rank);
   const amb = ambition(rigor.effectiveVolume, gpaX(adjGpa), ecBaseValue, service);
   const match = matchScore(odds, quality, amb);
 
