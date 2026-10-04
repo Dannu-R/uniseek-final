@@ -49,3 +49,14 @@ export const RANKING_LISTS: RankingLists = {
     "42.0101": { source: "NICHE", listKey: "best-colleges-for-psychology", edition: "2027", size: 1851, url: "https://www.niche.com/colleges/search/best-colleges-for-psychology/" },
   },
 };
+
+// The lists whose program ranks are actually present in the database. A registered CIP
+// with no imported ranks would make every college "unranked" (rank = size + 1), so the
+// API scores against only the lists that have been loaded (see app/api/score/route.ts).
+export function loadedRankingLists(loadedCips: Iterable<string>, lists: RankingLists = RANKING_LISTS): RankingLists {
+  const loaded = new Set(loadedCips);
+  return {
+    institutional: lists.institutional,
+    programs: Object.fromEntries(Object.entries(lists.programs).filter(([cip]) => loaded.has(cip))),
+  };
+}

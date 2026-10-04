@@ -84,8 +84,8 @@ Because the quality curve already floors at 0.45 near rank ~146, ranges and
 
 ### `lib/scoring/rankingLists.ts` (new)
 Typed config, pure data:
-- `INSTITUTIONAL_LISTS`: `{ NATIONAL_UNIVERSITIES: { size, edition }, NATIONAL_LIBERAL_ARTS: { size, edition } }`. Sizes are the "N results" counts read from the US News list pages at collection time (National Universities: 428 in the 2027 edition).
-- `PROGRAM_LISTS`: keyed by CIP → `{ source: "USNEWS" | "NICHE", listKey, edition, size, url, fallbackCip? }` (`fallbackCip: "52.0201"` on Finance). **A major present in this map means its list has been collected**; absent means R2.
+- `RANKING_LISTS.institutional`: `{ NATIONAL_UNIVERSITIES: { size, edition }, NATIONAL_LIBERAL_ARTS: { size, edition } }`. Sizes are the "N results" counts read from the US News list pages at collection time (National Universities: 428 in the 2027 edition).
+- `RANKING_LISTS.programs`: keyed by CIP → `{ source: "USNEWS" | "NICHE", listKey, edition, size, url, fallbackCip? }` (`fallbackCip: "52.0201"` on Finance). **A major present in this map means its list has been collected**; absent means R2.
 
 ### `lib/scoring/quality.ts` (changed)
 `qualityRank` becomes a function of a small input object instead of three
@@ -106,7 +106,7 @@ It reads `rankingLists.ts`. The returned `basis` is surfaced as a flag on
 ### `lib/scoring/types.ts`, `mapCollege.ts`, `score.ts` (changed)
 - `CollegeInput` gains `usNewsRankList` and `fallbackProgramRank`.
 - `mapCollege` finds the fallback program row (Finance → Business) by
-  `PROGRAM_LISTS[majorCip].fallbackCip`.
+  `RANKING_LISTS.programs[majorCip].fallbackCip`.
 - `score.ts` calls the new `qualityRank` and records `basis` in `flags`.
 
 ### Schema (`prisma/schema.prisma`) + migration
@@ -164,10 +164,10 @@ LACs no longer take CS reaches on quality alone.
 ## Rollout order
 
 1. Code + schema + migration + tests + `usNewsRankList` backfill. With no lists in
-   `PROGRAM_LISTS` yet, the only behavior change is the LAC conversion (R3/R2).
+   `RANKING_LISTS.programs` yet, the only behavior change is the LAC conversion (R3/R2).
 2. Niche spike on one major.
 3. Collect ranking files (US News per-college pages; Niche lists).
-4. Add each collected list to `PROGRAM_LISTS`; `rankings:import --dry-run`, then import.
+4. Add each collected list to `RANKING_LISTS.programs`; `rankings:import --dry-run`, then import.
 5. Verify with the test profile.
 6. Update the `scrape-colleges` skill: new `references/program-rankings.md`
    (collection + file format + `rankings:import`), SKILL.md research step records
@@ -186,8 +186,10 @@ Run on: 2026-10-03
 **Decision: GO for 7 majors; the 3 engineering majors are not available on Niche.**
 Task 8 collects Niche lists for biology, political science, English, mathematics, chemistry,
 communications and psychology. Mechanical, electrical and computer engineering stay out of
-`PROGRAM_LISTS` (rule R2 applies) unless another source is chosen; Niche only offers one combined
+`RANKING_LISTS.programs` (rule R2 applies) unless another source is chosen; Niche only offers one combined
 engineering list.
+
+**Amended 2026-10-04 (controller ruling, pending user sign-off):** the three engineering CIPs (14.1901, 14.1001, 14.0901) use Niche's combined `best-colleges-for-engineering` list (one comparable list across doctorate/non-doctorate schools; better than R2's institutional fallback). Cost: the three majors share ranks, and the combined list ranks some schools that don't offer the specialty (reported as 'no program row' on import).
 
 | Major | URL (under `https://www.niche.com/colleges/search/`) | Total count | Notes |
 |---|---|---|---|

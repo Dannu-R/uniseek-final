@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { scoreCollege, rankColleges, buildList, type CollegeScore } from "./score";
 import type { StudentInput, CollegeInput } from "./types";
+import { RANKING_LISTS, loadedRankingLists, type RankingLists } from "./rankingLists";
+import { mapCollege, type CollegeWithPrograms } from "./mapCollege";
 
 function student(overrides: Partial<StudentInput> = {}): StudentInput {
   return {
@@ -106,13 +108,54 @@ describe("program quality basis (§10b)", () => {
     const lac = scoreCollege(student(), college({ usNewsRank: 3, usNewsRankList: "NATIONAL_LIBERAL_ARTS" }));
     const nat = scoreCollege(student(), college({ usNewsRank: 3, usNewsRankList: "NATIONAL_UNIVERSITIES" }));
     expect(lac.quality).toBeLessThan(nat.quality); // LAC #3 ≈ national #6
-    expect(lac.flags).toContain("quality rank 6 (institutional-lac-converted)");
+    // LAC #3 -> round(3 / 206 * 428) = 6; depends on the live institutional list sizes.
+    const expected = Math.round((3 / RANKING_LISTS.institutional.NATIONAL_LIBERAL_ARTS.size) * RANKING_LISTS.institutional.NATIONAL_UNIVERSITIES.size);
+    expect(lac.flags).toContain(`quality rank ${expected} (institutional-lac-converted)`);
     expect(nat.flags).toContain("quality rank 3 (institutional)");
   });
 
-  it("keeps an individually researched program rank when the list isn't collected", () => {
+  it("keeps an individually researched program rank when the list isn't collected (R2)", () => {
+    const noLists: RankingLists = { ...RANKING_LISTS, programs: {} };
     const c = college({ majorProgram: { cipCode: "11.0701", admitRate: null, programRank: 5 } });
-    const s = scoreCollege(student({ majorCip: "11.0701" }), c);
+    const s = scoreCollege(student({ majorCip: "11.0701" }), c, noLists);
     expect(s.flags).toContain("quality rank 5 (program)");
+  });
+
+  it("scores Finance through mapCollege: unranked Finance falls back to the Business rank", () => {
+    const row = {
+      id: "c1", name: "Test U", admitRate: 0.5, usNewsRank: 40, usNewsRankList: null,
+      c7Rigor: null, c7Gpa: null, c7Test: null, c7Rank: null, c7Ec: null, c7Service: null,
+      programs: [
+        { cipCode: "52.0201", admitRate: null, programRank: 12, directAdmit: false },
+        { cipCode: "52.0801", admitRate: null, programRank: null, directAdmit: false },
+      ],
+    } as unknown as CollegeWithPrograms;
+    const lists: RankingLists = {
+      institutional: RANKING_LISTS.institutional,
+      programs: {
+        "52.0801": { source: "USNEWS", listKey: "f", edition: "2027", size: 46, url: "", fallbackCip: "52.0201" },
+        "52.0201": { source: "USNEWS", listKey: "b", edition: "2027", size: 535, url: "" },
+      },
+    };
+    const s = scoreCollege(student({ majorCip: "52.0801" }), mapCollege(row, "52.0801", lists), lists);
+    expect(s.flags).toContain("quality rank 12 (fallback-program)");
+  });
+
+  it("falls back to the institutional rank when the major's list isn't loaded (loadedRankingLists)", () => {
+    const c = college({ majorProgram: { cipCode: "11.0701", admitRate: null, programRank: null } });
+    const loaded = loadedRankingLists([]);
+    const withLoaded = scoreCollege(student({ majorCip: "11.0701" }), c, loaded);
+    expect(withLoaded.flags).toContain("quality rank 40 (institutional)");
+    const live = scoreCollege(student({ majorCip: "11.0701" }), c); // default: CS registered
+    expect(live.flags).toContain(`quality rank ${RANKING_LISTS.programs["11.0701"].size + 1} (program-unranked)`);
+  });
+});
+
+describe("loadedRankingLists", () => {
+  it("keeps only the loaded CIPs and leaves institutional alone", () => {
+    const l = loadedRankingLists(["11.0701", "99.9999"]);
+    expect(Object.keys(l.programs)).toEqual(["11.0701"]);
+    expect(l.institutional).toBe(RANKING_LISTS.institutional);
+    expect(Object.keys(RANKING_LISTS.programs).length).toBeGreaterThan(1); // input untouched
   });
 });

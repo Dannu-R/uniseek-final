@@ -20,6 +20,7 @@ import {
 } from "./filters";
 import { preferenceFit, finalScore } from "./preferences";
 import type { StudentInput, CollegeInput } from "./types";
+import type { RankingLists } from "./rankingLists";
 
 export interface CollegeScore {
   collegeId: string;
@@ -36,7 +37,7 @@ export interface CollegeScore {
   effectiveAdmitRate: number; // after the major offset (§6a)
   netPrice: number | null; // the net price the budget filter used; null = unknown
   usedFactors: Factor[];
-  flags: string[]; // low-confidence / missing-data notes
+  flags: string[]; // low-confidence / missing-data notes, plus the quality-rank basis ("quality rank N (basis)")
   filterNotes: string[]; // hard-filter missing-data notes (§2.3)
   removedBy: string[]; // filters this college FAILED (empty when kept)
 }
@@ -53,7 +54,7 @@ function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rat
   return { rate: college.admitRate };
 }
 
-export function scoreCollege(student: StudentInput, college: CollegeInput): CollegeScore {
+export function scoreCollege(student: StudentInput, college: CollegeInput, lists?: RankingLists): CollegeScore {
   const flags: string[] = [];
   const majorNamed = !!student.majorCip;
 
@@ -102,7 +103,7 @@ export function scoreCollege(student: StudentInput, college: CollegeInput): Coll
     institutionalList: college.usNewsRankList,
     programRank: college.majorProgram?.programRank,
     fallbackProgramRank: college.fallbackProgramRank,
-  });
+  }, lists);
   flags.push(`quality rank ${q.rank} (${q.basis})`);
   const quality = programQuality(q.rank);
   const amb = ambition(rigor.effectiveVolume, gpaX(adjGpa), ecBaseValue, service);
@@ -163,8 +164,8 @@ export function buildList(kept: CollegeScore[], nReach = 3, nTarget = 5, nSafety
   return [...reaches, ...targets, ...safeties]; // reach → target → safety
 }
 
-export function rankColleges(student: StudentInput, colleges: CollegeInput[]): RankResult {
-  const scored = colleges.map((c) => scoreCollege(student, c));
+export function rankColleges(student: StudentInput, colleges: CollegeInput[], lists?: RankingLists): RankResult {
+  const scored = colleges.map((c) => scoreCollege(student, c, lists));
   const kept = scored.filter((s) => s.kept);
   const removed = scored.filter((s) => !s.kept);
 

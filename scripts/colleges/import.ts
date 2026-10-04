@@ -59,9 +59,16 @@ async function main() {
     const existing = dbUp ? await prisma.college.findUnique({ where: { ipedsUnitId: c.ipedsUnitId } }) : null;
     const data: Record<string, unknown> = { name: c.name };
 
+    // usNewsRankList describes usNewsRank's scale, so it must follow it: when a different
+    // hand-curated rank is kept (protected skip), the batch's list label is not written either.
+    const keepsRank = !!existing && !overwriteProtected && existing.usNewsRank != null && c.usNewsRank != null && existing.usNewsRank !== c.usNewsRank;
     for (const f of FIELD_NAMES) {
       const v = c[f];
       if (v == null) continue;
+      if (f === "usNewsRankList" && keepsRank) {
+        if (existing!.usNewsRankList !== v) protectedSkips.push(`${c.name}.usNewsRankList: kept ${String(existing!.usNewsRankList)} (batch had ${String(v)})`);
+        continue;
+      }
       const current = existing?.[f as keyof typeof existing];
       if (existing && PROTECTED.has(f) && current != null && !overwriteProtected) {
         if (current !== v) protectedSkips.push(`${c.name}.${f}: kept ${String(current)} (batch had ${String(v)})`);

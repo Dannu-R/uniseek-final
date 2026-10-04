@@ -5,7 +5,7 @@
 import type { College, CollegeProgram, Archetype as PrismaArchetype, AthleticsTier, Setting } from "@prisma/client";
 import type { CollegeInput } from "./types";
 import type { Archetype } from "./weights";
-import { RANKING_LISTS } from "./rankingLists";
+import { RANKING_LISTS, type RankingLists } from "./rankingLists";
 
 export type CollegeWithPrograms = College & { programs: CollegeProgram[] };
 
@@ -14,9 +14,9 @@ export function scorableCollege(c: CollegeWithPrograms): boolean {
   return c.admitRate != null && c.usNewsRank != null;
 }
 
-export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null): CollegeInput {
+export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null, lists: RankingLists = RANKING_LISTS): CollegeInput {
   const program = majorCip ? c.programs.find((p) => p.cipCode === majorCip) ?? null : null;
-  const fallbackCip = majorCip ? RANKING_LISTS.programs[majorCip]?.fallbackCip : undefined;
+  const fallbackCip = majorCip ? lists.programs[majorCip]?.fallbackCip : undefined;
   const fallback = fallbackCip ? c.programs.find((p) => p.cipCode === fallbackCip) ?? null : null;
 
   return {

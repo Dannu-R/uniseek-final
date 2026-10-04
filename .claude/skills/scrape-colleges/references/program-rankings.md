@@ -5,7 +5,8 @@ published list (lib/scoring/quality.ts). Which list each major uses, and how lon
 it is, lives in `lib/scoring/rankingLists.ts` → `RANKING_LISTS.programs`. A major
 registered there means its list is collected; a college missing from it counts as
 unranked (rank = list size + 1, the quality floor). Unregistered majors fall back
-to the institutional rank.
+to the institutional rank. Finance (52.0801) uses the short finance list and, when a
+college is not on it, falls back to that college's Business (52.0201) rank.
 
 ## Sources
 
@@ -46,7 +47,9 @@ match `RANKING_LISTS`.
 ## Matching rows to catalog colleges
 
 Match Niche and US News rows to catalog colleges by name + state. Save all rows you
-read, not just the matches, so missed aliases can be audited later. Watch for
+read, not just the matches, so missed aliases can be audited later (keep that audit
+file in a scratch/workspace location, not in `data/rankings/`, which
+`rankings:import` reads wholesale). Watch for
 lookalikes: Rutgers campuses, UC campuses, Washington University in St. Louis vs
 University of Washington, Miami University vs University of Miami.
 
@@ -58,3 +61,11 @@ University of Washington, Miami University vs University of Miami.
 3. `npm run rankings:import -- --dry-run`, review (`⚠ ranked but no program row`
    means the college's offered majors and the ranking disagree; check the majors,
    don't force a row), then `npm run rankings:import`.
+
+## Deploying
+
+The ranks live in the database, not the code. After running migrations on a new or
+production database, run `npm run rankings:import` (the ranking files are in
+`data/rankings/`). Until then `/api/score` falls back to institutional ranks for
+majors whose lists have no imported ranks, and logs a warning naming them. An import
+that would clear over half of a CIP's ranked rows is refused unless `--force` is passed.

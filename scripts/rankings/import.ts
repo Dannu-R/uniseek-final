@@ -1,11 +1,12 @@
 // Load collected ranking lists into CollegeProgram.programRank.
 //
-//   npm run rankings:import -- [data/rankings/<file>.json ...] [--dry-run]
+//   npm run rankings:import -- [data/rankings/<file>.json ...] [--dry-run] [--force]
 //
 // With no files, imports every *.json in data/rankings/. For each file:
 // - validates it and checks it against RANKING_LISTS (register the list there first);
 // - sets programRank + programRankSourceClass = LIST_ORDER on existing program rows;
 // - clears programRank on catalog colleges absent from the list (stale estimates);
+// - refuses (unless --force) a file that would clear over half of that CIP's ranked rows;
 // - never creates program rows: a ranked college without one is reported for review.
 
 import fs from "node:fs";
@@ -21,6 +22,7 @@ loadEnv();
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const dryRun = args.has("dry-run");
+  const force = args.has("force");
   const files = args.positional.length
     ? args.positional
     : fs.readdirSync(RANKINGS_DIR).filter((f) => f.endsWith(".json")).map((f) => path.join(RANKINGS_DIR, f));
@@ -33,7 +35,11 @@ async function main() {
   );
 
   for (const f of files) {
-    const parsed = RankingFile.safeParse(JSON.parse(fs.readFileSync(f, "utf8")));
+    let raw: unknown;
+    try { raw = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) {
+      throw new Error(`${f}: invalid JSON (${(e as Error).message})`);
+    }
+    const parsed = RankingFile.safeParse(raw);
     if (!parsed.success) throw new Error(`${f}:\n${parsed.error.issues.map((i) => `  - ${i.message}`).join("\n")}`);
     const file = parsed.data;
     const errs = checkAgainstConfig(file, RANKING_LISTS);
@@ -58,6 +64,13 @@ async function main() {
       for (const n of plan.noProgramRow) console.log(`    ${n.name} (#${n.rank})`);
     }
     if (plan.notInCatalog.length) console.log(`  (ignored ${plan.notInCatalog.length} entries not in the catalog)`);
+
+    const rankedNow = rows.filter((r) => r.programRank != null).length;
+    if (plan.clear.length > rankedNow / 2) {
+      const msg = `would clear ${plan.clear.length} of ${rankedNow} currently-ranked ${file.cip} rows (over 50%): wrong or truncated file?`;
+      if (!dryRun && !force) throw new Error(`${path.basename(f)}: refusing, ${msg} Pass --force to proceed.`);
+      console.log(`  ⚠ ${msg}${dryRun ? " (a real run needs --force)" : " (--force given)"}`);
+    }
 
     if (dryRun) continue;
     await prisma.$transaction([
