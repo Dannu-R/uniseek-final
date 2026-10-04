@@ -13,6 +13,7 @@
     "db:studio": "prisma studio",
     "colleges:build": "tsx scripts/colleges/build.ts",
     "colleges:import": "tsx scripts/colleges/import.ts",
+    "rankings:import": "tsx scripts/rankings/import.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

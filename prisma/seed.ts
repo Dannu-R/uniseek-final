@@ -362,9 +362,12 @@ async function main() {
     }
 
     // CS program, with the researched §18 admissions data.
+    // Program ranks are owned by rankings:import once lists are collected, so the
+    // seed only sets them when it first creates the row (it re-runs on every deploy).
+    const { programRank: _rank, programRankSourceClass: _rankSrc, ...csAdmissions } = cs;
     await prisma.collegeProgram.upsert({
       where: { collegeId_cipCode: { collegeId: row.id, cipCode: CS } },
-      update: cs as Prisma.CollegeProgramUncheckedUpdateInput,
+      update: csAdmissions as Prisma.CollegeProgramUncheckedUpdateInput,
       create: { collegeId: row.id, cipCode: CS, ...cs } as Prisma.CollegeProgramUncheckedCreateInput,
     });
   }
