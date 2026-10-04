@@ -9,6 +9,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { FALLBACK_EC_TIER, type EcTier } from "./ec";
+import { traceClaudeCall } from "../llmTrace";
 
 const ANTHROPIC_MODEL = process.env.UNISEEK_CLASSIFIER_MODEL ?? "claude-opus-5";
 const HF_MODEL = process.env.UNISEEK_HF_MODEL ?? "meta-llama/Llama-3.1-8B-Instruct";
@@ -91,13 +92,15 @@ function extractResults(text: string): RawResult[] {
 
 async function viaAnthropic(activities: { description: string }[], majorName?: string | null): Promise<RawResult[]> {
   const client = new Anthropic(); // resolves ANTHROPIC_API_KEY / auth profile
-  const response = await client.messages.create({
-    model: ANTHROPIC_MODEL,
-    max_tokens: 4000,
-    output_config: { format: { type: "json_schema", schema: OUTPUT_SCHEMA }, effort: "low" },
-    system: RUBRIC,
-    messages: [{ role: "user", content: buildUserMessage(activities, majorName) }],
-  });
+  const response = await traceClaudeCall("activity-classifier", ANTHROPIC_MODEL, () =>
+    client.messages.create({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 4000,
+      output_config: { format: { type: "json_schema", schema: OUTPUT_SCHEMA }, effort: "low" },
+      system: RUBRIC,
+      messages: [{ role: "user", content: buildUserMessage(activities, majorName) }],
+    }),
+  );
   if (response.stop_reason === "refusal") throw new Error("classifier refused");
   const text = response.content.find((b) => b.type === "text");
   if (!text || text.type !== "text") throw new Error("no text block in response");

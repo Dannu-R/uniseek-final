@@ -5,6 +5,7 @@
 // fails.
 
 import Anthropic from "@anthropic-ai/sdk";
+import { traceClaudeCall } from "./llmTrace";
 
 const MODEL = process.env.UNISEEK_INSIGHT_MODEL ?? "claude-opus-5";
 
@@ -221,13 +222,15 @@ activity, in order (empty array if none).`;
 
   try {
     const client = new Anthropic();
-    const res = await client.messages.create({
-      model: MODEL,
-      max_tokens: 6000,
-      output_config: { format: { type: "json_schema", schema: SCHEMA }, effort: "medium" },
-      system: SYSTEM,
-      messages: [{ role: "user", content: user }],
-    });
+    const res = await traceClaudeCall("college-insight", MODEL, () =>
+      client.messages.create({
+        model: MODEL,
+        max_tokens: 6000,
+        output_config: { format: { type: "json_schema", schema: SCHEMA }, effort: "medium" },
+        system: SYSTEM,
+        messages: [{ role: "user", content: user }],
+      }),
+    );
     if (res.stop_reason === "refusal") return null;
     const text = res.content.find((b) => b.type === "text");
     if (!text || text.type !== "text") return null;
