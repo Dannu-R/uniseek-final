@@ -21,6 +21,7 @@ export const WORK_DIR = path.join(DATA_DIR, "work");
 const frac = z.number().min(0).max(1);
 const c7 = z.number().int().min(0).max(3); // Very Important 3 … Not Considered 0
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
+const UsNewsRankList = z.enum(["NATIONAL_UNIVERSITIES", "NATIONAL_LIBERAL_ARTS"]);
 
 // Every scraped College column. All nullable: null = unknown, never a guess.
 export const CollegeFields = z.object({
@@ -34,7 +35,7 @@ export const CollegeFields = z.object({
   admitRateProvenance: z.enum(["VERIFIED", "CARRIED", "APPROX"]).nullable(),
   usNewsRank: z.number().int().positive().nullable(),
   usNewsRankProvenance: z.enum(["VERIFIED", "CARRIED", "APPROX"]).nullable(),
-  usNewsRankList: z.enum(["NATIONAL_UNIVERSITIES", "NATIONAL_LIBERAL_ARTS"]).nullable().default(null),
+  usNewsRankList: UsNewsRankList.nullable(),
   inStateAdmitRate: frac.nullable(),
   outOfStateAdmitRate: frac.nullable(),
 
@@ -129,6 +130,7 @@ export const CollegeRecord = CollegeFields.extend({
   status: Status,
   sources: z.record(z.string(), Source),
   notes: z.array(z.string()),
+  usNewsRankList: UsNewsRankList.nullable().default(null),
 });
 export type CollegeRecord = z.infer<typeof CollegeRecord>;
 
