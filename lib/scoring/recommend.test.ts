@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { collegeBar, admissionOdds, inverseCollegeBar, labelOf, sigmoid } from "./odds";
-import { programQuality, qualityRank } from "./quality";
+import { programQuality, qualityRank, type QualityRankInput } from "./quality";
+import type { RankingLists } from "./rankingLists";
 import {
   referenceStrength,
   reachableRate,
@@ -72,10 +73,71 @@ describe("program_quality (§10b)", () => {
     expect(programQuality(1000)).toBe(0.45);
   });
 
-  it("picks program rank in a major run, institutional otherwise", () => {
-    expect(qualityRank(32, 5, true)).toBe(5); // Georgia Tech CS
-    expect(qualityRank(32, 5, false)).toBe(32); // general run
-    expect(qualityRank(32, null, true)).toBe(32); // major run, no program rank
+});
+
+describe("qualityRank (§10b, major-specific with collected lists)", () => {
+  const LISTS: RankingLists = {
+    institutional: {
+      NATIONAL_UNIVERSITIES: { edition: "t", size: 400 },
+      NATIONAL_LIBERAL_ARTS: { edition: "t", size: 200 },
+    },
+    programs: {
+      "11.0701": { source: "USNEWS", listKey: "cs", url: "https://x.test/cs", edition: "t", size: 587 },
+      "52.0201": { source: "USNEWS", listKey: "biz", url: "https://x.test/biz", edition: "t", size: 535 },
+      "52.0801": { source: "USNEWS", listKey: "fin", url: "https://x.test/fin", edition: "t", size: 46, fallbackCip: "52.0201" },
+    },
+  };
+  const base: QualityRankInput = {
+    majorCip: null,
+    institutionalRank: 32,
+    institutionalList: "NATIONAL_UNIVERSITIES",
+    programRank: null,
+    fallbackProgramRank: null,
+  };
+
+  it("R1: collected list, college ranked → its program rank", () => {
+    expect(qualityRank({ ...base, majorCip: "11.0701", programRank: 5 }, LISTS)).toEqual({ rank: 5, basis: "program" });
+  });
+  it("R1: collected list, college absent → just past the end", () => {
+    expect(qualityRank({ ...base, majorCip: "11.0701" }, LISTS)).toEqual({ rank: 588, basis: "program-unranked" });
+  });
+  it("R2: list not collected → institutional rank", () => {
+    expect(qualityRank({ ...base, majorCip: "26.0101" }, LISTS)).toEqual({ rank: 32, basis: "institutional" });
+  });
+  it("R2: list not collected but an individually researched program rank exists → use it", () => {
+    expect(qualityRank({ ...base, majorCip: "26.0101", programRank: 7 }, LISTS)).toEqual({ rank: 7, basis: "program" });
+  });
+  it("R2: list not collected, LAC → converted institutional rank", () => {
+    const r = qualityRank({ ...base, majorCip: "26.0101", institutionalRank: 3, institutionalList: "NATIONAL_LIBERAL_ARTS" }, LISTS);
+    expect(r).toEqual({ rank: 6, basis: "institutional-lac-converted" }); // round(3/200*400)
+  });
+  it("R3: no major, national university → unchanged", () => {
+    expect(qualityRank(base, LISTS)).toEqual({ rank: 32, basis: "institutional" });
+  });
+  it("R3: no major, LAC #22 → national-equivalent #44", () => {
+    const r = qualityRank({ ...base, institutionalRank: 22, institutionalList: "NATIONAL_LIBERAL_ARTS" }, LISTS);
+    expect(r).toEqual({ rank: 44, basis: "institutional-lac-converted" });
+  });
+  it("R3: conversion never goes below 1", () => {
+    const big: RankingLists = { ...LISTS, institutional: { ...LISTS.institutional, NATIONAL_LIBERAL_ARTS: { edition: "t", size: 2000 } } };
+    const r = qualityRank({ ...base, institutionalRank: 1, institutionalList: "NATIONAL_LIBERAL_ARTS" }, big);
+    expect(r.rank).toBe(1); // round(0.2) = 0 → clamped
+  });
+  it("R3: unknown list (null) is treated as National Universities", () => {
+    expect(qualityRank({ ...base, institutionalList: null }, LISTS)).toEqual({ rank: 32, basis: "institutional" });
+  });
+  it("R1-finance: finance specialty rank wins", () => {
+    expect(qualityRank({ ...base, majorCip: "52.0801", programRank: 3, fallbackProgramRank: 12 }, LISTS)).toEqual({ rank: 3, basis: "program" });
+  });
+  it("R1-finance: no finance rank → Business rank", () => {
+    expect(qualityRank({ ...base, majorCip: "52.0801", fallbackProgramRank: 12 }, LISTS)).toEqual({ rank: 12, basis: "fallback-program" });
+  });
+  it("R1-finance: no finance or Business rank → past the end of Business", () => {
+    expect(qualityRank({ ...base, majorCip: "52.0801" }, LISTS)).toEqual({ rank: 536, basis: "program-unranked" });
+  });
+  it("R1-finance: Business list not collected → R2", () => {
+    const noBiz: RankingLists = { ...LISTS, programs: { "52.0801": LISTS.programs["52.0801"] } };
+    expect(qualityRank({ ...base, majorCip: "52.0801" }, noBiz)).toEqual({ rank: 32, basis: "institutional" });
   });
 });
 

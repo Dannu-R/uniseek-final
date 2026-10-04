@@ -62,8 +62,10 @@ parameters). Only the rank fed into it changes:
 
 - **R1 — major named, its list collected:** the college's program rank on that
   list; if absent, `listSize + 1`. Finance has its own chain (R1-finance below).
-- **R2 — major named, its list not yet collected:** the institutional rank,
-  normalized as in R3. (Today's behavior; a safety net while lists are filled in.)
+- **R2 — major named, its list not yet collected:** the college's program rank if it
+  has one anyway (individually researched, §18b — e.g. the seeded CS ranks);
+  otherwise the institutional rank, normalized as in R3. (Today's behavior; a
+  safety net while lists are filled in.)
 - **R3 — no major named:** institutional rank, normalized by list:
   National Universities → unchanged; National Liberal Arts →
   `max(1, round(lacRank / lacListSize × nationalListSize))`.
