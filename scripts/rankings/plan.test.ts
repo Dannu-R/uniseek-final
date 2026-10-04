@@ -66,8 +66,16 @@ describe("RankingFile + checkAgainstConfig", () => {
     expect(errs.some((e) => e.includes("size"))).toBe(true);
     expect(errs.some((e) => e.includes("edition"))).toBe(true);
   });
-  it("rejects duplicate colleges and ranks beyond the list size", () => {
-    const bad = { ...file, entries: [{ ipedsUnitId: 1, name: "A", rank: 5 }, { ipedsUnitId: 1, name: "A", rank: 600 }] };
-    expect(RankingFile.safeParse(bad).success).toBe(false);
+  it("rejects duplicate colleges", () => {
+    const bad = { ...file, entries: [{ ipedsUnitId: 1, name: "A", rank: 5 }, { ipedsUnitId: 1, name: "A", rank: 6 }] };
+    const r = RankingFile.safeParse(bad);
+    expect(r.success).toBe(false);
+    expect(r.error!.issues.some((i) => i.message.includes("duplicate ipedsUnitId 1"))).toBe(true);
+  });
+  it("rejects ranks beyond the list size", () => {
+    const bad = { ...file, entries: [{ ipedsUnitId: 1, name: "A", rank: 600 }] };
+    const r = RankingFile.safeParse(bad);
+    expect(r.success).toBe(false);
+    expect(r.error!.issues.some((i) => i.message.includes("rank 600 > list size 587"))).toBe(true);
   });
 });
