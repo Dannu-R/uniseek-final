@@ -14,6 +14,7 @@
     "colleges:build": "tsx scripts/colleges/build.ts",
     "colleges:import": "tsx scripts/colleges/import.ts",
     "rankings:import": "tsx scripts/rankings/import.ts",
+    "major-rates:import": "tsx scripts/major-rates/import.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
