@@ -634,12 +634,12 @@
       "ipedsUnitId": 214777,
       "name": "Pennsylvania State University",
       "admissionUnit": "SCHOOL",
-      "sourceClass": "ESTIMATE",
-      "admitRate": 0.4,
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
       "directAdmit": false,
-      "basis": "First-years are admitted to a campus and college (College of Engineering or Division of Undergraduate Studies), not the CS major; CS at University Park is under administrative enrollment controls, with entrance-to-major after 29-55 Penn State credits, required CMPSC/MATH/PHYS courses, and a minimum 3.20 GPA (Penn State Bulletin). Engineering admission to University Park is more competitive than the overall ~55% rate, but Penn State publishes no college-level admit rate; one low-quality aggregator (collegedunia) claims 24% for engineering, which is unverified. Estimate ~0.7x overall, by analogy with engineering-college selectivity at public peers that admit by college (e.g., Purdue, Virginia Tech).",
+      "basis": "First-years are admitted to a Penn State college; CS enrollment controls apply later (entry to major after 29-55 credits, 3.20 GPA). No official first-year engineering/CS admit rate exists (only an unverifiable aggregator 24% claim), so the overall rate is used (class U), keeping the previously seeded classification.",
       "url": "https://bulletins.psu.edu/undergraduate/colleges/engineering/computer-science-bs/computer-science-bs_howtogetintext.pdf",
-      "year": "Fall 2025"
+      "year": null
     },
     {
       "ipedsUnitId": 121150,
