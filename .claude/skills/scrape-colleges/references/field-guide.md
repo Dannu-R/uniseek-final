@@ -4,7 +4,7 @@ All percentages are **fractions on 0..1** (59% → `0.59`). Dates are `YYYY-MM-D
 are the `College` columns in `prisma/schema.prisma`. When a source is blank, ambiguous or says
 "not reported", leave the field out and add a note. Never fill from memory.
 
-Contents: [Basics](#basics-college-navigator) · [Majors](#majors-offered) · [Admit rate](#admit-rate-cds-c1) ·
+Contents: [Basics](#basics-college-navigator) · [Majors](#majors-offered) · [Admit rate](#admit-rate-cds-c1) · [Admission unit](#admission-unit) ·
 [Test scores & policy](#test-scores--policy-cds-c8c9) · [C7 weights](#admission-weights-cds-c7) ·
 [Campus life](#campus-life-cds-e1-f1-i3) · [Merit aid](#merit-aid-cds-h2--h2a) ·
 [Deadlines](#application-deadlines) · [Athletics](#athletics) · [US News rank](#us-news-rank)
@@ -60,6 +60,28 @@ admits students with 60 transfer credits).
 | `admitRate` | C1 "Total first-time, first-year students who were admitted" ÷ "…who applied". E.g. 2,948 / 36,791 = `0.0801`. Put both counts in the source `note`. The text dump sometimes splits a row (a stray small number next to the total), so check that the total ≈ the sum of the sex rows. No CDS → College Navigator's "percent admitted" (source `"college-navigator"`). |
 | `admitRateProvenance` | `"VERIFIED"` whenever `admitRate` came from one of the above this session. |
 | `inStateAdmitRate`, `outOfStateAdmitRate` | Only if C1 has the residency breakdown table (in-state / out-of-state / international applied & admitted). In-state = in-state admitted ÷ in-state applied; out-of-state likewise (exclude international). Otherwise leave out. These matter most for publics. |
+
+## Admission unit
+
+`admissionUnit` says how the college admits first-years. It isn't a batch field: record it in
+`notes` with its URL, and it is written through the CS admit-rate file
+(`references/major-admit-rates.md`). The CDS has no item for it. C1 only splits applicants by sex
+and residency, and the C7/C8 answers are university-wide. A CDS that breaks C1 out by college is
+itself a sign of `SCHOOL`. Mostly it comes from the admissions site ("how to apply", "choosing a
+major") and the CS department's undergraduate admissions page.
+
+| Value | Wording that signals it |
+|---|---|
+| `UNIVERSITY` | "You apply to the university, not to a major"; "declare your major by the end of sophomore year"; undeclared / exploratory as the default; a major that is "competitive" or "capped" only after enrollment (internal application, entrance-to-major after N credits, secondary admission) |
+| `SCHOOL` | "Apply to one of our N colleges/schools"; the application asks for a college (College of Engineering, Arts & Sciences); a "general engineering" or "first-year engineering" program that every engineering student starts in |
+| `MAJOR` | "Direct admission to the major"; "you are admitted to your first-choice major" (or an alternate major); limited-enrollment or capped majors filled at first-year admission; per-major admit rates on the admissions site |
+
+Decide from first-year entry only. Use `UNIVERSITY` only when **no** program selects at entry: the
+scorer then treats the overall rate as the fact for every major. If most students are admitted to
+the university but some programs (often CS, nursing, engineering) select at entry, record the
+narrower unit (UW admits most first-years to the university, but the Allen School picks CS at
+entry, so UW is `MAJOR`). If the wording is ambiguous or you can't find it, leave it out and say
+so: `null` means unknown.
 
 ## Test scores & policy (CDS C8–C9)
 

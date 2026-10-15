@@ -97,7 +97,12 @@ Per college, in this order:
    Also set `usNewsRankList` (`"NATIONAL_UNIVERSITIES"` or `"NATIONAL_LIBERAL_ARTS"`)
    to the list the rank comes from. Scoring converts Liberal Arts ranks to the
    national scale, so this matters.
-7. **Write the college file** (shape below).
+7. **Admission unit**: how the college admits first-years (`UNIVERSITY`, `SCHOOL` or `MAJOR`; the
+   field guide's [Admission unit](references/field-guide.md#admission-unit) section has the wording
+   to look for). Record it for every new college. It isn't a batch field, so put it in `notes`
+   with its URL (`"admissionUnit SCHOOL: first-years apply to a college, https://…"`). It reaches the
+   database through the CS admit-rate entry (see "After importing new colleges: CS admit rates").
+8. **Write the college file** (shape below).
 
 **When a site blocks automated requests** (403/405, Cloudflare, or a page that only renders with
 JavaScript, which is common on usnews.com and some admissions sites), work down this list:
@@ -199,12 +204,24 @@ offers, which also hides the college from every student choosing that major. Fix
 the college's `majorsOffered` (re-check its majors list) rather than ignoring the
 warning.
 
+## After importing new colleges: CS admit rates
+
+When a student names a major, scoring uses the college's admit rate for that major.
+CS rates and each college's admission unit live in `data/major-rates/cs-<cycle>.json`
+and are applied with `npm run major-rates:import` (see `references/major-admit-rates.md`
+for the source ladder, the file format and the import steps). Add an entry for every
+new college. Without one, a student choosing CS gets the college's overall rate with a
+low-confidence flag, which badly overstates the odds at capped programs. The only
+exception is a college that admits to the university as a whole: there the overall
+rate is the CS rate, but it still needs the entry to record that.
+
 ## Out of scope (leave null)
 
-Per-major admit rates and `archetype`. These are hand-researched under the
-procedures doc's §16/§18 rules. Don't go hunting for them; if you happen to see one in an official
-source, put it in `notes` rather than `fields`. Program ranks are collected separately; see
-`references/program-rankings.md`.
+`archetype`, which is hand-researched under the procedures doc's §16/§18 rules. Don't
+go hunting for it. Per-major admit rates are not part of the college file either: CS
+rates have their own research pass and data file (`references/major-admit-rates.md`).
+If you happen to see a per-major rate in an official source, put it in `notes` for
+that pass. Program ranks are collected separately; see `references/program-rankings.md`.
 
 (`usNewsRank` *is* in scope; see the field guide. The scorer skips any college without both
 `admitRate` and `usNewsRank` (`lib/scoring/mapCollege.ts`), so a college missing either one never
