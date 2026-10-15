@@ -56,6 +56,15 @@ enum UsNewsRankList {
   NATIONAL_LIBERAL_ARTS
 }
 
+// How a college admits first-years (§6a). UNIVERSITY: majors declared later, so every
+// major's admit rate IS the overall rate. SCHOOL: admits into a school/college within
+// it. MAJOR: admits directly to the major.
+enum AdmissionUnit {
+  UNIVERSITY
+  SCHOOL
+  MAJOR
+}
+
 // §9 weight profiles. Stopgap until real per-college C7 vectors exist (open #9).
 enum Archetype {
   HOLISTIC
@@ -123,6 +132,7 @@ model College {
   usNewsRank           Int?
   usNewsRankProvenance AdmitDataProvenance?
   usNewsRankList       UsNewsRankList? // null = treat as National Universities
+  admissionUnit        AdmissionUnit? // null = unknown
 
   // Residency splits (§15) — present only where the college publishes them.
   inStateAdmitRate    Float?

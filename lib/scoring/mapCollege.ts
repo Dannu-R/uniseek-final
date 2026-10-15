@@ -25,6 +25,7 @@ export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null, lis
     admitRate: c.admitRate!, // guarded by scorableCollege
     usNewsRank: c.usNewsRank!,
     usNewsRankList: c.usNewsRankList ?? null,
+    admissionUnit: c.admissionUnit ?? null,
     archetype: (c.archetype as PrismaArchetype | null) as Archetype | null,
     c7: { rigor: c.c7Rigor, gpa: c.c7Gpa, test: c.c7Test, rank: c.c7Rank, ec: c.c7Ec, service: c.c7Service },
     satP25: c.satP25,
@@ -37,7 +38,7 @@ export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null, lis
     longitude: c.longitude,
     offeredCips: c.programs.map((p) => p.cipCode),
     majorProgram: program
-      ? { cipCode: program.cipCode, admitRate: program.admitRate, programRank: program.programRank, directAdmit: program.directAdmit }
+      ? { cipCode: program.cipCode, admitRate: program.admitRate, admitRateSourceClass: program.admitRateSourceClass, programRank: program.programRank, directAdmit: program.directAdmit }
       : null,
     fallbackProgramRank: fallback?.programRank ?? null,
     facts: {

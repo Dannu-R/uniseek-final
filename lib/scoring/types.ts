@@ -46,9 +46,12 @@ export interface StudentInput {
   preferences: StudentPreferences;
 }
 
+export type MajorRateClass = "UNIVERSITY" | "DERIVED" | "PUBLISHED" | "CONSENSUS" | "ESTIMATE" | "FITTED";
+
 export interface CollegeMajorProgram {
   cipCode: string;
   admitRate?: number | null; // per-major (§6a); null when unresearched
+  admitRateSourceClass?: MajorRateClass | null; // §6a source class
   programRank?: number | null; // §18b
   directAdmit?: boolean | null;
 }
@@ -61,6 +64,7 @@ export interface CollegeInput {
   admitRate: number; // overall (fraction)
   usNewsRank: number;
   usNewsRankList?: InstitutionalList | null; // which US News list usNewsRank is on
+  admissionUnit?: "UNIVERSITY" | "SCHOOL" | "MAJOR" | null; // §6a
   archetype?: Archetype | null;
   c7?: Partial<Record<"rigor" | "gpa" | "test" | "rank" | "ec" | "service", number | null>> | null;
   satP25?: number | null;

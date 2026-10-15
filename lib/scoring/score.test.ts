@@ -159,3 +159,39 @@ describe("loadedRankingLists", () => {
     expect(Object.keys(RANKING_LISTS.programs).length).toBeGreaterThan(1); // input untouched
   });
 });
+
+describe("effective admit rate by source (§6a)", () => {
+  const cs = (p: Partial<NonNullable<CollegeInput["majorProgram"]>>) => ({ cipCode: "11.0701", admitRate: null, ...p });
+
+  it("uses a researched major rate and labels its class", () => {
+    const s = scoreCollege(student({ majorCip: "11.0701" }), college({ majorProgram: cs({ admitRate: 0.07, admitRateSourceClass: "PUBLISHED" }) }));
+    expect(s.effectiveAdmitRate).toBe(0.07);
+    expect(s.flags).toContain("effective admit rate 0.07 (P)");
+  });
+
+  it("treats a UNIVERSITY-class program as the overall rate, without the unresearched flag", () => {
+    const s = scoreCollege(student({ majorCip: "11.0701" }), college({ admitRate: 0.5, majorProgram: cs({ admitRateSourceClass: "UNIVERSITY" }) }));
+    expect(s.effectiveAdmitRate).toBe(0.5);
+    expect(s.flags).toContain("effective admit rate 0.5 (U)");
+    expect(s.flags.some((f) => f.includes("unresearched"))).toBe(false);
+  });
+
+  it("uses the overall rate as U for any major when the college admits to the university", () => {
+    const s = scoreCollege(student({ majorCip: "26.0101" }), college({ admitRate: 0.3, admissionUnit: "UNIVERSITY", offeredCips: ["26.0101"], majorProgram: { cipCode: "26.0101", admitRate: null } }));
+    expect(s.effectiveAdmitRate).toBe(0.3);
+    expect(s.flags).toContain("effective admit rate 0.3 (U)");
+    expect(s.flags.some((f) => f.includes("unresearched"))).toBe(false);
+  });
+
+  it("falls back to the overall rate, flagged, when a major-admitting college has no researched rate", () => {
+    const s = scoreCollege(student({ majorCip: "11.0701" }), college({ admitRate: 0.4, admissionUnit: "MAJOR", majorProgram: cs({}) }));
+    expect(s.effectiveAdmitRate).toBe(0.4);
+    expect(s.flags).toContain("effective admit rate 0.4 (fallback)");
+    expect(s.flags.some((f) => f.includes("unresearched"))).toBe(true);
+  });
+
+  it("adds no admit-rate flag when no major is named", () => {
+    const s = scoreCollege(student(), college({ admissionUnit: "UNIVERSITY" }));
+    expect(s.flags.some((f) => f.startsWith("effective admit rate"))).toBe(false);
+  });
+});

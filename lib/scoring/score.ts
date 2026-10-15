@@ -19,7 +19,7 @@ import {
   religiousFilter, selectNetPrice, applyHardFilters,
 } from "./filters";
 import { preferenceFit, finalScore } from "./preferences";
-import type { StudentInput, CollegeInput } from "./types";
+import type { StudentInput, CollegeInput, MajorRateClass } from "./types";
 import type { RankingLists } from "./rankingLists";
 
 export interface CollegeScore {
@@ -42,14 +42,23 @@ export interface CollegeScore {
   removedBy: string[]; // filters this college FAILED (empty when kept)
 }
 
+// §6a label for each source class, shown in the result flags.
+const CLASS_LABEL: Record<MajorRateClass, string> = {
+  UNIVERSITY: "U", DERIVED: "D", PUBLISHED: "P", CONSENSUS: "C", ESTIMATE: "E", FITTED: "F",
+};
+
 // The effective admit rate for tier + odds (§6a major offset). Residency (§15) is
-// deferred (see OPEN_ITEMS). Falls back to the overall rate when the major rate is
-// unresearched (the §18d "most generous" fallback), flagged low-confidence.
-function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rate: number; flag?: string } {
+// deferred (see OPEN_ITEMS). A researched major rate wins; a college that admits to
+// the university uses its overall rate for every major (a fact, class U); otherwise
+// fall back to the overall rate, flagged low-confidence.
+function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rate: number; label?: string; flag?: string } {
   if (student.majorCip && college.majorProgram) {
-    const mr = college.majorProgram.admitRate;
-    if (mr != null) return { rate: mr };
-    return { rate: college.admitRate, flag: "major admit rate unresearched — using overall rate" };
+    const p = college.majorProgram;
+    if (p.admitRate != null) return { rate: p.admitRate, label: p.admitRateSourceClass ? CLASS_LABEL[p.admitRateSourceClass] : "?" };
+    if (p.admitRateSourceClass === "UNIVERSITY" || college.admissionUnit === "UNIVERSITY") {
+      return { rate: college.admitRate, label: "U" };
+    }
+    return { rate: college.admitRate, label: "fallback", flag: "major admit rate unresearched — using overall rate" };
   }
   return { rate: college.admitRate };
 }
@@ -58,8 +67,9 @@ export function scoreCollege(student: StudentInput, college: CollegeInput, lists
   const flags: string[] = [];
   const majorNamed = !!student.majorCip;
 
-  const { rate, flag } = effectiveAdmitRate(student, college);
+  const { rate, label, flag } = effectiveAdmitRate(student, college);
   if (flag) flags.push(flag);
+  if (label) flags.push(`effective admit rate ${rate} (${label})`);
   const floors = floorsForAdmitRate(rate);
 
   const adjGpa = adjustedGpa(student.gpaUnweighted, student.gpaGrade10, student.gpaGrade11, student.gpaGrade12);
