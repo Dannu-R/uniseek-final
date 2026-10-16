@@ -14,7 +14,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { signOut } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, type ReadonlyURLSearchParams } from "next/navigation";
 import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
@@ -145,11 +145,20 @@ const FILTERS: { key: BandFilter; label: string }[] = [
 
 const pct = (x: number | null | undefined) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
+// The tab named in the URL (?tab=…), or Home when there isn't a valid one.
+const TAB_KEYS: TabKey[] = ["home", "recommended", "saved", "compare", "search", "profile"];
+function tabFromUrl(params: URLSearchParams | ReadonlyURLSearchParams): TabKey {
+  const t = params.get("tab");
+  return TAB_KEYS.includes(t as TabKey) ? (t as TabKey) : "home";
+}
+
 export default function DashboardClient({ user }: { user: DashUser }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // A search link (/dashboard?tab=search&query=…) opens straight onto the Search tab.
-  const [tab, setTab] = useState<TabKey>(searchParams.get("tab") === "search" ? "search" : "home");
+  // Each tab has its own URL (?tab=saved, ?tab=search&query=…; Home is plain /dashboard),
+  // so a link opens the right tab and back/forward moves between tabs.
+  const urlTab = tabFromUrl(searchParams);
+  const [tab, setTab] = useState<TabKey>(urlTab);
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [saved, setSaved] = useState<CollegeScore[]>([]);
@@ -235,7 +244,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
 
   const openQuiz = () => {
     if (timer.current) clearTimeout(timer.current);
-    setTab("recommended");
+    selectTab("recommended"); // also puts ?tab=recommended in the URL
     setPhase("opening");
     timer.current = setTimeout(() => setPhase("wizard"), OPEN_DELAY);
   };
@@ -373,17 +382,23 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   // view while the old college stays on screen, and the only way out is the explorer's
   // own back button.
   //
-  // The search lives in the URL, so the URL follows the tab: Search gets ?tab=search (an
-  // existing search is kept), and any other tab drops the search params.
+  // Choosing a tab pushes its URL (push, not replace, so back/forward steps through the
+  // tabs). Search keeps an existing query; every other tab drops the search params.
   const selectTab = (key: TabKey) => {
     setExploring(null);
     setTab(key);
     if (key === "search") {
-      if (searchParams.get("tab") !== "search") router.replace("/dashboard?tab=search");
-    } else if (searchParams.toString() !== "") {
-      router.replace("/dashboard");
+      if (searchParams.get("tab") !== "search") router.push("/dashboard?tab=search");
+    } else if (tabFromUrl(searchParams) !== key || searchParams.has("query")) {
+      router.push(key === "home" ? "/dashboard" : `/dashboard?tab=${key}`);
     }
   };
+
+  // Back/forward changes the URL without a click, so follow it: show the tab it names.
+  useEffect(() => {
+    setTab(urlTab);
+    setExploring(null);
+  }, [urlTab]);
 
   const renderTab = (t: TabDef) => (
     <button
@@ -512,7 +527,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   </button>
                 }
               />
-              <ExplorerView college={exploring} />
+              <ExplorerView college={exploring} list={result?.list ?? null} />
             </>
           ) : tab === "home" ? (
             <>

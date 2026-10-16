@@ -26,8 +26,11 @@ import type { WizardData, SettingValue } from "@/app/build/model";
 import { FACTORS } from "@/app/build/model";
 import type { CollegeInsight } from "@/lib/collegeInsight";
 import Reveal from "./Reveal";
+import { whyNotListed, type ScoredCollege } from "@/lib/whyNotListed";
 
-interface College {
+// The college's score from the run. The scoring fields are optional because colleges
+// saved before they existed won't have them.
+interface College extends ScoredCollege {
   collegeId: string;
   name: string;
   band: "reach" | "target" | "safety";
@@ -506,7 +509,8 @@ type InsightState = "idle" | "loading" | "ready" | "error";
 
 // The way back lives in the view bar above, alongside the college's name — the same
 // place every other view keeps its primary action.
-export default function ExplorerView({ college }: { college: College }) {
+// list: the student's recommended list from the same run (null = no run in this session).
+export default function ExplorerView({ college, list }: { college: College; list: ScoredCollege[] | null }) {
   const [activities, setActivities] = useState<string[]>([]);
   const [stu, setStu] = useState<{ gpa: number | null; sat: number | null; act: number | null; ap: number | null }>({ gpa: null, sat: null, act: null, ap: null });
   const [insight, setInsight] = useState<CollegeInsight | null>(null);
@@ -864,6 +868,9 @@ export default function ExplorerView({ college }: { college: College }) {
     );
   };
 
+  // Why this college isn't on the recommended list (null when it is, or with no run).
+  const notListed = list ? whyNotListed(college, list, budget) : null;
+
   return (
     <div className="explorer explorer--inline">
       <section className="dash__view ex">
@@ -910,6 +917,23 @@ export default function ExplorerView({ college }: { college: College }) {
             <div className="ex-card__body ex-card__body--spaced">{sectionBody(SECTIONS.admissions)}</div>
           </section>
         </Reveal>
+
+        {/* Only for a college that isn't on the student's recommended list (e.g. one saved
+            from Search): why it didn't make the cut, read from its own score. */}
+        {notListed && (
+          <Reveal>
+            <section className="ex-card ex-why">
+              <div className="ex-card__head">
+                <h2 className="ex-card__title">Why it isn&apos;t on your list</h2>
+              </div>
+              <ul className="ex-why__list">
+                {notListed.map((reason) => (
+                  <li key={reason}>{reason}</li>
+                ))}
+              </ul>
+            </section>
+          </Reveal>
+        )}
 
         {/* A true heterogeneous bento: explicit grid areas give each section its own size,
             and each carries its own fill (solid violet anchor, ink caution tile, tinted and

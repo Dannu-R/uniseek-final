@@ -1230,3 +1230,17 @@
     animation: none;
   }
 }
+
+/* "Why it isn't on your list": shown only for a college that didn't make the list.
+   A plain card with a short bulleted explanation, in the explorer's body-text style. */
+.ex-why {
+  margin-top: 16px;
+}
+.ex-why__list {
+  margin: 8px 0 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 8px;
+  color: var(--ac-ink-2);
+  line-height: 1.55;
+}
