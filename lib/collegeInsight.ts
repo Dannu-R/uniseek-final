@@ -6,6 +6,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { traceClaudeCall } from "./llmTrace";
+import type { NetPriceBasis } from "./scoring/price";
 
 const MODEL = process.env.UNISEEK_INSIGHT_MODEL ?? "claude-opus-5";
 
@@ -40,6 +41,9 @@ export interface InsightCollege {
   satP25: number | null;
   satP75: number | null;
   netPriceForStudent: number | null;
+  netPriceBasis: NetPriceBasis;
+  tuitionInState: number | null;
+  tuitionOutOfState: number | null;
   enrollmentUndergrad: number | null;
   setting: string | null;
   greekLife: boolean | null;
@@ -165,7 +169,18 @@ function collegeBlock(c: InsightCollege): string {
     line("In-state acceptance rate", pct(c.inStateAdmitRate)),
     line("Out-of-state acceptance rate", pct(c.outOfStateAdmitRate)),
     line("SAT middle 50% (25th–75th)", c.satP25 && c.satP75 ? `${c.satP25}–${c.satP75}` : null),
-    line("Net price for this student's income band ($/yr)", c.netPriceForStudent),
+    line(
+      "Net price for this student ($/yr)",
+      c.netPriceForStudent == null
+        ? null
+        : c.netPriceBasis === "out-of-state estimate"
+          ? `${c.netPriceForStudent} (estimate: in-state net price + nonresident tuition premium)`
+          : c.netPriceForStudent,
+    ),
+    line(
+      "Tuition + fees in-state / out-of-state ($/yr)",
+      c.tuitionInState != null && c.tuitionOutOfState != null ? `${c.tuitionInState} / ${c.tuitionOutOfState}` : null,
+    ),
     line("Undergrad enrollment", c.enrollmentUndergrad),
     line("Setting", c.setting),
     line("Greek life", c.greekLife == null ? null : c.greekLife ? "yes" : "no"),

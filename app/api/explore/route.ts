@@ -7,23 +7,10 @@ import { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateCollegeInsight, type InsightCollege, type InsightStudent } from "@/lib/collegeInsight";
+import type { IncomeBand } from "@/lib/scoring/filters";
+import { residencyFor, studentNetPrice } from "@/lib/scoring/price";
 
 type Band = "reach" | "target" | "safety";
-
-const NET_PRICE_COLUMN: Record<string, keyof PrismaCollegeNetPrice> = {
-  LT_30K: "netPriceLt30k",
-  B30_48K: "netPrice30to48k",
-  B48_75K: "netPrice48to75k",
-  B75_110K: "netPrice75to110k",
-  GT_110K: "netPriceGt110k",
-};
-type PrismaCollegeNetPrice = {
-  netPriceLt30k: number | null;
-  netPrice30to48k: number | null;
-  netPrice48to75k: number | null;
-  netPrice75to110k: number | null;
-  netPriceGt110k: number | null;
-};
 
 const num = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
@@ -61,9 +48,22 @@ export async function POST(request: Request) {
   const major = majorCip ? await prisma.major.findUnique({ where: { cipCode: majorCip } }) : null;
   const majorProgram = majorCip ? college.programs.find((p) => p.cipCode === majorCip) ?? null : null;
 
-  const incomeBand = typeof profile.incomeBand === "string" ? profile.incomeBand : null;
-  const bandCol = incomeBand ? NET_PRICE_COLUMN[incomeBand] : undefined;
-  const netPriceForStudent = (bandCol ? college[bandCol] : null) ?? college.netPriceAvg ?? null;
+  // Same residency-aware price the list and budget filter use (lib/scoring/price.ts).
+  const homeState = typeof profile.homeState === "string" ? profile.homeState : null;
+  const np = studentNetPrice({
+    incomeBand: typeof profile.incomeBand === "string" ? (profile.incomeBand as IncomeBand) : null,
+    bands: {
+      LT_30K: college.netPriceLt30k,
+      B30_48K: college.netPrice30to48k,
+      B48_75K: college.netPrice48to75k,
+      B75_110K: college.netPrice75to110k,
+      GT_110K: college.netPriceGt110k,
+    },
+    average: college.netPriceAvg,
+    residency: residencyFor(homeState, college.state),
+    tuitionInState: college.tuitionInState,
+    tuitionOutOfState: college.tuitionOutOfState,
+  });
 
   const activities = Array.isArray(profile.activities)
     ? (profile.activities as { description?: string }[]).map((a) => a.description ?? "").filter((d) => d.trim() !== "")
@@ -80,7 +80,10 @@ export async function POST(request: Request) {
     outOfStateAdmitRate: college.outOfStateAdmitRate,
     satP25: college.satP25,
     satP75: college.satP75,
-    netPriceForStudent,
+    netPriceForStudent: np.price,
+    netPriceBasis: np.basis,
+    tuitionInState: college.tuitionInState,
+    tuitionOutOfState: college.tuitionOutOfState,
     enrollmentUndergrad: college.enrollmentUndergrad,
     setting: college.setting,
     greekLife: college.greekLife,
@@ -102,7 +105,7 @@ export async function POST(request: Request) {
     classRank: num(profile.classRank),
     classSize: num(profile.classSize),
     majorName: major?.name ?? null,
-    homeState: typeof profile.homeState === "string" ? profile.homeState : null,
+    homeState,
     budget: num(profile.budgetMaxNetPrice),
     activities,
   };
