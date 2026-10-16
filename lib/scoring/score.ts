@@ -12,7 +12,7 @@ import { rankScore } from "./rank";
 import { ecScore, serviceScore, tierValueSum, type EcTier } from "./ec";
 import { weightVector, academicStrength, type Factor } from "./weights";
 import { admissionOdds, labelOf, type Band } from "./odds";
-import { programQuality, qualityRank } from "./quality";
+import { programQuality, qualityRank, majorQualityBar, type QualityBasis } from "./quality";
 import { ambition, matchScore } from "./match";
 import {
   majorOfferedFilter, netPriceFilter, distanceFilter, stateFilter,
@@ -30,6 +30,9 @@ export interface CollegeScore {
   band: Band;
   odds: number;
   quality: number;
+  qualityRank: number; // the rank behind quality (§10b)
+  qualityBasis: QualityBasis;
+  ambition: number; // §10b — depends on the student only
   strength: number;
   matchScore: number;
   preferenceFit: number;
@@ -188,7 +191,9 @@ export function scoreCollege(student: StudentInput, college: CollegeInput, lists
     collegeId: college.id,
     name: college.name,
     kept: hard.kept,
-    band, odds, quality, strength,
+    band, odds, quality,
+    qualityRank: q.rank, qualityBasis: q.basis, ambition: amb,
+    strength,
     matchScore: match,
     preferenceFit: fit.fit,
     finalScore: final,
@@ -209,14 +214,21 @@ export interface RankResult {
   removed: CollegeScore[];
   empty: boolean;
   blockingFilter?: string; // §2.4 — the filter that removed the most, when nothing survives
+  qualityBar?: number; // the worst program rank surfaced on a major run (spec); undefined = no bar
+  shortBands: Band[]; // bands the bar left below quota
+  barRelaxed?: boolean; // the bar would have emptied the list, so it was dropped
 }
 
 // §10c build_list quota — reach 3 / target 5 / safety 4. The quota is load-bearing
 // (§10c): the ranking picks which school within each band. Selection + ordering use
 // final_score (the preferences doc's final ranking), keeping the balanced shape.
-export function buildList(kept: CollegeScore[], nReach = 3, nTarget = 5, nSafety = 4): CollegeScore[] {
+// With a major-quality bar (`maxRank`), a program ranked worse than it can't fill a
+// slot, so each quota becomes a maximum: a band that runs out stays short, never padded.
+export function buildList(kept: CollegeScore[], nReach = 3, nTarget = 5, nSafety = 4, maxRank?: number): CollegeScore[] {
   const byFinal = (a: CollegeScore, b: CollegeScore) => b.finalScore - a.finalScore;
-  const inBand = (band: Band) => kept.filter((c) => c.band === band).sort(byFinal);
+  const barred = (c: CollegeScore) =>
+    maxRank != null && (c.qualityBasis === "program" || c.qualityBasis === "program-unranked") && c.qualityRank > maxRank;
+  const inBand = (band: Band) => kept.filter((c) => c.band === band && !barred(c)).sort(byFinal);
   const reaches = inBand("reach").slice(0, nReach);
   const targets = inBand("target").slice(0, nTarget);
   const safeties = inBand("safety").slice(0, nSafety);
@@ -233,9 +245,31 @@ export function rankColleges(student: StudentInput, colleges: CollegeInput[], li
     const counts: Record<string, number> = {};
     for (const s of removed) for (const f of s.removedBy) counts[f] = (counts[f] ?? 0) + 1;
     const blockingFilter = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
-    return { list: [], ranked: [], removed, empty: true, blockingFilter };
+    return { list: [], ranked: [], removed, empty: true, blockingFilter, shortBands: [] };
   }
 
   const ranked = [...kept].sort((a, b) => b.finalScore - a.finalScore);
-  return { list: buildList(kept), ranked, removed, empty: false };
+  // Major-quality bar (spec): on a major run with a collected ranking list, a program
+  // below the student's bar can't fill a slot, and a band that runs out stays short.
+  const majorRanked = !!student.majorCip && kept.some((s) => s.qualityBasis === "program" || s.qualityBasis === "program-unranked");
+  let qualityBar = majorRanked ? majorQualityBar(kept[0].ambition) : undefined;
+  let list = buildList(kept, 3, 5, 4, qualityBar);
+  let barRelaxed: boolean | undefined;
+  if (qualityBar != null && list.length === 0) {
+    list = buildList(kept); // D5: never silently empty
+    qualityBar = undefined;
+    barRelaxed = true;
+  }
+  if (qualityBar != null) {
+    for (const s of kept) {
+      if ((s.qualityBasis === "program" || s.qualityBasis === "program-unranked") && s.qualityRank > qualityBar) {
+        s.flags.push(`below major-quality bar (#${s.qualityRank} > #${Math.round(qualityBar)})`);
+      }
+    }
+  }
+  const QUOTA: Record<Band, number> = { reach: 3, target: 5, safety: 4 };
+  const shortBands = qualityBar == null ? [] : (["reach", "target", "safety"] as Band[]).filter(
+    (b) => list.filter((c) => c.band === b).length < Math.min(QUOTA[b], kept.filter((c) => c.band === b).length),
+  );
+  return { list, ranked, removed, empty: false, qualityBar, shortBands, barRelaxed };
 }

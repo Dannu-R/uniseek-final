@@ -3,6 +3,7 @@ import { scoreCollege, rankColleges, buildList, type CollegeScore } from "./scor
 import type { StudentInput, CollegeInput } from "./types";
 import { RANKING_LISTS, loadedRankingLists, type RankingLists } from "./rankingLists";
 import { mapCollege, type CollegeWithPrograms } from "./mapCollege";
+import { majorQualityBar } from "./quality";
 
 function student(overrides: Partial<StudentInput> = {}): StudentInput {
   return {
@@ -287,5 +288,56 @@ describe("out-of-state cost", () => {
     const s = scoreCollege(student({ homeState: "GA", budgetMaxNetPrice: 40000 }), ga);
     expect(s.netPrice).toBe(20000);
     expect(s.removedBy).not.toContain("price");
+  });
+});
+
+describe("major-quality bar", () => {
+  it("passes through the spec's anchors and loosens as ambition falls", () => {
+    expect(majorQualityBar(0.485)).toBeCloseTo(50, 6);
+    expect(majorQualityBar(0.363)).toBeCloseTo(110, 4);
+    expect(majorQualityBar(0.55)).toBeLessThan(majorQualityBar(0.485));
+    expect(majorQualityBar(0.2)).toBeGreaterThan(300);
+  });
+
+  const mk = (band: "reach" | "target" | "safety", final: number, qualityRank: number, qualityBasis = "program"): CollegeScore =>
+    ({ band, finalScore: final, quality: 0.5, odds: 0.5, qualityRank, qualityBasis, flags: [] } as unknown as CollegeScore);
+
+  it("skips over-bar colleges and leaves the band short instead of padding", () => {
+    const kept = [mk("target", 0.9, 10), mk("target", 0.8, 141), mk("target", 0.7, 30), mk("target", 0.6, 588, "program-unranked")];
+    const list = buildList(kept, 3, 5, 4, 50);
+    expect(list.map((c) => c.qualityRank)).toEqual([10, 30]);
+  });
+
+  it("lets colleges with a non-program basis through", () => {
+    const list = buildList([mk("target", 0.9, 200, "institutional")], 3, 5, 4, 50);
+    expect(list).toHaveLength(1);
+  });
+
+  it("applies the bar on a major run and reports short bands", () => {
+    // Strong student; two CS-ranked targets, one far over any bar.
+    const s = student({ majorCip: "11.0701", gpaUnweighted: 4.0, satSuperscore: 1580, apCoursesTaken: 16, activities: [{ tier: 4 }, { tier: 3 }, { tier: 3 }] });
+    const colleges = [
+      college({ id: "good", admitRate: 0.5, majorProgram: { cipCode: "11.0701", admitRate: null, programRank: 20 } }),
+      college({ id: "weak", admitRate: 0.5, majorProgram: { cipCode: "11.0701", admitRate: null, programRank: 400 } }),
+    ];
+    const r = rankColleges(s, colleges, loadedRankingLists(new Set(["11.0701"])));
+    expect(r.qualityBar).toBeDefined();
+    expect(r.list.map((c) => c.collegeId)).toEqual(["good"]);
+    expect(r.ranked.find((c) => c.collegeId === "weak")!.flags.some((f) => f.startsWith("below major-quality bar"))).toBe(true);
+    expect(r.shortBands.length).toBeGreaterThan(0);
+  });
+
+  it("does nothing without a major", () => {
+    const r = rankColleges(student(), [college({ id: "a" })]);
+    expect(r.qualityBar).toBeUndefined();
+    expect(r.shortBands).toEqual([]);
+  });
+
+  it("falls back to the unbarred list when the bar would empty it", () => {
+    const s = student({ majorCip: "11.0701" });
+    const r = rankColleges(s, [college({ id: "weak", majorProgram: { cipCode: "11.0701", admitRate: null, programRank: 580 } })], loadedRankingLists(new Set(["11.0701"])));
+    expect(r.list.map((c) => c.collegeId)).toEqual(["weak"]);
+    expect(r.qualityBar).toBeUndefined();
+    expect(r.barRelaxed).toBe(true);
   });
 });

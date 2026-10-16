@@ -65,3 +65,14 @@ export function qualityRank(input: QualityRankInput, lists: RankingLists = RANKI
 
   return { rank: list.size + 1, basis: "program-unranked" };
 }
+
+// Major-quality bar (major-quality-bar spec D2): the worst program rank a major run may
+// surface, by the student's ambition (§10b). Log-linear through #50 at ambition 0.485
+// and #110 at 0.363 — judgement anchors, checked against four profiles in the spec.
+const BAR_AMBITION = 0.485;
+const BAR_RANK = 50;
+const BAR_SLOPE = Math.log(110 / 50) / (0.485 - 0.363); // ≈ 6.46
+
+export function majorQualityBar(ambition: number): number {
+  return Math.exp(Math.log(BAR_RANK) - BAR_SLOPE * (ambition - BAR_AMBITION));
+}
