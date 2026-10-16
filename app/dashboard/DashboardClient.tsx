@@ -14,6 +14,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { signOut } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { WizardProvider } from "@/app/build/WizardProvider";
 import EmbeddedWizard from "./EmbeddedWizard";
 import StatsView from "./StatsView";
@@ -22,6 +23,8 @@ import CompareView from "./CompareView";
 import ProfileView from "./ProfileView";
 import UniseekMark from "@/app/components/UniseekMark";
 import ViewHeader from "./ViewHeader";
+import SearchBox from "./search/SearchBox";
+import SearchView from "./search/SearchView";
 import { DEMO_PROFILE } from "@/app/build/demoProfile";
 import { toPayload } from "@/app/build/toPayload";
 
@@ -31,10 +34,11 @@ interface DashUser {
   image?: string | null;
 }
 
-interface CollegeScore {
+export interface CollegeScore {
   collegeId: string;
   name: string;
   band: "reach" | "target" | "safety";
+  odds?: number; // admission odds, 0–1
   overallAdmitRate: number | null;
   netPrice?: number | null;
   // How netPrice was worked out (lib/scoring/price.ts). Optional: older saved colleges
@@ -45,6 +49,10 @@ interface ScoreResult {
   empty?: boolean;
   blockingFilter?: string | null;
   list: CollegeScore[];
+  // Every college that passed the filters, not just the ones picked for the list. Search
+  // uses it to show the band and odds for any college in the run. Optional: a run stored
+  // before this field existed won't have it.
+  ranked?: CollegeScore[];
   qualityBar?: number | null;
   shortBands?: string[];
 }
@@ -138,7 +146,10 @@ const FILTERS: { key: BandFilter; label: string }[] = [
 const pct = (x: number | null | undefined) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function DashboardClient({ user }: { user: DashUser }) {
-  const [tab, setTab] = useState<TabKey>("home");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  // A search link (/dashboard?tab=search&query=…) opens straight onto the Search tab.
+  const [tab, setTab] = useState<TabKey>(searchParams.get("tab") === "search" ? "search" : "home");
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [saved, setSaved] = useState<CollegeScore[]>([]);
@@ -361,9 +372,17 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   // choosing what to render — so without this the rail moves its highlight to the new
   // view while the old college stays on screen, and the only way out is the explorer's
   // own back button.
+  //
+  // The search lives in the URL, so the URL follows the tab: Search gets ?tab=search (an
+  // existing search is kept), and any other tab drops the search params.
   const selectTab = (key: TabKey) => {
     setExploring(null);
     setTab(key);
+    if (key === "search") {
+      if (searchParams.get("tab") !== "search") router.replace("/dashboard?tab=search");
+    } else if (searchParams.toString() !== "") {
+      router.replace("/dashboard");
+    }
   };
 
   const renderTab = (t: TabDef) => (
@@ -547,29 +566,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             <>
               <ViewHeader title="Search" subtitle="Look up any college, whether or not it's on your list." />
               <section className="dash__view">
-                {/* Placeholder. The field is shown so the view has its eventual shape, and
-                    it's disabled rather than inert-looking: a box that accepts typing and
-                    then does nothing would be the one dishonest thing on this page. */}
-                <div className="stat-card soon">
-                  <div className="soon__field" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="6.5" />
-                      <path d="M15.8 15.8 20 20" />
-                    </svg>
-                    <input
-                      type="text"
-                      className="soon__input"
-                      placeholder="Search colleges by name, major, or state"
-                      disabled
-                    />
-                  </div>
-                  <span className="soon__tag">Coming soon</span>
-                  <p className="soon__body">
-                    Search will cover every college in the catalog, not just the ones your answers
-                    surfaced — so you can look up a college you already have in mind, see how you
-                    line up against it, and save it to your list.
-                  </p>
-                </div>
+                <SearchBox placeholder="Search colleges by name, major, or state" />
+                <SearchView ranked={result?.ranked ?? null} isSaved={isSaved} onSave={addSaved} />
               </section>
             </>
           ) : tab === "compare" ? (
