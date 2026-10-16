@@ -63,5 +63,7 @@ export async function POST(req: Request) {
     list: result.list,
     ranked: result.ranked,
     removedCount: result.removed.length,
+    qualityBar: result.qualityBar ?? null,
+    shortBands: result.shortBands,
   });
 }

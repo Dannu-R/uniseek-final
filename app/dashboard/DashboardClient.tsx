@@ -45,6 +45,8 @@ interface ScoreResult {
   empty?: boolean;
   blockingFilter?: string | null;
   list: CollegeScore[];
+  qualityBar?: number | null;
+  shortBands?: string[];
 }
 
 type TabKey = "home" | "recommended" | "saved" | "compare" | "search" | "profile";
@@ -113,10 +115,10 @@ const RESULT_KEY = "uniseek.result.v1";
 const UI_KEY = "uniseek.dashboard.v1";
 const SAVED_KEY = "uniseek.saved.v1";
 
-const BANDS: { key: CollegeScore["band"]; label: string; blurb: string }[] = [
-  { key: "reach", label: "Reach", blurb: "Ambitious — worth a shot" },
-  { key: "target", label: "Match", blurb: "Realistic matches" },
-  { key: "safety", label: "Safety", blurb: "Very likely admits" },
+const BANDS: { key: CollegeScore["band"]; label: string; plural: string; blurb: string }[] = [
+  { key: "reach", label: "Reach", plural: "reaches", blurb: "Ambitious — worth a shot" },
+  { key: "target", label: "Match", plural: "matches", blurb: "Realistic matches" },
+  { key: "safety", label: "Safety", plural: "safeties", blurb: "Very likely admits" },
 ];
 
 const BAND_LABEL: Record<CollegeScore["band"], string> = {
@@ -627,7 +629,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 <>
                   {filterBar}
 
-                  {BANDS.map(({ key, label, blurb }) => {
+                  {BANDS.map(({ key, label, plural, blurb }) => {
                     if (filter !== "all" && filter !== key) return null;
                     const cols = result!.list.filter((c) => c.band === key);
                     if (cols.length === 0) return null;
@@ -637,6 +639,12 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                           <h2 className={`rs-band__title rs-band__title--${key}`}>{label}</h2>
                           <span className="rs-band__blurb">{blurb}</span>
                         </div>
+                        {result!.shortBands?.includes(key) && (
+                          <p className="rs-band__note">
+                            Only {cols.length} {cols.length === 1 ? label.toLowerCase() : plural} clear the bar for your
+                            major at your level — no weaker programs added to fill the list.
+                          </p>
+                        )}
                         <div className="rs-band__list">{cols.map((c) => renderCard(c))}</div>
                       </div>
                     );

@@ -552,7 +552,8 @@
 .dash .rs-band__title--reach { color: var(--ac-pink); }
 .dash .rs-band__title--target { color: var(--ac-violet); }
 .dash .rs-band__title--safety { color: var(--ac-green); }
-.dash .rs-band__blurb {
+.dash .rs-band__blurb,
+.dash .rs-band__note {
   color: var(--ac-ink-3);
 }
 .dash .rs-card {

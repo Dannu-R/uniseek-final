@@ -80,6 +80,11 @@
   font-size: 0.85rem;
   color: #8f86b6;
 }
+.rs-band__note {
+  font-size: 0.85rem;
+  color: #8f86b6;
+  margin: -6px 0 12px;
+}
 .rs-band__list {
   display: flex;
   flex-direction: column;
