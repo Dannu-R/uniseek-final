@@ -16,8 +16,9 @@ import { programQuality, qualityRank } from "./quality";
 import { ambition, matchScore } from "./match";
 import {
   majorOfferedFilter, netPriceFilter, distanceFilter, stateFilter,
-  religiousFilter, selectNetPrice, applyHardFilters,
+  religiousFilter, applyHardFilters,
 } from "./filters";
+import { residencyFor, studentNetPrice, type NetPriceBasis } from "./price";
 import { preferenceFit, finalScore } from "./preferences";
 import type { StudentInput, CollegeInput, MajorRateClass } from "./types";
 import type { RankingLists } from "./rankingLists";
@@ -36,6 +37,7 @@ export interface CollegeScore {
   overallAdmitRate: number; // the college's overall published admit rate
   effectiveAdmitRate: number; // after the major offset (§6a) and residency (§15)
   netPrice: number | null; // the net price the budget filter used; null = unknown
+  netPriceBasis: NetPriceBasis;
   usedFactors: Factor[];
   flags: string[]; // low-confidence / missing-data notes, plus the quality-rank basis ("quality rank N (basis)")
   filterNotes: string[]; // hard-filter missing-data notes (§2.3)
@@ -56,8 +58,7 @@ const isUC = (college: CollegeInput) => college.name.startsWith("University of C
 
 // §15: which admission pool the student competes in. Null when either state is unknown.
 function residencyOf(student: StudentInput, college: CollegeInput): Residency | null {
-  if (!student.homeState || !college.state || isUC(college)) return null;
-  return student.homeState === college.state ? "in-state" : "out-of-state";
+  return isUC(college) ? null : residencyFor(student.homeState, college.state);
 }
 
 const round4 = (x: number) => Math.round(x * 10000) / 10000;
@@ -159,7 +160,15 @@ export function scoreCollege(student: StudentInput, college: CollegeInput, lists
   const match = matchScore(odds, quality, amb);
 
   // Hard filters (§2 prefs).
-  const netPrice = selectNetPrice(student.incomeBand, college.netPriceBands, college.netPriceAvg);
+  const np = studentNetPrice({
+    incomeBand: student.incomeBand, bands: college.netPriceBands, average: college.netPriceAvg,
+    residency: residencyFor(student.homeState, college.state), // cost has no UC exception
+    tuitionInState: college.tuitionInState, tuitionOutOfState: college.tuitionOutOfState,
+  });
+  const netPrice = np.price;
+  if (np.basis === "out-of-state estimate") flags.push(`net price ${np.price} (out-of-state estimate: published + ${np.premium} nonresident premium)`);
+  if (np.basis === "in-state (premium unknown)") flags.push("out-of-state cost unknown — showing in-state net price");
+  if (!student.homeState && np.premium) flags.push(`price shown is in-state; out-of-state costs $${np.premium} more`);
   const filters = {
     major: majorOfferedFilter(student.majorCip ?? null, college.offeredCips),
     price: netPriceFilter(student.budgetMaxNetPrice, netPrice),
@@ -186,6 +195,7 @@ export function scoreCollege(student: StudentInput, college: CollegeInput, lists
     overallAdmitRate: college.admitRate,
     effectiveAdmitRate: rate,
     netPrice,
+    netPriceBasis: np.basis,
     usedFactors,
     flags,
     filterNotes: hard.notes,

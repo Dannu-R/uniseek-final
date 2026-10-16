@@ -272,3 +272,20 @@ describe("residency (§15)", () => {
     expect(s.flags.some((f) => f.startsWith("effective admit rate"))).toBe(false);
   });
 });
+
+describe("out-of-state cost", () => {
+  const ga = college({ state: "GA", netPriceAvg: 20000, tuitionInState: 12000, tuitionOutOfState: 40000 });
+
+  it("removes a public over budget once the nonresident premium is added", () => {
+    const s = scoreCollege(student({ homeState: "TX", budgetMaxNetPrice: 40000 }), ga);
+    expect(s.netPrice).toBe(48000);
+    expect(s.netPriceBasis).toBe("out-of-state estimate");
+    expect(s.removedBy).toContain("price");
+  });
+
+  it("keeps the same college for an in-state student", () => {
+    const s = scoreCollege(student({ homeState: "GA", budgetMaxNetPrice: 40000 }), ga);
+    expect(s.netPrice).toBe(20000);
+    expect(s.removedBy).not.toContain("price");
+  });
+});

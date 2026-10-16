@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  haversineMiles, selectNetPrice, majorOfferedFilter, netPriceFilter,
+  haversineMiles, majorOfferedFilter, netPriceFilter,
   distanceFilter, stateFilter, religiousFilter, applyHardFilters,
 } from "./filters";
 import {
@@ -20,13 +20,6 @@ describe("hard filters (§2)", () => {
     expect(netPriceFilter(20000, 15000).passes).toBe(true);
     expect(netPriceFilter(20000, 25000).passes).toBe(false);
     expect(netPriceFilter(20000, null)).toMatchObject({ passes: true, missing: true, note: "cost data unavailable" });
-  });
-
-  it("selectNetPrice picks the income-band column, else the average", () => {
-    const bands = { LT_30K: 8000, GT_110K: 30000 } as const;
-    expect(selectNetPrice("LT_30K", bands, 18000)).toBe(8000);
-    expect(selectNetPrice(null, bands, 18000)).toBe(18000);
-    expect(selectNetPrice("B48_75K", bands, 18000)).toBe(18000); // band missing -> average
   });
 
   it("distance: great-circle <= max; inactive when unset", () => {

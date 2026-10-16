@@ -28,17 +28,6 @@ export function haversineMiles(lat1: number, lon1: number, lat2: number, lon2: n
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
-// Pick the net-price column: the income-band figure if given, else the college-wide
-// average (§2.2).
-export function selectNetPrice(
-  incomeBand: IncomeBand | null | undefined,
-  bands: Partial<Record<IncomeBand, number | null>>,
-  average: number | null | undefined,
-): number | null {
-  if (incomeBand && bands[incomeBand] != null) return bands[incomeBand]!;
-  return average ?? null;
-}
-
 // major_offered runs automatically off the (already collected) major. Inactive when
 // no major is named.
 export function majorOfferedFilter(majorCip: string | null, offeredCips: string[] | null): FilterResult {
