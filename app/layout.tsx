@@ -12,6 +12,7 @@ import "./styles/product.css";
 import "./styles/pricing.css";
 import "./styles/props.css";
 import "./styles/reviews.css";
+import "./styles/faq.css";
 import "./styles/footer.css";
 import "./styles/components.css";
 import "./styles/wizard.css";

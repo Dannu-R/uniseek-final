@@ -1,7 +1,6 @@
 // @ts-nocheck
 const LOGOS = [
   { src: "/logos/nextjs.svg", cls: "nextjs" },
-  { src: "/logos/stripe.svg", cls: "stripe" },
   { src: "/logos/postgresql.svg", cls: "postgresql" },
   { src: "/logos/prisma-mark.svg", cls: "prisma" },
   { src: "/logos/jwt.svg", cls: "jwt" },

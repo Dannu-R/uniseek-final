@@ -5,9 +5,10 @@ import Reveal from "../shared/Reveal";
 import { PropMark, PropSat, propStyle } from "./PageProps";
 
 const STATS = [
-  { end: 1000, suffix: "+", label: "Colleges analyzed" },
-  { end: 30, suffix: "+", label: "Factors we weigh" },
-  { end: 2000, suffix: "+", label: "Students signed up" },
+  // Real figures. "Colleges analyzed" is added in StatCards from the live catalog
+  // count. Factors = 6 academic + admission odds + program quality + 11 preferences.
+  { end: 19, suffix: "", label: "Factors we weigh" },
+  { end: 100, suffix: "+", label: "Students signed up" },
 ];
 
 // name + image path (drop files in /public/colleges/…); a gradient
@@ -53,10 +54,14 @@ function CollegeShowcaseSkeleton() {
   );
 }
 
-function StatCards() {
+function StatCards({ collegeCount }: { collegeCount: number | null }) {
+  // The catalog size comes from the database (app/page.tsx); hidden if unavailable.
+  const stats = collegeCount == null
+    ? STATS
+    : [{ end: collegeCount, suffix: "", label: "Colleges analyzed" }, ...STATS];
   return (
     <div className="stats__grid">
-      {STATS.map((s) => (
+      {stats.map((s) => (
         <div className="stat" key={s.label}>
           <span className="stat__value">
             <CountUp end={s.end} suffix={s.suffix} />
@@ -166,7 +171,7 @@ function CollegeShowcase({ colleges }: { colleges: Array<{ name: string; src: st
   );
 }
 
-export default function Stats() {
+export default function Stats({ collegeCount }: { collegeCount: number | null }) {
   return (
     <section className="section stats">
       <PropMark icon="bulb" tone="blue" style={propStyle({ left: "3%", top: "100px", "--prop-rot": "-8deg" })} />
@@ -186,7 +191,7 @@ export default function Stats() {
 
         <Reveal delay={140}>
           <Suspense fallback={<StatCardsSkeleton />}>
-            <StatCards />
+            <StatCards collegeCount={collegeCount} />
           </Suspense>
         </Reveal>
 

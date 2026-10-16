@@ -28,12 +28,12 @@ const VALUES = [
   {
     key: "insights",
     title: "Insights",
-    body: "Go further with compare, search, and an AI guidance chat that answers questions about your matches.",
+    body: "Go further with side-by-side comparison, catalog-wide search, and a personalized briefing on every college you explore.",
   },
   {
     key: "lowcost",
-    title: "Low cost",
-    body: "Free to start for first-time users, with subscriptions as low as $5 a month.",
+    title: "No cost",
+    body: "Uniseek is free to use. No subscription, no credit card, and no paywall on your results.",
   },
 ];
 

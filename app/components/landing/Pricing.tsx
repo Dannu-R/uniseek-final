@@ -51,12 +51,11 @@ const PLANS = [
     period: "/mo",
     features: [
       "Everything in Plus",
-      "AI guidance chat",
       "Deeper evidence & sources",
       "Early access to new tools",
     ],
     detail:
-      "The full toolkit. Ask the AI guidance chat anything about your matches, dig into the sources and evidence behind every score, and get first access to new features as we ship them.",
+      "The full toolkit. Dig into the sources and evidence behind every score, and get first access to new features as we ship them.",
   },
 ];
 

@@ -18,18 +18,19 @@ export default async function Navbar() {
       </a>
 
       <div className="navbar__glass" aria-label="Primary">
-        <button type="button" className="navbar__link">
+        {/* "/#…" rather than "#…" so the links also work from the dashboard. */}
+        <a className="navbar__link" href="/#features">
           Discover
-        </button>
-        <button type="button" className="navbar__link">
+        </a>
+        <a className="navbar__link" href="/#how-it-works">
           How it works
-        </button>
-        <button type="button" className="navbar__link">
+        </a>
+        <a className="navbar__link" href="/#about">
           About
-        </button>
-        <button type="button" className="navbar__link">
+        </a>
+        <a className="navbar__link" href="/#faq">
           FAQ
-        </button>
+        </a>
       </div>
 
       <div className="navbar__actions">

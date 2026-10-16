@@ -6,14 +6,33 @@ import Stats from "./components/landing/Stats";
 import Problem from "./components/landing/Problem";
 import CoreValues from "./components/landing/CoreValues";
 import HowItWorks from "./components/landing/HowItWorks";
-import Pricing from "./components/landing/Pricing";
-import Reviews from "./components/landing/Reviews";
+// Hidden for now; see the commented-out sections at the bottom of the page.
+// import Pricing from "./components/landing/Pricing";
+// import Reviews from "./components/landing/Reviews";
 import Footer from "./components/landing/Footer";
+import FAQ from "./components/landing/FAQ";
 import HeroDuo from "./components/landing/HeroDuo";
 import HeroGeo from "./components/landing/HeroGeo";
 import { Squiggle } from "./components/landing/Decor";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+// Rendered per request so "Colleges analyzed" reads the live catalog size. The
+// Docker build has no database, so this page can't be pre-rendered at build time.
+export const dynamic = "force-dynamic";
+
+// The catalog size, or null if the database can't be reached (the stat is hidden
+// rather than taking the landing page down).
+async function getCollegeCount() {
+  try {
+    return await prisma.college.count();
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const collegeCount = await getCollegeCount();
+
   return (
     <>
     <main>
@@ -83,15 +102,20 @@ export default function Home() {
 
       <WhatIsUniseek />
 
-      <Stats />
+      <Stats collegeCount={collegeCount} />
 
       <CoreValues />
 
+      <FAQ collegeCount={collegeCount} />
+
       <HowItWorks />
 
+      {/* Hidden for now (not deleted): reviews are placeholder copy and paid plans
+          aren't built yet. Uncomment these and their imports above to bring them back.
       <Reviews />
 
       <Pricing />
+      */}
     </main>
 
     <Footer />

@@ -33,7 +33,7 @@ const STEPS = [
     key: "explore",
     num: "04",
     title: "Dig deeper",
-    body: "Compare schools, search, and ask the AI guidance chat about your matches.",
+    body: "Compare schools side by side, search the full catalog, and open a personalized briefing on any college you save.",
     image: "/how-it-works/step-compare.png",
     alt: "The Compare view, showing three saved colleges side by side by category, acceptance rate, and net price.",
   },
@@ -43,7 +43,7 @@ export default function HowItWorks() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="section product">
+    <section className="section product" id="how-it-works">
       <div className="divider" aria-hidden="true" />
       <div className="section__inner">
         <Reveal as="p" className="section__eyebrow">

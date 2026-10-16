@@ -1,0 +1,62 @@
+/* ================================================================
+   FAQ: a plain accordion of <details> rows on the paper background
+   ================================================================ */
+
+.faq {
+  background: var(--lp-paper);
+}
+
+.faq__inner {
+  max-width: 780px;
+}
+
+.faq__list {
+  margin-top: clamp(20px, 4vh, 36px);
+  border-top: 1px solid var(--lp-line);
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--lp-line);
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 4px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--lp-ink);
+  cursor: pointer;
+  list-style: none; /* hide the default triangle */
+}
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+/* A plus sign that turns into a minus when the row is open. */
+.faq__question::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--lp-ink-3);
+}
+.faq__item[open] .faq__question::after {
+  content: "\2212"; /* minus sign */
+}
+
+.faq__question:hover {
+  color: var(--lp-violet);
+}
+
+.faq__answer {
+  margin: 0;
+  padding: 0 4px 22px;
+  max-width: 68ch;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+}

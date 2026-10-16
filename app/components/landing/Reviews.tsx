@@ -14,7 +14,6 @@ const ROW_B = [
   { name: "Aisha M.", text: "It knew my budget mattered and actually respected it. Refreshing." },
   { name: "Liam P.", text: "Clean, honest, and free to start. Exactly what I needed as a first-gen student." },
   { name: "Sofia G.", text: "I compared options side by side and finally felt confident hitting submit." },
-  { name: "Noah B.", text: "The AI chat answered every 'but what about…' question I threw at it." },
 ];
 
 function Stars() {

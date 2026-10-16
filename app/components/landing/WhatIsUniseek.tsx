@@ -24,7 +24,7 @@ const STEPS = [
 
 export default function WhatIsUniseek() {
   return (
-    <section className="section whatis">
+    <section className="section whatis" id="about">
       {/* flowing ribbons in the background, tilted the other way */}
       <Ribbons className="ribbons--whatis" />
 
