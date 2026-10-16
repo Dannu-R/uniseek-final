@@ -1,8 +1,10 @@
 # Major-quality bar + short bands — design
 
-Date: 2026-10-15 · Status: approved in conversation (D2 anchor = #50, D4 = show fewer,
-D7 = price exception). **Depends on** `2026-10-15-out-of-state-cost-design.md`; implement
-that first, because D7 compares net prices.
+Date: 2026-10-15 · Status: approved in conversation (D2 anchor = #50, D4 = show fewer).
+A price exception (old D7) was considered and dropped: the budget filter is already a
+hard cutoff, and since the out-of-state cost fix it uses the student's real price.
+Trading CS quality for a lower price is a student preference, which belongs in a
+future preference card, not a hidden rule.
 
 ## Problem
 
@@ -24,9 +26,8 @@ Adding colleges doesn't fix it. 28 strong-CS publics were added on 2026-10-15, a
 of them land as safeties for strong students: the target band needs schools admitting roughly
 10–35%, and those were already in the catalog.
 
-The fix is a **minimum program quality that scales with the student**, a list that may come up
-**short** rather than padded, and a **price exception**: a much cheaper college just below the
-bar can still take an empty slot, labeled.
+The fix is a **minimum program quality that scales with the student**, and a list that may come
+up **short** rather than padded.
 
 ## Measured basis (2026-10-15 catalog, 159 colleges, CS run)
 
@@ -49,7 +50,6 @@ bar can still take an empty slot, labeled.
 | D4 | Too few colleges clear the bar | **Show fewer**, with no padding. `RankResult.shortBands` lists the short bands, and the UI says e.g. "Only 3 targets clear the bar for CS at your level." |
 | D5 | The bar empties the whole list | Guard: if every band is empty, return the unbarred list with a flag. Never silently empty. |
 | D6 | `program-unranked` colleges | Rank = list size + 1 (#588 for CS), past the bar at every ambition (the loosest is #315). A college with no CS ranking is never surfaced for a CS run. Intended. |
-| D7 | **Price exception** | After a band takes its above-bar colleges, its remaining empty slots may go to below-bar colleges that are **(a)** within **2× the bar** (≤ #100 for a strong student, so never Wesleyan at #173), **(b)** have a known net price **≤ half the student's budget**, using the residency-correct price from the out-of-state cost spec, and **(c)** rank best by `final_score` among such colleges. They're flagged `below major-quality bar, but much cheaper ($<price> vs budget $<budget>)` and returned in `RankResult.priceExceptions` so the UI can label them. They never displace an above-bar college. With no budget given, there's no exception. |
 
 No change to `programQuality`'s floor.
 
@@ -57,8 +57,8 @@ No change to `programQuality`'s floor.
 
 | Profile | Before | After |
 |---|---|---|
-| Developer (bar #50) | targets UCSD, Mudd, Michigan, Florida (#44), UC Davis | unchanged: all ≤ #50 and 8 qualify |
-| Frisco TX (bar #50) | targets include Clemson (#75) | Clemson out; 6 qualify, so the band stays full. Clemson can return only through D7 if its price for a TX student is ≤ half the budget |
+| Developer (bar #50) | after the out-of-state cost fix, Michigan is over budget, so the targets are UCSD, Mudd, Florida (#44), UC Davis and **Wellesley (#141)**; the app also showed **Hamilton (unranked)** | Wellesley and Hamilton out; the slot goes to the next above-bar target (e.g. Maryland #17), or the band runs short |
+| Frisco TX (bar #50) | targets include Clemson (#75) | Clemson out; 6 qualify, so the band stays full |
 | Mid (bar ≈ #78) | Wisconsin, Rochester, W&M, UCSC, Case | unchanged (all ≤ #57) |
 | Low (bar ≈ #110) | includes U San Diego (#110) | stays (at the bar) |
 | Any no-major run | — | unchanged |
@@ -70,11 +70,9 @@ Re-run `scripts/score-demo.ts` and the four profiles above, before and after.
 - `lib/scoring/quality.ts`: `majorQualityBar(ambition): number` (max rank).
 - `lib/scoring/score.ts`:
   - `CollegeScore` gains `qualityRank` and `qualityBasis` (already computed).
-  - `buildList(kept, …, bar?)` with `bar = { maxRank, budget }`, which applies D3, D4 and D7.
-  - `RankResult` gains `qualityBar?: number`, `shortBands: Band[]` and
-    `priceExceptions: string[]` (college IDs).
-- `app/dashboard/DashboardClient.tsx`: a short-band note, plus a "below your CS bar, much
-  cheaper" tag on price-exception cards.
+  - `buildList(kept, …, maxRank?)`, which applies D3 and D4.
+  - `RankResult` gains `qualityBar?: number` and `shortBands: Band[]`.
+- `app/dashboard/DashboardClient.tsx`: a short-band note.
 
 ## Tests
 
@@ -82,16 +80,13 @@ Re-run `scripts/score-demo.ts` and the four profiles above, before and after.
   monotonically, and gives > 300 at 0.20.
 - `buildList`:
   - Skips over-bar colleges and leaves a band short rather than padding it.
-  - D7 fills an empty slot only with a college ≤ 2× the bar and ≤ half the budget.
-  - D7 never displaces an above-bar college.
-  - D7 is off when no budget is given.
 - `rankColleges`:
   - No major or institutional basis → no bar.
   - D5 fallback.
-  - `shortBands` and `priceExceptions` are reported.
+  - `shortBands` is reported.
 - Existing tests are unchanged when no major is named.
 
 ## Out of scope
 
-The confidence label (deferred 2026-10-15). Changing `programQuality` or the odds model.
-Merit-aid modelling for the price exception: it uses net price as published.
+The confidence label (deferred 2026-10-15). Changing `programQuality` or the odds model. A
+"how much does cost matter" preference card (the dropped price exception's real home).
