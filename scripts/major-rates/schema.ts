@@ -17,6 +17,10 @@ export const MajorRateEntry = z
     basis: z.string().min(10), // where the number came from, or the estimate's peers/argument
     url: z.string().url().nullable(),
     year: z.string().nullable(), // e.g. "Fall 2025"
+    // §15: the major's rate by residency, only from published counts. Out-of-state
+    // excludes international (CDS C1 convention). Optional: most schools don't publish it.
+    inStateAdmitRate: z.number().gt(0).max(1).nullable().optional(),
+    outOfStateAdmitRate: z.number().gt(0).max(1).nullable().optional(),
   })
   .superRefine((e, ctx) => {
     if (e.sourceClass === "UNIVERSITY" && e.admitRate !== null) {
@@ -27,6 +31,9 @@ export const MajorRateEntry = z
     }
     if ((e.sourceClass === "DERIVED" || e.sourceClass === "PUBLISHED") && !e.url) {
       ctx.addIssue({ code: "custom", message: `${e.name}: url required for ${e.sourceClass}` });
+    }
+    if ((e.inStateAdmitRate != null || e.outOfStateAdmitRate != null) && e.sourceClass !== "DERIVED" && e.sourceClass !== "PUBLISHED") {
+      ctx.addIssue({ code: "custom", message: `${e.name}: by-residency rates need DERIVED or PUBLISHED counts` });
     }
   });
 export type MajorRateEntry = z.infer<typeof MajorRateEntry>;

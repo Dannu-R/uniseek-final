@@ -68,3 +68,23 @@ describe("MajorRateFile validation", () => {
     expect(r.success).toBe(false);
   });
 });
+
+describe("by-residency major rates (§15)", () => {
+  const base = { cip: "11.0701", cycle: "2026-27", collectedAt: "2026-10-15" };
+
+  it("carries them through the plan", () => {
+    const f = MajorRateFile.parse({ ...base, entries: [entry({ ipedsUnitId: 1, name: "A", sourceClass: "DERIVED", inStateAdmitRate: 0.41, outOfStateAdmitRate: 0.08 })] });
+    const a = planMajorRates(f, rows, catalog).programUpdates.find((u) => u.collegeId === "a")!;
+    expect([a.to.inStateAdmitRate, a.to.outOfStateAdmitRate]).toEqual([0.41, 0.08]);
+  });
+
+  it("defaults them to null when absent", () => {
+    const a = planMajorRates(file, rows, catalog).programUpdates.find((u) => u.collegeId === "a")!;
+    expect([a.to.inStateAdmitRate, a.to.outOfStateAdmitRate]).toEqual([null, null]);
+  });
+
+  it("rejects them outside DERIVED / PUBLISHED", () => {
+    const r = MajorRateFile.safeParse({ ...base, entries: [entry({ ipedsUnitId: 1, sourceClass: "ESTIMATE", outOfStateAdmitRate: 0.08 })] });
+    expect(r.success).toBe(false);
+  });
+});

@@ -1286,9 +1286,11 @@
       "sourceClass": "DERIVED",
       "admitRate": 0.1473,
       "directAdmit": true,
-      "basis": "Allen School Direct-to-Major (CS/CE) published stats, 2026 cycle: WA 493/1,205 (41%), domestic non-resident 243/2,995 (8%), international 37/1,049 (4%); total 773 admits / 5,249 applicants = 0.1473. Prior cycle (2025): 810/6,946 = 0.1166. Figures cover CS and CE combined; residents far more likely to be admitted.",
+      "basis": "Allen School Direct-to-Major (CS/CE) published stats, 2026 cycle: WA 493/1,205 (41%), domestic non-resident 243/2,995 (8%), international 37/1,049 (4%); total 773 admits / 5,249 applicants = 0.1473. Prior cycle (2025): 810/6,946 = 0.1166. Figures cover CS and CE combined; residents far more likely to be admitted. By residency (same page, 2026 cycle): WA residents 493/1,205 = 0.4091; US non-residents 243/2,995 = 0.0811; international (37/1,049) excluded, as in CDS C1.",
       "url": "https://www.cs.washington.edu/academics/ugrad/admissions/direct/",
-      "year": "Fall 2026"
+      "year": "Fall 2026",
+      "inStateAdmitRate": 0.4091,
+      "outOfStateAdmitRate": 0.0811
     },
     {
       "ipedsUnitId": 240444,
