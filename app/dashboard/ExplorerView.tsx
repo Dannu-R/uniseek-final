@@ -27,6 +27,7 @@ import { FACTORS } from "@/app/build/model";
 import type { CollegeInsight } from "@/lib/collegeInsight";
 import Reveal from "./Reveal";
 import { whyNotListed, type ScoredCollege } from "@/lib/whyNotListed";
+import { INSIGHT_VERSION } from "@/lib/insightVersion";
 
 // The college's score from the run. The scoring fields are optional because colleges
 // saved before they existed won't have them.
@@ -571,7 +572,7 @@ export default function ExplorerView({ college, list }: { college: College; list
     // and it's cached separately from an on-list briefing.
     const notListedReasons =
       !onList && list ? whyNotListed(college, list, profileData ? num(profileData.budgetMaxNetPrice) : null) : null;
-    const cacheKey = `uniseek.insight.${college.collegeId}${notListedReasons ? ".notlisted" : ""}`;
+    const cacheKey = `uniseek.insight.v${INSIGHT_VERSION}.${college.collegeId}${notListedReasons ? ".notlisted" : ""}`;
     const statsKey = `uniseek.stats.${college.collegeId}`;
     const cachedStats = sessionStorage.getItem(statsKey);
     if (cachedStats) {

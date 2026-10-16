@@ -7,6 +7,7 @@ import { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateCollegeInsight, type InsightCollege, type InsightStudent } from "@/lib/collegeInsight";
+import { INSIGHT_VERSION } from "@/lib/insightVersion";
 import type { IncomeBand } from "@/lib/scoring/filters";
 import { residencyFor, studentNetPrice } from "@/lib/scoring/price";
 
@@ -49,10 +50,11 @@ export async function POST(request: Request) {
   const stored = await prisma.collegeInsight.findUnique({
     where: { userId_collegeId: { userId, collegeId } },
   });
-  // Only if it was written for the same situation: a briefing for a college on the list
-  // reads differently from one explaining why it isn't. (Older rows have no flag = on list.)
-  const storedNotListed = (stored?.data as { notListed?: boolean } | undefined)?.notListed ?? false;
-  if (stored && storedNotListed === notListed) {
+  // Only if it was written for the same situation (a briefing for a college on the list
+  // reads differently from one explaining why it isn't; older rows have no flag = on list)
+  // and with the current prompt version.
+  const storedData = stored?.data as { notListed?: boolean; version?: number } | undefined;
+  if (stored && (storedData?.notListed ?? false) === notListed && storedData?.version === INSIGHT_VERSION) {
     return NextResponse.json({ insight: stored.data, cached: true, stats });
   }
 
@@ -125,7 +127,7 @@ export async function POST(request: Request) {
 
   const generated = await generateCollegeInsight(collegeInput, studentInput);
   // Remember which situation it was written for (see the cache check above).
-  const insight = generated ? { ...generated, notListed } : null;
+  const insight = generated ? { ...generated, notListed, version: INSIGHT_VERSION } : null;
 
   // Persist the generated insight so future opens serve it from the DB.
   if (insight) {

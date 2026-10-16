@@ -128,6 +128,9 @@ const SOURCES = [
 const SYSTEM = `You are a college advisor writing a personalized briefing for ONE student about ONE
 college. An admissions counselor should find it accurate, specific, and useful.
 
+VOICE: the student reads this, so speak to them directly in the second person: "you",
+"your GPA", "your budget". Never call them "the student", "this student", or by name.
+
 TONE: professional and plain. Write clear, complete sentences. No hype, no slang, no
 second-guessing ("maybe", "possibly"); state what the data supports and move on.
 
@@ -226,7 +229,8 @@ NOT ON THE STUDENT'S LIST
 This college is not on the student's recommended list. The scoring gave these reasons:
 ${reasons.map((r) => `- ${r}`).join("\n")}
 
-Spend this briefing on why it isn't a strong option for this student, not on selling it.
+Spend this briefing on why it isn't a strong option for them, not on selling it (still
+addressing them as "you").
 These instructions override the default point length:
 - "admissions": open with why it isn't on the list, then the student's odds here.
 - "whyFits" and "studentLife": ONE short sentence per point. Note a real strength plainly

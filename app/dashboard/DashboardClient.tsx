@@ -267,8 +267,10 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   // Unsaving clears any personalized insight we stored for this college (session + DB).
   const deleteInsight = (collegeId: string) => {
     try {
-      sessionStorage.removeItem(`uniseek.insight.${collegeId}`);
-      sessionStorage.removeItem(`uniseek.insight.${collegeId}.notlisted`);
+      // Any version, on- or off-list (keys look like uniseek.insight.v2.<id>[.notlisted]).
+      Object.keys(sessionStorage)
+        .filter((k) => k.startsWith("uniseek.insight.") && k.includes(collegeId))
+        .forEach((k) => sessionStorage.removeItem(k));
     } catch {
       /* ignore */
     }
