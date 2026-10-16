@@ -38,7 +38,7 @@ export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null, lis
     longitude: c.longitude,
     offeredCips: c.programs.map((p) => p.cipCode),
     majorProgram: program
-      ? { cipCode: program.cipCode, admitRate: program.admitRate, admitRateSourceClass: program.admitRateSourceClass, programRank: program.programRank, directAdmit: program.directAdmit }
+      ? { cipCode: program.cipCode, admitRate: program.admitRate, admitRateSourceClass: program.admitRateSourceClass, programRank: program.programRank, directAdmit: program.directAdmit, inStateAdmitRate: program.inStateAdmitRate, outOfStateAdmitRate: program.outOfStateAdmitRate }
       : null,
     fallbackProgramRank: fallback?.programRank ?? null,
     facts: {

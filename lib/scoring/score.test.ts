@@ -195,3 +195,72 @@ describe("effective admit rate by source (§6a)", () => {
     expect(s.flags.some((f) => f.startsWith("effective admit rate"))).toBe(false);
   });
 });
+
+describe("residency (§15)", () => {
+  const cs = (p: Partial<NonNullable<CollegeInput["majorProgram"]>>) => ({ cipCode: "11.0701", admitRate: null, ...p });
+  // Georgia Tech's published split (§15).
+  const gt = (o: Partial<CollegeInput> = {}) =>
+    college({ state: "GA", admitRate: 0.1274, inStateAdmitRate: 0.293, outOfStateAdmitRate: 0.0893, ...o });
+
+  it("uses the in-state rate for a resident", () => {
+    const s = scoreCollege(student({ homeState: "GA" }), gt());
+    expect(s.effectiveAdmitRate).toBe(0.293);
+    expect(s.flags).toContain("effective admit rate 0.293 (overall, in-state)");
+  });
+
+  it("uses the out-of-state rate for a non-resident", () => {
+    const s = scoreCollege(student({ homeState: "TX" }), gt());
+    expect(s.effectiveAdmitRate).toBe(0.0893);
+    expect(s.flags).toContain("effective admit rate 0.0893 (overall, out-of-state)");
+  });
+
+  it("applies the split to a university-admit major run", () => {
+    const s = scoreCollege(
+      student({ homeState: "TX", majorCip: "11.0701" }),
+      gt({ admissionUnit: "UNIVERSITY", majorProgram: cs({ admitRateSourceClass: "UNIVERSITY" }) }),
+    );
+    expect(s.effectiveAdmitRate).toBe(0.0893);
+    expect(s.flags).toContain("effective admit rate 0.0893 (U, out-of-state)");
+  });
+
+  it("scales a major rate by split ÷ overall when no by-residency major rate exists", () => {
+    const s = scoreCollege(
+      student({ homeState: "TX", majorCip: "11.0701" }),
+      gt({ majorProgram: cs({ admitRate: 0.1128, admitRateSourceClass: "DERIVED" }) }),
+    );
+    expect(s.effectiveAdmitRate).toBe(0.0791); // 0.1128 × 0.0893 / 0.1274
+    expect(s.flags).toContain("effective admit rate 0.0791 (D, out-of-state via ratio)");
+  });
+
+  it("clamps a scaled major rate at 1", () => {
+    const s = scoreCollege(
+      student({ homeState: "GA", majorCip: "11.0701" }),
+      gt({ majorProgram: cs({ admitRate: 0.9, admitRateSourceClass: "PUBLISHED" }) }),
+    );
+    expect(s.effectiveAdmitRate).toBe(1);
+  });
+
+  it("prefers a published by-residency major rate over the ratio", () => {
+    // UW: the university-wide split is nearly flat, the CS split is not (spec D6).
+    const uw = college({
+      state: "WA", admitRate: 0.4175, inStateAdmitRate: 0.4574, outOfStateAdmitRate: 0.4216,
+      majorProgram: cs({ admitRate: 0.1473, admitRateSourceClass: "DERIVED", inStateAdmitRate: 0.4091, outOfStateAdmitRate: 0.0811 }),
+    });
+    const s = scoreCollege(student({ homeState: "TX", majorCip: "11.0701" }), uw);
+    expect(s.effectiveAdmitRate).toBe(0.0811);
+    expect(s.flags).toContain("effective admit rate 0.0811 (D, out-of-state)");
+  });
+
+  it("keeps the base rate, flagged, when the college publishes no split", () => {
+    const s = scoreCollege(student({ homeState: "TX" }), college({ state: "MI", admitRate: 0.164 }));
+    expect(s.effectiveAdmitRate).toBe(0.164);
+    expect(s.flags).toContain("effective admit rate 0.164 (overall, residency n/a)");
+    expect(s.flags).toContain("residency split unknown — rate not residency-adjusted");
+  });
+
+  it("does nothing when the student gives no home state", () => {
+    const s = scoreCollege(student(), gt());
+    expect(s.effectiveAdmitRate).toBe(0.1274);
+    expect(s.flags.some((f) => f.startsWith("effective admit rate"))).toBe(false);
+  });
+});

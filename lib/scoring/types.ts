@@ -54,6 +54,8 @@ export interface CollegeMajorProgram {
   admitRateSourceClass?: MajorRateClass | null; // §6a source class
   programRank?: number | null; // §18b
   directAdmit?: boolean | null;
+  inStateAdmitRate?: number | null; // §15 — published by-residency major rate
+  outOfStateAdmitRate?: number | null;
 }
 
 export interface CollegeInput {

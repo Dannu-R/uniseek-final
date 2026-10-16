@@ -220,6 +220,10 @@ model CollegeProgram {
   programRank            Int?
   programRankSourceClass ProgramRankSourceClass?
   directAdmit            Boolean? // §6a class U: admits to the major directly?
+  // §15: the major's admit rate by residency, only where the school publishes counts
+  // (e.g. UW's Allen School). Out-of-state excludes international, like CDS C1.
+  inStateAdmitRate       Float?
+  outOfStateAdmitRate    Float?
 
   @@unique([collegeId, cipCode])
   @@index([cipCode])

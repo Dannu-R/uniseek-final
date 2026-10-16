@@ -34,7 +34,7 @@ export interface CollegeScore {
   preferenceFit: number;
   finalScore: number;
   overallAdmitRate: number; // the college's overall published admit rate
-  effectiveAdmitRate: number; // after the major offset (§6a)
+  effectiveAdmitRate: number; // after the major offset (§6a) and residency (§15)
   netPrice: number | null; // the net price the budget filter used; null = unknown
   usedFactors: Factor[];
   flags: string[]; // low-confidence / missing-data notes, plus the quality-rank basis ("quality rank N (basis)")
@@ -47,28 +47,62 @@ const CLASS_LABEL: Record<MajorRateClass, string> = {
   UNIVERSITY: "U", DERIVED: "D", PUBLISHED: "P", CONSENSUS: "C", ESTIMATE: "E", FITTED: "F",
 };
 
-// The effective admit rate for tier + odds (§6a major offset). Residency (§15) is
-// deferred (see OPEN_ITEMS). A researched major rate wins; a college that admits to
-// the university uses its overall rate for every major (a fact, class U); otherwise
-// fall back to the overall rate, flagged low-confidence.
-function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rate: number; label?: string; flag?: string } {
+type Residency = "in-state" | "out-of-state";
+
+// §15: which admission pool the student competes in. Null when either state is unknown.
+function residencyOf(student: StudentInput, college: CollegeInput): Residency | null {
+  if (!student.homeState || !college.state) return null;
+  return student.homeState === college.state ? "in-state" : "out-of-state";
+}
+
+const round4 = (x: number) => Math.round(x * 10000) / 10000;
+
+// The §6a base rate. A researched major rate wins; a college that admits to the
+// university uses its overall rate for every major (a fact, class U); otherwise fall
+// back to the overall rate, flagged low-confidence. `major` says the base is a major rate.
+function baseAdmitRate(student: StudentInput, college: CollegeInput): { rate: number; label?: string; flag?: string; major: boolean } {
   if (student.majorCip && college.majorProgram) {
     const p = college.majorProgram;
-    if (p.admitRate != null) return { rate: p.admitRate, label: p.admitRateSourceClass ? CLASS_LABEL[p.admitRateSourceClass] : "?" };
+    if (p.admitRate != null) return { rate: p.admitRate, label: p.admitRateSourceClass ? CLASS_LABEL[p.admitRateSourceClass] : "?", major: true };
     if (p.admitRateSourceClass === "UNIVERSITY" || college.admissionUnit === "UNIVERSITY") {
-      return { rate: college.admitRate, label: "U" };
+      return { rate: college.admitRate, label: "U", major: false };
     }
-    return { rate: college.admitRate, label: "fallback", flag: "major admit rate unresearched — using overall rate" };
+    return { rate: college.admitRate, label: "fallback", flag: "major admit rate unresearched — using overall rate", major: false };
   }
-  return { rate: college.admitRate };
+  return { rate: college.admitRate, major: false };
+}
+
+// The effective admit rate for tier + odds: the §6a base, then residency (§15).
+// A published by-residency major rate wins; else the college's split replaces the
+// overall rate, or scales a major rate by split ÷ overall (spec D5); else keep the
+// base, flagged. Published numbers only — no estimated splits.
+function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rate: number; label?: string; flags: string[] } {
+  const base = baseAdmitRate(student, college);
+  const flags = base.flag ? [base.flag] : [];
+  const res = residencyOf(student, college);
+  if (!res) return { rate: base.rate, label: base.label, flags };
+
+  const cls = base.label ?? "overall";
+  const inState = res === "in-state";
+  const p = college.majorProgram;
+  const majorSplit = base.major ? (inState ? p?.inStateAdmitRate : p?.outOfStateAdmitRate) : null;
+  if (majorSplit != null) return { rate: majorSplit, label: `${cls}, ${res}`, flags };
+
+  const split = inState ? college.inStateAdmitRate : college.outOfStateAdmitRate;
+  if (split == null) {
+    flags.push("residency split unknown — rate not residency-adjusted");
+    return { rate: base.rate, label: `${cls}, residency n/a`, flags };
+  }
+  if (!base.major) return { rate: split, label: `${cls}, ${res}`, flags };
+  return { rate: Math.min(1, round4((base.rate * split) / college.admitRate)), label: `${cls}, ${res} via ratio`, flags };
 }
 
 export function scoreCollege(student: StudentInput, college: CollegeInput, lists?: RankingLists): CollegeScore {
   const flags: string[] = [];
   const majorNamed = !!student.majorCip;
 
-  const { rate, label, flag } = effectiveAdmitRate(student, college);
-  if (flag) flags.push(flag);
+  const { rate, label, flags: rateFlags } = effectiveAdmitRate(student, college);
+  flags.push(...rateFlags);
   if (label) flags.push(`effective admit rate ${rate} (${label})`);
   const floors = floorsForAdmitRate(rate);
 
