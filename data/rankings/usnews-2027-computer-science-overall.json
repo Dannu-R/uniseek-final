@@ -267,15 +267,15 @@
       "band": null
     },
     {
-      "ipedsUnitId": 110705,
-      "name": "University of California, Santa Barbara",
+      "ipedsUnitId": 110644,
+      "name": "University of California-Davis",
       "rank": 34,
       "tie": true,
       "band": null
     },
     {
-      "ipedsUnitId": 110644,
-      "name": "University of California-Davis",
+      "ipedsUnitId": 110705,
+      "name": "University of California, Santa Barbara",
       "rank": 34,
       "tie": true,
       "band": null
@@ -311,6 +311,13 @@
     {
       "ipedsUnitId": 193900,
       "name": "New York University",
+      "rank": 44,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 228723,
+      "name": "Texas A&M University",
       "rank": 44,
       "tie": true,
       "band": null
@@ -386,6 +393,13 @@
       "band": null
     },
     {
+      "ipedsUnitId": 230764,
+      "name": "University of Utah",
+      "rank": 52,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 201645,
       "name": "Case Western Reserve University",
       "rank": 57,
@@ -402,6 +416,13 @@
     {
       "ipedsUnitId": 186380,
       "name": "Rutgers University-New Brunswick",
+      "rank": 57,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 104179,
+      "name": "University of Arizona",
       "rank": 57,
       "tie": true,
       "band": null
@@ -430,6 +451,13 @@
     {
       "ipedsUnitId": 139658,
       "name": "Emory University",
+      "rank": 65,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 232186,
+      "name": "George Mason University",
       "rank": 65,
       "tie": true,
       "band": null
@@ -498,6 +526,13 @@
       "band": null
     },
     {
+      "ipedsUnitId": 126775,
+      "name": "Colorado School of Mines",
+      "rank": 75,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 212054,
       "name": "Drexel University",
       "rank": 75,
@@ -512,6 +547,13 @@
       "band": null
     },
     {
+      "ipedsUnitId": 209542,
+      "name": "Oregon State University",
+      "rank": 75,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 196413,
       "name": "Syracuse University",
       "rank": 75,
@@ -519,8 +561,22 @@
       "band": null
     },
     {
+      "ipedsUnitId": 228787,
+      "name": "The University of Texas at Dallas",
+      "rank": 75,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 196088,
       "name": "University at Buffalo",
+      "rank": 75,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 132903,
+      "name": "University of Central Florida",
       "rank": 75,
       "tie": true,
       "band": null
@@ -535,6 +591,13 @@
     {
       "ipedsUnitId": 145600,
       "name": "University of Illinois Chicago",
+      "rank": 75,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 181464,
+      "name": "University of Nebraska-Lincoln",
       "rank": 75,
       "tie": true,
       "band": null
@@ -568,6 +631,20 @@
       "band": null
     },
     {
+      "ipedsUnitId": 145725,
+      "name": "Illinois Institute of Technology",
+      "rank": 88,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 153603,
+      "name": "Iowa State University",
+      "rank": 88,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 185828,
       "name": "New Jersey Institute of Technology",
       "rank": 88,
@@ -589,6 +666,20 @@
       "band": null
     },
     {
+      "ipedsUnitId": 157085,
+      "name": "University of Kentucky",
+      "rank": 88,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 209551,
+      "name": "University of Oregon",
+      "rank": 88,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 165015,
       "name": "Brandeis University",
       "rank": 103,
@@ -603,8 +694,50 @@
       "band": null
     },
     {
+      "ipedsUnitId": 155317,
+      "name": "University of Kansas",
+      "rank": 103,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 163268,
+      "name": "University of Maryland-Baltimore County",
+      "rank": 103,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 199139,
+      "name": "University of North Carolina at Charlotte",
+      "rank": 103,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 236939,
+      "name": "Washington State University",
+      "rank": 103,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 164465,
       "name": "Amherst College",
+      "rank": 110,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 171128,
+      "name": "Michigan Technological University",
+      "rank": 110,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 178411,
+      "name": "Missouri University of Science and Technology",
       "rank": 110,
       "tie": true,
       "band": null
@@ -626,6 +759,20 @@
     {
       "ipedsUnitId": 216339,
       "name": "Temple University",
+      "rank": 110,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 228769,
+      "name": "The University of Texas at Arlington",
+      "rank": 110,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 201885,
+      "name": "University of Cincinnati-Main Campus",
       "rank": 110,
       "tie": true,
       "band": null
@@ -675,6 +822,41 @@
     {
       "ipedsUnitId": 228246,
       "name": "Southern Methodist University",
+      "rank": 127,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 229115,
+      "name": "Texas Tech University",
+      "rank": 127,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 225511,
+      "name": "University of Houston",
+      "rank": 127,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 166513,
+      "name": "University of Massachusetts-Lowell",
+      "rank": 127,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 207500,
+      "name": "University of Oklahoma-Norman Campus",
+      "rank": 127,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 218663,
+      "name": "University of South Carolina-Columbia",
       "rank": 127,
       "tie": true,
       "band": null
@@ -736,6 +918,13 @@
       "band": null
     },
     {
+      "ipedsUnitId": 234030,
+      "name": "Virginia Commonwealth University",
+      "rank": 141,
+      "tie": true,
+      "band": null
+    },
+    {
       "ipedsUnitId": 168218,
       "name": "Wellesley College",
       "rank": 141,
@@ -745,6 +934,13 @@
     {
       "ipedsUnitId": 139940,
       "name": "Georgia State University",
+      "rank": 155,
+      "tie": true,
+      "band": null
+    },
+    {
+      "ipedsUnitId": 159391,
+      "name": "Louisiana State University and Agricultural & Mechanical College",
       "rank": 155,
       "tie": true,
       "band": null

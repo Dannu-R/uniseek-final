@@ -235,6 +235,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 126775,
+      "name": "Colorado School of Mines",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "Mines admits first-years to the university; all students take the common core, and first-year students 'declare a major in late April at Declaration Day with CASA' (Mines CS trail page). The admissions first-year, FAQ and considerations pages describe one holistic review with no major-based selection, and no CS cap or entry requirement was found. So CS admission is the university admission (College Navigator Fall 2024: 61% of 11,436). Caveat: the declaration wording comes from an advising page, not the admissions site.",
+      "url": "https://undergraduatestudies.mines.edu/trail/emm-menu/computer-science",
+      "year": "Fall 2024"
+    },
+    {
       "ipedsUnitId": 190150,
       "name": "Columbia University in the City of New York",
       "admissionUnit": "UNIVERSITY",
@@ -367,6 +378,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 232186,
+      "name": "George Mason University",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.75,
+      "directAdmit": true,
+      "basis": "Structural argument (no CS applicant/admit counts published by Mason, OIEP or the CDS). First-year CS applicants are directly admitted to the CS major only if they meet published threshold criteria: four years of HS math including a course beyond Algebra II, a 550+ SAT Math or 24+ ACT Math, and B or better in all math through Algebra II; applicants admitted to Mason who miss them are placed in CEC Undeclared. These are fixed thresholds, not a holistic cap, and only modestly above Mason's general profile (overall rate 22,495/26,014 = 0.8647, CDS 2025-26 C1; enrolled SAT-submitter Math 25th percentile 570 is above the 550 bar, but the ACT Math 25th percentile of 21 is below 24, and all three conditions must be met). Estimate ~0.75 for direct admission to CS (about 0.87x overall; plausible range 0.65-0.85), a little below ASU's ~0.9x because Mason's criteria are conjunctive. Students who miss the bar are still admitted to the university (CEC Undeclared) and may declare CS later (2.75 CS/math GPA plus B or better in a CS 109/112/211 course and a MATH 113-125 course).",
+      "url": "https://www.gmu.edu/freshman/requirements/selective-majors",
+      "year": "Fall 2027"
+    },
+    {
       "ipedsUnitId": 131469,
       "name": "George Washington University",
       "admissionUnit": "UNIVERSITY",
@@ -477,6 +499,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 145725,
+      "name": "Illinois Institute of Technology",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.44,
+      "directAdmit": true,
+      "basis": "Illinois Tech admits first-years to a first- or second-choice degree program ('Direct admission into your first-or second-choice degree program'); applicants admitted to the university but not to their chosen programs can enroll in Discover+ (undecided) and reapply in year two, and the page notes math coursework matters 'for more selective majors'. So CS selects at entry, but no CS applicant/admit counts are published (CDS 2023-24 C1 is university-wide only: 4,939/8,912 = 0.5542; no college breakdown on iit.edu/oii; a web search found no CS-specific figure). Estimate ~0.8x overall = 0.44, using the CS-to-overall ratios of direct-admit peers with sourced CS rates in cs-2026-27.json (Georgia Tech 0.89, UC San Diego 0.83, UMass Amherst 0.79, UCLA 0.78) and Drexel's 0.8x structural estimate; CS is a high-demand program there (College Navigator: 111 CS bachelor's completions vs 54 in Mechanical Engineering and 23 in Electrical Engineering). Plausible range 0.35-0.55.",
+      "url": "https://www.iit.edu/admissions-aid/undergraduate-admission/first-year-students",
+      "year": "Fall 2023"
+    },
+    {
       "ipedsUnitId": 151351,
       "name": "Indiana University Bloomington",
       "admissionUnit": "UNIVERSITY",
@@ -485,6 +518,17 @@
       "directAdmit": true,
       "basis": "No CS cap: Luddy direct admission is automatic for any IUB admit who declares a Luddy major by Nov 1 with a 3.75+ GPA and SAT 1310/ACT 28; others are admitted to IUB and can enter CS after ~12 credits with a 2.3-2.5 GPA (College Transitions rates switching 'less-to-moderate'). CS B.A. is also in the College of Arts and Sciences. Admission to CS is effectively the university's admission.",
       "url": "https://luddy.indiana.edu/student_portal/undergraduate/direct-admits.html",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 153603,
+      "name": "Iowa State University",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "Iowa State admits first-years to the university by formula (Regent Admission Index); its application page says 'Iowa State does not make admission decisions by major.' Students select an intended major (CS) with no CS-specific selection at entry, so the CS rate is the overall rate (CDS 2025-26 C1: 21,652/24,625 = 0.8793).",
+      "url": "https://www.iastate.edu/admission-and-aid/apply",
       "year": null
     },
     {
@@ -521,6 +565,17 @@
       "year": "Fall 2025"
     },
     {
+      "ipedsUnitId": 159391,
+      "name": "Louisiana State University and Agricultural & Mechanical College",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "First-years with a declared CS major start in the University Center for Freshman Year (UCFY) or UCAC, not the College of Engineering: 'During your first year at LSU, even if you've declared Computer Science as your major, you will initially be part of either ... (UCFY) or ... (UCAC)' (LSU CSE advising wiki). They move into Engineering automatically after 24+ hours, LSU/cumulative GPA 2.5 and a C in calculus (wiki; College of Engineering FAQ lists the same automatic-admission criteria with a 2.00 GPA for engineering majors). That filter applies after enrollment, so U: first-year CS rate = overall (0.7333 in CDS 2024-25).",
+      "url": "https://wiki.cse.lsu.edu/advising/undergraduateadvising",
+      "year": null
+    },
+    {
       "ipedsUnitId": 239105,
       "name": "Marquette University",
       "admissionUnit": "UNIVERSITY",
@@ -554,6 +609,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 171128,
+      "name": "Michigan Technological University",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "Michigan Tech admits first-years into a chosen major (requirements vary by major; Nursing and Visual and Performing Arts need extra materials, hence admissionUnit MAJOR). Computer Science (College of Computing) has no additional materials, cap or published separate admit rate; the requirements page only recommends some programming experience. So the CS rate is the overall rate (Fall 2025 CDS C1 0.8546; in-state 0.8616, out-of-state 0.8162).",
+      "url": "https://www.mtu.edu/admissions/apply/requirements/",
+      "year": null
+    },
+    {
       "ipedsUnitId": 230959,
       "name": "Middlebury College",
       "admissionUnit": "UNIVERSITY",
@@ -563,6 +629,17 @@
       "basis": "Liberal arts college; applicants are admitted to the college and declare the CS major later (department's 'Navigating the Major' page describes declaration by enrolled students). No separate CS or engineering selection.",
       "url": "https://mediawiki.middlebury.edu/wiki/CS/NavigatingTheMajor",
       "year": null
+    },
+    {
+      "ipedsUnitId": 178411,
+      "name": "Missouri University of Science and Technology",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "S&T admits first-years to the university under one standard (test-optional review; no major-based selection on the first-time freshman admissions page). CS freshmen take the common Freshman Engineering courses and then formally apply to the CS department; cs.mst.edu says admission is 'nearly automatic' once those requirements are done. That step comes after enrollment, so CS admission is the university admission (CDS 2025-26 C1 overall 6,550/8,330 = 0.7863).",
+      "url": "https://cs.mst.edu/undergraduate-degree/",
+      "year": "Fall 2025"
     },
     {
       "ipedsUnitId": 185828,
@@ -629,6 +706,17 @@
       "basis": "Since Autumn 2023 the College of Engineering caps CSE/CIS as one of the 'Big 4' oversubscribed pre-majors: applicants must select the CSE (Pre) major on the Common App and are selected for it during university admission; students who enter other programs cannot transfer in later; pre-majors still apply to the full major after prerequisite coursework (COE memo, Jan 2023: 'hundreds more students desire CSE/CIS than the unit can teach'). No official CSE/COE first-year admit count is published (only unreliable SEO pages claim 20-30%). Estimate ~0.5x the overall 60.6% rate (Fall 2024), in line with capped public CS programs at Purdue and Virginia Tech.",
       "url": "https://oaa.osu.edu/sites/default/files/uploads/caa/meetings/2022-23/03-01-2023/COE%2520Admission%2520to%2520Major%2520Update%25202022-23.pdf",
       "year": "Fall 2024"
+    },
+    {
+      "ipedsUnitId": 209542,
+      "name": "Oregon State University",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "CS is in the College of Engineering. Since Fall 2024 OSU gives 'direct admission into an engineering degree if the applicant has demonstrated that they have or will successfully complete a precalculus class (or equivalent) and satisfy OSU admission requirements'; applicants who don't meet the precalculus bar are still admitted to OSU (University Exploratory Studies) and are 'guaranteed admission into the college after earning a C or better in MTH 112Z'. The only entry condition is a non-competitive course threshold and nobody is denied OSU over it, so U: first-year CS rate = overall (0.7892 in CDS 2025-26).",
+      "url": "https://catalog.oregonstate.edu/college-departments/engineering/",
+      "year": null
     },
     {
       "ipedsUnitId": 214777,
@@ -840,6 +928,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 228723,
+      "name": "Texas A&M University",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "First-year CS applicants are admitted to the College of Engineering's General Engineering program (common first-year curriculum) and enter the CS major through Entry to a Major (ETAM) after 2-4 semesters, placed by GPA, ETAM application and program capacity (automatic first-choice entry at 3.75+ GPA); only National Merit Semifinalists are admitted straight into a degree-granting major. The CS filter is post-enrollment ETAM, not modeled. No public College of Engineering applicant/admit counts found (TAMU's data/IR sites returned 404 to scripts; secondary 'engineering acceptance rate' figures are unsourced), and without data SCHOOL admission alone is no reason to estimate a lower rate (Virginia Tech engineering ran 1.03-1.09x overall), so the overall rate applies (class U).",
+      "url": "https://engineering.tamu.edu/academics/undergraduate/entry-to-a-major/class-of-2030.html",
+      "year": null
+    },
+    {
       "ipedsUnitId": 228875,
       "name": "Texas Christian University",
       "admissionUnit": "UNIVERSITY",
@@ -849,6 +948,39 @@
       "basis": "TCU's CS program page states there are no special admission requirements for the computer science program; students are admitted through TCU's general holistic review and may list CS as their major (BS, College of Science & Engineering). No CS cap or separate selection found.",
       "url": "https://www.tcu.edu/academics/programs/computer-science.php",
       "year": null
+    },
+    {
+      "ipedsUnitId": 229115,
+      "name": "Texas Tech University",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "First-years apply to TTU; those meeting the Whitacre College of Engineering requirement (qualified for MATH 1451 Calculus I) enter the college's foundational curriculum with CS as their intended major. Applicants who miss it are still admitted to TTU through the eXplore STEM pathway and can transfer in after 12 hours, a 2.75 TTU GPA and MATH 1451 with a C. That is a readiness threshold rather than a capped CS selection, and no CS or engineering admit counts are published. The real filter comes after enrollment: upper-division entry depends on the foundational-curriculum GPA set by each department. So class U, with the overall rate (CDS 2025-26 C1 0.6906) standing as the CS rate.",
+      "url": "https://www.depts.ttu.edu/coe/undergraduate/admissions.php",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 228769,
+      "name": "The University of Texas at Arlington",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "2026-27 catalog: College of Engineering admission for students entering from high school = UTA admission requirements plus a satisfactory SAT/ACT and the prerequisites to enroll in MATH 1426 and CHEM 1441/1465. That is a threshold, not a capped CS selection, and no CS or engineering applicant/admit counts are published (UTA publishes no CDS). The selective step is later: admission to the major's professional program after the pre-professional courses. Class U, so the overall rate (IPEDS Fall 2024 19,675/24,623 = 0.7991) stands as the CS rate.",
+      "url": "https://catalog.uta.edu/engineering/",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 228787,
+      "name": "The University of Texas at Dallas",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.59,
+      "directAdmit": true,
+      "basis": "UTD admits first-years to a major and says students not admitted to their first-choice major due to capacity constraints or major-specific requirements may be offered a different major (freshman criteria page). No CS-specific applicant/admit counts or thresholds are published (CS department, Jonsson School and OISDS CDS pages checked; CDS 2025-26 C1 is university-wide only: 25,115/36,353 = 0.6909). Structural argument: CS is UTD's largest bachelor's program (College Navigator 2024-25: 988 CS bachelor's of 5,274 total), so it is not a small hard cap, but it is a high-demand major subject to capacity limits. Peers that admit directly to a major without a hard cap run about 0.79-0.89x overall (UMass Amherst 0.79x, UC San Diego 0.83x, Georgia Tech 0.89x, per the UConn entry). Estimate ~0.85x the 0.6909 overall rate = 0.59. Low confidence.",
+      "url": "https://enroll.utdallas.edu/freshman/criteria/",
+      "year": "Fall 2025"
     },
     {
       "ipedsUnitId": 168148,
@@ -881,6 +1013,17 @@
       "directAdmit": false,
       "basis": "SEAS has no separate first-year application; CS applicants go through standard UB holistic review, and the core-course/GPA gate to enter the CS major applies after enrollment (not modeled). No evidence SEAS admits more selectively than UB overall (peers that admit to an uncapped school: CU Boulder 1.04x, Virginia Tech engineering 1.03-1.09x, NC State engineering 1.07x), so the overall rate applies (class U).",
       "url": "https://engineering.buffalo.edu/home/academics/undergrad/admissions/first-year.html",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 104179,
+      "name": "University of Arizona",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "First-years are reviewed 'across all majors a student expresses interest in' and 'admitted to the major where we believe they will be best positioned for success' (application-review page), so CS can be a first-year major, but no CS-specific criteria, cap or counts are published. The CS department lets current UA students declare CS through an online workshop, and the real filter is 'Advanced Standing', evaluated after the foundational 100/200-level CSC courses (cs.arizona.edu/undergraduate/bachelor-science). Selection happens after enrollment, so U: first-year CS rate = overall (0.8351 in CDS 2025-26). Placement into a different major than requested at entry is possible but unquantified.",
+      "url": "https://www.cs.arizona.edu/undergraduate/bachelor-science",
       "year": null
     },
     {
@@ -972,6 +1115,17 @@
       "year": "Fall 2025"
     },
     {
+      "ipedsUnitId": 132903,
+      "name": "University of Central Florida",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "First-years are admitted to UCF and may list CS as their major; the CS-specific filter comes after enrollment: 'All computer science majors must pass the Computer Science Foundation Exam in order to advance to upper-level coursework', plus C-or-better/2.5 GPA core rules and an exclusion policy. No CS selection at first-year entry, so the CS rate is the overall rate (CDS 2025-26 C1: 25,522/59,629 = 0.4280). The real filter is the post-enrollment Foundation Exam.",
+      "url": "https://www.ucf.edu/degree/computer-science-bs/",
+      "year": null
+    },
+    {
       "ipedsUnitId": 144050,
       "name": "University of Chicago",
       "admissionUnit": "UNIVERSITY",
@@ -981,6 +1135,17 @@
       "basis": "UChicago CS department states undergraduate admission is handled by the University (single College admission, no separate CS track); students declare the CS major after enrolling with no prerequisites/GPA gate (College Transitions 'Changing to CS' table). CS rate equals overall rate.",
       "url": "https://computerscience.uchicago.edu/admissions/",
       "year": null
+    },
+    {
+      "ipedsUnitId": 201885,
+      "name": "University of Cincinnati-Main Campus",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.7,
+      "directAdmit": true,
+      "basis": "First-years apply directly to the CS BS in CEAS, which uses its own program-level holistic review ('Admission criteria for this program vary based on a comprehensive review'); applicants CEAS does not admit directly are referred to Pre-Engineering, and the deadlines page says CEAS programs fill on or shortly after the Nov 1 EA deadline. UC publishes no CS or CEAS applicant/admit counts (CDS 2024-25 has only university C1: 29,242/34,285 = 0.853; the 2025 IR Fact Book has no admissions data). Estimate by peers with a high overall rate and an engineering/CS entry screen: CU Boulder CS 0.734 (D), Pitt engineering 0.711 (D), UIC engineering 0.65 (E). Taking ~0.82x the 0.853 overall gives ~0.70 (plausible range 0.60-0.80). Low confidence. No by-residency figures.",
+      "url": "https://ceas.uc.edu/academics/departments/computer-science/degrees-programs/computer-science-bachelor-of-science.html",
+      "year": "Fall 2024"
     },
     {
       "ipedsUnitId": 126614,
@@ -1038,6 +1203,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 225511,
+      "name": "University of Houston",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.55,
+      "directAdmit": true,
+      "basis": "UH lists Computer Science (College of Natural Sciences & Mathematics) among freshman 'majors with additional requirements': assured admission needs top 10%, a 3.8+ core GPA, or 1400+ SAT/32+ ACT with a 3.0 GPA (plus 2 lab sciences, Algebra II, Geometry, Pre-Calculus), vs the university's assured pathways of top 10%, 3.5 GPA, or 1250 SAT/26 ACT; NSM says its standards are higher than UH's general criteria. No CS or NSM applicant/admit counts are public (the IR Statistical Handbook admissions dashboard is Tableau and did not render in the browser; CDS 2025-26 C1 is university-wide: 26,312/34,728 = 0.7577). The NSM SAT bar (1400) sits above the enrolled-class SAT 75th percentile (1310), so it is stiffer than the threshold schemes at ASU (~0.9x) and Tennessee engineering (~0.8x), though the top-10% path is unchanged. Estimate ~0.73x the 0.7577 overall rate = 0.55. Low confidence.",
+      "url": "https://www.uh.edu/undergraduate-admissions/academics/_files/additional-requirements-freshman.pdf",
+      "year": "Fall 2027"
+    },
+    {
       "ipedsUnitId": 145600,
       "name": "University of Illinois Chicago",
       "admissionUnit": "SCHOOL",
@@ -1071,6 +1247,28 @@
       "year": null
     },
     {
+      "ipedsUnitId": 155317,
+      "name": "University of Kansas",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.85,
+      "directAdmit": true,
+      "basis": "First-years apply to KU and can be directly admitted to the School of Engineering (which houses the EECS Computer Science BS) only if admissible to KU AND 3.0+ HS GPA AND math preparedness (ACT math 22+/SAT math 540+, or B in college algebra, or C in HS calculus, or AP/IB credit, or a qualifying ALEKS score). These are fixed thresholds, not a capped holistic review; applicants who miss them are admitted to KU (CLAS) and can transfer in later. KU publishes no CS or Engineering applicant/admit counts. Overall Fall 2026 rate is 0.9431 (CDS 2026-27 C1: 20,347/21,574). Estimate ~0.85 (about 0.9x overall, the same structural argument as ASU's threshold-based CS entry); plausible range 0.75-0.94. No by-residency split (estimate).",
+      "url": "https://admissions.ku.edu/major-specific-admission-requirements-university-kansas",
+      "year": "Fall 2026"
+    },
+    {
+      "ipedsUnitId": 157085,
+      "name": "University of Kentucky",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.84,
+      "directAdmit": true,
+      "basis": "CS is in the Pigman College of Engineering, a selective college at UK. First-years are accepted into Engineering (First-Year Engineering Program, pre-major designation such as pre-CS) by meeting one threshold pathway: ACT math 25/SAT math 590 + 3.0 unweighted GPA; HS calculus + 3.0; HS precalculus + 3.30; 3.65 unweighted GPA; or ALEKS 61 + 3.0. Applicants who miss them may be placed in an alternate major and can transfer in later; CS engineering standing (2.5 GPA in CS 215/217/218/275 and MA 114) comes after enrollment. No CS or Engineering admit counts published. Overall Fall 2025 rate is 0.9352 (CDS 2025-26 C1: 31,222/33,387). Estimate ~0.84 (about 0.9x overall, threshold-based like ASU); plausible range 0.72-0.93.",
+      "url": "https://engr.uky.edu/admissions/incoming-freshman",
+      "year": "Fall 2025"
+    },
+    {
       "ipedsUnitId": 163286,
       "name": "University of Maryland",
       "admissionUnit": "MAJOR",
@@ -1082,6 +1280,17 @@
       "year": "Fall 2025"
     },
     {
+      "ipedsUnitId": 163268,
+      "name": "University of Maryland-Baltimore County",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "UMBC admits first-years to the university 'without regard for their declared major'; students who indicate CS are admitted as Pre-Computer Science and enter the major after passing gateway courses (a post-enrollment filter, so the first-year CS rate is the overall rate). No CS-specific selection at entry.",
+      "url": "https://advising.coeit.umbc.edu/prospective-freshman-faq/",
+      "year": null
+    },
+    {
       "ipedsUnitId": 166629,
       "name": "University of Massachusetts Amherst",
       "admissionUnit": "MAJOR",
@@ -1091,6 +1300,17 @@
       "basis": "UMass UAIR Fall 2025 Admissions & Enrollment Report, Table ADM-1: Manning College of Information and Computer Sciences first-year applicants 4,991, accepted to 1st-choice major 2,362 -> 2,362 / 4,991 = 47.3% (vs 59% campus). First-years apply directly to the CS major (CICS 'Joining the Major' page). Rate is CICS-wide (CS plus Informatics), CS is the large majority; the 50.7% figure also counts admits to an alternate major.",
       "url": "https://www.umass.edu/uair/media/1000/download",
       "year": "Fall 2025"
+    },
+    {
+      "ipedsUnitId": 166513,
+      "name": "University of Massachusetts-Lowell",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.72,
+      "directAdmit": true,
+      "basis": "UML admits first-years to a first-choice major (Solution Center: 'admitted to UMass Lowell, but not into your first-choice major'), so CS selects at entry. No CS or Kennedy College of Sciences applicant/admit counts are published (CDS 2024-25 gives university-wide C1 only: 11,345/13,676 = 0.8296; the DAIR site has only Facts & Figures and the CDS). Structural estimate ~0.87x overall = 0.72 (plausible range 0.60-0.83): CS is a high-volume major (computer and information sciences = 12.5% of bachelor's, CDS J1) with an internal-transfer gate (B- in Computing I, 2.3 GPA, space available), which implies some selection at entry, but the admissions office singles out only nursing as 'uniquely competitive', so CS is unlikely to sit far below the overall rate. Same kind of argument as the Drexel entry (~0.8x overall). Rejected: an unsourced aggregator '44% CS acceptance rate' (select.gradright.com), likely graduate data.",
+      "url": null,
+      "year": "Fall 2024"
     },
     {
       "ipedsUnitId": 135726,
@@ -1137,6 +1357,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 181464,
+      "name": "University of Nebraska-Lincoln",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.79,
+      "directAdmit": true,
+      "basis": "First-years are admitted to a college. CS is in the College of Engineering (School of Computing), which requires, beyond UNL's assured-admission standards, 4 math units through precalc, chemistry + physics, and one of ACT 24 / SAT 1180 / ACT math 24 / SAT math 580 / 3.5 HS GPA; applicants who miss these are admitted to UNL through the Explore Center and may transfer in later. Thresholds, not a cap. UNL publishes no CS or Engineering admit counts (IEA fact book has no admissions by college). Overall Fall 2025 rate is 0.8780 (CDS 2025-26 C1: 16,372/18,648); the enrolled-class ACT median is 24, so the Engineering test bar sits near the middle of the pool, offset by the GPA/math-subscore alternatives. Estimate ~0.79 (about 0.9x overall); plausible range 0.65-0.88. The separate Raikes School of Computer Science & Management (application due Nov 15) is a small selective program and is not reflected here.",
+      "url": "https://admissions.unl.edu/apply/admission-requirements/first-year/",
+      "year": "Fall 2025"
+    },
+    {
       "ipedsUnitId": 183044,
       "name": "University of New Hampshire",
       "admissionUnit": "UNIVERSITY",
@@ -1159,6 +1390,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 199139,
+      "name": "University of North Carolina at Charlotte",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.62,
+      "directAdmit": true,
+      "basis": "Charlotte admits first-years to their chosen major; Computer Science is one of the named 'competitive majors' requiring an above-average academic profile, and applicants not competitive for it but admissible to the university are admitted as Undecided ('Admit, Denied to major of choice'). No CS or College of Computing and Informatics applicant/admit counts are published (CDS 2025-26 C1 is university-wide only: 21,170/27,218 = 0.778; the CCI 'Become a CCI Student' page gives no numbers). Structural argument: a threshold-style competitive major at a high-admit public, and CS is Charlotte's largest bachelor's program (838 CS bachelor's on College Navigator), so selection is moderate. Estimate ~0.8x overall = ~0.62 (plausible range 0.45-0.72), the same ratio used for Tennessee's threshold engineering admission and the Stevens/Drexel direct-admit estimates.",
+      "url": "https://admissions.charlotte.edu/apply/first-year-students/application-review/",
+      "year": "Fall 2025"
+    },
+    {
       "ipedsUnitId": 152080,
       "name": "University of Notre Dame",
       "admissionUnit": "UNIVERSITY",
@@ -1167,6 +1409,28 @@
       "directAdmit": false,
       "basis": "Notre Dame admits to the university. Applicants give a non-binding college/major intent; a CS intent is not separately selected or capped at entry (only Business has a capacity policy). Engineering does not publish a separate admit rate (Koppelman Group, 2026). Students in the College of Engineering's first-year program declare CS after the first year.",
       "url": "https://www.koppelmangroup.com/blog/2026/2/27/notre-dame-engineering-undergrad-admissions-strategy",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 207500,
+      "name": "University of Oklahoma-Norman Campus",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "OU admits first-years through one holistic university process. The 2026-27 catalog says the Gallogly College of Engineering (home of CS) 'uses the same admissions policies for accepting new students into its programs as that of the institution' and 'Entry into the Gallogly College of Engineering is open to all students who wish to major in an engineering discipline'; the only requirements are a declared GCoE major and a 2.00 retention GPA. No CS-specific selection at entry, so the CS rate is the overall rate (CDS 2025-26: 22,660/29,195 = 0.776).",
+      "url": "https://ou-public.courseleaf.com/gallogly-engineering/",
+      "year": "Fall 2027"
+    },
+    {
+      "ipedsUnitId": 209551,
+      "name": "University of Oregon",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "UO's departmental-review list (programs that make a separate admission decision at entry) is Clark Honors College, Architecture, Business, Interior Architecture, Music and Product Design, hence admissionUnit MAJOR; Computer Science is not on it. Applicants list CS as their intended major on the regular UO application and the School of Computer and Data Sciences has no separate first-year selection (students declare with CAS advising). So the CS rate is the overall rate (Fall 2025 CDS C1 0.8742; no residency split published).",
+      "url": "https://www.uoregon.edu/admissions/operations/departmental-deadlines-and-applications/",
       "year": null
     },
     {
@@ -1225,6 +1489,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 218663,
+      "name": "University of South Carolina-Columbia",
+      "admissionUnit": "MAJOR",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "USC weighs choice of major in first-year review and some majors are capacity-limited (hence admissionUnit MAJOR), but the Molinaroli College of Engineering and Computing states that freshmen 'must meet all university admission requirements' and 'may declare any major, including all engineering and computing majors'; no CS-specific cap, extra criteria or published CS admit rate found. A 2.5+ GPA is needed later to stay in or change into the college (after enrollment, not modeled). So the CS rate is the overall rate (Fall 2025 CDS C1 0.5651; in-state 0.7137, out-of-state 0.5166).",
+      "url": "https://sc.edu/study/colleges_schools/engineering_and_computing/academics/admissions_and_aid/undergraduate_admissions/index.php",
+      "year": null
+    },
+    {
       "ipedsUnitId": 137351,
       "name": "University of South Florida",
       "admissionUnit": "UNIVERSITY",
@@ -1267,6 +1542,17 @@
       "basis": "UT Austin admits by major; CS (College of Natural Sciences) is a capped direct-admit major and top-%-auto-admits are not guaranteed CS. UT does not publish CS admit counts (Tex Admissions, a former UT admissions officer: 'UT refuses to make the CS admissions statistics public'; last official figure was Office of Admissions Dec 2016, >20% on ~2,700 apps). College Transitions publishes only McCombs counts. Secondary sources disagree: Tex Admissions <10% (Fall 2022 projection, ~10,000 apps / ~600 spots) and possibly <4% recently (~700 admits / 10-13k apps); instateutaustin.com 5-8%; appybara 10-15%. Spread too wide for CONSENSUS, so downgraded from 0.085 CONSENSUS to an 0.08 ESTIMATE (midpoint of the clustered 5-10% sources).",
       "url": "https://www.texadmissions.com/blog/2025/6/5/ut-austin-computer-science-is-highly-competitive-consider-these-alternatives",
       "year": "Fall 2025"
+    },
+    {
+      "ipedsUnitId": 230764,
+      "name": "University of Utah",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": false,
+      "basis": "Students are admitted to the University, declare 'pre-computer science' with an advisor, and must earn Full Major Status (FMS) after the pre-major courses (intro programming sequence, CS 2420 with B- or better, Calculus I/II) before taking 3000-level Kahlert School courses (CS handbook FMS page, 2024-25; no newer handbook year online). FMS is a post-enrollment grade threshold, not first-year selection, so U: first-year CS rate = overall (0.9015 in CDS 2025-26).",
+      "url": "https://handbook.cs.utah.edu/2024-2025/CS/Prospective_Students/Preparing_To_Major_In_Cs/full_major_status.php",
+      "year": null
     },
     {
       "ipedsUnitId": 234076,
@@ -1337,6 +1623,17 @@
       "year": null
     },
     {
+      "ipedsUnitId": 234030,
+      "name": "Virginia Commonwealth University",
+      "admissionUnit": "SCHOOL",
+      "sourceClass": "ESTIMATE",
+      "admitRate": 0.6,
+      "directAdmit": true,
+      "basis": "First-years apply to the College of Engineering (which houses the CS BS); applicants not accepted directly are moved to the undeclared major in Humanities & Sciences (VCU first-year requirements page), and the college guarantees admission only to top-10% class rank. VCU publishes no Engineering or CS applicant/admit counts (CDS 2024-25 has only the university-wide C1: 19,572/21,201 = 0.923; no IRDS breakdown by school found). Structural argument: the College of Engineering's Fall 2025 admitted profile (weighted GPA 25th-75th 3.68-4.30, SAT 1220-1440, egr.vcu.edu/future-students/first-year/) sits far above the university's enrolled profile (SAT 1010-1260), so real selection happens at entry. Estimate ~0.65x the 0.92 overall = ~0.60 (plausible range 0.45-0.75), in line with other threshold-style engineering-school entries (UIC 0.65; Tennessee ~0.8x overall). Rejected: class U (the school selects at entry).",
+      "url": "https://egr.vcu.edu/future-students/first-year/",
+      "year": "Fall 2025"
+    },
+    {
       "ipedsUnitId": 233921,
       "name": "Virginia Polytechnic Institute and State University",
       "admissionUnit": "SCHOOL",
@@ -1367,6 +1664,17 @@
       "directAdmit": false,
       "basis": "Liberal-arts university; CS is a department major in a liberal arts setting starting from an intro Python sequence, with no separate CS admission or cap found on the department page. Students are admitted to W&L and declare later. (Web search budget was exhausted; classified from official department page only.)",
       "url": "https://www.wlu.edu/computer-science-department",
+      "year": null
+    },
+    {
+      "ipedsUnitId": 236939,
+      "name": "Washington State University",
+      "admissionUnit": "UNIVERSITY",
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
+      "directAdmit": true,
+      "basis": "Students are admitted to WSU first; Voiland College then admits incoming freshmen to the CS major on a math-readiness threshold (ALEKS 83%+, Math 171 enrollment, or AP Calculus 2+) and keeps them via course/GPA benchmarks (C or better, 2.50 GPA). No CS-specific selection at first-year admission, so the CS rate is the overall rate.",
+      "url": "https://vcea.wsu.edu/undergraduatestudies/admission-to-majors/",
       "year": null
     },
     {
