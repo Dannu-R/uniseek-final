@@ -1097,14 +1097,14 @@ move to the rest of Uniseek, not overlooked.
 |---|---|---|
 | 1 | **Maryland's CS admit rate** | **decides whether Purdue's top-pick status is real** — see §18. Then UC San Diego, Ohio State, ASU |
 | 2 | **The other 14 unresearched CS rates** | §18; any list containing a class-F value is provisional |
-| 3 | **Residency (§15)** | biggest unmodelled effect, needs no invented constants, and resolves the `D` conflict |
-| 4 | **Set the cubic term `D`** | blocked on #3; re-run §10a's table after residency lands |
+| 3 | ~~**Residency (§15)**~~ | **done** (c78ae34..9db31ae). Splits for 16 of the 24 publics that lacked them; UW CS by residency. §15's Georgia Tech check: reach, 28.2% odds (table: 29.5%) |
+| 4 | **Set the cubic term `D`** | **unblocked** (#3 landed); re-run §10a's table, then set it |
 | 5 | **`ambition`: §17 vs §10 disagree** | §17's listed values do not reproduce from the formula; odds are unaffected |
 | 6 | **Field prep on/off for major runs** | §6c; currently suppressed in fixture runs because activities carry no major-relevance labels |
 | 7 | **`match_score` floor + display floor** | reduced but not removed |
 | 8 | **Document the band quota as load-bearing** | §10c; the ranking alone cannot produce a usable list |
 | 9 | **Collect real C7 vectors** | the archetypes produce visible ordering artifacts (§12) |
-| 10 | **Stale overall rates** | UT Austin 26.60% → 22.2% (Fall 2025); Purdue 49.80% → 43.4%. Both are tier-boundary-relevant |
+| 10 | **Stale overall rates** | now also skew §15's ratio. Stored vs current CDS: UVA 0.23 → ~0.156, Temple 0.522 → 0.862, Auburn 0.805 → 0.469, Ohio State 0.606 → 0.492, Purdue 0.498 → 0.434, Kennesaw 0.794 → 0.692, UT Austin 0.266 → 0.222, UC San Diego 0.24 → 0.286, Indiana 0.782 → 0.759. Refresh them |
 | 11 | Second applicant-pool calibration | the only way to lock `college_bar`'s coefficients |
 | 12 | Field-prep range 0.80–1.20 | able to reorder students against their own EC quality |
 | 13 | Rank ties | now present on both axes: Maryland/Purdue at CS #16, Indiana/Michigan State at CS #54 |
@@ -1117,7 +1117,7 @@ move to the rest of Uniseek, not overlooked.
 
 ---
 
-## 15. Residency — NEW, RECOMMENDED, NOT YET ADOPTED
+## 15. Residency — ADOPTED (see `docs/scoring-model.md`)
 
 Public universities admit in-state and out-of-state applicants at very different
 rates, and many publish both alongside the overall figure. The model currently uses

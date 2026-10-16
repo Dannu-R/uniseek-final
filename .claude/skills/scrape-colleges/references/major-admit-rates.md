@@ -63,6 +63,30 @@ yield that's ~1,500-2,000 admits; ~10,000 applicants list CS (one reported figur
 grown by the campus's application growth), so ~15% (plausible range 10-20%). Every
 assumption is in the `basis`, so a reviewer can redo the arithmetic.
 
+## By-residency major rates
+
+Some programs publish admits by residency, and for a capped major the gap can be far
+wider than the university's own split. UW is 45.7% in-state / 42.2% out-of-state
+overall, but Allen School CS is 40.9% / 8.1%. The scorer uses a by-residency major rate
+directly (§15); without one it scales the major rate by the college's split ÷ overall,
+which would get UW badly wrong.
+
+- **Record them only for `DERIVED` / `PUBLISHED` entries**, from the school's own
+  counts. Never estimate a split. The schema rejects them on other classes.
+- **Exclude international applicants**, as CDS C1 does: in-state = resident admits ÷
+  resident applicants; out-of-state = US non-resident admits ÷ US non-resident
+  applicants. Put both sets of counts in `basis`.
+- Fields: `inStateAdmitRate`, `outOfStateAdmitRate`. Either can be left out.
+- The UC dashboard's discipline view has no residency filter, so UC CS by-residency
+  rates aren't available there.
+
+```json
+{ "ipedsUnitId": 236948, "name": "University of Washington-Seattle Campus",
+  "sourceClass": "DERIVED", "admitRate": 0.1473, …,
+  "basis": "… By residency (same page, 2026 cycle): WA residents 493/1,205 = 0.4091; US non-residents 243/2,995 = 0.0811; international (37/1,049) excluded, as in CDS C1.",
+  "inStateAdmitRate": 0.4091, "outOfStateAdmitRate": 0.0811 }
+```
+
 ## Lessons learned (from the first full run)
 
 - **The rate describes first-year admission.** A cap applied *after* enrollment
