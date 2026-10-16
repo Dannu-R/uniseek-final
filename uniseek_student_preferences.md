@@ -51,6 +51,14 @@ Five filters. **All are AND** — a college must pass every one that the student
 | yes | net price for that bracket |
 | no | college-wide average net price |
 
+**Residency (out-of-state cost spec, 2026-10-15).** Scorecard's net price at a public is the
+*in-state* price. When the student's home state differs from the college's, the nonresident
+tuition premium (`tuitionOutOfState − tuitionInState`, from College Navigator) is added before
+the budget comparison, and the price is shown as "est. for out-of-state". Privates charge one
+rate, so nothing changes. Missing tuition keeps the published price, flagged. This is an
+approximation: it overstates cost where a public gives nonresidents merit aid, and understates
+it where in-state students received state grants.
+
 Known limitation: Scorecard net price covers students who received federal aid, and the top bracket is $110,000+. For high-income families the figure reads optimistically, so the filter will keep a few colleges that would actually cost more.
 
 **`in_state`** applies to **all** colleges in the home state, not only publics. Residency changes tuition only at publics, but cost is already handled by `net_price`, so the only job left for this filter is geography — and geography applies to private colleges equally.
