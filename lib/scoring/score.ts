@@ -103,7 +103,12 @@ function effectiveAdmitRate(student: StudentInput, college: CollegeInput): { rat
     return { rate: base.rate, label: `${cls}, residency n/a`, flags };
   }
   if (!base.major) return { rate: split, label: `${cls}, ${res}`, flags };
-  return { rate: Math.min(1, round4((base.rate * split) / college.admitRate)), label: `${cls}, ${res} via ratio`, flags };
+  // An estimated major rate (class E) is never raised for residency: the estimate often
+  // already reflects a mostly in-state pool (e.g. UT Austin CS), so scaling it up would
+  // count the in-state advantage twice. It can still be lowered for out-of-state students.
+  const ratio = split / college.admitRate;
+  if (cls === "E" && ratio > 1) return { rate: base.rate, label: `${cls}, ${res}, estimate not raised`, flags };
+  return { rate: Math.min(1, round4(base.rate * ratio)), label: `${cls}, ${res} via ratio`, flags };
 }
 
 export function scoreCollege(student: StudentInput, college: CollegeInput, lists?: RankingLists): CollegeScore {

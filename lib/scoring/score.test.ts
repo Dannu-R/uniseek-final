@@ -233,6 +233,17 @@ describe("residency (§15)", () => {
     expect(s.flags).toContain("effective admit rate 0.0791 (D, out-of-state via ratio)");
   });
 
+  it("never raises an estimated major rate for residency, but still lowers it", () => {
+    // UT Austin CS: estimated 0.08; in-state 0.359 / out-of-state 0.0752 vs overall 0.266.
+    const ut = college({ state: "TX", admitRate: 0.266, inStateAdmitRate: 0.359, outOfStateAdmitRate: 0.0752,
+      majorProgram: cs({ admitRate: 0.08, admitRateSourceClass: "ESTIMATE" }) });
+    const texan = scoreCollege(student({ homeState: "TX", majorCip: "11.0701" }), ut);
+    expect(texan.effectiveAdmitRate).toBe(0.08);
+    expect(texan.flags).toContain("effective admit rate 0.08 (E, in-state, estimate not raised)");
+    const outsider = scoreCollege(student({ homeState: "CA", majorCip: "11.0701" }), ut);
+    expect(outsider.effectiveAdmitRate).toBe(0.0226); // 0.08 × 0.0752 / 0.266
+  });
+
   it("clamps a scaled major rate at 1", () => {
     const s = scoreCollege(
       student({ homeState: "GA", majorCip: "11.0701" }),
