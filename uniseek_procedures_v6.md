@@ -1102,7 +1102,7 @@ move to the rest of Uniseek, not overlooked.
 | 5 | **`ambition`: §17 vs §10 disagree** | §17's listed values do not reproduce from the formula; odds are unaffected |
 | 6 | **Field prep on/off for major runs** | §6c; currently suppressed in fixture runs because activities carry no major-relevance labels |
 | 7 | **`match_score` floor + display floor** | reduced but not removed |
-| 8 | **Document the band quota as load-bearing** | §10c; the ranking alone cannot produce a usable list |
+| 8 | **Document the band quota as load-bearing** | §10c; the ranking alone cannot produce a usable list. **Partly addressed 2026-10-15:** on major runs the 3/5/4 quota is now a *maximum* — a program ranked below the student's major-quality bar (#50 at ambition 0.485, looser for weaker profiles) can't fill a slot, and a band that runs out stays short (`docs/superpowers/specs/2026-10-15-major-quality-bar-design.md`) |
 | 9 | **Collect real C7 vectors** | the archetypes produce visible ordering artifacts (§12) |
 | 10 | **Stale overall rates** | now also skew §15's ratio. Stored vs current CDS: UVA 0.23 → ~0.156, Temple 0.522 → 0.862, Auburn 0.805 → 0.469, Ohio State 0.606 → 0.492, Purdue 0.498 → 0.434, Kennesaw 0.794 → 0.692, UT Austin 0.266 → 0.222, UC San Diego 0.24 → 0.286, Indiana 0.782 → 0.759. Refresh them |
 | 11 | Second applicant-pool calibration | the only way to lock `college_bar`'s coefficients |
