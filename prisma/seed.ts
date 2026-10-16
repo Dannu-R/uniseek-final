@@ -328,6 +328,13 @@ const COLLEGES = [
     cs: { admitRate: null, admitRateSourceClass: "FITTED", programRank: 45, programRankSourceClass: "ESTIMATE", directAdmit: null } },
 ];
 
+// A null in the seed means "not curated here", never "erase": colleges:import and
+// major-rates:import may have filled the field since, and the seed re-runs on every
+// deploy. Same rule as colleges:import ("a null in the batch never erases DB data").
+function nonNull<T extends Record<string, unknown>>(row: T): Partial<T> {
+  return Object.fromEntries(Object.entries(row).filter(([, v]) => v !== null)) as Partial<T>;
+}
+
 async function main() {
   // Major controlled list.
   for (const m of MAJORS) {
@@ -341,7 +348,7 @@ async function main() {
     // input types at the boundary (values verified against §16/§18).
     const row = await prisma.college.upsert({
       where: { ipedsUnitId: college.ipedsUnitId },
-      update: college as Prisma.CollegeUncheckedUpdateInput,
+      update: nonNull(college) as Prisma.CollegeUncheckedUpdateInput,
       create: college as Prisma.CollegeUncheckedCreateInput,
     });
 
