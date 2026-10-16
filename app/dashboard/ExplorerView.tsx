@@ -33,11 +33,20 @@ interface College {
   band: "reach" | "target" | "safety";
   overallAdmitRate: number | null;
   netPrice?: number | null;
+  // How netPrice was worked out (see lib/scoring/price.ts). Optional because colleges
+  // saved before this field existed won't have it.
+  netPriceBasis?: "published" | "out-of-state estimate" | "in-state (premium unknown)";
 }
 
 const BAND_LABEL: Record<College["band"], string> = { reach: "Reach", target: "Match", safety: "Safety" };
 const pct = (x: number | null) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
+// A short muted note under a price, when the price isn't the college's published figure.
+const priceNote = (basis: College["netPriceBasis"]): string | null => {
+  if (basis === "out-of-state estimate") return "est. for out-of-state";
+  if (basis === "in-state (premium unknown)") return "in-state price; out-of-state cost unknown";
+  return null;
+};
 const num = (s?: string): number | null => {
   if (s == null || `${s}`.trim() === "") return null;
   const n = Number(s);
@@ -733,10 +742,18 @@ export default function ExplorerView({ college }: { college: College }) {
   // and the acceptance rate look like verdicts too — a reach college's net price came
   // out in warning pink whatever the number was.
   // The band verdict is carried by the stamp, so it's dropped from the figures here.
-  const facts: { label: string; value: string }[] = [
+  const isEstimate = college.netPriceBasis === "out-of-state estimate";
+  const netPriceNote = priceNote(college.netPriceBasis);
+  const facts: { label: string; value: string; note?: string | null }[] = [
     { label: "Acceptance rate", value: pct(college.overallAdmitRate) },
     ...(college.netPrice != null
-      ? [{ label: "Net price for you", value: money(college.netPrice) }]
+      ? [
+          {
+            label: isEstimate ? "Estimated net price for you" : "Net price for you",
+            value: money(college.netPrice),
+            note: netPriceNote,
+          },
+        ]
       : []),
   ];
 
@@ -783,6 +800,7 @@ export default function ExplorerView({ college }: { college: College }) {
           <p className="ex-budget-line">
             <strong>{money(college.netPrice)}</strong> net price ·{" "}
             {college.netPrice <= budget ? "under" : "over"} your {money(budget)} budget
+            {netPriceNote && <span className="ex-act__note"> ({netPriceNote})</span>}
           </p>
         )}
         <div className="ex-card__body">{sectionBody(s)}</div>
@@ -868,6 +886,7 @@ export default function ExplorerView({ college }: { college: College }) {
                   <div key={f.label} className="ex-kpi">
                     <span className="ex-kpi__label">{f.label}</span>
                     <span className="ex-kpi__value">{f.value}</span>
+                    {f.note && <span className="ex-kpi__note">{f.note}</span>}
                   </div>
                 ))}
               </div>

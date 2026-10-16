@@ -37,6 +37,9 @@ interface CollegeScore {
   band: "reach" | "target" | "safety";
   overallAdmitRate: number | null;
   netPrice?: number | null;
+  // How netPrice was worked out (lib/scoring/price.ts). Optional: older saved colleges
+  // in localStorage won't have it.
+  netPriceBasis?: "published" | "out-of-state estimate" | "in-state (premium unknown)";
 }
 interface ScoreResult {
   empty?: boolean;

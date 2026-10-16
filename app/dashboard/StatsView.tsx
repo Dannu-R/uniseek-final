@@ -355,6 +355,7 @@ interface College {
   name: string;
   band: "reach" | "target" | "safety";
   netPrice?: number | null;
+  netPriceBasis?: "published" | "out-of-state estimate" | "in-state (premium unknown)";
 }
 
 export default function StatsView({
@@ -469,6 +470,13 @@ export default function StatsView({
     .map((c) => c.netPrice)
     .filter((n): n is number => typeof n === "number");
   const unpriced = recommended.length - priced.length;
+  // How many of those prices aren't the college's published figure.
+  const estimated = recommended.filter(
+    (c) => c.netPrice != null && c.netPriceBasis === "out-of-state estimate",
+  ).length;
+  const premiumUnknown = recommended.filter(
+    (c) => c.netPrice != null && c.netPriceBasis === "in-state (premium unknown)",
+  ).length;
   const costLow = priced.length ? Math.min(...priced) : null;
   const costHigh = priced.length ? Math.max(...priced) : null;
   const costTypical = priced.length
@@ -815,6 +823,8 @@ export default function StatsView({
                       ? "Net price estimated for your income band — the actual figure comes from each college's aid offer."
                       : "Based on each college's average net price — add your family income band in the quiz for a closer estimate."}
                     {unpriced > 0 && ` ${unpriced} ${unpriced === 1 ? "college has" : "colleges have"} no cost data; they were kept and flagged rather than dropped.`}
+                    {estimated > 0 && ` ${estimated} ${estimated === 1 ? "price is" : "prices are"} est. for out-of-state.`}
+                    {premiumUnknown > 0 && ` ${premiumUnknown} ${premiumUnknown === 1 ? "college shows its" : "colleges show their"} in-state price; out-of-state cost unknown.`}
                   </p>
                 </>
               ) : (

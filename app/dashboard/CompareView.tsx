@@ -22,6 +22,8 @@ interface CollegeScore {
   band: "reach" | "target" | "safety";
   overallAdmitRate: number | null;
   netPrice?: number | null;
+  // How netPrice was worked out. Optional: older saved colleges won't have it.
+  netPriceBasis?: "published" | "out-of-state estimate" | "in-state (premium unknown)";
 }
 
 const BAND_LABEL: Record<CollegeScore["band"], string> = {
@@ -101,7 +103,17 @@ export default function CompareView({ saved }: { saved: CollegeScore[] }) {
       key: "net",
       label: "Net price for you",
       hint: "estimated from your income band",
-      render: (c) => <span className="cmp__num">{c.netPrice != null ? money(c.netPrice) : "—"}</span>,
+      render: (c) => (
+        <>
+          <span className="cmp__num">{c.netPrice != null ? money(c.netPrice) : "—"}</span>
+          {c.netPrice != null && c.netPriceBasis === "out-of-state estimate" && (
+            <span className="cmp__rowhint">est. for out-of-state</span>
+          )}
+          {c.netPrice != null && c.netPriceBasis === "in-state (premium unknown)" && (
+            <span className="cmp__rowhint">in-state price; out-of-state cost unknown</span>
+          )}
+        </>
+      ),
       rank: { of: (c) => c.netPrice ?? null, best: "low", caption: "lowest cost" },
     },
     ...(budget != null

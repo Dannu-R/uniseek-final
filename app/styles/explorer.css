@@ -198,6 +198,12 @@
   line-height: 1;
   color: var(--ac-ink);
 }
+/* A muted line under a figure, e.g. when a price is an out-of-state estimate. */
+.ex-kpi__note {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--ac-ink-3);
+}
 .ex-kpi--reach .ex-kpi__value {
   color: var(--ac-pink);
 }
