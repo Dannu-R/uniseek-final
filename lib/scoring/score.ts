@@ -49,9 +49,14 @@ const CLASS_LABEL: Record<MajorRateClass, string> = {
 
 type Residency = "in-state" | "out-of-state";
 
+// UC campuses admit nonresidents at higher rates from a stronger, self-selected pool
+// (nonresidents must "compare favorably" with admitted Californians), so their split
+// reflects who applies, not an easier bar. Residency isn't applied there.
+const isUC = (college: CollegeInput) => college.name.startsWith("University of California");
+
 // §15: which admission pool the student competes in. Null when either state is unknown.
 function residencyOf(student: StudentInput, college: CollegeInput): Residency | null {
-  if (!student.homeState || !college.state) return null;
+  if (!student.homeState || !college.state || isUC(college)) return null;
   return student.homeState === college.state ? "in-state" : "out-of-state";
 }
 

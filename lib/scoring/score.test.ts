@@ -258,6 +258,14 @@ describe("residency (§15)", () => {
     expect(s.flags).toContain("residency split unknown — rate not residency-adjusted");
   });
 
+  it("skips residency at UC campuses", () => {
+    // UC Davis: nonresidents are admitted at a higher rate, but from a stronger pool.
+    const davis = college({ name: "University of California-Davis", state: "CA", admitRate: 0.4435, inStateAdmitRate: 0.3714, outOfStateAdmitRate: 0.6324 });
+    const s = scoreCollege(student({ homeState: "TX" }), davis);
+    expect(s.effectiveAdmitRate).toBe(0.4435);
+    expect(s.flags.some((f) => f.startsWith("effective admit rate"))).toBe(false);
+  });
+
   it("does nothing when the student gives no home state", () => {
     const s = scoreCollege(student(), gt());
     expect(s.effectiveAdmitRate).toBe(0.1274);
