@@ -61,11 +61,11 @@
     {
       "ipedsUnitId": 196079,
       "name": "Binghamton University",
-      "admissionUnit": "SCHOOL",
+      "admissionUnit": "MAJOR",
       "sourceClass": "ESTIMATE",
       "admitRate": 0.28,
       "directAdmit": true,
-      "basis": "CS is in the Watson College of Engineering and Applied Science, which runs its own first-year review and is described as more selective than Harpur/the university; no Watson or CS admit rate is published (checked Binghamton admissions, Pipe Dream, CDS-based aggregators). Structural estimate ~0.75x the 37.3% overall rate, consistent with engineering-school ratios at selective publics that admit by college.",
+      "basis": "Still no official per-school or per-major number. Binghamton OIR's admissions page (offices/oir/institutional-data/admissions.html) publishes only university-wide freshman applied/accepted/enrolled for Fall 2021-2025; its by-school detail sits in a Power BI dashboard and a Google Sheet that both require a Binghamton sign-in (not accessed). CS is a capped program inside Watson College: Binghamton's own internal-transfer page calls the CS major 'extremely competitive' with 'limited seats' and a 3.5 GPA floor, so it belongs with capped direct-major peers, not uncapped engineering schools (CU Boulder 1.04, Virginia Tech 1.03-1.09). Capped-CS peer ratios: UW Seattle 0.35, UC Davis 0.44, UC Berkeley 0.56, UCLA 0.78, UMass Amherst 0.79. Binghamton's cap looks moderate, so a ratio of about 0.75 x the 37.3% overall rate = ~0.28. Old value kept, now with a sourced peer argument. Low confidence.",
       "url": "https://www.binghamton.edu/admissions/undergraduate/apply/current/iut-watson.html",
       "year": "Fall 2025"
     },
@@ -514,9 +514,9 @@
       "name": "Lehigh University",
       "admissionUnit": "SCHOOL",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.25,
+      "admitRate": 0.28,
       "directAdmit": true,
-      "basis": "Lehigh admits first-years into a college (CS BS is in the P.C. Rossin College of Engineering; a BA in CS also exists in Arts & Sciences, plus the selective CSB program). Lehigh publishes only the overall rate (5,601/19,342 = 28.9%, Class of 2029), with no college-level rates; secondary sources (College Transitions, Empowerly) call engineering/CS more competitive but give no numbers. Estimate: Rossin slightly below overall (~0.85-0.9x), based on that structural argument.",
+      "basis": "Lehigh admits first-years into a college; the CS BS is in the P.C. Rossin College of Engineering (there is also a BA in CS in Arts & Sciences and the CSB program). Lehigh's Class of 2029 profile gives only the overall rate (5,601/19,342 = 29.0%) and enrollment by college (Engineering 25% of matriculants), with no per-college admits. The Brown and White's admissions stories (e.g. Class of 2028: 5,170/20,395) also give only overall figures. Same-structure peers that admit to an engineering school sit at or above overall: CU Boulder engineering 1.04x, Virginia Tech engineering 1.03-1.09x, Penn SEAS 1.13x (Class of 2004). Engineering is Lehigh's core draw and its pool has many CS applicants, so estimate ~0.95-1.0x overall, about 28%. The old 0.85-0.9x was a structural guess with no data behind it. Low confidence.",
       "url": "https://www2.lehigh.edu/admissions/admission-statistics",
       "year": "Fall 2025"
     },
@@ -590,12 +590,12 @@
       "ipedsUnitId": 199193,
       "name": "North Carolina State University",
       "admissionUnit": "SCHOOL",
-      "sourceClass": "ESTIMATE",
-      "admitRate": 0.35,
+      "sourceClass": "PUBLISHED",
+      "admitRate": 0.421,
       "directAdmit": false,
-      "basis": "All engineering first-years, CS included, are admitted to the College of Engineering's Engineering First Year program (engr.ncsu.edu), then compete to enter CS (College Transitions: 'competitive, not guaranteed'). NCSU publishes no Engineering admit count. COE annual report 2025-26: >13,000 applications and ~1,900 first-year enrollees for Fall 2026. At the university-wide yield (~31%: 6,090 enrolled / ~19,600 admitted of 47,900 at 41%), that implies ~6,100 admits (~47%). Engineering yield is probably higher, which would put the rate nearer 30-35%. Secondary sources disagree (~30% vs ~50%), so this is a labeled estimate of ~0.35 for the Engineering school.",
-      "url": "https://engr.ncsu.edu/?p=1194820",
-      "year": "Fall 2026"
+      "basis": "NC State Admissions' High School Counselor Information Packet 2025-2026 (published Oct 1, 2025), table 'First-Year Admitted Student Data by College' for Fall 2025: College of Engineering 13,526 applications, 42.1% admit rate, enrollment target 1,870. The university overall was 39.46% (49,450 applications) for Fall 2025, so Engineering's ratio to overall is about 1.07. The prior packet shows the same pattern for Fall 2024: Engineering 12,433 applications at 41.7%, overall 18,383 / 44,113 = 41.7% (ratio 1.00). So admission to the college CS students enter is no more selective than the university as a whole. CS students start in the Engineering First Year program, and the later competitive move into CS happens after enrollment, so it is not modeled. Caveat: the per-college rate is presumably over applicants listing that college first, since the packet notes that applicants not competitive for their first choice are reviewed for their second choice.",
+      "url": "https://issuu.com/ncstateadmissions/docs/nc_state_digital_hs_counselor_packet",
+      "year": "Fall 2025"
     },
     {
       "ipedsUnitId": 167358,
@@ -800,9 +800,9 @@
       "name": "Stony Brook University",
       "admissionUnit": "MAJOR",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.3,
+      "admitRate": 0.32,
       "directAdmit": true,
-      "basis": "Undergraduate Bulletin: all CEAS programs limit enrollment; qualified freshmen who indicate CS may be admitted directly as degree majors, others enter as pre-majors (AOI) and must apply later. No CS-level admit counts published. Estimate ~0.6x the 48% overall rate, the typical ratio for capped CS at publics with direct-major admission (e.g. Purdue, UMass Amherst, Rutgers).",
+      "basis": "Still no CS or CEAS admit count. Stony Brook IRPE's undergraduate admissions file (AdmissionsUG.xlsx) gives university-wide totals only (Fall 2025: 30,929 admitted / 64,196 applicants = 48.2%); IRPE dashboards have no admissions view by college or major; CS department admissions pages give no numbers. The Bulletin says CEAS programs limit enrollment and qualified freshmen may be admitted directly as CS majors, with others placed as pre-majors (AOI) to apply later. This is a capped direct-major structure. The old basis wrongly cited Purdue (real ratio 1.19) as a low-ratio peer. Corrected peers with capped direct-major CS: UC Berkeley 0.56, UCLA 0.78, UMass Amherst 0.79 (UC Davis 0.44 and UW 0.35 are tighter caps). A ratio of ~0.67 x 0.482 = ~0.32. Low confidence.",
       "url": "https://www.stonybrook.edu/sb/bulletin/current/academicprograms/cse/degreesandrequirements.php",
       "year": "Fall 2025"
     },
@@ -822,10 +822,10 @@
       "name": "Syracuse University",
       "admissionUnit": "SCHOOL",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.45,
+      "admitRate": 0.49,
       "directAdmit": true,
-      "basis": "First-years apply to a specific college; CS majors are admitted directly into the College of Engineering and Computer Science. Syracuse does not publish a CDS or college-level admit rates. Low-quality secondary sites cite STEM programs near 45% vs 48.8% overall (Fall 2025: 22,756 / 46,645); estimate set slightly below overall since ECS is not known to be far more selective than the university.",
-      "url": "https://ecs.syracuse.edu/admissions/undergraduate",
+      "basis": "No school-level data found. Syracuse now publishes a CDS (2025-26, effectiveness.syr.edu), but it has only the university-wide C1 figures and no breakdown by college. The Office of Institutional Effectiveness has no public admissions-by-college table, and no Daily Orange class-profile story with per-college rates turned up before the session's search budget ran out. Structure: first-years apply directly to the College of Engineering and Computer Science (ECS); there is no known CS cap. Same-structure peers (admission into a school, not a capped major) from this run: CU Boulder engineering 1.04x overall, Virginia Tech engineering 1.03-1.09x, Pitt SCI 1.20x (Fall 2025 derived). Only the capped flagship UIUC Grainger is far lower (0.58x), and Syracuse ECS doesn't look like that. Ratio ~1.0 x 0.4879 = ~0.49. This replaces v1's 0.45, which rested on a low-quality '~45% STEM' claim.",
+      "url": "https://effectiveness.syr.edu/wp-content/uploads/2026/09/CDS_2025-26_Complete.pdf",
       "year": "Fall 2025"
     },
     {
@@ -876,11 +876,11 @@
       "ipedsUnitId": 196088,
       "name": "University at Buffalo",
       "admissionUnit": "SCHOOL",
-      "sourceClass": "ESTIMATE",
-      "admitRate": 0.65,
+      "sourceClass": "UNIVERSITY",
+      "admitRate": null,
       "directAdmit": false,
-      "basis": "First-years select CS as an intended major and are reviewed holistically by the School of Engineering and Applied Sciences with UB Admissions (no separate application); they must then complete core courses (CSE 115/116, Calc 1, Discrete; core GPA >= 2.5, overall GPA >= 2.8) to be accepted into the major. UB publishes no CS or SEAS first-year admit rate and none was found in CDS or College Transitions. Estimate is structural: ~0.8x the 80.6% overall rate, reflecting SEAS's stronger applicant pool and secondary sources calling CS capacity-limited; low confidence.",
-      "url": "https://catalog-archives.apps.buffalo.edu/2223/academicprograms/computer_science_bs_applying.html",
+      "basis": "SEAS has no separate first-year application; CS applicants go through standard UB holistic review, and the core-course/GPA gate to enter the CS major applies after enrollment (not modeled). No evidence SEAS admits more selectively than UB overall (peers that admit to an uncapped school: CU Boulder 1.04x, Virginia Tech engineering 1.03-1.09x, NC State engineering 1.07x), so the overall rate applies (class U).",
+      "url": "https://engineering.buffalo.edu/home/academics/undergrad/admissions/first-year.html",
       "year": null
     },
     {
@@ -956,7 +956,7 @@
       "sourceClass": "DERIVED",
       "admitRate": 0.339,
       "directAdmit": true,
-      "basis": "UC Information Center 'Freshman admission by discipline' dashboard, Computer Science broad discipline (all CIP 11), UCSB Fall 2025: 1,989 admits / 5,865 applicants = 33.9% (shows 34%) vs 38% campus overall; Engineering discipline 21% (2,694/12,679). CS is in the College of Engineering, which selects freshmen by major. DOUBT: 34% looks high for UCSB CS (older reports ~5-18% for CoE/CS); CIP-11 bucket may include non-CoE computing programs. Engineering 21% is a plausible alternative.",
+      "basis": "Kept from v1: no narrower figure exists. UC Information Center 'Freshman admission by discipline', Computer Science broad discipline (all CIP 11), UCSB Fall 2025: 1,989 admits / 5,865 applicants = 0.339 vs 0.382 campus overall (110,187 apps / 42,093 admits per UCSB Budget & Planning freshman dashboard). Engineering discipline is 0.21 (2,694 / 12,679). Checked for something narrower: UCSB Budget & Planning IR 'Freshmen Applicants, Admits, and Enrolls' Tableau dashboard has campus totals only, no college/major split; the cs.ucsb.edu prospective-students page has no stats; the UC Information Center has no per-major view. CAVEAT: the UC dashboard notes campuses 'may offer admission to a student in a different major (including undeclared)' and that this is not reflected, so the CS bucket likely counts CS applicants who were admitted to their alternate (non-CoE) major. That means 0.339 overstates admission into the CS major itself. The CoE-wide 0.21 is the best published lower-side bound.",
       "url": "https://www.universityofcalifornia.edu/about-us/information-center/freshman-admission-discipline",
       "year": "Fall 2025"
     },
@@ -998,9 +998,9 @@
       "name": "University of Connecticut",
       "admissionUnit": "MAJOR",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.4,
+      "admitRate": 0.46,
       "directAdmit": true,
-      "basis": "No published CS admit rate found. UConn's Nov 2024 Senate report (First-Year Applicants, Admits & Enrollees by Major) says applicants apply to a first-choice major; programs with 'true space constraints' (CS in the College of Engineering is the top-growth applicant program, +1,539 apps Fall 2021->2024) send competitive applicants to a second-choice major or ACES. Report shows only deltas, not rates. Structural estimate: space-capped CS ~0.75x the ~0.54 overall rate -> ~0.40. Low confidence.",
+      "basis": "No CS admit rate is published. UConn's Nov 2024 Senate report (First-Year Applicants, Admits & Enrollees by Major, Fall 2021 vs Fall 2024) has applicants choose a first-choice major. Only programs with 'true space constraints' turn competitive applicants away to a second-choice major or ACES. The report gives only changes, not rates: CS applications rose by 1,539 and CS admits by 1,240 (all three CS majors in the College of Engineering, all campuses). About 81% of the extra applicants were admitted, which does not look like a tightly capped major. Senate Enrollment Committee annual reports (2023-24 to 2025-26), the BPIR/OIRE public dashboards (enrollment only), and the Engineering site have no per-school admit data. Same-structure peers that admit directly to a major without a hard cap: UMass Amherst 0.79x, UC San Diego 0.83x, Georgia Tech 0.89x overall. Estimate ~0.85x the 0.5435 overall rate -> 0.46, up from the old 0.40 (0.74x), which assumed a tighter cap than the data supports. Low confidence.",
       "url": "https://senate.media.uconn.edu/wp-content/uploads/sites/3636/2024/12/President-Report-.pdf",
       "year": "Fall 2024"
     },
@@ -1011,7 +1011,7 @@
       "sourceClass": "ESTIMATE",
       "admitRate": 0.55,
       "directAdmit": true,
-      "basis": "No CS- or college-level admit counts published (UD IRE dashboards/CDS give only university-wide figures; overall Fall 2024 ~27,517/39,742 = 0.69). Freshmen are admitted by central admissions directly into the CISC major (College of Engineering); College Transitions rates internal transfer into UD engineering 'Moderate/Very' difficult, implying a capped, more selective major. Structural estimate: engineering/CS ~0.8x overall -> ~0.55. Low confidence.",
+      "basis": "No college- or major-level admit counts found: UD's IRE dashboards (ire.udel.edu/dashboards) cover only enrollment, retention and diversity, with no admissions dashboard; udel.edu Facts & Figures and the CDS give only university-wide figures (Fall 2024 ~27,517/39,742 = 0.69); The Review (student paper) has no class-profile story with per-college rates. Freshmen are admitted directly into the CISC major in the College of Engineering, and internal transfer into engineering is restricted. Closest same-structure peer: UMass Amherst (Northeastern flagship, direct admission to the major within a college, similar ~0.6-0.7 overall rate) at 0.79x overall. UD CS is not known as a hard-capped major like UIUC (0.20x), UW (0.35x) or Berkeley (0.56x), so ~0.8x of 0.69 -> 0.55. Low confidence.",
       "url": "https://www.eecis.udel.edu/~saunders/ugrad/changingMajor.php.html",
       "year": "Fall 2024"
     },
@@ -1042,9 +1042,9 @@
       "name": "University of Illinois Chicago",
       "admissionUnit": "SCHOOL",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.5,
+      "admitRate": 0.65,
       "directAdmit": true,
-      "basis": "CS is in UIC's College of Engineering; UIC says each college has its own criteria for selecting applicants, and Engineering admits have a clearly higher profile (middle-50% GPA 3.6-4.0, SAT 1310-1470) than LAS (3.4-3.9, 1240-1430) or Business (3.3-3.8, 1210-1380). Students who transfer in later need a 3.00 GPA plus Calc I and CS 111. No published Engineering or CS admit counts found (CDS has no breakdown by college; search budget ran out before a deeper check). Structural estimate: at peer UIUC, the engineering college admits about 0.6x the overall rate (Grainger 21.2% vs 36.6% overall, Fall 2025), and 0.6-0.7x UIC's 75.8% overall gives about 0.45-0.53, so ~0.50.",
+      "basis": "First-years are admitted by college: CS is in the College of Engineering, which uses its own criteria, and admits have a clearly higher profile (Fall 2026 middle-50% unweighted GPA 3.6-4.0, SAT 1310-1470) than LAS or Business. No Engineering or CS applicant/admit counts are public. OIR (oir.uic.edu) has only enrollment, retention and degree dashboards, and its Tableau server is internal. The UI System Data Book Fall 2025 and Freshman Characteristics Fall 2025 (pb.uillinois.edu) give enrollment by college only (UIC Engineering: 1,060 new freshmen). The CDS has no breakdown, and no news or student-paper source was found. Peers of the same structure, admitting into an engineering college: NC State Engineering 1.07x overall (Fall 2025; 1.00x in Fall 2024), CU Boulder Engineering 1.04x, Virginia Tech Engineering 1.03-1.09x. UIUC Grainger is 0.58x, but UIUC is a heavily oversubscribed flagship with a capped CS program, which UIC is not. The old 0.50 (built on the UIUC ratio alone) was probably too low. UIC's high overall rate (0.758) and the open-access peers point near 1.0x, but the explicitly higher Engineering bar and heavy CS demand argue for some discount. Estimate about 0.85x overall, so about 0.65.",
       "url": "https://admissions.uic.edu/undergraduate/requirements-deadlines/first-year-requirements",
       "year": null
     },
@@ -1121,8 +1121,8 @@
       "sourceClass": "ESTIMATE",
       "admitRate": 0.55,
       "directAdmit": false,
-      "basis": "First-years are admitted to a college (B.S. CS via College of Science and Engineering, B.A. via CLA), then apply to the CS major after prerequisites (usually sophomore year). UMN does not publish CSE applicant/admit counts; CSE's admitted middle-50% (GPA 3.62-4.00, ACT 29-34, Fall 2025) is the highest of all freshman colleges vs ~0.79 overall. Estimate ~0.55 assumes CSE admits roughly 0.7x the overall rate, in line with selective-engineering-college gaps at high-admit flagships; an unverified secondary snippet cited ~50% for CSE.",
-      "url": "https://admissions.tc.umn.edu/admissions/freshman-admission/frequently-asked-questions-about-how-we-determine-college-admissions",
+      "basis": "First-years are admitted to a college; B.S. CS students enter the College of Science and Engineering (CSE) and apply to the CS major later, which is not modeled. No current CSE applicant/admit counts are public: IDR (formerly OIR) admissions reports cover graduate admissions only, and Admissions publishes only middle-50% profiles (CSE Fall 2025: GPA 3.62-4.00, ACT 29-34, the highest of the freshman colleges). Best official evidence: UMN's 2013 legislatively mandated STEM report (Office of Planning and Analysis) gives Fall 2013 applicants to CBS or CSE as 18,602, with 5,440 admitted (29.2%), while the campus overall was about 44% that year (Minnesota Daily). That is a ratio of about 0.66. Applying 0.66 to today's 0.789 overall gives about 0.52. The ratio likely compresses somewhat as the overall rate rises toward 0.8, so the estimate stays at about 0.55 (about 0.70x). This sits near this run's peers for selective-college admission (UIUC Grainger 0.58x, UCLA 0.78x) and below the open engineering colleges (NC State 1.07x, CU Boulder 1.04x), which matches the 2013 evidence that CSE/CBS were selective relative to the campus. It rests on 12-year-old data that combines CBS with CSE.",
+      "url": "https://www.lrl.mn.gov/docs/2013/mandated/131277.pdf",
       "year": null
     },
     {
@@ -1174,21 +1174,21 @@
       "name": "University of Pennsylvania",
       "admissionUnit": "SCHOOL",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.045,
+      "admitRate": 0.049,
       "directAdmit": true,
-      "basis": "Penn admits applicants to one of four undergraduate schools; BSE Computer Science is in SEAS, and admitted SEAS students can declare CIS directly. Penn does not publish school-level admit rates. A secondary source reports SEAS admitted ~7.3% for the Class of 2024, when Penn overall was ~8%, so SEAS runs ~0.9x overall. Applied to the Class of 2029 overall rate of 4.9% (3,530/72,544), that gives ~4.5%. This rests on a single, weak secondary source; treat it as an estimate. CS is also available as a BA in the College (overall-rate admission).",
-      "url": "https://awstest-small-a-02.isc-seo.upenn.edu/acceptance-rate-upenn-engineering",
+      "basis": "Penn admits first-years to one of four schools; the BSE in CS is in SEAS (a BA in CS also exists in the College). Penn no longer publishes school-level admit rates: the Daily Pennsylvanian's Class of 2029 stories (June and Sept 2025) give only the overall 3,530/72,544 = 4.9%. The last per-school counts the DP printed are for the Class of 2004: SEAS admitted 853/3,325 = 25.7% vs overall 4,280/18,815 = 22.7%, a 1.13x ratio (25 years old). Same-structure peers that admit to an engineering school also sit at or above overall: CU Boulder engineering 1.04x, Virginia Tech engineering 1.03-1.09x. A CS-heavy SEAS pool probably pulls the ratio down toward ~1.0x since 2000, so estimate SEAS ~= overall, about 4.9% (the old 0.9x figure came from an unreliable SEO page and is dropped). Low confidence.",
+      "url": "https://www.thedp.com/article/2000/06/class_of_04_most_selective_in_university_history",
       "year": "Fall 2025"
     },
     {
       "ipedsUnitId": 215293,
       "name": "University of Pittsburgh-Pittsburgh Campus",
       "admissionUnit": "SCHOOL",
-      "sourceClass": "ESTIMATE",
-      "admitRate": 0.45,
+      "sourceClass": "DERIVED",
+      "admitRate": 0.711,
       "directAdmit": true,
-      "basis": "Pitt first-years apply to a specific first-year entry school (admissions.pitt.edu). The School of Computing and Information (home of CS) has admitted first-years directly since 2019-20. No SCI applicant/admit counts were found (Pitt IR fact book has no breakdown by school). The estimate reasons from structure: Fall 2025 SCI admits had a 1310-1450 SAT middle 50%, modestly above Pitt overall. At other publics with school-level CS entry, the computing school admits at roughly 0.7-0.8x the overall rate. 0.75 x 0.5945 = ~0.45. Labeled estimate.",
-      "url": "https://admissions.pitt.edu/first-year-student/",
+      "basis": "Pitt Office of the Provost Institutional Research & Analytics 'New Student Admissions Demographic Dashboard' (Tableau, linked from wellbeing.pitt.edu), sheet 'Admissions Data by Gender Table', Campus = Pittsburgh, School = School of Computing and Information, Fall 2025. Applications: 982 female + 2,525 male + 30 non-binary + 13 self-identify = 3,550 (982 is shown as 27.6%, implying ~3,558, so a few suppressed small cells are missing). Admits: 760 + 1,734 + 23 + 6 = 2,523 (760 = 30.1% implies ~2,525). 2,523 / 3,550 = 0.711, i.e. 1.20x the 0.5945 university rate. Fall 2024 for comparison: 2,854 / 4,482 = 0.637. SCI is a first-year entry school and is NOT more selective than Pitt overall at entry. DOUBT: the dashboard does not say whether an admit's 'School' is the school applied to or the school admitted to; if some SCI applicants were admitted into Dietrich instead, the true SCI rate would be lower.",
+      "url": "https://www.wellbeing.pitt.edu/first-year-undergraduate-admissions-dashboard",
       "year": "Fall 2025"
     },
     {
@@ -1275,8 +1275,8 @@
       "sourceClass": "ESTIMATE",
       "admitRate": 0.14,
       "directAdmit": true,
-      "basis": "First-years apply to a specific school in separate pools; the BS in CS is in the School of Engineering and Applied Science (first-year target ~725), which College Transitions describes as generally more selective than the College (CS BA is also offered via the College, declared later). UVA does not publish school-level first-year admit rates in sources reachable here (IRA admissions page blocked; Class Profile PDF not text-readable). Estimate ~0.9x the Fall 2025 overall rate of 15.6% (64,457 apps / 10,086 admits). Catalog overall 0.23 looks like an older cycle.",
-      "url": "https://www.collegetransitions.com/blog/university-of-virginia-inside-the-numbers/",
+      "basis": "First-years apply to a specific school; the BS in CS is in the School of Engineering and Applied Science (SEAS). UVA publishes SEAS offer counts but never SEAS applicant counts, so no school rate can be derived: Class of 2030 EA offers 1,604 SEAS vs 5,261 College of 7,151 total from 57,495 EA applicants (Cavalier Daily, Feb 2026); Class of 2027 total SEAS offers 1,882 (Cavalier Daily, Mar 2023). IRA's public undergraduate admissions dashboard splits only by gender/race/residency, and UVA's 2025 counselor slides give only overall/round rates (Fall 2025: 10,086 offers / 64,457 apps = 0.156). Peers that admit first-years into an engineering school: CU Boulder 1.04x overall, Virginia Tech engineering 1.03-1.09x, UIUC Grainger 0.58x. College Transitions calls SEAS more selective than the College, so ~0.9x the Fall 2025 overall rate -> 0.14. Note the catalog overall 0.23 is an older cycle (Fall 2021-era); 0.9x of that would be ~0.21.",
+      "url": "https://www.cavalierdaily.com/article/2026/02/uva-offers-admission-to-record-number-of-7151-ea-applicants-for-the-class-of-2030",
       "year": "Fall 2025"
     },
     {
@@ -1372,11 +1372,11 @@
       "name": "Washington University in St. Louis",
       "admissionUnit": "SCHOOL",
       "sourceClass": "ESTIMATE",
-      "admitRate": 0.1,
+      "admitRate": 0.115,
       "directAdmit": true,
-      "basis": "WashU says 'Applicants must apply to a specific school', and the CS degrees are in the McKelvey School of Engineering, so CS-intended students apply to McKelvey. WashU publishes no school-level admit rates (not in its CDS, admissions pages or College Transitions). This is an estimate: about 0.85x the overall 11.9% (CDS), because McKelvey's applicant pool is CS-heavy and secondary guides describe engineering as among WashU's most competitive entry points. That ratio follows the usual pattern at private universities that admit by school, where engineering/CS runs about 0.8-1.0x overall. Low confidence.",
-      "url": "https://admissions.washu.edu/academics/",
-      "year": null
+      "basis": "WashU applicants apply to a specific school, and the CS degrees are in the McKelvey School of Engineering. WashU publishes no school-level admit rates: Student Life's Class of 2029 story (Sept 2025) gives only the overall 3,968/33,283 = 11.9%, and the CDS and institutional-research pages have no breakdown by school. Same-structure peers that admit to an engineering school sit at or slightly above overall: CU Boulder engineering 1.04x, Virginia Tech engineering 1.03-1.09x, and Penn SEAS 1.13x (Class of 2004, the last per-school counts published). McKelvey's pool is CS-heavy, which may pull it a little below those peers, so estimate ~0.95-1.0x overall, about 11.5%. The old 0.85x had no source behind it. Low confidence.",
+      "url": "https://www.studlife.com/news/2025/09/03/washus-class-of-2029-grows-amid-shifting-admissions-landscape",
+      "year": "Fall 2025"
     },
     {
       "ipedsUnitId": 168218,
