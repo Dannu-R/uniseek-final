@@ -164,6 +164,12 @@ model College {
   netPrice75to110k Int?
   netPriceGt110k   Int?
 
+  // Tuition + required fees, full-time first-year undergraduate, most recent year
+  // (College Navigator). Privates charge one rate, so both are equal. The gap is the
+  // nonresident premium added to the in-state net price (out-of-state cost spec).
+  tuitionInState    Int?
+  tuitionOutOfState Int?
+
   religiousAffiliation String? // denomination; null = secular/none (§2.1, §4)
 
   enrollmentUndergrad Int? // drives school_size, interpolated within band (§4.2)

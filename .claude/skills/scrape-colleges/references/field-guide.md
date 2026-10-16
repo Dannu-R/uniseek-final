@@ -23,6 +23,7 @@ so prefer it over the college's own marketing pages for these fields. Source: `"
 | `firstYearRetentionRate` | Retention: full-time, first-to-second year | 97% → `0.97` |
 | `netPriceAvg` | Net price: average, most recent year | Integer dollars |
 | `netPriceLt30k` … `netPriceGt110k` | Net price by family income, most recent year: $0–30,000 / 30,001–48,000 / 48,001–75,000 / 75,001–110,000 / 110,001+ | Integers. Publics report in-state students. |
+| `tuitionInState`, `tuitionOutOfState` | College Navigator "Tuition, fees, and estimated student expenses": the most recent year's **Tuition and fees** row, In-state and Out-of-state columns (ignore In-district). A private shows one figure: store it in both. | Integer dollars. Source year in the note. |
 | `actP25`, `actP75` | ACT Composite 25th/75th | Only if the CDS C9 has no ACT composite (the CDS is usually a year newer) |
 | `latitude`, `longitude` | **Not on College Navigator.** Use the Wikipedia infobox coordinates (source `"web"`), decimal degrees, west = negative. | |
 

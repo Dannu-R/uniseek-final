@@ -61,6 +61,8 @@ export function mapCollege(c: CollegeWithPrograms, majorCip?: string | null, lis
       B75_110K: c.netPrice75to110k,
       GT_110K: c.netPriceGt110k,
     },
+    tuitionInState: c.tuitionInState,
+    tuitionOutOfState: c.tuitionOutOfState,
     religiousAffiliation: c.religiousAffiliation,
   };
 }

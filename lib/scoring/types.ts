@@ -89,5 +89,7 @@ export interface CollegeInput {
   facts: CollegeFacts;
   netPriceAvg?: number | null;
   netPriceBands: Partial<Record<IncomeBand, number | null>>;
+  tuitionInState?: number | null;
+  tuitionOutOfState?: number | null;
   religiousAffiliation?: string | null;
 }
