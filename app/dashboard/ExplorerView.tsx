@@ -537,6 +537,10 @@ export default function ExplorerView({ college, list }: { college: College; list
     };
   }, [drawer]);
 
+  // Whether this college is on the student's recommended list (true when there's no run
+  // to compare with). The briefing is written differently for one that isn't.
+  const onList = !list || list.some((l) => l.collegeId === college.collegeId);
+
   useEffect(() => {
     let active = true;
     let profileData: WizardData | null = null;
@@ -563,7 +567,11 @@ export default function ExplorerView({ college, list }: { college: College; list
       return;
     }
 
-    const cacheKey = `uniseek.insight.${college.collegeId}`;
+    // For a college that isn't on the list, the briefing explains why (with these reasons),
+    // and it's cached separately from an on-list briefing.
+    const notListedReasons =
+      !onList && list ? whyNotListed(college, list, profileData ? num(profileData.budgetMaxNetPrice) : null) : null;
+    const cacheKey = `uniseek.insight.${college.collegeId}${notListedReasons ? ".notlisted" : ""}`;
     const statsKey = `uniseek.stats.${college.collegeId}`;
     const cachedStats = sessionStorage.getItem(statsKey);
     if (cachedStats) {
@@ -594,7 +602,12 @@ export default function ExplorerView({ college, list }: { college: College; list
     fetch("/api/explore", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ collegeId: college.collegeId, band: college.band, profile: toPayload(profileData) }),
+      body: JSON.stringify({
+        collegeId: college.collegeId,
+        band: college.band,
+        profile: toPayload(profileData),
+        notListedReasons,
+      }),
     })
       .then((r) => r.json())
       .then((d) => {
@@ -624,7 +637,7 @@ export default function ExplorerView({ college, list }: { college: College; list
     return () => {
       active = false;
     };
-  }, [college.collegeId, college.band]);
+  }, [college.collegeId, college.band, onList]);
 
   const banner = USE_PLACEHOLDER_RESULTS
     ? "Preview mode — an outline of what this page will cover. Every card cites its sources."

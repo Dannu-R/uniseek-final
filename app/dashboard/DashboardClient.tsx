@@ -268,6 +268,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   const deleteInsight = (collegeId: string) => {
     try {
       sessionStorage.removeItem(`uniseek.insight.${collegeId}`);
+      sessionStorage.removeItem(`uniseek.insight.${collegeId}.notlisted`);
     } catch {
       /* ignore */
     }

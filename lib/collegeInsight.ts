@@ -55,6 +55,9 @@ export interface InsightCollege {
   coOp: boolean | null;
   religiousAffiliation: string | null;
   state: string | null;
+  // Set when the college is NOT on the student's recommended list: the reasons from the
+  // scoring (lib/whyNotListed.ts). Shifts the briefing toward explaining why.
+  notListedReasons: string[] | null;
 }
 
 export interface InsightStudent {
@@ -212,6 +215,30 @@ function studentBlock(s: InsightStudent): string {
     .join("\n");
 }
 
+// For a college the scoring left off the student's list, spend the briefing on why
+// rather than on making the case for it. The sections stay the same (the UI keys off
+// them); only their length and emphasis change.
+export function notListedBlock(reasons: string[] | null): string {
+  if (!reasons || reasons.length === 0) return "";
+  return `
+
+NOT ON THE STUDENT'S LIST
+This college is not on the student's recommended list. The scoring gave these reasons:
+${reasons.map((r) => `- ${r}`).join("\n")}
+
+Spend this briefing on why it isn't a strong option for this student, not on selling it.
+These instructions override the default point length:
+- "admissions": open with why it isn't on the list, then the student's odds here.
+- "whyFits" and "studentLife": ONE short sentence per point. Note a real strength plainly
+  if there is one, but don't argue for the college.
+- "cost": one or two sentences per point, unless cost is one of the reasons above; then
+  explain it fully with the figures provided.
+- "thingsToConsider": the main section. Each point 3-4 sentences that explain the reasons
+  above with the figures provided, and what would have to change for this college to make
+  the list (for example a higher budget). Keep the given labels.
+- Never contradict the reasons above.`;
+}
+
 export async function generateCollegeInsight(
   college: InsightCollege,
   student: InsightStudent,
@@ -233,7 +260,7 @@ Point labels to use VERBATIM (one point each, in this order):
 ${labelSpec}
 
 "admissions" is a single prose paragraph. Include one extracurriculars entry per listed
-activity, in order (empty array if none).`;
+activity, in order (empty array if none).${notListedBlock(college.notListedReasons)}`;
 
   try {
     const client = new Anthropic();

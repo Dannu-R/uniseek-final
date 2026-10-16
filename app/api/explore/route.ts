@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  let body: { collegeId?: string; band?: Band; profile?: Record<string, unknown> };
+  let body: { collegeId?: string; band?: Band; profile?: Record<string, unknown>; notListedReasons?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -26,6 +26,13 @@ export async function POST(request: Request) {
   }
   const { collegeId, band = "target", profile = {} } = body;
   if (!collegeId) return NextResponse.json({ error: "collegeId required" }, { status: 400 });
+
+  // Why the college isn't on the student's list (lib/whyNotListed.ts, computed in the
+  // explorer), or null when it is. Kept short: at most 3 plain sentences.
+  const notListedReasons = Array.isArray(body.notListedReasons)
+    ? body.notListedReasons.filter((r): r is string => typeof r === "string").slice(0, 3).map((r) => r.slice(0, 400))
+    : null;
+  const notListed = !!notListedReasons && notListedReasons.length > 0;
 
   const userId = session.user.id;
 
@@ -42,7 +49,12 @@ export async function POST(request: Request) {
   const stored = await prisma.collegeInsight.findUnique({
     where: { userId_collegeId: { userId, collegeId } },
   });
-  if (stored) return NextResponse.json({ insight: stored.data, cached: true, stats });
+  // Only if it was written for the same situation: a briefing for a college on the list
+  // reads differently from one explaining why it isn't. (Older rows have no flag = on list.)
+  const storedNotListed = (stored?.data as { notListed?: boolean } | undefined)?.notListed ?? false;
+  if (stored && storedNotListed === notListed) {
+    return NextResponse.json({ insight: stored.data, cached: true, stats });
+  }
 
   const majorCip = typeof profile.majorCip === "string" ? profile.majorCip : null;
   const major = majorCip ? await prisma.major.findUnique({ where: { cipCode: majorCip } }) : null;
@@ -95,6 +107,7 @@ export async function POST(request: Request) {
     coOp: college.coOp,
     religiousAffiliation: college.religiousAffiliation,
     state: college.state,
+    notListedReasons: notListed ? notListedReasons : null,
   };
 
   const studentInput: InsightStudent = {
@@ -110,7 +123,9 @@ export async function POST(request: Request) {
     activities,
   };
 
-  const insight = await generateCollegeInsight(collegeInput, studentInput);
+  const generated = await generateCollegeInsight(collegeInput, studentInput);
+  // Remember which situation it was written for (see the cache check above).
+  const insight = generated ? { ...generated, notListed } : null;
 
   // Persist the generated insight so future opens serve it from the DB.
   if (insight) {
