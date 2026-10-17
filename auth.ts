@@ -66,13 +66,30 @@ export const { handlers, signIn, signOut } = nextAuth;
 // LOCAL-ONLY login bypass. When DEV_NO_AUTH=true (set only in local .env, never in the
 // deploy workflow), server-side auth() returns a synthetic demo session so the entire
 // signed-in flow works on localhost without OAuth. Inert in production — the flag is
-// never set there, so the real Auth.js auth() is used. The demo user id must match a
-// seeded User row (see prisma/seed of "dev-user") so user-scoped queries don't FK-fail.
+// never set there, so the real Auth.js auth() is used. The demo user needs a real User
+// row so user-scoped writes (stored insights) don't FK-fail — devAuth creates it once
+// per server start.
 const DEV_SESSION = {
   user: { id: "dev-user", name: "Dev User", email: "dev@localhost", image: null },
   expires: "2999-01-01T00:00:00.000Z",
 };
+
+let devUserReady: Promise<unknown> | null = null;
+function devAuth() {
+  if (!devUserReady) {
+    devUserReady = prisma.user
+      .upsert({
+        where: { id: DEV_SESSION.user.id },
+        update: {},
+        create: { id: DEV_SESSION.user.id, name: DEV_SESSION.user.name, email: DEV_SESSION.user.email },
+      })
+      .catch((err) => {
+        devUserReady = null; // e.g. DB not up yet — try again on the next request
+        throw err;
+      });
+  }
+  return devUserReady.then(() => DEV_SESSION);
+}
+
 export const auth: typeof nextAuth.auth =
-  process.env.DEV_NO_AUTH === "true"
-    ? ((() => Promise.resolve(DEV_SESSION)) as unknown as typeof nextAuth.auth)
-    : nextAuth.auth;
+  process.env.DEV_NO_AUTH === "true" ? (devAuth as unknown as typeof nextAuth.auth) : nextAuth.auth;

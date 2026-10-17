@@ -3,6 +3,7 @@
 // signed-in session is required (the search is gated behind sign-in).
 
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { rankColleges } from "@/lib/scoring/score";
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
 
   const result = rankColleges(student, inputs, lists);
 
-  return NextResponse.json({
+  const response = {
     majorRun: !!student.majorCip,
     scoredCount: inputs.length,
     skippedCount: colleges.length - scorable.length,
@@ -65,5 +66,27 @@ export async function POST(req: Request) {
     removedCount: result.removed.length,
     qualityBar: result.qualityBar ?? null,
     shortBands: result.shortBands,
-  });
+  };
+
+  // Keep this as the student's recommended list (the latest run replaces the last one),
+  // so it's there when they come back, in any browser. A failed save still returns the
+  // list; the browser keeps its own copy.
+  if (session.user.id) {
+    try {
+      await prisma.$transaction([
+        prisma.savedRun.deleteMany({ where: { userId: session.user.id } }),
+        prisma.savedRun.create({
+          data: {
+            userId: session.user.id,
+            profileSnapshot: body as Prisma.InputJsonValue,
+            result: response as unknown as Prisma.InputJsonValue,
+          },
+        }),
+      ]);
+    } catch (err) {
+      console.error("saving recommended list failed", err);
+    }
+  }
+
+  return NextResponse.json(response);
 }

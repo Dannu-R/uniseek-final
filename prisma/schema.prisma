@@ -258,6 +258,34 @@ model User {
   profile   Profile? // one profile per user (MVP)
   runs      SavedRun[]
   insights  CollegeInsight[]
+  answers   ProfileAnswers?
+  saved     SavedCollege[]
+}
+
+// The intake answers exactly as the wizard holds them (strings while typing, partial
+// until finished), so they follow the student to any browser. Kept as JSON rather than in
+// the typed Profile model, which needs a complete profile. `step` is where they left off.
+model ProfileAnswers {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data      Json
+  step      Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+// A college the student saved, with the scored snapshot the dashboard shows for it.
+// `position` keeps the order they saved them in.
+model SavedCollege {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId String
+  position  Int
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@unique([userId, collegeId])
 }
 
 // Personalized College Explorer insight, cached per user+college so re-opening a college

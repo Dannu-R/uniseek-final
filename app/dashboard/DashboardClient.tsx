@@ -27,6 +27,8 @@ import SearchBox from "./search/SearchBox";
 import SearchView from "./search/SearchView";
 import { DEMO_PROFILE } from "@/app/build/demoProfile";
 import { toPayload } from "@/app/build/toPayload";
+import { formatInsightDate } from "@/lib/insightStamp";
+import { loadAccount, pushSaved, clearAccount, clearAccountRun } from "@/lib/accountSync";
 
 interface DashUser {
   name?: string | null;
@@ -152,7 +154,24 @@ function tabFromUrl(params: URLSearchParams | ReadonlyURLSearchParams): TabKey {
   return TAB_KEYS.includes(t as TabKey) ? (t as TabKey) : "home";
 }
 
+// Loads the student's account (answers, saved colleges, recommended list) into this
+// browser before the dashboard reads any of it, so it's the same in every browser.
 export default function DashboardClient({ user }: { user: DashUser }) {
+  const [accountLoaded, setAccountLoaded] = useState(false);
+  useEffect(() => {
+    loadAccount().finally(() => setAccountLoaded(true));
+  }, []);
+  if (!accountLoaded) {
+    return (
+      <div className="dash-loading" aria-busy="true">
+        Loading your dashboard…
+      </div>
+    );
+  }
+  return <Dashboard user={user} />;
+}
+
+function Dashboard({ user }: { user: DashUser }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   // Each tab has its own URL (?tab=saved, ?tab=search&query=…; Home is plain /dashboard),
@@ -165,6 +184,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   const [filter, setFilter] = useState<BandFilter>("all");
   const [loaded, setLoaded] = useState(false);
   const [exploring, setExploring] = useState<CollegeScore | null>(null);
+  // College id → when its analysis was written, for the "Explored" badge on the cards.
+  const [explored, setExplored] = useState<Record<string, string>>({});
   const [unsaveTarget, setUnsaveTarget] = useState<CollegeScore | null>(null);
   const [confirmClearAll, setConfirmClearAll] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -222,6 +243,20 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     };
   }, []);
 
+  // Which colleges already have a stored analysis (and from when).
+  useEffect(() => {
+    fetch("/api/explore")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d?.explored) setExplored(d.explored);
+      })
+      .catch(() => {
+        /* no badges is fine */
+      });
+  }, []);
+  const markExplored = (collegeId: string, generatedAt: string) =>
+    setExplored((prev) => (prev[collegeId] === generatedAt ? prev : { ...prev, [collegeId]: generatedAt }));
+
   // Persist whether we're in the quiz so a refresh resumes it rather than the CTA.
   useEffect(() => {
     if (!loaded) return;
@@ -232,7 +267,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     }
   }, [phase, loaded]);
 
-  // Persist the saved list (survives across sessions, unlike the run itself).
+  // Persist the saved list, in this browser and to the account.
   useEffect(() => {
     if (!loaded) return;
     try {
@@ -240,6 +275,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
     } catch {
       /* ignore quota */
     }
+    pushSaved(saved);
   }, [saved, loaded]);
 
   const openQuiz = () => {
@@ -266,6 +302,11 @@ export default function DashboardClient({ user }: { user: DashUser }) {
 
   // Unsaving clears any personalized insight we stored for this college (session + DB).
   const deleteInsight = (collegeId: string) => {
+    setExplored((prev) => {
+      const next = { ...prev };
+      delete next[collegeId];
+      return next;
+    });
     try {
       // Any version, on- or off-list (keys look like uniseek.insight.v2.<id>[.notlisted]).
       Object.keys(sessionStorage)
@@ -299,8 +340,9 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   // run, and the saved list (with their stored insights). Clearing storage and reloading
   // is the reliable way to also reset the wizard's in-memory answers, which otherwise
   // get re-persisted on the next tick.
-  const clearAll = () => {
+  const clearAll = async () => {
     saved.forEach((c) => deleteInsight(c.collegeId));
+    await clearAccount();
     try {
       sessionStorage.removeItem(RESULT_KEY);
       sessionStorage.removeItem(UI_KEY);
@@ -324,10 +366,18 @@ export default function DashboardClient({ user }: { user: DashUser }) {
   // Every card has a static body plus an Explore button and a save toggle.
   const renderCard = (c: CollegeScore) => {
     const on = isSaved(c.collegeId);
+    const exploredOn = formatInsightDate(explored[c.collegeId]);
     return (
       <div key={c.collegeId} className={`rs-card rs-card--${c.band}`}>
         <div className="rs-card__open rs-card__open--static">
-          <span className="rs-card__name">{c.name}</span>
+          <span className="rs-card__title">
+            <span className="rs-card__name">{c.name}</span>
+            {exploredOn && (
+              <span className="rs-card__explored" title={`Analysis completed ${exploredOn}`}>
+                Explored · {exploredOn}
+              </span>
+            )}
+          </span>
           <span className="rs-card__rate">
             {pct(c.overallAdmitRate)} <em>acceptance rate</em>
           </span>
@@ -361,8 +411,8 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             title={on ? "Saved — click to remove" : "Save"}
           >
             <svg
-              width="18"
-              height="18"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill={on ? "currentColor" : "none"}
               stroke="currentColor"
@@ -373,6 +423,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
             >
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
+            {on ? "Saved" : "Save"}
           </button>
         </div>
       </div>
@@ -530,7 +581,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                   </button>
                 }
               />
-              <ExplorerView college={exploring} list={result?.list ?? null} />
+              <ExplorerView college={exploring} list={result?.list ?? null} onAnalyzed={markExplored} />
             </>
           ) : tab === "home" ? (
             <>
@@ -572,6 +623,7 @@ export default function DashboardClient({ user }: { user: DashUser }) {
                 }}
                 onClearRun={() => {
                   setResult(null);
+                  clearAccountRun();
                   try {
                     sessionStorage.removeItem(RESULT_KEY);
                   } catch {

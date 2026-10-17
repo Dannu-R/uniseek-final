@@ -77,10 +77,10 @@ export default function ProfileView({
     {
       key: "answers",
       title: "Quiz answers",
-      where: "This browser",
+      where: "Your account",
       detail: answered
-        ? "Your grades, scores, activities and preferences. They never leave this device unless you run a search."
-        : "Nothing filled in yet. Your answers stay on this device unless you run a search.",
+        ? "Your grades, scores, activities and preferences."
+        : "Nothing filled in yet.",
       ...(answered
         ? {
             action: {
@@ -98,7 +98,7 @@ export default function ProfileView({
     {
       key: "saved",
       title: "Saved colleges",
-      where: "This browser",
+      where: "Your account",
       detail: savedCount
         ? `${savedCount} college${savedCount === 1 ? "" : "s"} set aside, along with any personalized insights generated for them.`
         : "Nothing saved yet.",
@@ -122,7 +122,7 @@ export default function ProfileView({
     {
       key: "run",
       title: "Your recommendations",
-      where: "This browser, until you close the tab",
+      where: "Your account",
       detail: hasRun
         ? "The list from your last search. Running the quiz again replaces it."
         : "No search run yet.",
@@ -196,8 +196,8 @@ export default function ProfileView({
         <div className="stat-card pf-card">
           <h2 className="stat-card__title">Your data</h2>
           <p className="pf-note pf-note--lead">
-            Uniseek works without an account, so most of your work is kept in this browser rather
-            than on our servers. Clearing your browser data clears it too.
+            Your answers, saved colleges and recommendations are kept in your Uniseek account, so
+            they&apos;re the same on any device you sign in on. Clearing them here clears them everywhere.
           </p>
 
           <ul className="pf-rows">

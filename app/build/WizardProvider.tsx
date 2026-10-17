@@ -1,12 +1,13 @@
 "use client";
 
-// Wizard state — held in the browser (anonymous-first) and persisted to
-// localStorage so a refresh doesn't lose the profile. On sign-in (later) this state
-// is adopted into the account.
+// Wizard state — held in the browser and persisted to localStorage so a refresh doesn't
+// lose the profile, and sent to the student's account so it follows them to any browser
+// (lib/accountSync.ts loads the account's copy into localStorage before this mounts).
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { DEFAULT_DATA, FACTORS, STEPS, type WizardData } from "./model";
 import { DEMO_PROFILE } from "./demoProfile";
+import { pushAnswers } from "@/lib/accountSync";
 
 const STORAGE_KEY = "uniseek.profile.v1";
 const STEP_KEY = "uniseek.step.v1";
@@ -92,13 +93,16 @@ export function WizardProvider({
     setHydrated(true);
   }, []);
 
-  // Persist after hydration.
+  // Persist after hydration, in this browser and to the account.
   useEffect(() => {
     if (hydrated) localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data, hydrated]);
   useEffect(() => {
     if (hydrated) localStorage.setItem(STEP_KEY, String(step));
   }, [step, hydrated]);
+  useEffect(() => {
+    if (hydrated) pushAnswers(data, step);
+  }, [data, step, hydrated]);
 
   const update = (patch: Partial<WizardData>) => setData((d) => ({ ...d, ...patch }));
   const setStep = (n: number) => setStepState(Math.min(Math.max(0, n), STEPS.length - 1));

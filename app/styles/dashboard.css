@@ -65,6 +65,19 @@
   font-family: var(--font-display);
 }
 
+/* Shown for the moment it takes to load the account before the dashboard renders.
+   Same ground as the dashboard so it doesn't flash. */
+.dash-loading {
+  min-height: 100vh;
+  padding-top: 64px;
+  display: grid;
+  place-items: center;
+  background: #eef1f7;
+  color: #7a87a3;
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
 /* ---- Left rail ---------------------------------------------------------- */
 .dash__rail {
   position: fixed;
@@ -572,6 +585,23 @@
 }
 .dash .rs-card__name {
   color: var(--ac-ink);
+}
+/* Name plus the "Explored · date" badge, wrapping under it when space runs out. */
+.dash .rs-card__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-width: 0;
+}
+.dash .rs-card__explored {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--ac-green-soft);
+  color: var(--ac-green);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 .dash .rs-card__rate {
   color: var(--ac-ink);

@@ -8,6 +8,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateCollegeInsight, type InsightCollege, type InsightStudent } from "@/lib/collegeInsight";
 import { INSIGHT_VERSION } from "@/lib/insightVersion";
+import { profileKey } from "@/lib/insightStamp";
 import type { IncomeBand } from "@/lib/scoring/filters";
 import { residencyFor, studentNetPrice } from "@/lib/scoring/price";
 
@@ -55,7 +56,10 @@ export async function POST(request: Request) {
   // and with the current prompt version.
   const storedData = stored?.data as { notListed?: boolean; version?: number } | undefined;
   if (stored && (storedData?.notListed ?? false) === notListed && storedData?.version === INSIGHT_VERSION) {
-    return NextResponse.json({ insight: stored.data, cached: true, stats });
+    // Rows written before analyses carried their own date fall back to when the row was saved.
+    const data = stored.data as Record<string, unknown>;
+    const insight = data.generatedAt ? data : { ...data, generatedAt: stored.updatedAt.toISOString() };
+    return NextResponse.json({ insight, cached: true, stats });
   }
 
   const majorCip = typeof profile.majorCip === "string" ? profile.majorCip : null;
@@ -126,22 +130,51 @@ export async function POST(request: Request) {
   };
 
   const generated = await generateCollegeInsight(collegeInput, studentInput);
-  // Remember which situation it was written for (see the cache check above).
-  const insight = generated ? { ...generated, notListed, version: INSIGHT_VERSION } : null;
+  // Remember which situation it was written for (see the cache check above), plus when and
+  // for which profile, so the explorer can show the date and flag a since-edited profile.
+  const insight = generated
+    ? {
+        ...generated,
+        notListed,
+        version: INSIGHT_VERSION,
+        generatedAt: new Date().toISOString(),
+        profileKey: profileKey(profile),
+      }
+    : null;
 
-  // Persist the generated insight so future opens serve it from the DB.
+  // Persist the generated insight so future opens serve it from the DB. A failed save
+  // still returns the insight — it was already paid for, and the client caches it too.
   if (insight) {
-    await prisma.collegeInsight.upsert({
-      where: { userId_collegeId: { userId, collegeId } },
-      update: { data: insight as unknown as Prisma.InputJsonValue, band },
-      create: { userId, collegeId, band, data: insight as unknown as Prisma.InputJsonValue },
-    });
+    try {
+      await prisma.collegeInsight.upsert({
+        where: { userId_collegeId: { userId, collegeId } },
+        update: { data: insight as unknown as Prisma.InputJsonValue, band },
+        create: { userId, collegeId, band, data: insight as unknown as Prisma.InputJsonValue },
+      });
+    } catch (err) {
+      console.error("saving college insight failed", err);
+    }
   }
 
   return NextResponse.json({ insight, cached: false, stats });
 }
 
 // Remove a stored insight (used when the student unsaves a college).
+// GET /api/explore — the colleges this student already has an analysis for, with the date
+// each was written, so the dashboard can mark them as explored.
+export async function GET() {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+  const rows = await prisma.collegeInsight.findMany({
+    where: { userId: session.user.id },
+    select: { collegeId: true, updatedAt: true },
+  });
+  const explored: Record<string, string> = {};
+  for (const row of rows) explored[row.collegeId] = row.updatedAt.toISOString();
+  return NextResponse.json({ explored });
+}
+
 export async function DELETE(request: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });

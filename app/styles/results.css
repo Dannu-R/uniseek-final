@@ -157,14 +157,18 @@
   display: block;
 }
 
-/* Save / unsave (bookmark) toggle. */
+/* Save / unsave toggle: a bookmark plus "Save" or "Saved", sized like Explore. */
 .rs-card__save {
   flex-shrink: 0;
-  display: inline-grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
   border-radius: 9px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.5);
@@ -183,6 +187,22 @@
 }
 .rs-card__save svg {
   display: block;
+}
+/* Phones: the name, rate and two buttons don't fit on one line. Put the name and rate on
+   top (stacked) and the buttons on their own row underneath. */
+@media (max-width: 600px) {
+  .rs-card {
+    flex-wrap: wrap;
+  }
+  .rs-card__open {
+    flex: 1 1 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .rs-card__actions {
+    margin-left: auto;
+  }
 }
 .rs-card:hover {
   transform: translateY(-1px);

@@ -28,6 +28,7 @@ import type { CollegeInsight } from "@/lib/collegeInsight";
 import Reveal from "./Reveal";
 import { whyNotListed, type ScoredCollege } from "@/lib/whyNotListed";
 import { INSIGHT_VERSION } from "@/lib/insightVersion";
+import { profileKey, formatInsightDate, type InsightStamp } from "@/lib/insightStamp";
 
 // The college's score from the run. The scoring fields are optional because colleges
 // saved before they existed won't have them.
@@ -511,10 +512,21 @@ type InsightState = "idle" | "loading" | "ready" | "error";
 // The way back lives in the view bar above, alongside the college's name — the same
 // place every other view keeps its primary action.
 // list: the student's recommended list from the same run (null = no run in this session).
-export default function ExplorerView({ college, list }: { college: College; list: ScoredCollege[] | null }) {
+// onAnalyzed: told the analysis's date once it's ready, so the cards can show "Explored".
+export default function ExplorerView({
+  college,
+  list,
+  onAnalyzed,
+}: {
+  college: College;
+  list: ScoredCollege[] | null;
+  onAnalyzed?: (collegeId: string, generatedAt: string) => void;
+}) {
   const [activities, setActivities] = useState<string[]>([]);
   const [stu, setStu] = useState<{ gpa: number | null; sat: number | null; act: number | null; ap: number | null }>({ gpa: null, sat: null, act: null, ap: null });
-  const [insight, setInsight] = useState<CollegeInsight | null>(null);
+  const [insight, setInsight] = useState<(CollegeInsight & InsightStamp) | null>(null);
+  // Fingerprint of the profile as it is now, to compare with the one the analysis used.
+  const [currentProfileKey, setCurrentProfileKey] = useState<string | null>(null);
   const [insightState, setInsightState] = useState<InsightState>("idle");
   const [stats, setStats] = useState<{ satP25: number | null; satP75: number | null } | null>(null);
   const [priorities, setPriorities] = useState<string[]>([]);
@@ -549,6 +561,7 @@ export default function ExplorerView({ college, list }: { college: College; list
       const rawProfile = localStorage.getItem("uniseek.profile.v1");
       if (rawProfile) {
         profileData = JSON.parse(rawProfile) as WizardData;
+        setCurrentProfileKey(profileKey(toPayload(profileData)));
         setActivities((profileData.activities ?? []).map((a) => a.description).filter((d) => d && d.trim() !== ""));
         setStu({
           gpa: num(profileData.gpaUnweighted),
@@ -583,13 +596,18 @@ export default function ExplorerView({ college, list }: { college: College; list
       }
     }
     const cached = sessionStorage.getItem(cacheKey);
-    // Only serve from cache when we also have the college stats for the visual; otherwise
-    // fall through to the fetch so a pre-fix cached insight still picks up the SAT band.
+    // Only serve from cache when we also have the college stats for the visual and the
+    // analysis's date; otherwise fall through to the fetch (served from the DB, not
+    // regenerated) so an older cached insight picks up whatever it's missing.
     if (cached && cachedStats) {
       try {
-        setInsight(JSON.parse(cached));
-        setInsightState("ready");
-        return;
+        const parsed = JSON.parse(cached) as CollegeInsight & InsightStamp;
+        if (parsed.generatedAt) {
+          setInsight(parsed);
+          setInsightState("ready");
+          onAnalyzed?.(college.collegeId, parsed.generatedAt);
+          return;
+        }
       } catch {
         /* refetch */
       }
@@ -629,6 +647,7 @@ export default function ExplorerView({ college, list }: { college: College; list
             /* ignore quota */
           }
           setInsightState("ready");
+          if (d.insight.generatedAt) onAnalyzed?.(college.collegeId, d.insight.generatedAt);
         } else {
           setInsightState("error");
         }
@@ -882,6 +901,9 @@ export default function ExplorerView({ college, list }: { college: College; list
     );
   };
 
+  const analyzedOn = formatInsightDate(insight?.generatedAt);
+  const profileChanged = !!insight?.profileKey && !!currentProfileKey && insight.profileKey !== currentProfileKey;
+
   // Why this college isn't on the recommended list (null when it is, or with no run).
   const notListed = list ? whyNotListed(college, list, budget) : null;
 
@@ -889,6 +911,19 @@ export default function ExplorerView({ college, list }: { college: College; list
     <div className="explorer explorer--inline">
       <section className="dash__view ex">
         <p className={`ex__status ${insightState === "loading" ? "is-loading" : ""}`}>{banner}</p>
+
+        {/* When the analysis was written, and a note if the profile has changed since.
+            Analyses written before they stored a profile fingerprint can't be checked. */}
+        {insightState === "ready" && analyzedOn && (
+          profileChanged ? (
+            <div className="ex-stale" role="note">
+              <strong>Your profile has changed since this analysis.</strong> It was written on {analyzedOn}, before
+              your latest profile edits, so parts of it may not be fully accurate.
+            </div>
+          ) : (
+            <p className="ex-analyzed">Analysis completed {analyzedOn}</p>
+          )
+        )}
 
         {/* The hero. One dominant, band-tinted tile carries everything quantitative — the
             headline KPIs, the acceptance dial, and the score bars — so the page opens on a
