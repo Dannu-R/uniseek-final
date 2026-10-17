@@ -8,7 +8,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { traceClaudeCall } from "./llmTrace";
 import type { NetPriceBasis } from "./scoring/price";
 
-const MODEL = process.env.UNISEEK_INSIGHT_MODEL ?? "claude-opus-5";
+const MODEL = process.env.UNISEEK_INSIGHT_MODEL ?? "claude-sonnet-5";
 
 // Each supporting card is a short list of labelled points rather than one paragraph,
 // so the reader can scan it. `label` must be one of the fixed set the card expects
@@ -243,10 +243,22 @@ These instructions override the default point length:
 - Never contradict the reasons above.`;
 }
 
+// Why a briefing couldn't be produced, in a few words (an API error's status and type,
+// a cut-off reply, ...). Never includes the key or the student's data, so it's safe to
+// send to the browser, which shows it in the explorer's error line.
+function failureReason(err: unknown): string {
+  const e = err as { status?: number; error?: { error?: { type?: string } }; name?: string };
+  if (e?.status) return `${e.status} ${e.error?.error?.type ?? "API error"}`;
+  if (err instanceof SyntaxError) return "unreadable response";
+  return e?.name ?? "unknown error";
+}
+
 export async function generateCollegeInsight(
   college: InsightCollege,
   student: InsightStudent,
-): Promise<CollegeInsight | null> {
+): Promise<{ insight: CollegeInsight | null; failure: string | null }> {
+  if (!process.env.ANTHROPIC_API_KEY) return { insight: null, failure: "no API key configured" };
+
   const activities =
     student.activities.length > 0
       ? student.activities.map((a, i) => `${i + 1}. ${a}`).join("\n")
@@ -277,12 +289,13 @@ activity, in order (empty array if none).${notListedBlock(college.notListedReaso
         messages: [{ role: "user", content: user }],
       }),
     );
-    if (res.stop_reason === "refusal") return null;
+    if (res.stop_reason === "refusal") return { insight: null, failure: "refused" };
+    if (res.stop_reason === "max_tokens") return { insight: null, failure: "reply cut off (max_tokens)" };
     const text = res.content.find((b) => b.type === "text");
-    if (!text || text.type !== "text") return null;
-    return JSON.parse(text.text) as CollegeInsight;
+    if (!text || text.type !== "text") return { insight: null, failure: "empty response" };
+    return { insight: JSON.parse(text.text) as CollegeInsight, failure: null };
   } catch (err) {
     console.error("college insight generation failed", err);
-    return null;
+    return { insight: null, failure: failureReason(err) };
   }
 }

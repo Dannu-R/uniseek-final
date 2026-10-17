@@ -11,7 +11,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { FALLBACK_EC_TIER, type EcTier } from "./ec";
 import { traceClaudeCall } from "../llmTrace";
 
-const ANTHROPIC_MODEL = process.env.UNISEEK_CLASSIFIER_MODEL ?? "claude-opus-5";
+const ANTHROPIC_MODEL = process.env.UNISEEK_CLASSIFIER_MODEL ?? "claude-sonnet-5";
 const HF_MODEL = process.env.UNISEEK_HF_MODEL ?? "meta-llama/Llama-3.1-8B-Instruct";
 const HF_ENDPOINT = "https://router.huggingface.co/v1/chat/completions";
 

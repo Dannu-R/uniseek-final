@@ -528,6 +528,8 @@ export default function ExplorerView({
   // Fingerprint of the profile as it is now, to compare with the one the analysis used.
   const [currentProfileKey, setCurrentProfileKey] = useState<string | null>(null);
   const [insightState, setInsightState] = useState<InsightState>("idle");
+  // Why the briefing failed (from /api/explore, or the HTTP status), shown in the error line.
+  const [failure, setFailure] = useState<string | null>(null);
   const [stats, setStats] = useState<{ satP25: number | null; satP75: number | null } | null>(null);
   const [priorities, setPriorities] = useState<string[]>([]);
   const [budget, setBudget] = useState<number | null>(null);
@@ -628,7 +630,10 @@ export default function ExplorerView({
         notListedReasons,
       }),
     })
-      .then((r) => r.json())
+      .then(async (r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then((d) => {
         if (!active) return;
         if (d.stats) {
@@ -649,10 +654,15 @@ export default function ExplorerView({
           setInsightState("ready");
           if (d.insight.generatedAt) onAnalyzed?.(college.collegeId, d.insight.generatedAt);
         } else {
+          setFailure(d.failure ?? null);
           setInsightState("error");
         }
       })
-      .catch(() => active && setInsightState("error"));
+      .catch((err) => {
+        if (!active) return;
+        setFailure(err instanceof Error ? err.message : null);
+        setInsightState("error");
+      });
 
     return () => {
       active = false;
@@ -666,7 +676,7 @@ export default function ExplorerView({
       : insightState === "ready"
         ? "Personalized for you. Every card cites its sources."
         : insightState === "error"
-          ? "Couldn't generate personalized insights right now — here's an outline."
+          ? `Couldn't generate personalized insights right now${failure ? ` (${failure})` : ""}. Here's an outline.`
           : "Build your profile to get personalized insights.";
 
   const outline = (points: Point[]) => (

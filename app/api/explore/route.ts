@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     activities,
   };
 
-  const generated = await generateCollegeInsight(collegeInput, studentInput);
+  const { insight: generated, failure } = await generateCollegeInsight(collegeInput, studentInput);
   // Remember which situation it was written for (see the cache check above), plus when and
   // for which profile, so the explorer can show the date and flag a since-edited profile.
   const insight = generated
@@ -156,7 +156,7 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json({ insight, cached: false, stats });
+  return NextResponse.json({ insight, cached: false, stats, failure });
 }
 
 // Remove a stored insight (used when the student unsaves a college).
