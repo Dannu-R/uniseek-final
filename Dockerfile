@@ -21,6 +21,12 @@ RUN npx prisma generate && npm run build
 # with plain `node` (no tsx). @prisma/client stays external — it's shipped separately.
 RUN npx esbuild prisma/seed.ts --bundle --platform=node --target=node22 \
       --format=cjs --external:@prisma/client --outfile=prisma/seed.cjs
+# Same for the data import scripts, which keep the production catalog in sync with
+# the committed data files on every start (scripts/deploy/startup-imports.sh).
+RUN for s in colleges rankings major-rates; do \
+      npx esbuild scripts/$s/import.ts --bundle --platform=node --target=node22 \
+        --format=cjs --external:@prisma/client --outfile=scripts-dist/$s-import.cjs; \
+    done
 
 # ---- prisma stage: isolated CLI closure for migrate-on-start ----
 # Installed on its own (fresh package.json, no app deps) so the runtime image
@@ -56,7 +62,16 @@ COPY --from=prismacli /pcli/node_modules ./prisma-cli/node_modules
 COPY --from=build /src/node_modules/.prisma ./node_modules/.prisma
 COPY --from=build /src/node_modules/@prisma/client ./node_modules/@prisma/client
 
+# The bundled import scripts, the startup script that runs them, and the committed
+# data they read (resolved from /app, the working directory).
+COPY --from=build /src/scripts-dist ./scripts-dist
+COPY --from=build /src/scripts/deploy/startup-imports.sh ./scripts-dist/startup-imports.sh
+COPY --from=build /src/data/colleges/*.json ./data/colleges/
+COPY --from=build /src/data/rankings ./data/rankings
+COPY --from=build /src/data/major-rates ./data/major-rates
+
 EXPOSE 3000
 # On start: apply migrations, seed the catalog (idempotent upserts; fail-soft so a
-# seed hiccup doesn't take down the server), then serve.
-CMD ["sh", "-c", "node prisma-cli/node_modules/prisma/build/index.js migrate deploy --schema=prisma/schema.prisma && (node prisma/seed.cjs || echo 'uniseek: seed failed, continuing') && node server.js"]
+# seed hiccup doesn't take down the server), start the data imports in the
+# background (fail-soft; the server doesn't wait for them), then serve.
+CMD ["sh", "-c", "node prisma-cli/node_modules/prisma/build/index.js migrate deploy --schema=prisma/schema.prisma && (node prisma/seed.cjs || echo 'uniseek: seed failed, continuing') && (sh scripts-dist/startup-imports.sh &) && node server.js"]

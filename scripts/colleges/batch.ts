@@ -59,8 +59,9 @@ export const CollegeFields = z.object({
   netPrice48to75k: z.number().int().nullable(),
   netPrice75to110k: z.number().int().nullable(),
   netPriceGt110k: z.number().int().nullable(),
-  tuitionInState: z.number().int().min(0).nullable(), // tuition + required fees, most recent year
-  tuitionOutOfState: z.number().int().min(0).nullable(), // = tuitionInState at privates
+  // Optional: batches written before these columns existed leave them out (= null).
+  tuitionInState: z.number().int().min(0).nullable().optional(), // tuition + required fees, most recent year
+  tuitionOutOfState: z.number().int().min(0).nullable().optional(), // = tuitionInState at privates
 
   religiousAffiliation: z.string().nullable(),
   enrollmentUndergrad: z.number().int().min(0).nullable(),

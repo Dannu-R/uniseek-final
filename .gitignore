@@ -43,3 +43,6 @@ data/colleges/.cache/
 data/colleges/work/
 # Skill eval runs (scrape-colleges-workspace etc.) — large, regenerable
 .claude/skills/*-workspace/
+
+# Bundled import scripts (built in the Docker image; local test builds)
+/scripts-dist/
